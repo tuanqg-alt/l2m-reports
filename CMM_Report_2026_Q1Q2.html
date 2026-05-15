@@ -502,6 +502,31 @@
   }
 
   .stat-chip span { color: var(--accent); font-weight: 700; }
+
+  /* ── LANG TOGGLE ── */
+  .lang-block { display: none; }
+  .lang-block.active { display: block; }
+
+  #lang-toggle {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 5px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-family: inherit;
+    margin-left: 10px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  #lang-toggle:hover {
+    background: var(--accent);
+    color: #0d0f1a;
+  }
+
 </style>
 </head>
 <body>
@@ -515,17 +540,21 @@
     </div>
   </div>
   <nav class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('t01')">Tháng 01</button>
-    <button class="tab-btn" onclick="switchTab('t02')">Tháng 02</button>
-    <button class="tab-btn" onclick="switchTab('t03')">Tháng 03</button>
-    <button class="tab-btn" onclick="switchTab('t04')">Tháng 04</button>
+    <button class="tab-btn active" onclick="switchTab('t01')" data-vn="Tháng 01" data-en="January">Tháng 01</button>
+    <button class="tab-btn" onclick="switchTab('t02')" data-vn="Tháng 02" data-en="February">Tháng 02</button>
+    <button class="tab-btn" onclick="switchTab('t03')" data-vn="Tháng 03" data-en="March">Tháng 03</button>
+    <button class="tab-btn" onclick="switchTab('t04')" data-vn="Tháng 04" data-en="April">Tháng 04</button>
+    <button class="tab-btn" onclick="switchTab('t05')" data-vn="Tháng 05" data-en="May">Tháng 05</button>
   </nav>
+  <button id="lang-toggle" onclick="toggleLang()">EN</button>
 </header>
 
 <main class="main">
 
   <!-- ═══════════════════════════════════════════════ THÁNG 01 ═══ -->
   <div id="t01" class="tab-panel active">
+
+    <div class="lang-block lang-vn active">
     <div class="report-header">
       <h2>Báo Cáo Tháng 01/2026</h2>
       <div class="period">Phân tích cộng đồng và vận hành game · Tháng 01 năm 2026</div>
@@ -701,10 +730,183 @@
         </div>
       </div>
     </div>
+      </div>
+    <div class="lang-block lang-en">
+    <div class="report-header">
+      <h2>January 2026 Report</h2>
+      <div class="period">Community analysis and game operations · January 2026</div>
+      <a class="gdoc-link" href="https://docs.google.com/document/d/1NSI6SVuEVXFviXEXnd3lQsyWmN1GJL6akix1w3OtEJE/edit?usp=sharing" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        View on Google Docs
+      </a>
+    </div>
+
+    <div class="exec-summary">
+      <h3>Executive Summary</h3>
+      <p>January 2026 saw a shift from initial excitement over expansion content (Aden Expansion, Tower of Insolence 3–4F) toward a deeper focus on complex progression mechanics and investment value assessment.</p>
+      <div class="key-points">
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F4E6;</div>
+          <div class="key-point-body">
+            <strong>Content Reception</strong>
+            <p>Spirit Inscription, Blessed Bracelets, and Expertise drove intense discussion but created spending pressure and barriers for F2P players.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F5FA;&#xFE0F;</div>
+          <div class="key-point-body">
+            <strong>Regional Sentiment Divergence</strong>
+            <p>VN and TH maintained high engagement; while ID, PH, and SGMY faced churn risks due to technical issues, bots, and disappointing drop rates.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x2139;&#xFE0F;</div>
+          <div class="key-point-body">
+            <strong>Information Gap</strong>
+            <p>Much negativity stemmed from a lack of official guidance (NPC locations, timelines, system explanations), generating high demand for a knowledge hub.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F4B0;</div>
+          <div class="key-point-body">
+            <strong>Economic Dynamics</strong>
+            <p>TOI tickets fluctuated sharply (300 → 40 Diamonds in 24 hours), reflecting rapid market self-correction based on Combat Power (CP) thresholds.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">1</span> Regional Community Sentiment Analysis</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Status</th>
+            <th>Key Points</th>
+            <th>Risk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>&#x1F1FB;&#x1F1F3; Vietnam</strong></td>
+            <td><span class="market-tag tag-positive">Highly Positive</span></td>
+            <td>Deep interest in progression optimization and long-term planning. Most active in TOI discussions and content leaks.</td>
+            <td>Spirit Inscription costs (Soul/Conqueror) higher than the international version, reducing top-up motivation.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F9;&#x1F1ED; Thailand</strong></td>
+            <td><span class="market-tag tag-positive">Stable</span></td>
+            <td>Positive response to fast update cadence; appreciation for Spirit Inscription and new hunting zones.</td>
+            <td>Catacomb fairness complaints and persistent bot issues.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1EE;&#x1F1E9; Indonesia</strong></td>
+            <td><span class="market-tag tag-warning">Mixed</span></td>
+            <td>—</td>
+            <td>Connection errors, lack of Scroll Adena in new maps, event rewards deemed "stingy."</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F5;&#x1F1ED; Philippines</strong></td>
+            <td><span class="market-tag tag-warning">Mixed</span></td>
+            <td>—</td>
+            <td>Silence from operations → feeling abandoned; difficulty finding event NPCs; need for a clear roadmap.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F8;&#x1F1EC;&#x1F1F2;&#x1F1FE; SGMY</strong></td>
+            <td><span class="market-tag tag-negative">High Risk</span></td>
+            <td>—</td>
+            <td>VIP/Whale (~20,000 USD) frustrated by extremely low drop rates for purple weapons/legendary skills → churn risk.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">2</span> Feature & Content Assessment</div>
+      <div class="subsection-title">2.1. Progression Systems (Expertise &amp; Spirit Inscription)</div>
+      <ul class="bullet-list">
+        <li><strong>Expertise (Stat Bingo):</strong> Seen as a major Diamond Sink. Players debate Purple Bingo vs. Blue Sets for cost efficiency. Rerolls only worthwhile when unlocking more slots.</li>
+        <li><strong>Blessed Bracelets:</strong> Attracts core players but leads to regret in ID if upgraded at the wrong time.</li>
+      </ul>
+      <div class="subsection-title">2.2. Map Expansion &amp; Tower of Insolence (TOI)</div>
+      <ul class="bullet-list">
+        <li><strong>Aden Expansion:</strong> Successfully reduced resource scarcity, but farm zone management sparked internal conflicts (Teon 07 under Mystic Clan control).</li>
+        <li><strong>TOI 3–4F:</strong> High CP requirement → many farming spots underutilized. Daily TOI schedule change disrupted alliance coordination.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">3</span> VIP Insights Summary</div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">Item Packages</div>
+          <div class="card-content">Desire for "Chance Up" or "Guaranteed" bundles instead of pure RNG.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Features</div>
+          <div class="card-content">High demand for Server Transfer, Class Change, and the Presets system.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Fairness</div>
+          <div class="card-content">Opposition to reduced VIP reward efficiency (SGMY) and upgrade material inflation (VN).</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Service</div>
+          <div class="card-content">Support for changing login methods (iCloud → Gmail) for high-value accounts.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">4</span> Server Ecosystem &amp; PvP Dynamics</div>
+      <ul class="bullet-list">
+        <li><strong>Positive signal:</strong> When facing real opponents (Teon 03 vs B3/B8), conflict intensity and excitement surged significantly.</li>
+        <li><strong>Negative signal:</strong> Repeatedly matched with allies or overly weak opponents (Teon 09) → boredom, purely mechanical farming.</li>
+        <li><strong>Exception:</strong> Erica 09 — the Queen vs. Pecute battle remained intense with boss harassment tactics.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">5</span> Priority Actions</div>
+      <div class="action-list">
+        <div class="action-item">
+          <div class="action-num">1</div>
+          <div class="action-body">
+            <strong>Close the Information Gap</strong>
+            <p>Publish FAQs + visual guides on Expertise, Spirit Inscription, and new events. Always include specific time zones in maintenance announcements.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">2</div>
+          <div class="action-body">
+            <strong>Improve Reward Transparency</strong>
+            <p>Ensure every event has at least one "guaranteed" component. Publish reward structures and drop rates (where permitted).</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">3</div>
+          <div class="action-body">
+            <strong>Operations &amp; Technical</strong>
+            <p>Establish weekly communications for PH. Resolve ID connection issues. Publicly acknowledge anti-bot efforts.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">4</div>
+          <div class="action-body">
+            <strong>Live-Ops Adjustments</strong>
+            <p>Test bundled item packages based on demand (Mount + DM in ID). Adjust Catacomb logic. Optimize Invasion matchmaking.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════════════ THÁNG 02 ═══ -->
   <div id="t02" class="tab-panel">
+
+    <div class="lang-block lang-vn">
     <div class="report-header">
       <h2>Báo Cáo Tháng 02/2026</h2>
       <div class="period">Cập nhật hệ thống Clan, tâm lý cộng đồng và biến động thị trường · 29/01 – 27/02/2026</div>
@@ -918,10 +1120,218 @@
         </div>
       </div>
     </div>
+      </div>
+    <div class="lang-block lang-en">
+    <div class="report-header">
+      <h2>February 2026 Report</h2>
+      <div class="period">Clan system updates, community sentiment &amp; market dynamics · Jan 29 – Feb 27, 2026</div>
+      <a class="gdoc-link" href="https://docs.google.com/document/d/1Gwbp7z0pX-jwtPh5wVQcDYV8uXMyymWagmSp09d-MJE/edit?usp=sharing" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        View on Google Docs
+      </a>
+    </div>
+
+    <div class="exec-summary">
+      <h3>Executive Summary</h3>
+      <p>The period from late January to late February marked a significant shift with the rollout of new growth systems and the impact of the Lunar New Year holiday.</p>
+      <div class="key-points">
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F3C6;</div>
+          <div class="key-point-body">
+            <strong>Clan Payback &amp; Aster</strong>
+            <p>Clan Payback delivered immediate value (avg. 3K–4K Diamonds). The Aster system strongly boosted the Epic item market, with floor prices tripling in the Teon cluster.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F624;</div>
+          <div class="key-point-body">
+            <strong>VIP &amp; RNG Pressure</strong>
+            <p>VIP players are "stagnating" at endgame. High RNG failure rates (especially SGMY) → intentions to sell accounts or quit the game.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F3DB;&#xFE0F;</div>
+          <div class="key-point-body">
+            <strong>Political Dynamics</strong>
+            <p>Major alliances (GARUDA, Stormblood) are restructuring and establishing "Peace" status ahead of Isle of Awakening.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F386;</div>
+          <div class="key-point-body">
+            <strong>Lunar New Year Effect</strong>
+            <p>PvP in VN temporarily declined due to guild leaders' holiday directives, but recovered quickly afterward.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">1</span> System &amp; New Feature Analysis</div>
+      <div class="subsection-title">1.1. Clan Payback &amp; Membership</div>
+      <ul class="bullet-list">
+        <li><strong>Distribution value:</strong> Mid-to-high tier members received 3K–4K Shop Diamonds on day one. Mystic Clan (Teon 07) reached 10K Diamonds.</li>
+        <li><strong>Guild Strategy:</strong> Wuxia 1&amp;2 leaders mandated members purchase 2K Diamond packages; guild funds subsidized compliance to ensure 100% participation.</li>
+        <li><strong>Membership:</strong> Positive reception but fewer discussions than Payback; users still confused about mechanics and ROI across tiers.</li>
+      </ul>
+      <div class="subsection-title">1.2. Aster System &amp; Market Fluctuations</div>
+      <table class="market-table">
+        <thead>
+          <tr><th>Metric</th><th>Details</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Optimal Items</strong></td>
+            <td>Blue gear — most cost-efficient for Stardust points.</td>
+          </tr>
+          <tr>
+            <td><strong>Epic Price Impact</strong></td>
+            <td>Epic floor price in Teon rose from ~500 KC → 1,500 KC due to demand for disassembly into Stardust.</td>
+          </tr>
+          <tr>
+            <td><strong>SVIP Behavior</strong></td>
+            <td>Arktoshi used a stockpile of &gt;1,000 Agathion cards to immediately obtain the new Legend Agathion.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">2</span> Community Sentiment &amp; Regional Feedback</div>
+      <table class="market-table">
+        <thead>
+          <tr><th>Region</th><th>Status</th><th>Highlights</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>&#x1F1FB;&#x1F1F3; Vietnam</strong></td>
+            <td><span class="market-tag tag-positive">Strongest</span></td>
+            <td>Deep interest in Runes, Aster, Agathion. Sensitive to drop rates and UI bugs (timer bar disappearing).</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F9;&#x1F1ED; Thailand</strong></td>
+            <td><span class="market-tag tag-mixed">Positive</span></td>
+            <td>Want faster updates and more valuable rewards. VIPs request in-game spoilers.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1EE;&#x1F1E9; Indonesia</strong></td>
+            <td><span class="market-tag tag-neutral">Stable</span></td>
+            <td>Good engagement with Membership but increasing login errors and server merge requests (Bartz + Kain).</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F5;&#x1F1ED; PH &amp; SGMY</strong></td>
+            <td><span class="market-tag tag-negative">Negative</span></td>
+            <td>Access issues, gift code errors, extreme RNG frustration.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">3</span> In-depth VIP Analysis</div>
+      <div class="action-list">
+        <div class="action-item">
+          <div class="action-num">1</div>
+          <div class="action-body">
+            <strong>Competitive Refresh Demand</strong>
+            <p>High demand for Server Transfer and Class Change to disrupt a stale war landscape.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">2</div>
+          <div class="action-body">
+            <strong>Endgame Content Gap</strong>
+            <p>Top players find "Devastated Castle" unchallenging → requesting higher difficulty or early Castle Siege release.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">3</div>
+          <div class="action-body">
+            <strong>Limited Package Pressure</strong>
+            <p>Requests to reopen missed limited packages: Faris, White Cow, Bremnon Knight, Leah's Golden Ticket.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">4</div>
+          <div class="action-body">
+            <strong>RNG Crisis</strong>
+            <p>SGMY: A high-spending VIP announced account sale after 0 Epic in 70 consecutive x11 pulls.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">4</span> Geopolitics &amp; Guild Dynamics</div>
+      <div class="subsection-title">Teon &amp; Kain Cluster</div>
+      <ul class="bullet-list">
+        <li><strong>GARUDA (Kain):</strong> Reunified after internal exercises. Kain 07 is the strongest military force.</li>
+        <li><strong>TOI Stability:</strong> Stable division of TOI 3&amp;4 training zones, reducing internal disputes.</li>
+        <li><strong>Isle of Awakening:</strong> Trend toward "Safety" agreements between traditional rivals (Beyond &amp; GARUDA).</li>
+      </ul>
+      <div class="subsection-title">Erica Cluster</div>
+      <ul class="bullet-list">
+        <li><strong>Internal Crisis:</strong> E02 and E08 deeply divided, risk of full-scale civil war.</li>
+        <li><strong>Power Balance:</strong> Pecute &gt; quantity; Queen &gt; team quality.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">5</span> Operational Risks</div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x26A0;&#xFE0F;</div>
+        <div class="risk-body"><strong>System Bugs:</strong> UI errors, unresponsive hotkeys (VN), AFK bug for Greatsword class (SGMY), login errors (ID) need priority resolution.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x26A0;&#xFE0F;</div>
+        <div class="risk-body"><strong>Gift Code Complaints:</strong> Failed Valentine's and Lunar New Year code redemptions triggered a brief negative wave.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F534;</div>
+        <div class="risk-body"><strong>Churn Risk:</strong> VIP account listings (Arktoshi, Aominee) are signals requiring close monitoring for key customer enthusiasm decline.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">6</span> Action Recommendations</div>
+      <div class="action-list">
+        <div class="action-item">
+          <div class="action-num">1</div>
+          <div class="action-body">
+            <strong>Strengthen Roadmap Communication</strong>
+            <p>Publish a 3-month roadmap (especially Crossbow class and Mythic Agathion) to reduce VIP anxiety.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">2</div>
+          <div class="action-body">
+            <strong>Optimize Guides</strong>
+            <p>Release FAQ/Visual Guide for the Aster and Runes systems to reduce confusion.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">3</div>
+          <div class="action-body">
+            <strong>RNG Expectation Management</strong>
+            <p>Consider a "Pity" mechanism for summons/enhancement to minimize churn risk among paying players.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">4</div>
+          <div class="action-body">
+            <strong>Prepare Server Transfer Cycle</strong>
+            <p>Establish an expected schedule for Server Transfer and Class Change to reinvigorate competitive dynamics.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════════════ THÁNG 03 ═══ -->
   <div id="t03" class="tab-panel">
+
+    <div class="lang-block lang-vn">
     <div class="report-header">
       <h2>Báo Cáo Tháng 03/2026</h2>
       <div class="period">Tổng hợp thị trường và cộng đồng · 26/02 – 25/03/2026</div>
@@ -1103,10 +1513,182 @@
         Game đang chuyển mình từ trò chơi cày cuốc tài nguyên sang hệ sinh thái chiến tranh toàn diện. Thành công của giai đoạn tới phụ thuộc hoàn toàn vào việc vận hành trơn tru kỳ Công Thành Chiến đầu tiên và khả năng điều tiết cân bằng quyền lực giữa các liên minh liên server.
       </div>
     </div>
+      </div>
+    <div class="lang-block lang-en">
+    <div class="report-header">
+      <h2>March 2026 Report</h2>
+      <div class="period">Market and community overview · Feb 26 – Mar 25, 2026</div>
+      <a class="gdoc-link" href="https://docs.google.com/document/d/1NxdpgaZ3KIMumc_sVoF6WHIOgLpRN_6Q_qq7SBE4Gwo/edit?usp=sharing" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        View on Google Docs
+      </a>
+    </div>
+
+    <div class="exec-summary">
+      <h3>Executive Summary</h3>
+      <p>The period from late February to late March recorded a strong shift from resource accumulation to pre-war preparation. The focal points were <strong style="color:var(--accent2)">Castle Siege</strong> and <strong style="color:var(--accent2)">Server Transfer</strong>.</p>
+      <div class="key-points">
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F3F0;</div>
+          <div class="key-point-body">
+            <strong>Castle Siege</strong>
+            <p>Community excited but concerned about the 100,000 Diamond tax threshold and imbalanced rewards between castle lords vs. members.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F5FA;&#xFE0F;</div>
+          <div class="key-point-body">
+            <strong>Server Transfer Tactics</strong>
+            <p>Major alliances adopted a 3-step "scouting" model, prioritizing cost optimization and targeting high-tax-revenue servers.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F451;</div>
+          <div class="key-point-body">
+            <strong>VIP Tier Disruption</strong>
+            <p>Arktoshi (VN) departure → restructuring of StormBlood, Garuda, Beyond. VIPs demand synchronized Class Change + Server Transfer.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x2694;&#xFE0F;</div>
+          <div class="key-point-body">
+            <strong>Meta Trends</strong>
+            <p>Soul Crystal + Legendary Skills widening the power gap; PvP dependent on high-tier AoE.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">1</span> Community Trend Analysis by Market</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Activity</th>
+            <th>Main Topics</th>
+            <th>Sentiment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>&#x1F1FB;&#x1F1F3; Vietnam</strong></td>
+            <td><span class="market-tag tag-positive">Very High</span></td>
+            <td>Castle Siege, server transfer, VIP account trading, content leaks.</td>
+            <td>Excited but cautious about fairness.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F9;&#x1F1ED; Thailand</strong></td>
+            <td><span class="market-tag tag-positive">Strong</span></td>
+            <td>Recruitment, gacha, server transfer costs, bots and drop rates.</td>
+            <td>Positive about new features but frustrated by bots.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1EE;&#x1F1E9; Indonesia</strong></td>
+            <td><span class="market-tag tag-neutral">Stable</span></td>
+            <td>Castle tax, server merges, SVIP Diamond regulations.</td>
+            <td>Slightly negative due to technical and economic barriers.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F5;&#x1F1ED; Philippines</strong></td>
+            <td><span class="market-tag tag-warning">Moderate</span></td>
+            <td>Guild recruitment, gameplay guides, character rename requests.</td>
+            <td>Neutral, needs more feature guidance.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F8;&#x1F1EC;&#x1F1F2;&#x1F1FE; SGMY</strong></td>
+            <td><span class="market-tag tag-warning">Low</span></td>
+            <td>Guild development, game crashes, Alchemy roadmap requests.</td>
+            <td>Stable but lacks in-depth discussion.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">2</span> Castle Siege &amp; Economic Mechanics</div>
+      <div class="subsection-title">2.1. Tax Threshold &amp; Activation</div>
+      <ul class="bullet-list">
+        <li><strong>100,000 Diamond Threshold:</strong> The most controversial topic. Teon09 and low-pop servers worried about not meeting ~5,555 KC/day to unlock Castle Siege on time.</li>
+        <li><strong>"Delay" Tactic:</strong> Weaker servers considering intentionally keeping tax below 100K to postpone to next season and build up forces.</li>
+        <li><strong>Market Tax Adjustment:</strong> Increase from 3% → 8% (5% goes to Castle Siege prize pool) worries players about KC price volatility on the grey market.</li>
+      </ul>
+      <div class="subsection-title">2.2. Mercenary System</div>
+      <p class="body-text">Positively received as a power-balancing tool. StormBlood (T7) announced deployment of support forces to allied servers under attack during Castle Siege.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">3</span> Alliance Shifts &amp; Account Market</div>
+      <ul class="bullet-list">
+        <li><strong>Wuxia (T9) Collapse &amp; Rebirth:</strong> Arktoshi and core members listing accounts → T7 absorbs VIPs, replacing T9's leadership role in StormBlood.</li>
+        <li><strong>"Corporation" Model:</strong> Wuxia maintains ~80% strength through boss item auction system and strict management by Adachi8x, TamThaiThit.</li>
+        <li><strong>"Active Migration" Tactic:</strong> Budget ~1,200 KC/person for counterattack or server movement on March 29.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">4</span> VIP &amp; SVIP Insights</div>
+      <div class="subsection-title">4.1. Main Pain Points</div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">Dead Servers</div>
+          <div class="card-content">VIP (VN &amp; ID) need server merges or concentrated transfers to "revive" the war atmosphere.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Info Gap</div>
+          <div class="card-content">TH VIPs not receiving early update spoiler emails → losing VIP privilege value.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Financial Regulations</div>
+          <div class="card-content">SVIP ID opposing the 180-day SVIP Diamond regulation — excessive top-up pressure.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Customization Need</div>
+          <div class="card-content">PH VIP requesting character rename without requiring server transfer.</div>
+        </div>
+      </div>
+      <div class="subsection-title">4.2. Synchronized Feature Requests</div>
+      <p class="body-text">VIPs assert that <strong>Class Change</strong> and <strong>Server Transfer</strong> must happen simultaneously to optimize stats and team composition before Castle Siege.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">5</span> Meta &amp; Product Updates</div>
+      <div class="subsection-title">5.1. Soul Crystal — Combat Branch</div>
+      <p class="body-text">VIPs at Tier VIII–X, an unbridgeable gap from regular players. Unique weapon prices rising significantly on the market.</p>
+      <div class="subsection-title">5.2. Legendary Skills</div>
+      <p class="body-text">Strategy of "farming medals with alt characters" to purchase Mana Crystals. On average, each leading server has 2–3 Legendary Skills — the decisive factor in mass battles.</p>
+      <div class="subsection-title">5.3. New Content &amp; Skin System</div>
+      <ul class="bullet-list">
+        <li><strong>Aden Map &amp; Boss Olkuth:</strong> Only accessible to SVIPs due to extremely high mob HP. Most players still prefer TOI for its more stable drop efficiency.</li>
+        <li><strong>Skin System:</strong> Very positive reception. Beyond aesthetics, helps guilds create shared "uniforms," boosting unity and battlefield recognition.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">6</span> Risks &amp; Strategic Recommendations</div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F534;</div>
+        <div class="risk-body"><strong>Churn Risk:</strong> RNG rates (enhancement, summons) are the underlying negative factor. VIPs accuse the system of "rigged rates" when they feel unluckier than lighter spenders.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x26A0;&#xFE0F;</div>
+        <div class="risk-body"><strong>Stagnating Weak Servers:</strong> Measures needed to support servers below the 100K KC threshold to prevent players from feeling left behind in the Castle Siege roadmap.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F4E3;</div>
+        <div class="risk-body"><strong>VIP Communication Reinforcement:</strong> Establish a privileged notification channel for VIP groups (especially TH) so they can strategize ahead of scheduled maintenance.</div>
+      </div>
+      <div class="conclusion">
+        The game is transitioning from a resource-grinding experience into a full-scale war ecosystem. Success in the next phase depends entirely on the smooth operation of the inaugural Castle Siege season and the ability to regulate the power balance among cross-server alliances.
+      </div>
+    </div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════════════ THÁNG 04 ═══ -->
   <div id="t04" class="tab-panel">
+
+    <div class="lang-block lang-vn">
     <div class="report-header">
       <h2>Báo Cáo Tháng 04/2026</h2>
       <div class="period">Xu hướng cộng đồng và vận hành sản phẩm · 02/04 – 05/05/2026</div>
@@ -1252,7 +1834,641 @@
                 <li><strong>Leona:</strong> <em>[Nội dung bị cắt — vui lòng bổ sung thủ công]</em></li>
       </ul>
     </div>
+      </div>
+    <div class="lang-block lang-en">
+    <div class="report-header">
+      <h2>April 2026 Report</h2>
+      <div class="period">Community trends and product operations · Apr 2 – May 5, 2026</div>
+      <a class="gdoc-link" href="https://docs.google.com/document/d/14-dNwlkWwBhAMgNixRR1etVeeewr8LruJl7U1pfOdic/edit?usp=sharing" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        View on Google Docs
+      </a>
+    </div>
+
+    <div class="exec-summary">
+      <h3>Executive Summary</h3>
+      <p>The period Apr 2–May 5 recorded a shift from server-identity-driven warfare to a <strong style="color:var(--accent2)">leader-driven ecosystem</strong>. Two key factors: the launch of the <strong style="color:var(--accent2)">Crossbow</strong> class and the <strong style="color:var(--accent2)">Spear Reboot</strong>.</p>
+      <div class="key-points">
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F3AB;</div>
+          <div class="key-point-body">
+            <strong>Leah's Golden Ticket</strong>
+            <p>Triggered a global "forging frenzy," boosting market liquidity and player confidence in item upgrading.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F3F9;</div>
+          <div class="key-point-body">
+            <strong>Crossbow — Meta-defining</strong>
+            <p>Move-and-attack + AoE CC highly favored by PvP players. However, challenging for mid-tier due to high DEF and CC resistance requirements.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x2694;&#xFE0F;</div>
+          <div class="key-point-body">
+            <strong>Spear Reboot</strong>
+            <p>Stomp's continuous crowd control creates frontline pressure. Extremely positive reception — the contingency "All Class Change" plan may be cancelled.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F512;</div>
+          <div class="key-point-body">
+            <strong>Persistent Issues</strong>
+            <p>Non-transparent stealth nerfs, RNG frustration, lack of roadmap info. PH faces serious trust risks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">1</span> Market Situation Analysis</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Status</th>
+            <th>Key Discussion Topics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>&#x1F1FB;&#x1F1F3; Vietnam</strong></td>
+            <td><span class="market-tag tag-mixed">Positive / Mixed</span></td>
+            <td>Server transfer, Crossbow, Labor Day gift codes. Concerns about bot/tool interference.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F9;&#x1F1ED; Thailand</strong></td>
+            <td><span class="market-tag tag-positive">Buzzing</span></td>
+            <td>Crossbow builds, Spear Reboot effectiveness, criticism of non-transparent patch notes.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1EE;&#x1F1E9; Indonesia</strong></td>
+            <td><span class="market-tag tag-warning">Stable / Declining</span></td>
+            <td>Opposition to overly frequent server transfers diluting the community; interest in Crossbow skills.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F5;&#x1F1ED; Philippines</strong></td>
+            <td><span class="market-tag tag-negative">Negative</span></td>
+            <td>No new servers, high item prices, bots and content accessibility issues.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F8;&#x1F1EC;&#x1F1F2;&#x1F1FE; SGMY</strong></td>
+            <td><span class="market-tag tag-neutral">Stable / Positive</span></td>
+            <td>Low volatility, interest in map expansion and skill balance (Spear Tier 4).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">2</span> Content Milestones &amp; Feature Feedback</div>
+      <div class="subsection-title">Crossbow</div>
+      <ul class="bullet-list">
+        <li><strong>Strengths:</strong> Move-and-attack and AoE CC highly favored by PvP players.</li>
+        <li><strong>Limitations:</strong> Extremely effective at high tier but difficult for mid-tier — requires high DEF and CC resistance to avoid getting surrounded.</li>
+      </ul>
+      <div class="subsection-title">Class Change &amp; Equipment Disputes</div>
+      <ul class="bullet-list">
+        <li>Stimulates market inflation as players reallocate assets from low-demand classes to the meta.</li>
+        <li>Controversy: Transferring Legend Tier 2 weapons (Castle Siege reward) to another class seen as unfair by VIPs who chose Tier 1 earlier.</li>
+      </ul>
+      <div class="subsection-title">Leah's Golden Ticket — Forging Frenzy</div>
+      <ul class="bullet-list">
+        <li>Many Epic Tier 3 weapons reached +9, Legendary reached +7.</li>
+        <li>Market prices surged as players temporarily unequipped gear for upgrading → temporary "equipment void."</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">3</span> VIP Analysis &amp; Pain Points</div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x23F0;</div>
+        <div class="risk-body"><strong>Server Transfer Barrier (VN):</strong> Many VIPs missed the transfer window due to excessive time spent collecting large volumes of in-game reward mail.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x2753;</div>
+        <div class="risk-body"><strong>Opaque New VIP System:</strong> Top-up requirements for Platinum tier and "Re-confirm Epic Agathion/Class" caused confusion due to lack of guidance.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F3B2;</div>
+        <div class="risk-body"><strong>RNG Frustration:</strong> SGMY &amp; TH VIPs reported extended losing streaks (0/12 Epic-to-Legend fuses) → suspecting "adjusted rates" for high-spending accounts.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F510;</div>
+        <div class="risk-body"><strong>Account Security:</strong> Session vulnerability in Purple ON (stays logged in despite password changes) — serious security risk in VN and TH.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">4</span> Alliance Dynamics &amp; World Events</div>
+      <div class="subsection-title">Leadership Shifts</div>
+      <ul class="bullet-list">
+        <li><strong>Wuxia (Teon 09):</strong> Arktoshi spent 20,000 USD in 2 weeks but Wuxia unstable — lack of operational officers and veteran retirements.</li>
+        <li><strong>Stormblood (Teon):</strong> Consolidated power by recruiting Mystic (alliance leader) from Kain and merging Leona10 forces into Teon05.</li>
+      </ul>
+      <div class="subsection-title">PvP Hotspots</div>
+      <ul class="bullet-list">
+        <li><strong>Ancient Island:</strong> Main battlefield for World Kain vs. World Teon. Mobilization capability and leadership presence (Mystic) matter more than raw server strength.</li>
+        <li><strong>Leona:</strong> <em>[Content cut — please add manually]</em></li>
+      </ul>
+    </div>
+    </div>
   </div><!-- /t04 -->
+
+  <!-- ═══════════════════════════════════════════════ THÁNG 05 ═══ -->
+  <div id="t05" class="tab-panel">
+
+    <div class="lang-block lang-vn">
+    <div class="report-header">
+      <h2>Báo Cáo Tháng 05/2026</h2>
+      <div class="period">Xu hướng cộng đồng và vận hành sản phẩm · 23/04 – 15/05/2026</div>
+    </div>
+
+    <div class="exec-summary">
+      <h3>Tóm lược điều hành</h3>
+      <p>Giai đoạn 23/04–15/05 ghi nhận mức độ tương tác của người chơi đạt đỉnh cao, được thúc đẩy đồng thời bởi <strong style="color:var(--accent2)">kỷ niệm 1 năm game</strong>, sự ra mắt <strong style="color:var(--accent2)">Mythic Class Raoul</strong>, làn sóng nâng cấp từ <strong style="color:var(--accent2)">Leah's Golden Ticket</strong>, và các đợt chuyển server quy mô lớn kéo theo xung đột PvP liên server. Tuy nhiên, tâm lý cộng đồng phân hóa rõ rệt giữa hào hứng với nội dung mới và thất vọng về giá trị phần thưởng, sự thiếu minh bạch và chi phí leo thang.</p>
+      <div class="key-points">
+        <div class="key-point">
+          <div class="key-point-icon">&#x26A1;</div>
+          <div class="key-point-body">
+            <strong>Mythic Class Raoul — Meta mới, lo ngại chi phí</strong>
+            <p>Tạo sự phấn khích cho nhóm người chơi hàng đầu nhưng gây lo ngại khoảng cách giàu nghèo. VIP yêu cầu bảng phân tích chi phí chi tiết trước khi đầu tư.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F3AB;</div>
+          <div class="key-point-body">
+            <strong>Leah's Golden Ticket — Forging Frenzy toàn cầu</strong>
+            <p>Kích hoạt làn sóng cường hóa vũ khí Epic Tier 3 lên +9, Legendary lên +7. Thúc đẩy chi tiêu nhưng gây lạm phát thị trường; VIP yêu cầu thông tin minh bạch hơn.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x2694;&#xFE0F;</div>
+          <div class="key-point-body">
+            <strong>Burnhee xâm lăng Teon — Chiến tranh liên server bùng nổ</strong>
+            <p>Liên minh Burnhee tấn công hiệp đồng vào Teon 01/02/03/05/06/10. PvP tăng mạnh tại Veora Ruins, Tower of Insolence và Ancient Island. Wuxia (Teon 09) duy trì kỷ luật cao.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F382;</div>
+          <div class="key-point-body">
+            <strong>Kỷ niệm 1 năm — Phần thưởng bị chỉ trích là "keo kiệt"</strong>
+            <p>ID, TH và VN đồng loạt phản ánh phần thưởng không xứng tầm cột mốc. Tính ngẫu nhiên cao và thiếu vật phẩm hỗ trợ tiến trình trực tiếp.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section">
+      <div class="section-title"><span class="num">1</span> Phân tích tình hình các thị trường</div>
+
+      <div class="subsection-title">Giai đoạn 23/04 – 08/05</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Thị trường</th>
+            <th>Trạng thái</th>
+            <th>Nội dung thảo luận chính</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>&#x1F1FB;&#x1F1F3; Việt Nam</strong></td>
+            <td><span class="market-tag tag-mixed">Hỗn hợp / Tích cực</span></td>
+            <td>Quan tâm Chuyển Server; phản hồi tốt với mã quà tặng và cam kết chiến trường SEA.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F9;&#x1F1ED; Thái Lan</strong></td>
+            <td><span class="market-tag tag-mixed">Tương tác cao / Hỗn hợp</span></td>
+            <td>Bức xúc về "stealth nerfs", chậm trễ truyền thông và cân bằng Class.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1EE;&#x1F1E9; Indonesia</strong></td>
+            <td><span class="market-tag tag-negative">Tiêu cực tăng dần</span></td>
+            <td>Tần suất chuyển máy chủ quá nhanh làm cộng đồng bị loãng và yên ắng.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F5;&#x1F1ED; Philippines</strong></td>
+            <td><span class="market-tag tag-negative">Tiêu cực</span></td>
+            <td>Thiếu hụt các bản cập nhật máy chủ mới; không hài lòng về giá cả dịch vụ.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F8;&#x1F1EC;&#x1F1F2;&#x1F1FE; SGMY</strong></td>
+            <td><span class="market-tag tag-neutral">Ổn định</span></td>
+            <td>Ít thảo luận công khai; nảy sinh lỗi nạp gói Clan Rally Membership.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="subsection-title" style="margin-top:20px;">Giai đoạn 08/05 – 15/05</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Thị trường</th>
+            <th>Mức độ hoạt động</th>
+            <th>Tâm lý</th>
+            <th>Vấn đề trọng tâm</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>&#x1F1FB;&#x1F1F3; Việt Nam</strong></td>
+            <td>Rất cao</td>
+            <td><span class="market-tag tag-negative">Tiêu cực</span></td>
+            <td>Khoảng cách người chơi, chi phí Mythic, phần thưởng kỷ niệm kém hấp dẫn.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F9;&#x1F1ED; Thái Lan</strong></td>
+            <td>Sôi nổi</td>
+            <td><span class="market-tag tag-mixed">Hỗn hợp</span></td>
+            <td>Phần thưởng kỷ niệm phụ thuộc may rủi, không thân thiện với F2P.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1EE;&#x1F1E9; Indonesia</strong></td>
+            <td>Ổn định</td>
+            <td><span class="market-tag tag-mixed">Hỗn hợp</span></td>
+            <td>Phần thưởng thiên về hiện vật thay vì vật phẩm in-game, khó cho người solo.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F5;&#x1F1ED; Philippines</strong></td>
+            <td>Cải thiện</td>
+            <td><span class="market-tag tag-mixed">Hỗn hợp</span></td>
+            <td>Người chơi mới lo không đuổi kịp tiến độ, thiếu thông tin về Mythic Raoul.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F8;&#x1F1EC;&#x1F1F2;&#x1F1FE; SGMY</strong></td>
+            <td>Thấp / Ổn định</td>
+            <td><span class="market-tag tag-positive">Tích cực</span></td>
+            <td>Mất cân bằng phần thưởng giữa các lớp nhân vật (Sword class ưu ái hơn).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+      <div class="section-title"><span class="num">2</span> Cập nhật tính năng và phản hồi sản phẩm</div>
+
+      <div class="subsection-title">Mythic Class Raoul</div>
+      <ul class="bullet-list">
+        <li><strong>Phấn khích cao ở nhóm top:</strong> Raoul tạo kỳ vọng mạnh — VIP tại VN, TH, ID đang theo dõi sát cơ chế kỹ năng và lộ trình nâng cấp để chuẩn bị nguồn lực.</li>
+        <li><strong>Rào cản tiếp cận:</strong> Nhiều người chơi chưa đạt Legend cảm thấy bị bỏ lại khi Mythic ra mắt, đặc biệt ở PH và nhóm tầm trung.</li>
+        <li><strong>Yêu cầu minh bạch:</strong> VIP cần bảng phân bổ chi phí chi tiết và gói khởi đầu dễ tiếp cận trước khi quyết định đầu tư.</li>
+      </ul>
+
+      <div class="subsection-title">Leah's Golden Ticket</div>
+      <ul class="bullet-list">
+        <li><strong>Forging Frenzy toàn cầu:</strong> Vũ khí Epic Tier 3 đạt +9, Legendary đạt +7 trên diện rộng; thúc đẩy lưu thông tài nguyên mạnh.</li>
+        <li><strong>Lạm phát thị trường:</strong> Người chơi tháo trang bị để tập trung cường hóa gây "trống trang bị" tạm thời và đẩy giá thị trường lên cao.</li>
+        <li><strong>Truyền thông thiếu kịp thời:</strong> Thông tin gửi qua thư in-game bị cho là quá chậm và thiếu chi tiết (phục hồi vũ khí hỏng, trạng thái khóa), khiến người chơi không kịp chuẩn bị nguyên liệu.</li>
+      </ul>
+
+      <div class="subsection-title">Kỷ niệm 1 năm game</div>
+      <ul class="bullet-list">
+        <li><strong>Phần thưởng không xứng tầm:</strong> ID, TH và VN đồng loạt chỉ trích tính ngẫu nhiên của phần thưởng và thiếu vật phẩm hỗ trợ tiến trình trực tiếp.</li>
+        <li><strong>Cơ hội cứu vãn:</strong> Cân nhắc bổ sung gói quà tặng kỷ niệm phụ hoặc sự kiện tiếp nối để xoa dịu sự thất vọng.</li>
+      </ul>
+
+      <div class="subsection-title">Spear Reboot — Ổn định meta</div>
+      <ul class="bullet-list">
+        <li>Stomp CC tiếp tục được đánh giá cao trong PvP đội nhóm. Kế hoạch All Class Change ngày 20/05 có thể hủy bỏ vì người chơi đã tự chuyển sang Spear.</li>
+        <li>VIP lo ngại Spear sẽ quá overpowered; một bộ phận muốn 2 lượt đổi Class không giới hạn để thử nghiệm meta.</li>
+      </ul>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+      <div class="section-title"><span class="num">3</span> Phân tích VIP và Pain Points</div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F4C5;</div>
+        <div class="risk-body"><strong>Lịch trình chuyển Server bất định:</strong> Chu kỳ rút ngắn xuống 1 tháng (thay vì 3 tháng) phá vỡ chiến lược Clan và đầu tư dài hạn vào Công Thành Chiến. TH yêu cầu lịch cố định mỗi 1,5 tháng.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F4B0;</div>
+        <div class="risk-body"><strong>Chi phí Mythic leo thang:</strong> SGMY phản ứng gay gắt trước tin đồn "Mystic Class" khi chưa hoàn thành Legend. VN yêu cầu thêm Epic Skill Chest qua Clan Coins để hỗ trợ tiến trình.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x2696;&#xFE0F;</div>
+        <div class="risk-body"><strong>Mất cân bằng phần thưởng (SGMY):</strong> Sự cố phần thưởng Giran Castle Lord trao vũ khí cấp cao hơn cho lớp Sword so với các lớp khác bị coi là thiếu công bằng — cần xử lý dứt điểm.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F30D;</div>
+        <div class="risk-body"><strong>Yêu cầu theo khu vực đặc thù:</strong> VN — giảm chi phí chuyển server và đổi Class; PH — chuyển server 2 chiều giữa "Thế giới cũ" và "mới"; ID — chi tiết về phạm vi Duplicate Class/Agathion và phục hồi vũ khí Leah Ticket.</div>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="section">
+      <div class="section-title"><span class="num">4</span> Động thái Liên minh và Chiến trường</div>
+
+      <div class="subsection-title">Burnhee xâm lăng Teon (08/05 – 15/05)</div>
+      <ul class="bullet-list">
+        <li><strong>Quy mô tấn công:</strong> Liên minh Burnhee thực hiện tấn công hiệp đồng vào Teon 01, 02, 03, 05, 06, 10 nhằm thách thức thế độc tôn của Stormblood.</li>
+        <li><strong>Wuxia (Teon 09):</strong> Duy trì kỷ luật cao, huy động toàn bộ thành viên trực tuyến hỗ trợ Stormblood. PvP tăng mạnh tại Veora Ruins, Tower of Insolence và Ancient Island.</li>
+        <li><strong>Môi trường lành mạnh:</strong> Không ghi nhận toxic trong chat thế giới; người chơi tập trung vào kỹ năng và sự thống trị chiến trường.</li>
+      </ul>
+
+      <div class="subsection-title">Tái cấu trúc liên minh Stormblood (23/04 – 08/05)</div>
+      <ul class="bullet-list">
+        <li><strong>Sáp nhập lực lượng:</strong> Lực lượng nòng cốt Leona10 chuyển sang Teon05, gia nhập hệ sinh thái Stormblood.</li>
+        <li><strong>Khủng hoảng lãnh đạo Wuxia:</strong> Arktoshi mua lại Top 3 Kain05 nhưng Wuxia yếu dần do thiếu sĩ quan điều hành và phi công kỳ cựu giải nghệ.</li>
+        <li><strong>Sự trở lại của Mystic:</strong> Dự kiến Mystic quay lại Teon làm Union Leader, ổn định cấu trúc lãnh đạo Stormblood.</li>
+      </ul>
+
+      <div class="subsection-title">Các khu vực chiến sự khác</div>
+      <ul class="bullet-list">
+        <li><strong>Leona:</strong> Cibal nắm ưu thế về quân số và chất lượng tài khoản; kiểm soát phần lớn boss tại Veora. New World ở thế phòng thủ.</li>
+        <li><strong>Erica &amp; Aria:</strong> Xung đột tạm lắng — Pecute chuyển từ Erica sang Aria để tái thiết lập sau thất bại trước Queen.</li>
+        <li><strong>Ancient Island (Kain vs Teon):</strong> Tiếp tục là điểm nóng PvP quy mô lớn. Sự hiện diện lãnh đạo quan trọng hơn sức mạnh chi tiêu thuần túy.</li>
+      </ul>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="section">
+      <div class="section-title"><span class="num">5</span> Đề xuất hành động</div>
+      <div class="action-list">
+        <div class="action-item">
+          <div class="action-num">1</div>
+          <div class="action-body">
+            <strong>Minh bạch hóa Mythic Raoul</strong>
+            <p>Công bố sớm bảng phân tích chi phí và tiến trình. Tạo gói khởi đầu dễ tiếp cận cho nhóm người chơi không thuộc top đầu.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">2</div>
+          <div class="action-body">
+            <strong>Xử lý khủng hoảng phần thưởng kỷ niệm</strong>
+            <p>Bổ sung gói quà tặng kỷ niệm phụ hoặc sự kiện tiếp nối để xoa dịu thất vọng tại ID, TH, VN.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">3</div>
+          <div class="action-body">
+            <strong>Cố định lịch trình chuyển Server</strong>
+            <p>Công bố lịch trình chính thức và dự đoán được cho mùa giải tới (ví dụ: mỗi 1,5 tháng tại TH) để các liên minh có kế hoạch chiến lược.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">4</div>
+          <div class="action-body">
+            <strong>Giải quyết mất cân bằng phần thưởng (SGMY)</strong>
+            <p>Xử lý dứt điểm sự cố Giran Castle Lord trao vũ khí không đồng đều giữa các lớp nhân vật.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">5</div>
+          <div class="action-body">
+            <strong>Cải thiện truyền thông sự kiện</strong>
+            <p>Gửi thông tin Leah's Golden Ticket và các sự kiện lớn qua nhiều kênh (không chỉ thư in-game) với thời gian chuẩn bị đủ để người chơi tích trữ nguyên liệu.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="conclusion">
+      Tháng 05 đánh dấu ngưỡng chuyển tiếp quan trọng: game đồng thời đẩy meta lên tầm cao mới với Mythic Class trong khi cộng đồng phổ thông ngày càng cảm thấy bị bỏ lại. Các vấn đề về minh bạch, giá trị phần thưởng và lịch trình vận hành nếu không được xử lý kịp thời sẽ chuyển hóa thành rủi ro retention thực sự, đặc biệt tại VN và ID.
+    </div>
+      </div>
+    <div class="lang-block lang-en">
+    <div class="report-header">
+      <h2>May 2026 Report</h2>
+      <div class="period">Community trends and product operations · Apr 23 – May 15, 2026</div>
+    </div>
+
+    <div class="exec-summary">
+      <h3>Executive Summary</h3>
+      <p>The period Apr 23–May 15 saw player engagement reach a peak, driven simultaneously by the <strong style="color:var(--accent2)">1st anniversary</strong>, the launch of <strong style="color:var(--accent2)">Mythic Class Raoul</strong>, the <strong style="color:var(--accent2)">Leah's Golden Ticket</strong> upgrade wave, and large-scale server transfers triggering cross-server PvP conflicts. Community sentiment is sharply divided between excitement over new content and frustration over reward value, lack of transparency, and escalating costs.</p>
+      <div class="key-points">
+        <div class="key-point">
+          <div class="key-point-icon">&#x26A1;</div>
+          <div class="key-point-body">
+            <strong>Mythic Class Raoul — New meta, cost concerns</strong>
+            <p>Generates excitement among top-tier players but raises concerns about the wealth gap. VIPs are requesting detailed cost breakdowns before investing.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F3AB;</div>
+          <div class="key-point-body">
+            <strong>Leah's Golden Ticket — Global Forging Frenzy</strong>
+            <p>Triggered enhancement waves with Epic Tier 3 weapons reaching +9, Legendary reaching +7. Boosted spending but caused market inflation; VIPs demand more transparent information.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x2694;&#xFE0F;</div>
+          <div class="key-point-body">
+            <strong>Burnhee invades Teon — Cross-server war erupts</strong>
+            <p>Burnhee alliance launched a coordinated attack on Teon 01/02/03/05/06/10. PvP spiked at Veora Ruins, Tower of Insolence, and Ancient Island. Wuxia (Teon 09) maintained high discipline.</p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#x1F382;</div>
+          <div class="key-point-body">
+            <strong>1st Anniversary — Rewards criticized as "stingy"</strong>
+            <p>ID, TH, and VN simultaneously reported rewards unworthy of the milestone. High randomness and lack of direct progression-support items.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">1</span> Market Situation Analysis</div>
+      <div class="subsection-title">Period Apr 23 – May 8</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Status</th>
+            <th>Key Discussion Topics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>&#x1F1FB;&#x1F1F3; Vietnam</strong></td>
+            <td><span class="market-tag tag-mixed">Mixed / Positive</span></td>
+            <td>Interest in Server Transfer; positive response to gift codes and SEA battlefield commitment.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F9;&#x1F1ED; Thailand</strong></td>
+            <td><span class="market-tag tag-mixed">High Activity / Mixed</span></td>
+            <td>Frustration over stealth nerfs, communication delays, and Class balance.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1EE;&#x1F1E9; Indonesia</strong></td>
+            <td><span class="market-tag tag-negative">Increasingly Negative</span></td>
+            <td>Overly frequent server transfers diluting and quieting the community.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F5;&#x1F1ED; Philippines</strong></td>
+            <td><span class="market-tag tag-negative">Negative</span></td>
+            <td>Lack of new server updates; dissatisfaction with service pricing.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F8;&#x1F1EC;&#x1F1F2;&#x1F1FE; SGMY</strong></td>
+            <td><span class="market-tag tag-neutral">Stable</span></td>
+            <td>Low public discussion; Clan Rally Membership package loading error.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="subsection-title" style="margin-top:20px;">Period May 8 – May 15</div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Activity Level</th>
+            <th>Sentiment</th>
+            <th>Key Issues</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>&#x1F1FB;&#x1F1F3; Vietnam</strong></td>
+            <td>Very High</td>
+            <td><span class="market-tag tag-negative">Negative</span></td>
+            <td>Player progression gap, Mythic cost, unimpressive anniversary rewards.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F9;&#x1F1ED; Thailand</strong></td>
+            <td>Buzzing</td>
+            <td><span class="market-tag tag-mixed">Mixed</span></td>
+            <td>Anniversary rewards too RNG-dependent, not F2P-friendly.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1EE;&#x1F1E9; Indonesia</strong></td>
+            <td>Stable</td>
+            <td><span class="market-tag tag-mixed">Mixed</span></td>
+            <td>Rewards skewed toward physical items rather than in-game items, tough for solo players.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F5;&#x1F1ED; Philippines</strong></td>
+            <td>Improving</td>
+            <td><span class="market-tag tag-mixed">Mixed</span></td>
+            <td>New players worried about falling behind; lack of info on Mythic Raoul.</td>
+          </tr>
+          <tr>
+            <td><strong>&#x1F1F8;&#x1F1EC;&#x1F1F2;&#x1F1FE; SGMY</strong></td>
+            <td>Low / Stable</td>
+            <td><span class="market-tag tag-positive">Positive</span></td>
+            <td>Class reward imbalance (Sword class favored over others).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">2</span> Feature Updates &amp; Product Feedback</div>
+      <div class="subsection-title">Mythic Class Raoul</div>
+      <ul class="bullet-list">
+        <li><strong>High excitement among top tier:</strong> Raoul generates strong expectations — VIPs in VN, TH, ID are closely monitoring skill mechanics and upgrade paths to prepare resources.</li>
+        <li><strong>Access barrier:</strong> Many players who haven't reached Legend feel left behind when Mythic launches, especially in PH and the mid-tier segment.</li>
+        <li><strong>Transparency demand:</strong> VIPs need detailed cost breakdowns and accessible starter packages before making investment decisions.</li>
+      </ul>
+      <div class="subsection-title">Leah's Golden Ticket</div>
+      <ul class="bullet-list">
+        <li><strong>Global Forging Frenzy:</strong> Epic Tier 3 weapons reached +9, Legendary reached +7 widely; strong resource circulation boost.</li>
+        <li><strong>Market inflation:</strong> Players unequipping gear to focus on enhancement caused a temporary "equipment void" and pushed market prices up.</li>
+        <li><strong>Untimely communication:</strong> Game mail information deemed too slow and lacking detail (weapon restoration, lock status), preventing players from stockpiling upgrade materials.</li>
+      </ul>
+      <div class="subsection-title">1st Anniversary</div>
+      <ul class="bullet-list">
+        <li><strong>Rewards not up to par:</strong> ID, TH, and VN unanimously criticized reward randomness and lack of direct progression-support items.</li>
+        <li><strong>Recovery opportunity:</strong> Consider adding supplementary anniversary reward packages or follow-up events to ease frustration.</li>
+      </ul>
+      <div class="subsection-title">Spear Reboot — Meta stabilization</div>
+      <ul class="bullet-list">
+        <li>Stomp CC continues to be highly valued in team PvP. All Class Change plan on May 20 may be cancelled as players voluntarily switched to Spear.</li>
+        <li>VIPs concerned Spear will become too overpowered; some still want 2 unlimited Class Changes to test the meta.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">3</span> VIP Analysis &amp; Pain Points</div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F4C5;</div>
+        <div class="risk-body"><strong>Unpredictable Server Transfer Schedule:</strong> Cycle shortened to 1 month (instead of 3) disrupts Clan strategies and long-term Castle Siege investment. TH requests a fixed schedule every 1.5 months.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F4B0;</div>
+        <div class="risk-body"><strong>Escalating Mythic Costs:</strong> SGMY reacts strongly to "Mystic Class" rumors while not yet completing Legend. VN requests more Epic Skill Chests via Clan Coins to support progression.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x2696;&#xFE0F;</div>
+        <div class="risk-body"><strong>Reward Imbalance (SGMY):</strong> Giran Castle Lord reward incident awarding higher-tier weapons to the Sword class over others seen as unfair — needs definitive resolution.</div>
+      </div>
+      <div class="risk-banner">
+        <div class="risk-icon">&#x1F30D;</div>
+        <div class="risk-body"><strong>Region-specific Demands:</strong> VN — reduce server transfer and Class Change costs; PH — two-way server transfers between "Old World" and "New World"; ID — details on Duplicate Class/Agathion scope and weapon restoration from Leah Ticket.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">4</span> Alliance Dynamics &amp; Battlefield</div>
+      <div class="subsection-title">Burnhee Invasion of Teon (May 8–15)</div>
+      <ul class="bullet-list">
+        <li><strong>Scale of attack:</strong> Burnhee alliance coordinated attacks on Teon 01, 02, 03, 05, 06, 10 to challenge Stormblood's dominance.</li>
+        <li><strong>Wuxia (Teon 09):</strong> Maintained high discipline, mobilizing all online members to support Stormblood. PvP spiked at Veora Ruins, Tower of Insolence, and Ancient Island.</li>
+        <li><strong>Healthy environment:</strong> No toxic behavior observed in world chat; players focused on skills and battlefield dominance.</li>
+      </ul>
+      <div class="subsection-title">Stormblood Alliance Restructuring (Apr 23 – May 8)</div>
+      <ul class="bullet-list">
+        <li><strong>Force consolidation:</strong> Leona10's core forces transferred to Teon05, joining the Stormblood ecosystem.</li>
+        <li><strong>Wuxia leadership crisis:</strong> Arktoshi acquired Kain05 Top 3 but Wuxia weakened due to lack of operational officers and veteran retirements.</li>
+        <li><strong>Mystic's return:</strong> Mystic expected to return to Teon as Union Leader, stabilizing Stormblood's leadership structure.</li>
+      </ul>
+      <div class="subsection-title">Other Battlefronts</div>
+      <ul class="bullet-list">
+        <li><strong>Leona:</strong> Cibal holds advantage in numbers and account quality; controls most Veora bosses. New World in defensive position.</li>
+        <li><strong>Erica &amp; Aria:</strong> Conflict temporarily calmed — Pecute moved from Erica to Aria to rebuild after defeat against Queen.</li>
+        <li><strong>Ancient Island (Kain vs Teon):</strong> Remains a large-scale PvP hotspot. Leadership presence matters more than raw spending power.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="num">5</span> Action Recommendations</div>
+      <div class="action-list">
+        <div class="action-item">
+          <div class="action-num">1</div>
+          <div class="action-body">
+            <strong>Transparency for Mythic Raoul</strong>
+            <p>Publish early cost analysis and progression breakdown. Create accessible starter packages for non-top-tier players.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">2</div>
+          <div class="action-body">
+            <strong>Address Anniversary Reward Crisis</strong>
+            <p>Add supplementary anniversary gift packages or follow-up events to ease frustration in ID, TH, VN.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">3</div>
+          <div class="action-body">
+            <strong>Fix Server Transfer Schedule</strong>
+            <p>Announce an official, predictable schedule for the next season (e.g., every 1.5 months in TH) for alliances to plan strategically.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">4</div>
+          <div class="action-body">
+            <strong>Resolve Reward Imbalance (SGMY)</strong>
+            <p>Definitively address the Giran Castle Lord incident of unequal weapon rewards across classes.</p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">5</div>
+          <div class="action-body">
+            <strong>Improve Event Communication</strong>
+            <p>Send information about Leah's Golden Ticket and major events through multiple channels (not just in-game mail) with enough lead time for players to stockpile materials.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="conclusion">
+      May marks a crucial transition point: the game is simultaneously pushing the meta to new heights with Mythic Class while the general player base increasingly feels left behind. Issues of transparency, reward value, and operational scheduling — if not addressed promptly — will translate into real retention risk, particularly in VN and ID.
+    </div>
+    </div>
+  </div><!-- /t05 -->
 
 </main>
 
@@ -1271,6 +2487,21 @@ function switchTab(id) {
     }
   });
 }
+
+var currentLang = 'vn';
+function toggleLang() {
+  currentLang = (currentLang === 'vn') ? 'en' : 'vn';
+  document.getElementById('lang-toggle').textContent = (currentLang === 'vn') ? 'EN' : 'VN';
+  document.querySelectorAll('.lang-block').forEach(function(el) {
+    var isTarget = el.classList.contains('lang-' + currentLang);
+    el.classList.toggle('active', isTarget);
+  });
+  // update tab button labels
+  document.querySelectorAll('.tab-btn[data-vn]').forEach(function(btn) {
+    btn.textContent = (currentLang === 'vn') ? btn.dataset.vn : btn.dataset.en;
+  });
+}
+
 </script>
 </body>
 </html>
