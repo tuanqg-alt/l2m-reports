@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>L2M Clan Server Transfer Report — 06/05 vs 14/05/2026</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --bg-card: #141a30;
+    --bg-card-2: #1a2240;
+    --border: #2a3358;
+    --text: #e6e9f4;
+    --text-muted: #9aa3c2;
+    --accent: #ffb547;
+    --accent-2: #ff7a59;
+    --green: #3ddc97;
+    --red: #ff5a7a;
+    --blue: #6aa6ff;
+    --purple: #b07cff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0; padding: 0;
+    background: linear-gradient(180deg, #0b1020 0%, #0a0e1a 100%);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+  /* Language toggle ---------------------- */
+  .t-en { display: none; }
+  body.lang-en .t-en { display: inline; }
+  body.lang-en .t-vi { display: none; }
+  body.lang-en .t-en.block, body.lang-en .t-vi.block { display: block; }
+  .t-vi.block, .t-en.block { display: block; }
+  body.lang-en .t-vi.block { display: none; }
+  body:not(.lang-en) .t-en.block { display: none; }
+
+  .lang-switch {
+    display: inline-flex; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 3px; gap: 2px;
+  }
+  .lang-switch button {
+    background: transparent; color: var(--text-muted);
+    border: none; padding: 5px 14px; border-radius: 16px;
+    cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+  }
+  .lang-switch button.active {
+    background: var(--accent); color: #20140a;
+  }
+
+  header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+  }
+  header .title-block h1 {
+    margin: 0; font-size: 26px; line-height: 1.3;
+    background: linear-gradient(90deg, #ffb547, #ff7a59);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  header .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 6px; }
+  header .right-block { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  header .badge {
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 6px 12px; border-radius: 20px; font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  section { margin-bottom: 36px; }
+  section h2 {
+    font-size: 18px; margin: 0 0 6px 0; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  section h2::before {
+    content: ""; display: inline-block;
+    width: 4px; height: 18px; background: var(--accent); border-radius: 2px;
+  }
+  section .description { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; }
+
+  .panel {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px;
+  }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    text-align: left; padding: 10px 8px;
+    background: var(--bg-card-2); color: var(--text-muted);
+    font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 1;
+  }
+  tbody td { padding: 8px; border-bottom: 1px solid var(--border); }
+  tbody tr:hover { background: rgba(255,181,71,0.04); }
+  tbody tr.highlight-row { background: rgba(255,181,71,0.10); border-left: 3px solid var(--accent); }
+
+  .rank-pill {
+    display: inline-block; min-width: 28px; padding: 2px 8px;
+    border-radius: 12px; font-size: 11px; font-weight: 700;
+    background: var(--bg-card-2); color: var(--text);
+    text-align: center;
+  }
+  .rank-pill.top { background: linear-gradient(135deg, #ffb547, #ff7a59); color: #20140a; }
+  .rank-pill.top10 { background: rgba(255,181,71,0.2); color: var(--accent); }
+
+  .server-tag {
+    display: inline-block; padding: 2px 8px;
+    background: rgba(106,166,255,0.12); color: var(--blue);
+    border-radius: 8px; font-size: 11px; font-weight: 600;
+  }
+  .server-tag.old { background: rgba(255,90,122,0.12); color: var(--red); }
+  .server-tag.new { background: rgba(61,220,151,0.12); color: var(--green); }
+  .union-tag {
+    display: inline-block; padding: 1px 6px;
+    background: rgba(176,124,255,0.12); color: var(--purple);
+    border-radius: 6px; font-size: 10px;
+  }
+  .arrow { color: var(--text-muted); margin: 0 4px; font-weight: bold; }
+  .change-up { color: var(--green); font-weight: 600; }
+  .change-down { color: var(--red); font-weight: 600; }
+  .change-flat { color: var(--text-muted); }
+
+  .world-pill {
+    display: inline-block; padding: 4px 12px; border-radius: 10px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.3px;
+  }
+  .w-Teon { background: rgba(106,166,255,0.18); color: var(--blue); }
+  .w-Kain { background: rgba(255,181,71,0.18); color: var(--accent); }
+  .w-Bartz { background: rgba(176,124,255,0.18); color: var(--purple); }
+  .w-Leona { background: rgba(255,90,122,0.18); color: var(--red); }
+  .w-Erica { background: rgba(61,220,151,0.18); color: var(--green); }
+  .w-Aria { background: rgba(255,122,89,0.18); color: var(--accent-2); }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+    margin-bottom: 12px;
+  }
+  .filter-bar input, .filter-bar select {
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 13px;
+    outline: none;
+  }
+  .filter-bar input:focus, .filter-bar select:focus { border-color: var(--accent); }
+  .filter-bar label { color: var(--text-muted); font-size: 12px; }
+  .scroll-table { max-height: 640px; overflow-y: auto; }
+  .sort-th { cursor: pointer; user-select: none; }
+  .sort-th:hover { color: var(--accent); }
+  .sort-th.sorted::after { content: " ▾"; color: var(--accent); }
+  .sort-th.sorted-asc::after { content: " ▴"; color: var(--accent); }
+
+  /* Insights ------------------------------- */
+  .insight-summary {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px; margin-bottom: 20px;
+  }
+  .insight-card {
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px;
+    border-left: 4px solid var(--accent);
+  }
+  .insight-card.green { border-left-color: var(--green); }
+  .insight-card.red { border-left-color: var(--red); }
+  .insight-card.blue { border-left-color: var(--blue); }
+  .insight-card .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .insight-card .value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+  .insight-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  .insight-list { list-style: none; padding: 0; margin: 0; }
+  .insight-list li {
+    padding: 12px 14px; margin-bottom: 8px;
+    background: var(--bg-card-2); border-radius: 8px;
+    border-left: 3px solid var(--accent);
+    font-size: 13px; line-height: 1.6;
+  }
+  .insight-list li.up { border-left-color: var(--green); }
+  .insight-list li.down { border-left-color: var(--red); }
+  .insight-list li.info { border-left-color: var(--blue); }
+  .insight-list li strong { color: var(--accent); }
+  .insight-list li.up strong { color: var(--green); }
+  .insight-list li.down strong { color: var(--red); }
+  .insight-list li.info strong { color: var(--blue); }
+
+  .conclusion {
+    margin-top: 16px; padding: 16px;
+    background: linear-gradient(135deg, rgba(255,181,71,0.08), rgba(255,122,89,0.04));
+    border: 1px solid rgba(255,181,71,0.3); border-radius: 10px;
+    font-size: 14px; line-height: 1.65; color: var(--text);
+  }
+  .conclusion strong { color: var(--accent); }
+
+  .footer {
+    text-align: center; color: var(--text-muted); font-size: 12px;
+    padding: 20px 0; margin-top: 32px; border-top: 1px solid var(--border);
+  }
+
+  .note {
+    font-size: 12px; color: var(--text-muted); margin-top: 10px;
+    padding: 10px 12px; background: rgba(106,166,255,0.06);
+    border-left: 3px solid var(--blue); border-radius: 6px;
+  }
+</style>
+</head>
+<body class="lang-vi">
+<div class="container">
+
+  <header>
+    <div class="title-block">
+      <h1>
+        <span class="t-vi">L2M — Báo cáo dịch chuyển Clan sau Server Transfer</span>
+        <span class="t-en">L2M — Clan Migration Report after Server Transfer</span>
+      </h1>
+      <div class="subtitle">
+        <span class="t-vi">So sánh giữa <strong>06/05/2026</strong> và <strong>14/05/2026</strong></span>
+        <span class="t-en">Comparison between <strong>06 May 2026</strong> and <strong>14 May 2026</strong></span>
+      </div>
+    </div>
+    <div class="right-block">
+      <div class="lang-switch">
+        <button id="btn-vi" class="active" onclick="setLang('vi')">VI</button>
+        <button id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+      <div class="badge">Generated 15/05/2026</div>
+    </div>
+  </header>
+
+  <!-- Top movers: only World tab -->
+  <section>
+    <h2>
+      <span class="t-vi">🌍 Biến động doanh thu theo World</span>
+      <span class="t-en">🌍 Revenue change by World</span>
+    </h2>
+    <div class="description">
+      <span class="t-vi">Tổng hợp All Time Rev VND của mỗi world trước và sau khi server transfer. Mỗi world gồm 10 server (vd: Bartz 01 → Bartz 10).</span>
+      <span class="t-en">Aggregated All Time Rev VND of each world before and after the server transfer. Each world contains 10 servers (e.g., Bartz 01 → Bartz 10).</span>
+    </div>
+    <div class="panel">
+      <div id="worldTableWrap"></div>
+      <div class="note">
+        <strong class="t-vi">⚠ Lưu ý:</strong>
+        <strong class="t-en">⚠ Note:</strong>
+        <span class="t-vi"> Field "All Time Rev VND" trong game phản ánh tổng đóng góp lifetime của các thành viên hiện tại trong clan. Khi thành viên rời clan (hoặc cả clan chuyển sang world khác), phần đóng góp của họ được trừ ra khỏi world cũ và cộng vào world mới. Do đó số liệu giảm ở Kain/Leona/Erica chủ yếu phản ánh việc các clan top chuyển sang Teon, không phải mất doanh thu thực sự.</span>
+        <span class="t-en"> The "All Time Rev VND" field in-game reflects the total lifetime contribution of the clan's current members. When members leave (or the whole clan moves to another world), their contribution is subtracted from the old world and added to the new one. Therefore the apparent drops in Kain/Leona/Erica primarily reflect top-clan migration to Teon, not actual revenue loss.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detail table of moved clans -->
+  <section>
+    <h2>
+      <span class="t-vi">Chi tiết clan đã chuyển server</span>
+      <span class="t-en">Migrated Clans Detail</span>
+    </h2>
+    <div class="description">
+      <span class="t-vi">Toàn bộ <strong id="movedCountText"></strong> clan có Server Name thay đổi giữa 06/05 và 14/05. Hàng tô đậm là Top biến động (|Δ Rank| ≥ 10).</span>
+      <span class="t-en">All <strong id="movedCountText_en"></strong> clans whose Server Name changed between 06/05 and 14/05. Highlighted rows = top movers (|Rank Δ| ≥ 10).</span>
+    </div>
+    <div class="panel">
+      <div class="filter-bar">
+        <input type="text" id="searchMoved" />
+        <label><span class="t-vi">Server cũ:</span><span class="t-en">Old server:</span></label>
+        <select id="filterOldServer"></select>
+        <label><span class="t-vi">Server mới:</span><span class="t-en">New server:</span></label>
+        <select id="filterNewServer"></select>
+        <label>Highlight:</label>
+        <select id="filterHighlight"></select>
+      </div>
+      <div class="scroll-table">
+        <table id="tableMoved">
+          <thead><tr>
+            <th class="sort-th" data-key="No._new"><span class="t-vi">#</span><span class="t-en">#</span></th>
+            <th class="sort-th" data-key="Clan Name_new"><span class="t-vi">Clan</span><span class="t-en">Clan</span></th>
+            <th class="sort-th" data-key="Union_new"><span class="t-vi">Union</span><span class="t-en">Union</span></th>
+            <th class="sort-th" data-key="Server Name_old"><span class="t-vi">Server cũ → Mới</span><span class="t-en">Old → New</span></th>
+            <th class="sort-th" data-key="No._old"><span class="t-vi">Rank cũ</span><span class="t-en">Old Rank</span></th>
+            <th class="sort-th" data-key="No._new"><span class="t-vi">Rank mới</span><span class="t-en">New Rank</span></th>
+            <th class="sort-th" data-key="Rank Change">Δ Rank</th>
+            <th class="sort-th" data-key="Total Member_new">Member</th>
+            <th class="sort-th" data-key="All Time Rev VND_new"><span class="t-vi">All Time Rev</span><span class="t-en">All Time Rev</span></th>
+            <th class="sort-th" data-key="Last 7D Rev_new"><span class="t-vi">Last 7D Rev</span><span class="t-en">Last 7D Rev</span></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS SECTION -->
+  <section>
+    <h2>
+      <span class="t-vi">💡 Nhận xét & Kết luận: World nào đang "sôi động" nhất?</span>
+      <span class="t-en">💡 Insights & Conclusion: Which world is currently the hottest?</span>
+    </h2>
+    <div class="description">
+      <span class="t-vi">Đánh giá độ "sôi động" của mỗi world dựa trên số lượng clan lọt vào các nhóm Top (Top 10, Top 30, Top 50, Top 100) tại thời điểm 14/05 — so sánh với trước transfer (06/05).</span>
+      <span class="t-en">Each world's "activity level" measured by the number of clans in the Top tiers (Top 10/30/50/100) on 14/05, compared to before transfer (06/05).</span>
+    </div>
+    <div class="panel">
+      <div id="topShareTable"></div>
+      <div id="insightsList" style="margin-top: 20px;"></div>
+      <div id="conclusion" class="conclusion"></div>
+    </div>
+  </section>
+
+  <div class="footer">
+    L2M Operations · Server Transfer Report · Lineage2M SEA
+  </div>
+</div>
+
+<script>
+const DATA = {"moved": [{"Clan Id": "3945434748553265345", "Clan Name_old": "DOGE", "Clan Name_new": "VoltZ", "Union_old": "GARUDA", "Union_new": "GARUDA", "Server Name_old": "Kain 07", "Server Name_new": "Teon 02", "No._old": 1, "No._new": 1, "All Time Rev VND_old": 102212437552, "All Time Rev VND_new": 103559277688, "Total Member_old": 50, "Total Member_new": 50, "Last 7D Rev_new": 1346840136.0, "Last 30D Rev_new": 5961629356.0, "All Time Diamond Gain_new": 160956472.0, "Last 7D Diamond Gain_new": 2999761.0, "Last 30D Diamond Gain_new": 18458482.0, "Rank Change": 0, "Rev Change": 1346840136, "Member Change": 0}, {"Clan Id": "3941494098879315969", "Clan Name_old": "Mystic", "Clan Name_new": "MYSTlC", "Union_old": "Venom", "Union_new": "Venom", "Server Name_old": "Kain 08", "Server Name_new": "Teon 04", "No._old": 2, "No._new": 2, "All Time Rev VND_old": 57170847101, "All Time Rev VND_new": 62679305969, "Total Member_old": 48, "Total Member_new": 50, "Last 7D Rev_new": 717999194.0, "Last 30D Rev_new": 2697363007.0, "All Time Diamond Gain_new": 77208696.0, "Last 7D Diamond Gain_new": 2498483.0, "Last 30D Diamond Gain_new": 9853007.0, "Rank Change": 0, "Rev Change": 5508458868, "Member Change": 2}, {"Clan Id": "3949938348180635660", "Clan Name_old": "ELITE", "Clan Name_new": "ELITE", "Union_old": "BEHURN", "Union_new": "BEHURN", "Server Name_old": "Leona 04", "Server Name_new": "Teon 06", "No._old": 3, "No._new": 3, "All Time Rev VND_old": 24136992826, "All Time Rev VND_new": 24846834625, "Total Member_old": 50, "Total Member_new": 50, "Last 7D Rev_new": 317701115.0, "Last 30D Rev_new": 1985871974.0, "All Time Diamond Gain_new": 68986194.0, "Last 7D Diamond Gain_new": 4328900.0, "Last 30D Diamond Gain_new": 11479781.0, "Rank Change": 0, "Rev Change": 709841799, "Member Change": 0}, {"Clan Id": "3943464423716290641", "Clan Name_old": "DAZE", "Clan Name_new": "DAZE", "Union_old": "BEYOND", "Union_new": "BEYOND", "Server Name_old": "Leona 01", "Server Name_new": "Teon 05", "No._old": 8, "No._new": 8, "All Time Rev VND_old": 19557451470, "All Time Rev VND_new": 20141864733, "Total Member_old": 49, "Total Member_new": 50, "Last 7D Rev_new": 197558059.0, "Last 30D Rev_new": 782667126.0, "All Time Diamond Gain_new": 72184719.0, "Last 7D Diamond Gain_new": 2189354.0, "Last 30D Diamond Gain_new": 8926683.0, "Rank Change": 0, "Rev Change": 584413263, "Member Change": 1}, {"Clan Id": "3942338523809447946", "Clan Name_old": "STRAY", "Clan Name_new": "BaratheOn", "Union_old": "ZENITH", "Union_new": "ZENITH", "Server Name_old": "Bartz 07", "Server Name_new": "Teon 03", "No._old": 84, "No._new": 9, "All Time Rev VND_old": 725767207, "All Time Rev VND_new": 19016496350, "Total Member_old": 22, "Total Member_new": 49, "Last 7D Rev_new": 373449215.0, "Last 30D Rev_new": 1606436763.0, "All Time Diamond Gain_new": 37377140.0, "Last 7D Diamond Gain_new": 1816154.0, "Last 30D Diamond Gain_new": 6130206.0, "Rank Change": 75, "Rev Change": 18290729143, "Member Change": 27}, {"Clan Id": "3944027373669711879", "Clan Name_old": "传说中", "Clan Name_new": "Myth", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 02", "Server Name_new": "Bartz 05", "No._old": 10, "No._new": 11, "All Time Rev VND_old": 17930168061, "All Time Rev VND_new": 16776639036, "Total Member_old": 41, "Total Member_new": 41, "Last 7D Rev_new": 142133654.0, "Last 30D Rev_new": 768009257.0, "All Time Diamond Gain_new": 34245435.0, "Last 7D Diamond Gain_new": 1107910.0, "Last 30D Diamond Gain_new": 5076534.0, "Rank Change": -1, "Rev Change": -1153529025, "Member Change": 0}, {"Clan Id": "3949093923250503714", "Clan Name_old": "NoXus", "Clan Name_new": "Teaparty", "Union_old": "Inferno", "Union_new": "CIBAL", "Server Name_old": "Leona 07", "Server Name_new": "Teon 01", "No._old": 23, "No._new": 18, "All Time Rev VND_old": 8301352183, "All Time Rev VND_new": 9222745406, "Total Member_old": 48, "Total Member_new": 48, "Last 7D Rev_new": 140911448.0, "Last 30D Rev_new": 450209219.0, "All Time Diamond Gain_new": 30723510.0, "Last 7D Diamond Gain_new": 971637.0, "Last 30D Diamond Gain_new": 3756983.0, "Rank Change": 5, "Rev Change": 921393223, "Member Change": 0}, {"Clan Id": "3945716223529975820", "Clan Name_old": "HappyDay", "Clan Name_new": "AllStarFC", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 08", "Server Name_new": "Bartz 07", "No._old": 24, "No._new": 20, "All Time Rev VND_old": 39126634, "All Time Rev VND_new": 9072678739, "Total Member_old": 3, "Total Member_new": 43, "Last 7D Rev_new": 125266631.0, "Last 30D Rev_new": 458952858.0, "All Time Diamond Gain_new": 23832068.0, "Last 7D Diamond Gain_new": 737655.0, "Last 30D Diamond Gain_new": 2739081.0, "Rank Change": 4, "Rev Change": 9033552105, "Member Change": 40}, {"Clan Id": "3948812448273793054", "Clan Name_old": "COUSSINET", "Clan Name_new": "Steroid", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 03", "Server Name_new": "Teon 10", "No._old": 20, "No._new": 23, "All Time Rev VND_old": 10698846410, "All Time Rev VND_new": 8208994999, "Total Member_old": 49, "Total Member_new": 43, "Last 7D Rev_new": 120953062.0, "Last 30D Rev_new": 570969159.0, "All Time Diamond Gain_new": 20182492.0, "Last 7D Diamond Gain_new": 799520.0, "Last 30D Diamond Gain_new": 2777410.0, "Rank Change": -3, "Rev Change": -2489851411, "Member Change": -6}, {"Clan Id": "3945716223529975816", "Clan Name_old": "Legendary", "Clan Name_new": "Disneyland", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 02", "Server Name_new": "Leona 03", "No._old": 113, "No._new": 24, "All Time Rev VND_old": 395717088, "All Time Rev VND_new": 8087442504, "Total Member_old": 16, "Total Member_new": 17, "Last 7D Rev_new": 169439788.0, "Last 30D Rev_new": 658107441.0, "All Time Diamond Gain_new": 19694563.0, "Last 7D Diamond Gain_new": 386980.0, "Last 30D Diamond Gain_new": 2043406.0, "Rank Change": 89, "Rev Change": 7691725416, "Member Change": 1}, {"Clan Id": "3942057048832737336", "Clan Name_old": "Valkyrie", "Clan Name_new": "MYTH", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 09", "Server Name_new": "Teon 04", "No._old": 22, "No._new": 25, "All Time Rev VND_old": 8450337553, "All Time Rev VND_new": 7582235402, "Total Member_old": 36, "Total Member_new": 43, "Last 7D Rev_new": 69332029.0, "Last 30D Rev_new": 429352617.0, "All Time Diamond Gain_new": 20899139.0, "Last 7D Diamond Gain_new": 809809.0, "Last 30D Diamond Gain_new": 3217852.0, "Rank Change": -3, "Rev Change": -868102151, "Member Change": 7}, {"Clan Id": "3951345723064190834", "Clan Name_old": "GENTLEMONSTER", "Clan Name_new": "GENTLEMONSTER", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 08", "Server Name_new": "Bartz 05", "No._old": 25, "No._new": 27, "All Time Rev VND_old": 7637686430, "All Time Rev VND_new": 6735221030, "Total Member_old": 49, "Total Member_new": 31, "Last 7D Rev_new": 55290736.0, "Last 30D Rev_new": 325496341.0, "All Time Diamond Gain_new": 11242036.0, "Last 7D Diamond Gain_new": 248955.0, "Last 30D Diamond Gain_new": 1241961.0, "Rank Change": -2, "Rev Change": -902465400, "Member Change": -18}, {"Clan Id": "3951345723064189117", "Clan Name_old": "BA", "Clan Name_new": "LSB", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 01", "Server Name_new": "Kain 03", "No._old": 111, "No._new": 29, "All Time Rev VND_old": 412872287, "All Time Rev VND_new": 6580252401, "Total Member_old": 38, "Total Member_new": 50, "Last 7D Rev_new": 16878026.0, "Last 30D Rev_new": 142660347.0, "All Time Diamond Gain_new": 24739514.0, "Last 7D Diamond Gain_new": 737884.0, "Last 30D Diamond Gain_new": 2926252.0, "Rank Change": 82, "Rev Change": 6167380114, "Member Change": 12}, {"Clan Id": "3943464423716290896", "Clan Name_old": "AEIOU", "Clan Name_new": "AEIOU", "Union_old": "BEHURN", "Union_new": "BEHURN", "Server Name_old": "Leona 05", "Server Name_new": "Kain 04", "No._old": 31, "No._new": 30, "All Time Rev VND_old": 5433024500, "All Time Rev VND_new": 6217800893, "Total Member_old": 25, "Total Member_new": 33, "Last 7D Rev_new": 117982683.0, "Last 30D Rev_new": 537732754.0, "All Time Diamond Gain_new": 13258738.0, "Last 7D Diamond Gain_new": 534696.0, "Last 30D Diamond Gain_new": 2921860.0, "Rank Change": 1, "Rev Change": 784776393, "Member Change": 8}, {"Clan Id": "3945997698506686476", "Clan Name_old": "Erebus", "Clan Name_new": "Erebus", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 02", "Server Name_new": "Teon 08", "No._old": 21, "No._new": 34, "All Time Rev VND_old": 8804973064, "All Time Rev VND_new": 5199002870, "Total Member_old": 49, "Total Member_new": 41, "Last 7D Rev_new": 93087976.0, "Last 30D Rev_new": 505957981.0, "All Time Diamond Gain_new": 21350000.0, "Last 7D Diamond Gain_new": 1129576.0, "Last 30D Diamond Gain_new": 3192812.0, "Rank Change": -13, "Rev Change": -3605970194, "Member Change": -8}, {"Clan Id": "3943182948739580010", "Clan Name_old": "Maverick", "Clan Name_new": "WuxiaGaming", "Union_old": "", "Union_new": "ST0RMBL00D", "Server Name_old": "Teon 09", "Server Name_new": "Kain 02", "No._old": 164, "No._new": 39, "All Time Rev VND_old": 168770062, "All Time Rev VND_new": 4121508458, "Total Member_old": 18, "Total Member_new": 12, "Last 7D Rev_new": 40000.0, "Last 30D Rev_new": 49345225.0, "All Time Diamond Gain_new": 3884958.0, "Last 7D Diamond Gain_new": 37002.0, "Last 30D Diamond Gain_new": 645987.0, "Rank Change": 125, "Rev Change": 3952738396, "Member Change": -6}, {"Clan Id": "3943464423716290562", "Clan Name_old": "GROOK", "Clan Name_new": "DAZEs", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 01", "Server Name_new": "Bartz 03", "No._old": 43, "No._new": 41, "All Time Rev VND_old": 3294738000, "All Time Rev VND_new": 3916951926, "Total Member_old": 46, "Total Member_new": 43, "Last 7D Rev_new": 99623225.0, "Last 30D Rev_new": 450203073.0, "All Time Diamond Gain_new": 20010191.0, "Last 7D Diamond Gain_new": 445654.0, "Last 30D Diamond Gain_new": 2677054.0, "Rank Change": 2, "Rev Change": 622213926, "Member Change": -3}, {"Clan Id": "3941775573856026639", "Clan Name_old": "FortisMaximus", "Clan Name_new": "REDFOREST", "Union_old": "INVICTUS", "Union_new": "UsualSuspects", "Server Name_old": "Bartz 03", "Server Name_new": "Leona 07", "No._old": 53, "No._new": 44, "All Time Rev VND_old": 2341973830, "All Time Rev VND_new": 3733274952, "Total Member_old": 15, "Total Member_new": 44, "Last 7D Rev_new": 37494718.0, "Last 30D Rev_new": 127872636.0, "All Time Diamond Gain_new": 7574953.0, "Last 7D Diamond Gain_new": 190130.0, "Last 30D Diamond Gain_new": 837306.0, "Rank Change": 9, "Rev Change": 1391301122, "Member Change": 29}, {"Clan Id": "3954441947808006283", "Clan Name_old": "Valhalla", "Clan Name_new": "Valhalla", "Union_old": "Queen", "Union_new": "Queen", "Server Name_old": "Erica 01", "Server Name_new": "Erica 03", "No._old": 41, "No._new": 45, "All Time Rev VND_old": 3509936264, "All Time Rev VND_new": 3545218771, "Total Member_old": 34, "Total Member_new": 34, "Last 7D Rev_new": 31558190.0, "Last 30D Rev_new": 159264325.0, "All Time Diamond Gain_new": 22113320.0, "Last 7D Diamond Gain_new": 429845.0, "Last 30D Diamond Gain_new": 2360286.0, "Rank Change": -4, "Rev Change": 35282507, "Member Change": 0}, {"Clan Id": "3948249498320371831", "Clan Name_old": "EVEREST", "Clan Name_new": "EVEREST", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 07", "Server Name_new": "Teon 04", "No._old": 33, "No._new": 48, "All Time Rev VND_old": 4596563383, "All Time Rev VND_new": 2716785679, "Total Member_old": 49, "Total Member_new": 38, "Last 7D Rev_new": 68879438.0, "Last 30D Rev_new": 279551486.0, "All Time Diamond Gain_new": 8667272.0, "Last 7D Diamond Gain_new": 380228.0, "Last 30D Diamond Gain_new": 1156004.0, "Rank Change": -15, "Rev Change": -1879777704, "Member Change": -11}, {"Clan Id": "3941212623902605505", "Clan Name_old": "McD", "Clan Name_new": "Queens", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 01", "Server Name_new": "Kain 09", "No._old": 54, "No._new": 52, "All Time Rev VND_old": 2334931155, "All Time Rev VND_new": 2281049741, "Total Member_old": 25, "Total Member_new": 2, "Last 7D Rev_new": 11055249.0, "Last 30D Rev_new": 41366299.0, "All Time Diamond Gain_new": 1681958.0, "Last 7D Diamond Gain_new": 12838.0, "Last 30D Diamond Gain_new": 109440.0, "Rank Change": 2, "Rev Change": -53881414, "Member Change": -23}, {"Clan Id": "3954441947808006145", "Clan Name_old": "90s", "Clan Name_new": "90s", "Union_old": "", "Union_new": "", "Server Name_old": "Erica 03", "Server Name_new": "Aria 05", "No._old": 55, "No._new": 53, "All Time Rev VND_old": 2258878478, "All Time Rev VND_new": 2249997824, "Total Member_old": 49, "Total Member_new": 47, "Last 7D Rev_new": 65264428.0, "Last 30D Rev_new": 297972197.0, "All Time Diamond Gain_new": 8668265.0, "Last 7D Diamond Gain_new": 356448.0, "Last 30D Diamond Gain_new": 1201788.0, "Rank Change": 2, "Rev Change": -8880654, "Member Change": -2}, {"Clan Id": "3951627198040899595", "Clan Name_old": "Warriors", "Clan Name_new": "Warriors", "Union_old": "ST0RMBL00D", "Union_new": "Warriors", "Server Name_old": "Teon 04", "Server Name_new": "Teon 07", "No._old": 50, "No._new": 58, "All Time Rev VND_old": 2532627461, "All Time Rev VND_new": 1886799260, "Total Member_old": 50, "Total Member_new": 42, "Last 7D Rev_new": 10248370.0, "Last 30D Rev_new": 56281385.0, "All Time Diamond Gain_new": 9172971.0, "Last 7D Diamond Gain_new": 386800.0, "Last 30D Diamond Gain_new": 1287895.0, "Rank Change": -8, "Rev Change": -645828201, "Member Change": -8}, {"Clan Id": "3941775573856026760", "Clan Name_old": "Levels", "Clan Name_new": "LevelS", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 07", "Server Name_new": "Teon 02", "No._old": 65, "No._new": 59, "All Time Rev VND_old": 1476507461, "All Time Rev VND_new": 1801404782, "Total Member_old": 49, "Total Member_new": 50, "Last 7D Rev_new": 11846239.0, "Last 30D Rev_new": 123753629.0, "All Time Diamond Gain_new": 11175926.0, "Last 7D Diamond Gain_new": 485302.0, "Last 30D Diamond Gain_new": 1772303.0, "Rank Change": 6, "Rev Change": 324897321, "Member Change": 1}, {"Clan Id": "3940931148925894662", "Clan Name_old": "Bhinneka", "Clan Name_new": "Bhinneka", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 05", "Server Name_new": "Teon 07", "No._old": 60, "No._new": 61, "All Time Rev VND_old": 1844910146, "All Time Rev VND_new": 1599181644, "Total Member_old": 47, "Total Member_new": 45, "Last 7D Rev_new": 29299503.0, "Last 30D Rev_new": 118143341.0, "All Time Diamond Gain_new": 6947516.0, "Last 7D Diamond Gain_new": 207102.0, "Last 30D Diamond Gain_new": 946768.0, "Rank Change": -1, "Rev Change": -245728502, "Member Change": -2}, {"Clan Id": "3947123598413529206", "Clan Name_old": "NIGHTSHATTER", "Clan Name_new": "DIGIMON", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 06", "Server Name_new": "Teon 01", "No._old": 59, "No._new": 63, "All Time Rev VND_old": 1993065424, "All Time Rev VND_new": 1421637693, "Total Member_old": 47, "Total Member_new": 45, "Last 7D Rev_new": 18058205.0, "Last 30D Rev_new": 89021925.0, "All Time Diamond Gain_new": 5337027.0, "Last 7D Diamond Gain_new": 248679.0, "Last 30D Diamond Gain_new": 953667.0, "Rank Change": -4, "Rev Change": -571427731, "Member Change": -2}, {"Clan Id": "3945153273576554949", "Clan Name_old": "Hogwarts", "Clan Name_new": "Hogwart", "Union_old": "ZENITH", "Union_new": "", "Server Name_old": "Bartz 02", "Server Name_new": "Teon 08", "No._old": 70, "No._new": 79, "All Time Rev VND_old": 1127635604, "All Time Rev VND_new": 776434280, "Total Member_old": 50, "Total Member_new": 41, "Last 7D Rev_new": 21733031.0, "Last 30D Rev_new": 110110627.0, "All Time Diamond Gain_new": 4959183.0, "Last 7D Diamond Gain_new": 231322.0, "Last 30D Diamond Gain_new": 712941.0, "Rank Change": -9, "Rev Change": -351201324, "Member Change": -9}, {"Clan Id": "3946842123436818511", "Clan Name_old": "RavenX", "Clan Name_new": "RavenX", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 10", "Server Name_new": "Teon 05", "No._old": 91, "No._new": 84, "All Time Rev VND_old": 625300184, "All Time Rev VND_new": 698672541, "Total Member_old": 22, "Total Member_new": 33, "Last 7D Rev_new": 14365150.0, "Last 30D Rev_new": 41571847.0, "All Time Diamond Gain_new": 3071174.0, "Last 7D Diamond Gain_new": 171876.0, "Last 30D Diamond Gain_new": 546502.0, "Rank Change": 7, "Rev Change": 73372357, "Member Change": 11}, {"Clan Id": "3946842123436818491", "Clan Name_old": "VietUnion", "Clan Name_new": "TheGae", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 07", "Server Name_new": "Bartz 03", "No._old": 927, "No._new": 86, "All Time Rev VND_old": 5880000, "All Time Rev VND_new": 641620844, "Total Member_old": 2, "Total Member_new": 1, "Last 7D Rev_new": 10368356.0, "Last 30D Rev_new": 23458656.0, "All Time Diamond Gain_new": 2524916.0, "Last 7D Diamond Gain_new": 168631.0, "Last 30D Diamond Gain_new": 511092.0, "Rank Change": 841, "Rev Change": 635740844, "Member Change": -1}, {"Clan Id": "3942901473762869253", "Clan Name_old": "Warrior", "Clan Name_new": "Warrior", "Union_old": "Warrior", "Union_new": "", "Server Name_old": "Teon 01", "Server Name_new": "Leona 07", "No._old": 42, "No._new": 92, "All Time Rev VND_old": 3346527038, "All Time Rev VND_new": 83735, "Total Member_old": 32, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 303.0, "Last 7D Diamond Gain_new": 9.0, "Last 30D Diamond Gain_new": 43.0, "Rank Change": -50, "Rev Change": -3346443303, "Member Change": -31}, {"Clan Id": "3942057048832737288", "Clan Name_old": "Valhalla", "Clan Name_new": "Mythology", "Union_old": "Queen", "Union_new": "", "Server Name_old": "Kain 09", "Server Name_new": "Teon 04", "No._old": 82, "No._new": 107, "All Time Rev VND_old": 773254880, "All Time Rev VND_new": 362543816, "Total Member_old": 46, "Total Member_new": 33, "Last 7D Rev_new": 6360727.0, "Last 30D Rev_new": 27594083.0, "All Time Diamond Gain_new": 2934366.0, "Last 7D Diamond Gain_new": 126276.0, "Last 30D Diamond Gain_new": 469521.0, "Rank Change": -25, "Rev Change": -410711064, "Member Change": -13}, {"Clan Id": "3947405073390239906", "Clan Name_old": "ลิตเติ้ลจ้อนห์", "Clan Name_new": "THRONEX", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 03", "Server Name_new": "Bartz 05", "No._old": 202, "No._new": 108, "All Time Rev VND_old": 115393504, "All Time Rev VND_new": 350376448, "Total Member_old": 10, "Total Member_new": 19, "Last 7D Rev_new": 3779205.0, "Last 30D Rev_new": 15807169.0, "All Time Diamond Gain_new": 1632716.0, "Last 7D Diamond Gain_new": 24923.0, "Last 30D Diamond Gain_new": 155863.0, "Rank Change": 94, "Rev Change": 234982944, "Member Change": 9}, {"Clan Id": "3953597522877874192", "Clan Name_old": "SpartacuS", "Clan Name_new": "GAO", "Union_old": "", "Union_new": "", "Server Name_old": "Erica 02", "Server Name_new": "Aria 07", "No._old": 105, "No._new": 110, "All Time Rev VND_old": 479022169, "All Time Rev VND_new": 320375303, "Total Member_old": 33, "Total Member_new": 20, "Last 7D Rev_new": 17882930.0, "Last 30D Rev_new": 53325317.0, "All Time Diamond Gain_new": 2876601.0, "Last 7D Diamond Gain_new": 114999.0, "Last 30D Diamond Gain_new": 486933.0, "Rank Change": -5, "Rev Change": -158646866, "Member Change": -13}, {"Clan Id": "3944027373669712205", "Clan Name_old": "铁血同盟", "Clan Name_new": "purple", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 02", "Server Name_new": "Bartz 05", "No._old": 923, "No._new": 120, "All Time Rev VND_old": 5907087, "All Time Rev VND_new": 244270807, "Total Member_old": 19, "Total Member_new": 10, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 895302.0, "Last 7D Diamond Gain_new": 6770.0, "Last 30D Diamond Gain_new": 79650.0, "Rank Change": 803, "Rev Change": 238363720, "Member Change": -9}, {"Clan Id": "3942338523809448039", "Clan Name_old": "G0DLiGHT", "Clan Name_new": "GodLiGhT", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 09", "Server Name_new": "Teon 03", "No._old": 144, "No._new": 124, "All Time Rev VND_old": 246325306, "All Time Rev VND_new": 21630894, "Total Member_old": 5, "Total Member_new": 2, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 448674.0, "Last 7D Diamond Gain_new": 850.0, "Last 30D Diamond Gain_new": 33126.0, "Rank Change": 20, "Rev Change": -224694412, "Member Change": -3}, {"Clan Id": "3945997698506686483", "Clan Name_old": "Eleos", "Clan Name_new": "Eleos", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 02", "Server Name_new": "Teon 08", "No._old": 94, "No._new": 128, "All Time Rev VND_old": 611368100, "All Time Rev VND_new": 216111439, "Total Member_old": 47, "Total Member_new": 11, "Last 7D Rev_new": 933574.0, "Last 30D Rev_new": 1495625.0, "All Time Diamond Gain_new": 5679548.0, "Last 7D Diamond Gain_new": 311343.0, "Last 30D Diamond Gain_new": 584534.0, "Rank Change": -34, "Rev Change": -395256661, "Member Change": -36}, {"Clan Id": "3947405073390239861", "Clan Name_old": "RedLine", "Clan Name_new": "SLumboy", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 08", "Server Name_new": "Bartz 05", "No._old": 126, "No._new": 129, "All Time Rev VND_old": 332910205, "All Time Rev VND_new": 212593798, "Total Member_old": 11, "Total Member_new": 6, "Last 7D Rev_new": 2986502.0, "Last 30D Rev_new": 3064445.0, "All Time Diamond Gain_new": 355695.0, "Last 7D Diamond Gain_new": 6665.0, "Last 30D Diamond Gain_new": 19668.0, "Rank Change": -3, "Rev Change": -120316407, "Member Change": -5}, {"Clan Id": "3941212623902605321", "Clan Name_old": "FRINTEZZA", "Clan Name_new": "TOBRUT", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 04", "Server Name_new": "Bartz 05", "No._old": 205, "No._new": 161, "All Time Rev VND_old": 113261524, "All Time Rev VND_new": 142748909, "Total Member_old": 12, "Total Member_new": 4, "Last 7D Rev_new": 290572.0, "Last 30D Rev_new": 3718226.0, "All Time Diamond Gain_new": 567242.0, "Last 7D Diamond Gain_new": 7900.0, "Last 30D Diamond Gain_new": 44831.0, "Rank Change": 44, "Rev Change": 29487385, "Member Change": -8}, {"Clan Id": "3948249498320375767", "Clan Name_old": "FarmerX", "Clan Name_new": "FarmerZ", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 07", "Server Name_new": "Teon 04", "No._old": 257, "No._new": 184, "All Time Rev VND_old": 75368428, "All Time Rev VND_new": 116605749, "Total Member_old": 2, "Total Member_new": 3, "Last 7D Rev_new": 586239.0, "Last 30D Rev_new": 586239.0, "All Time Diamond Gain_new": 230064.0, "Last 7D Diamond Gain_new": 3508.0, "Last 30D Diamond Gain_new": 7786.0, "Rank Change": 73, "Rev Change": 41237321, "Member Change": 1}, {"Clan Id": "3946560648460107778", "Clan Name_old": "Nosus01", "Clan Name_new": "BeerParty", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 07", "Server Name_new": "Teon 01", "No._old": 77, "No._new": 186, "All Time Rev VND_old": 905838406, "All Time Rev VND_new": 113566042, "Total Member_old": 33, "Total Member_new": 13, "Last 7D Rev_new": 1314052.0, "Last 30D Rev_new": 4253261.0, "All Time Diamond Gain_new": 1269017.0, "Last 7D Diamond Gain_new": 41928.0, "Last 30D Diamond Gain_new": 124453.0, "Rank Change": -109, "Rev Change": -792272364, "Member Change": -20}, {"Clan Id": "3950501298134057002", "Clan Name_old": "Genius", "Clan Name_new": "Genius", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 05", "Server Name_new": "Kain 02", "No._old": 363, "No._new": 188, "All Time Rev VND_old": 42771284, "All Time Rev VND_new": 113130814, "Total Member_old": 32, "Total Member_new": 4, "Last 7D Rev_new": 3367219.0, "Last 30D Rev_new": 3930138.0, "All Time Diamond Gain_new": 395423.0, "Last 7D Diamond Gain_new": 15689.0, "Last 30D Diamond Gain_new": 26730.0, "Rank Change": 175, "Rev Change": 70359530, "Member Change": -28}, {"Clan Id": "3944871798599843862", "Clan Name_old": "Aran", "Clan Name_new": "Ready", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 04", "Server Name_new": "Teon 06", "No._old": 1085, "No._new": 197, "All Time Rev VND_old": 4080373, "All Time Rev VND_new": 104257267, "Total Member_old": 1, "Total Member_new": 5, "Last 7D Rev_new": 34185.0, "Last 30D Rev_new": 165949.0, "All Time Diamond Gain_new": 587680.0, "Last 7D Diamond Gain_new": 3752.0, "Last 30D Diamond Gain_new": 21575.0, "Rank Change": 888, "Rev Change": 100176894, "Member Change": 4}, {"Clan Id": "3953597522877874333", "Clan Name_old": "TANMORO", "Clan Name_new": "Nova", "Union_old": "BabyThree", "Union_new": "", "Server Name_old": "Erica 09", "Server Name_new": "Aria 01", "No._old": 156, "No._new": 201, "All Time Rev VND_old": 201077788, "All Time Rev VND_new": 95748000, "Total Member_old": 36, "Total Member_new": 9, "Last 7D Rev_new": 5200000.0, "Last 30D Rev_new": 21089000.0, "All Time Diamond Gain_new": 738570.0, "Last 7D Diamond Gain_new": 16994.0, "Last 30D Diamond Gain_new": 118933.0, "Rank Change": -45, "Rev Change": -105329788, "Member Change": -27}, {"Clan Id": "3951064248087478362", "Clan Name_old": "กลัวคัยที่ไหน", "Clan Name_new": "กลัวคัยที่ไหน", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 10", "Server Name_new": "Bartz 06", "No._old": 266, "No._new": 206, "All Time Rev VND_old": 71881660, "All Time Rev VND_new": 99049475, "Total Member_old": 13, "Total Member_new": 4, "Last 7D Rev_new": 316211.0, "Last 30D Rev_new": 1214136.0, "All Time Diamond Gain_new": 138501.0, "Last 7D Diamond Gain_new": 7200.0, "Last 30D Diamond Gain_new": 30443.0, "Rank Change": 60, "Rev Change": 27167815, "Member Change": -9}, {"Clan Id": "3953878997854585080", "Clan Name_old": "弑神族", "Clan Name_new": "IIIIIIIIIIIIII", "Union_old": "", "Union_new": "", "Server Name_old": "Erica 07", "Server Name_new": "Aria 08", "No._old": 1365, "No._new": 213, "All Time Rev VND_old": 2465563, "All Time Rev VND_new": 94694393, "Total Member_old": 39, "Total Member_new": 4, "Last 7D Rev_new": 2239115.0, "Last 30D Rev_new": 11419033.0, "All Time Diamond Gain_new": 1332052.0, "Last 7D Diamond Gain_new": 74322.0, "Last 30D Diamond Gain_new": 217366.0, "Rank Change": 1152, "Rev Change": 92228830, "Member Change": -35}, {"Clan Id": "3947123598413529341", "Clan Name_old": "Resistance", "Clan Name_new": "Asher", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 01", "Server Name_new": "Leona 05", "No._old": 188, "No._new": 221, "All Time Rev VND_old": 130530808, "All Time Rev VND_new": 81615536, "Total Member_old": 16, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 88489.0, "All Time Diamond Gain_new": 65263.0, "Last 7D Diamond Gain_new": 6528.0, "Last 30D Diamond Gain_new": 16026.0, "Rank Change": -33, "Rev Change": -48915272, "Member Change": -15}, {"Clan Id": "3944308848646422671", "Clan Name_old": "ANARCHY", "Clan Name_new": "INDOMARET", "Union_old": "REBELLION", "Union_new": "", "Server Name_old": "Teon 05", "Server Name_new": "Teon 07", "No._old": 61, "No._new": 234, "All Time Rev VND_old": 1652939300, "All Time Rev VND_new": 81227689, "Total Member_old": 46, "Total Member_new": 8, "Last 7D Rev_new": 213656.0, "Last 30D Rev_new": 1615513.0, "All Time Diamond Gain_new": 401702.0, "Last 7D Diamond Gain_new": 10972.0, "Last 30D Diamond Gain_new": 62161.0, "Rank Change": -173, "Rev Change": -1571711611, "Member Change": -38}, {"Clan Id": "3943182948739580039", "Clan Name_old": "Dragon2", "Clan Name_new": "MITSUMO", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 04", "Server Name_new": "Teon 07", "No._old": 135, "No._new": 249, "All Time Rev VND_old": 287303649, "All Time Rev VND_new": 74507911, "Total Member_old": 14, "Total Member_new": 5, "Last 7D Rev_new": 350000.0, "Last 30D Rev_new": 1500000.0, "All Time Diamond Gain_new": 227708.0, "Last 7D Diamond Gain_new": 4255.0, "Last 30D Diamond Gain_new": 15386.0, "Rank Change": -114, "Rev Change": -212795738, "Member Change": -9}, {"Clan Id": "3953878997854584846", "Clan Name_old": "KAPALLAWD", "Clan Name_new": "OLF", "Union_old": "", "Union_new": "", "Server Name_old": "Aria 03", "Server Name_new": "Erica 09", "No._old": 3154, "No._new": 265, "All Time Rev VND_old": 120000, "All Time Rev VND_new": 65139647, "Total Member_old": 3, "Total Member_new": 9, "Last 7D Rev_new": 761277.0, "Last 30D Rev_new": 3199647.0, "All Time Diamond Gain_new": 387065.0, "Last 7D Diamond Gain_new": 17142.0, "Last 30D Diamond Gain_new": 87786.0, "Rank Change": 2889, "Rev Change": 65019647, "Member Change": 6}, {"Clan Id": "3941494098879316075", "Clan Name_old": "Dragon", "Clan Name_new": "AEDragon", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 10", "Server Name_new": "Leona 09", "No._old": 323, "No._new": 279, "All Time Rev VND_old": 51477475, "All Time Rev VND_new": 58124564, "Total Member_old": 21, "Total Member_new": 22, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 1406042.0, "Last 7D Diamond Gain_new": 34515.0, "Last 30D Diamond Gain_new": 228397.0, "Rank Change": 44, "Rev Change": 6647089, "Member Change": 1}, {"Clan Id": "3941212623902605489", "Clan Name_old": "Grifindor", "Clan Name_new": "SATANIC", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 03", "Server Name_new": "Teon 07", "No._old": 192, "No._new": 282, "All Time Rev VND_old": 126966047, "All Time Rev VND_new": 57456338, "Total Member_old": 14, "Total Member_new": 6, "Last 7D Rev_new": 1546869.0, "Last 30D Rev_new": 10424784.0, "All Time Diamond Gain_new": 202196.0, "Last 7D Diamond Gain_new": 12778.0, "Last 30D Diamond Gain_new": 57890.0, "Rank Change": -90, "Rev Change": -69509709, "Member Change": -8}, {"Clan Id": "3941494098879315989", "Clan Name_old": "Ares", "Clan Name_new": "LASTGROUND", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 08", "Server Name_new": "Teon 04", "No._old": 342, "No._new": 319, "All Time Rev VND_old": 47028591, "All Time Rev VND_new": 47028591, "Total Member_old": 1, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 262778.0, "Last 7D Diamond Gain_new": 167065.0, "Last 30D Diamond Gain_new": 189346.0, "Rank Change": 23, "Rev Change": 0, "Member Change": 0}, {"Clan Id": "3948812448273794525", "Clan Name_old": "PPclan", "Clan Name_new": "a11", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 09", "Server Name_new": "Leona 01", "No._old": 333, "No._new": 329, "All Time Rev VND_old": 49147781, "All Time Rev VND_new": 45447233, "Total Member_old": 3, "Total Member_new": 2, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 180426.0, "Last 7D Diamond Gain_new": 1009.0, "Last 30D Diamond Gain_new": 24627.0, "Rank Change": 4, "Rev Change": -3700548, "Member Change": -1}, {"Clan Id": "3941775573856026644", "Clan Name_old": "SiModol", "Clan Name_new": "jklppo", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 04", "Server Name_new": "Kain 01", "No._old": 1128, "No._new": 331, "All Time Rev VND_old": 3781496, "All Time Rev VND_new": 45399650, "Total Member_old": 40, "Total Member_new": 7, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 358853.0, "Last 7D Diamond Gain_new": 6894.0, "Last 30D Diamond Gain_new": 14749.0, "Rank Change": 797, "Rev Change": 41618154, "Member Change": -33}, {"Clan Id": "3943464423716290794", "Clan Name_old": "ก่งก๊ง", "Clan Name_new": "DOJOCAT", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 01", "Server Name_new": "Teon 05", "No._old": 475, "No._new": 399, "All Time Rev VND_old": 26588306, "All Time Rev VND_new": 33149318, "Total Member_old": 3, "Total Member_new": 3, "Last 7D Rev_new": 341850.0, "Last 30D Rev_new": 341850.0, "All Time Diamond Gain_new": 345601.0, "Last 7D Diamond Gain_new": 2393.0, "Last 30D Diamond Gain_new": 6816.0, "Rank Change": 76, "Rev Change": 6561012, "Member Change": 0}, {"Clan Id": "3941494098879316077", "Clan Name_old": "zura", "Clan Name_new": "Adena", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 10", "Server Name_new": "Leona 09", "No._old": 1815, "No._new": 401, "All Time Rev VND_old": 1310000, "All Time Rev VND_new": 32657647, "Total Member_old": 3, "Total Member_new": 25, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 134667.0, "Last 7D Diamond Gain_new": 3364.0, "Last 30D Diamond Gain_new": 16110.0, "Rank Change": 1414, "Rev Change": 31347647, "Member Change": 22}, {"Clan Id": "3951345723064188933", "Clan Name_old": "BA1", "Clan Name_new": "human", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 01", "Server Name_new": "Kain 03", "No._old": 1073, "No._new": 405, "All Time Rev VND_old": 4198249, "All Time Rev VND_new": 32417140, "Total Member_old": 5, "Total Member_new": 6, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 791244.0, "All Time Diamond Gain_new": 292139.0, "Last 7D Diamond Gain_new": 4482.0, "Last 30D Diamond Gain_new": 40386.0, "Rank Change": 668, "Rev Change": 28218891, "Member Change": 1}, {"Clan Id": "3943464423716290572", "Clan Name_old": "VariaArc", "Clan Name_new": "แฮปปี้แลนด์", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 01", "Server Name_new": "Bartz 03", "No._old": 180, "No._new": 416, "All Time Rev VND_old": 145057389, "All Time Rev VND_new": 30474552, "Total Member_old": 4, "Total Member_new": 2, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 270629.0, "Last 7D Diamond Gain_new": 1830.0, "Last 30D Diamond Gain_new": 7144.0, "Rank Change": -236, "Rev Change": -114582837, "Member Change": -2}, {"Clan Id": "3947405073390239746", "Clan Name_old": "WinterHaul", "Clan Name_new": "BKKCH", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 04", "Server Name_new": "Bartz 03", "No._old": 172, "No._new": 449, "All Time Rev VND_old": 156515898, "All Time Rev VND_new": 27424866, "Total Member_old": 43, "Total Member_new": 7, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 431424.0, "Last 7D Diamond Gain_new": 65110.0, "Last 30D Diamond Gain_new": 76163.0, "Rank Change": -277, "Rev Change": -129091032, "Member Change": -36}, {"Clan Id": "3950219823157346306", "Clan Name_old": "CABRIO", "Clan Name_new": "TALLUM", "Union_old": "CABRIO", "Union_new": "", "Server Name_old": "Teon 10", "Server Name_new": "Teon 02", "No._old": 367, "No._new": 452, "All Time Rev VND_old": 42088144, "All Time Rev VND_new": 24933439, "Total Member_old": 5, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 90432.0, "Last 7D Diamond Gain_new": 1152.0, "Last 30D Diamond Gain_new": 3025.0, "Rank Change": -85, "Rev Change": -17154705, "Member Change": -4}, {"Clan Id": "3943464423716290561", "Clan Name_old": "DASE", "Clan Name_new": "District8", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 01", "Server Name_new": "Bartz 03", "No._old": 498, "No._new": 467, "All Time Rev VND_old": 24832463, "All Time Rev VND_new": 25904130, "Total Member_old": 4, "Total Member_new": 6, "Last 7D Rev_new": 506909.0, "Last 30D Rev_new": 891221.0, "All Time Diamond Gain_new": 128369.0, "Last 7D Diamond Gain_new": 4547.0, "Last 30D Diamond Gain_new": 11796.0, "Rank Change": 31, "Rev Change": 1071667, "Member Change": 2}, {"Clan Id": "3950219823157346314", "Clan Name_old": "BAST", "Clan Name_new": "DELUSION", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 10", "Server Name_new": "Teon 02", "No._old": 2902, "No._new": 471, "All Time Rev VND_old": 317947, "All Time Rev VND_new": 25846833, "Total Member_old": 1, "Total Member_new": 5, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 445444.0, "Last 7D Diamond Gain_new": 21529.0, "Last 30D Diamond Gain_new": 78539.0, "Rank Change": 2431, "Rev Change": 25528886, "Member Change": 4}, {"Clan Id": "3950501298134057049", "Clan Name_old": "HawtSauce", "Clan Name_new": "Farmersss", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 04", "Server Name_new": "Leona 01", "No._old": 541, "No._new": 486, "All Time Rev VND_old": 21151895, "All Time Rev VND_new": 24230677, "Total Member_old": 5, "Total Member_new": 7, "Last 7D Rev_new": 1401583.0, "Last 30D Rev_new": 3215570.0, "All Time Diamond Gain_new": 277800.0, "Last 7D Diamond Gain_new": 4058.0, "Last 30D Diamond Gain_new": 17717.0, "Rank Change": 55, "Rev Change": 3078782, "Member Change": 2}, {"Clan Id": "3947405073390239763", "Clan Name_old": "INTERNET", "Clan Name_new": "Gangz", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 03", "Server Name_new": "Bartz 07", "No._old": 150, "No._new": 496, "All Time Rev VND_old": 223818806, "All Time Rev VND_new": 22930102, "Total Member_old": 17, "Total Member_new": 2, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 43685.0, "Last 7D Diamond Gain_new": 2474.0, "Last 30D Diamond Gain_new": 4332.0, "Rank Change": -346, "Rev Change": -200888704, "Member Change": -15}, {"Clan Id": "3955286372738138114", "Clan Name_old": "水篠旬", "Clan Name_new": "กระทิงแดงกระทิงแดง", "Union_old": "", "Union_new": "", "Server Name_old": "Aria 05", "Server Name_new": "Aria 06", "No._old": 71, "No._new": 569, "All Time Rev VND_old": 1060428882, "All Time Rev VND_new": 12497024, "Total Member_old": 32, "Total Member_new": 2, "Last 7D Rev_new": 256387.0, "Last 30D Rev_new": 291028.0, "All Time Diamond Gain_new": 91618.0, "Last 7D Diamond Gain_new": 13589.0, "Last 30D Diamond Gain_new": 18499.0, "Rank Change": -498, "Rev Change": -1047931858, "Member Change": -30}, {"Clan Id": "3943745898693001385", "Clan Name_old": "eXcLusive", "Clan Name_new": "eXcLusive", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 01", "Server Name_new": "Kain 09", "No._old": 3140, "No._new": 583, "All Time Rev VND_old": 127711, "All Time Rev VND_new": 17496438, "Total Member_old": 11, "Total Member_new": 7, "Last 7D Rev_new": 42731.0, "Last 30D Rev_new": 145286.0, "All Time Diamond Gain_new": 148433.0, "Last 7D Diamond Gain_new": 2885.0, "Last 30D Diamond Gain_new": 31687.0, "Rank Change": 2557, "Rev Change": 17368727, "Member Change": -4}, {"Clan Id": "3943464423716290571", "Clan Name_old": "WARRIORS", "Clan Name_new": "Rivendell", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 05", "Server Name_new": "Kain 04", "No._old": 348, "No._new": 609, "All Time Rev VND_old": 45890671, "All Time Rev VND_new": 16157879, "Total Member_old": 4, "Total Member_new": 2, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 102911.0, "Last 7D Diamond Gain_new": 2355.0, "Last 30D Diamond Gain_new": 70962.0, "Rank Change": -261, "Rev Change": -29732792, "Member Change": -2}, {"Clan Id": "3954160472831295489", "Clan Name_old": "SEAL", "Clan Name_new": "SEAL", "Union_old": "", "Union_new": "", "Server Name_old": "Erica 01", "Server Name_new": "Aria 06", "No._old": 620, "No._new": 656, "All Time Rev VND_old": 14997768, "All Time Rev VND_new": 13261410, "Total Member_old": 7, "Total Member_new": 6, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 154973.0, "All Time Diamond Gain_new": 253891.0, "Last 7D Diamond Gain_new": 6956.0, "Last 30D Diamond Gain_new": 23955.0, "Rank Change": -36, "Rev Change": -1736358, "Member Change": -1}, {"Clan Id": "3951908673017610430", "Clan Name_old": "7ประจัญบาน", "Clan Name_new": "KOJIRO", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 03", "Server Name_new": "Teon 05", "No._old": 68, "No._new": 720, "All Time Rev VND_old": 1148617092, "All Time Rev VND_new": 10444333, "Total Member_old": 9, "Total Member_new": 3, "Last 7D Rev_new": 692757.0, "Last 30D Rev_new": 692757.0, "All Time Diamond Gain_new": 487082.0, "Last 7D Diamond Gain_new": 13070.0, "Last 30D Diamond Gain_new": 31475.0, "Rank Change": -652, "Rev Change": -1138172759, "Member Change": -6}, {"Clan Id": "3951908673017611963", "Clan Name_old": "PALDO", "Clan Name_new": "PALDO", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 10", "Server Name_new": "Teon 05", "No._old": 696, "No._new": 738, "All Time Rev VND_old": 11361590, "All Time Rev VND_new": 10107859, "Total Member_old": 3, "Total Member_new": 2, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 125510.0, "Last 7D Diamond Gain_new": 3979.0, "Last 30D Diamond Gain_new": 8165.0, "Rank Change": -42, "Rev Change": -1253731, "Member Change": -1}, {"Clan Id": "3942338523809448032", "Clan Name_old": "OFS", "Clan Name_new": "Aurora", "Union_old": "207STORE", "Union_new": "", "Server Name_old": "Kain 04", "Server Name_new": "Leona 10", "No._old": 62, "No._new": 745, "All Time Rev VND_old": 1561273372, "All Time Rev VND_new": 9932600, "Total Member_old": 44, "Total Member_new": 2, "Last 7D Rev_new": 100000.0, "Last 30D Rev_new": 100000.0, "All Time Diamond Gain_new": 24794.0, "Last 7D Diamond Gain_new": 844.0, "Last 30D Diamond Gain_new": 2876.0, "Rank Change": -683, "Rev Change": -1551340772, "Member Change": -42}, {"Clan Id": "3948530973297082412", "Clan Name_old": "ONEPIECE", "Clan Name_new": "F3", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 06", "Server Name_new": "Teon 01", "No._old": 2981, "No._new": 748, "All Time Rev VND_old": 257074, "All Time Rev VND_new": 9902466, "Total Member_old": 2, "Total Member_new": 2, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 93206.0, "Last 7D Diamond Gain_new": 12166.0, "Last 30D Diamond Gain_new": 21905.0, "Rank Change": 2233, "Rev Change": 9645392, "Member Change": 0}, {"Clan Id": "3956975222598403215", "Clan Name_old": "GoldenStar", "Clan Name_new": "Napolion", "Union_old": "", "Union_new": "", "Server Name_old": "Aria 08", "Server Name_new": "Aria 05", "No._old": 825, "No._new": 862, "All Time Rev VND_old": 7810000, "All Time Rev VND_new": 7152298, "Total Member_old": 15, "Total Member_new": 2, "Last 7D Rev_new": 943876.0, "Last 30D Rev_new": 2252298.0, "All Time Diamond Gain_new": 71184.0, "Last 7D Diamond Gain_new": 1285.0, "Last 30D Diamond Gain_new": 5938.0, "Rank Change": -37, "Rev Change": -657702, "Member Change": -13}, {"Clan Id": "3941494098879316182", "Clan Name_old": "Izanami", "Clan Name_new": "Roam", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 08", "Server Name_new": "Teon 04", "No._old": 142, "No._new": 925, "All Time Rev VND_old": 278371863, "All Time Rev VND_new": 5953633, "Total Member_old": 9, "Total Member_new": 2, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 86603.0, "All Time Diamond Gain_new": 120281.0, "Last 7D Diamond Gain_new": 2069.0, "Last 30D Diamond Gain_new": 9151.0, "Rank Change": -783, "Rev Change": -272418230, "Member Change": -7}, {"Clan Id": "3951908673017610268", "Clan Name_old": "Harki", "Clan Name_new": "ENG", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 10", "Server Name_new": "Teon 01", "No._old": 898, "No._new": 983, "All Time Rev VND_old": 6390000, "All Time Rev VND_new": 5210000, "Total Member_old": 12, "Total Member_new": 4, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 71463.0, "Last 7D Diamond Gain_new": 1346.0, "Last 30D Diamond Gain_new": 5569.0, "Rank Change": -85, "Rev Change": -1180000, "Member Change": -8}, {"Clan Id": "3943182948739580393", "Clan Name_old": "loowwky", "Clan Name_new": "polarbear", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 09", "Server Name_new": "Teon 09", "No._old": 905, "No._new": 1019, "All Time Rev VND_old": 6225733, "All Time Rev VND_new": 4770000, "Total Member_old": 16, "Total Member_new": 7, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 48722.0, "Last 7D Diamond Gain_new": 4745.0, "Last 30D Diamond Gain_new": 22348.0, "Rank Change": -114, "Rev Change": -1455733, "Member Change": -9}, {"Clan Id": "3946560648460110701", "Clan Name_old": "HappyOrSad", "Clan Name_new": "LadyBoy", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 07", "Server Name_new": "Bartz 07", "No._old": 1148, "No._new": 1133, "All Time Rev VND_old": 3665000, "All Time Rev VND_new": 3745000, "Total Member_old": 1, "Total Member_new": 1, "Last 7D Rev_new": 80000.0, "Last 30D Rev_new": 80000.0, "All Time Diamond Gain_new": 21612.0, "Last 7D Diamond Gain_new": 3909.0, "Last 30D Diamond Gain_new": 3985.0, "Rank Change": 15, "Rev Change": 80000, "Member Change": 0}, {"Clan Id": "3949375398227214550", "Clan Name_old": "AFK", "Clan Name_new": "สะพานควาย", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 01", "Server Name_new": "Bartz 03", "No._old": 1090, "No._new": 1240, "All Time Rev VND_old": 4060388, "All Time Rev VND_new": 3084874, "Total Member_old": 1, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 160204.0, "Last 7D Diamond Gain_new": 1217.0, "Last 30D Diamond Gain_new": 3410.0, "Rank Change": -150, "Rev Change": -975514, "Member Change": 0}, {"Clan Id": "3945716223529979085", "Clan Name_old": "PPKKLL", "Clan Name_new": "Gaoranger", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 08", "Server Name_new": "Bartz 07", "No._old": 1774, "No._new": 1279, "All Time Rev VND_old": 1370000, "All Time Rev VND_new": 2915000, "Total Member_old": 11, "Total Member_new": 3, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 40000.0, "All Time Diamond Gain_new": 232994.0, "Last 7D Diamond Gain_new": 2018.0, "Last 30D Diamond Gain_new": 10403.0, "Rank Change": 495, "Rev Change": 1545000, "Member Change": -8}, {"Clan Id": "3947686548366951003", "Clan Name_old": "PickleballClub", "Clan Name_new": "Marvel", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 08", "Server Name_new": "Leona 03", "No._old": 194, "No._new": 1442, "All Time Rev VND_old": 121115281, "All Time Rev VND_new": 2183273, "Total Member_old": 2, "Total Member_new": 1, "Last 7D Rev_new": 340569.0, "Last 30D Rev_new": 340569.0, "All Time Diamond Gain_new": 12574.0, "Last 7D Diamond Gain_new": 601.0, "Last 30D Diamond Gain_new": 649.0, "Rank Change": -1248, "Rev Change": -118932008, "Member Change": -1}, {"Clan Id": "3941212623902605560", "Clan Name_old": "Akatsuki", "Clan Name_new": "ArtMUSIC", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 02", "Server Name_new": "Kain 04", "No._old": 1493, "No._new": 1515, "All Time Rev VND_old": 2033938, "All Time Rev VND_new": 1843027, "Total Member_old": 29, "Total Member_new": 12, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 136349.0, "Last 7D Diamond Gain_new": 4645.0, "Last 30D Diamond Gain_new": 15081.0, "Rank Change": -22, "Rev Change": -190911, "Member Change": -17}, {"Clan Id": "3952471622971031718", "Clan Name_old": "crytals", "Clan Name_new": "DCcomics", "Union_old": "", "Union_new": "", "Server Name_old": "Erica 02", "Server Name_new": "Aria 07", "No._old": 3196, "No._new": 1546, "All Time Rev VND_old": 40000, "All Time Rev VND_new": 1828877, "Total Member_old": 5, "Total Member_new": 3, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 54993.0, "Last 7D Diamond Gain_new": 1764.0, "Last 30D Diamond Gain_new": 21237.0, "Rank Change": 1650, "Rev Change": 1788877, "Member Change": -2}, {"Clan Id": "3956412272644980743", "Clan Name_old": "บังกอก02", "Clan Name_new": "MokKaJu", "Union_old": "", "Union_new": "", "Server Name_old": "Aria 06", "Server Name_new": "Aria 02", "No._old": 78, "No._new": 1630, "All Time Rev VND_old": 888582337, "All Time Rev VND_new": 1606193, "Total Member_old": 7, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 34868.0, "Last 7D Diamond Gain_new": 1652.0, "Last 30D Diamond Gain_new": 2538.0, "Rank Change": -1552, "Rev Change": -886976144, "Member Change": -6}, {"Clan Id": "3945716223529976123", "Clan Name_old": "CrimsonBlack", "Clan Name_new": "HoneyMoon", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 08", "Server Name_new": "Bartz 05", "No._old": 868, "No._new": 1801, "All Time Rev VND_old": 6973894, "All Time Rev VND_new": 1290000, "Total Member_old": 15, "Total Member_new": 4, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 48160.0, "Last 7D Diamond Gain_new": 677.0, "Last 30D Diamond Gain_new": 7598.0, "Rank Change": -933, "Rev Change": -5683894, "Member Change": -11}, {"Clan Id": "3944590323623133760", "Clan Name_old": "FullMoon", "Clan Name_new": "STARGAZER", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 04", "Server Name_new": "Teon 06", "No._old": 2161, "No._new": 1817, "All Time Rev VND_old": 880119, "All Time Rev VND_new": 1274688, "Total Member_old": 37, "Total Member_new": 4, "Last 7D Rev_new": 68370.0, "Last 30D Rev_new": 68370.0, "All Time Diamond Gain_new": 99260.0, "Last 7D Diamond Gain_new": 4982.0, "Last 30D Diamond Gain_new": 28141.0, "Rank Change": 344, "Rev Change": 394569, "Member Change": -33}, {"Clan Id": "3948249498320371754", "Clan Name_old": "Mandalorian", "Clan Name_new": "Se7evKingdom", "Union_old": "", "Union_new": "", "Server Name_old": "Teon 01", "Server Name_new": "Leona 05", "No._old": 34, "No._new": 1981, "All Time Rev VND_old": 4534630455, "All Time Rev VND_new": 1046749, "Total Member_old": 49, "Total Member_new": 3, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 169573.0, "Last 7D Diamond Gain_new": 3302.0, "Last 30D Diamond Gain_new": 39971.0, "Rank Change": -1947, "Rev Change": -4533583706, "Member Change": -46}, {"Clan Id": "3954160472831295621", "Clan Name_old": "DPWH", "Clan Name_new": "PVE4LIFE", "Union_old": "", "Union_new": "", "Server Name_old": "Erica 08", "Server Name_new": "Aria 02", "No._old": 2156, "No._new": 2132, "All Time Rev VND_old": 884522, "All Time Rev VND_new": 884522, "Total Member_old": 3, "Total Member_new": 3, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 23751.0, "Last 7D Diamond Gain_new": 2343.0, "Last 30D Diamond Gain_new": 2910.0, "Rank Change": 24, "Rev Change": 0, "Member Change": 0}, {"Clan Id": "3941494098879320834", "Clan Name_old": "OneZFarm", "Clan Name_new": "PVEalcohol", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 03", "Server Name_new": "Teon 04", "No._old": 2563, "No._new": 2530, "All Time Rev VND_old": 560000, "All Time Rev VND_new": 560000, "Total Member_old": 4, "Total Member_new": 4, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 9065.0, "Last 7D Diamond Gain_new": 1333.0, "Last 30D Diamond Gain_new": 2814.0, "Rank Change": 33, "Rev Change": 0, "Member Change": 0}, {"Clan Id": "3945153273576557220", "Clan Name_old": "Kukubima", "Clan Name_new": "Converse", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 06", "Server Name_new": "Teon 01", "No._old": 220, "No._new": 2745, "All Time Rev VND_old": 99552991, "All Time Rev VND_new": 410254, "Total Member_old": 16, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 29219.0, "Last 7D Diamond Gain_new": 1495.0, "Last 30D Diamond Gain_new": 5032.0, "Rank Change": -2525, "Rev Change": -99142737, "Member Change": -15}, {"Clan Id": "3953597522877874187", "Clan Name_old": "HuynhDe", "Clan Name_new": "NoMoney", "Union_old": "", "Union_new": "", "Server Name_old": "Erica 06", "Server Name_new": "Aria 10", "No._old": 2705, "No._new": 2813, "All Time Rev VND_old": 460000, "All Time Rev VND_new": 360000, "Total Member_old": 2, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 7998.0, "Last 7D Diamond Gain_new": 83.0, "Last 30D Diamond Gain_new": 842.0, "Rank Change": -108, "Rev Change": -100000, "Member Change": -1}, {"Clan Id": "3944590323623133259", "Clan Name_old": "DeathSquadPINAS", "Clan Name_new": "Strawhat", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 04", "Server Name_new": "Leona 10", "No._old": 760, "No._new": 2828, "All Time Rev VND_old": 9210882, "All Time Rev VND_new": 133998, "Total Member_old": 53, "Total Member_new": 3, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 30345.0, "Last 7D Diamond Gain_new": 1067.0, "Last 30D Diamond Gain_new": 3804.0, "Rank Change": -2068, "Rev Change": -9076884, "Member Change": -50}, {"Clan Id": "3957256697575112710", "Clan Name_old": "DemonSlayer", "Clan Name_new": "DemonKiller", "Union_old": "", "Union_new": "", "Server Name_old": "Aria 09", "Server Name_new": "Erica 09", "No._old": 2816, "No._new": 2938, "All Time Rev VND_old": 380000, "All Time Rev VND_new": 260000, "Total Member_old": 2, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 17473.0, "Last 7D Diamond Gain_new": 644.0, "Last 30D Diamond Gain_new": 909.0, "Rank Change": -122, "Rev Change": -120000, "Member Change": -1}, {"Clan Id": "3945997698506686504", "Clan Name_old": "Nazarickz", "Clan Name_new": "Uchiha", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 02", "Server Name_new": "Teon 08", "No._old": 2001, "No._new": 3000, "All Time Rev VND_old": 1052773, "All Time Rev VND_new": 220000, "Total Member_old": 7, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 13826.0, "Last 7D Diamond Gain_new": 616.0, "Last 30D Diamond Gain_new": 723.0, "Rank Change": -999, "Rev Change": -832773, "Member Change": -6}, {"Clan Id": "3941775573856026777", "Clan Name_old": "SUKATANI", "Clan Name_new": "rrrrr", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 04", "Server Name_new": "Kain 01", "No._old": 2953, "No._new": 3000, "All Time Rev VND_old": 280000, "All Time Rev VND_new": 220000, "Total Member_old": 1, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 13508.0, "Last 7D Diamond Gain_new": 630.0, "Last 30D Diamond Gain_new": 756.0, "Rank Change": -47, "Rev Change": -60000, "Member Change": 0}, {"Clan Id": "3942338523809448075", "Clan Name_old": "SenggoLBacok", "Clan Name_new": "KicauwMania", "Union_old": "", "Union_new": "", "Server Name_old": "Kain 04", "Server Name_new": "Kain 06", "No._old": 154, "No._new": 3026, "All Time Rev VND_old": 209173050, "All Time Rev VND_new": 195958, "Total Member_old": 30, "Total Member_new": 1, "Last 7D Rev_new": 98688.0, "Last 30D Rev_new": 98688.0, "All Time Diamond Gain_new": 117989.0, "Last 7D Diamond Gain_new": 1456.0, "Last 30D Diamond Gain_new": 57723.0, "Rank Change": -2872, "Rev Change": -208977092, "Member Change": -29}, {"Clan Id": "3942338523809448031", "Clan Name_old": "javhd", "Clan Name_new": "yuyyhhh", "Union_old": "", "Union_new": "", "Server Name_old": "Bartz 03", "Server Name_new": "Kain 01", "No._old": 2953, "No._new": 3074, "All Time Rev VND_old": 280000, "All Time Rev VND_new": 140000, "Total Member_old": 2, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 23004.0, "Last 7D Diamond Gain_new": 654.0, "Last 30D Diamond Gain_new": 1149.0, "Rank Change": -121, "Rev Change": -140000, "Member Change": -1}, {"Clan Id": "3950219823157346336", "Clan Name_old": "ANJAYDII", "Clan Name_new": "lilTiger", "Union_old": "", "Union_new": "", "Server Name_old": "Leona 03", "Server Name_new": "Teon 02", "No._old": 2316, "No._new": 3115, "All Time Rev VND_old": 744081, "All Time Rev VND_new": 102564, "Total Member_old": 16, "Total Member_new": 1, "Last 7D Rev_new": 0.0, "Last 30D Rev_new": 0.0, "All Time Diamond Gain_new": 9406.0, "Last 7D Diamond Gain_new": 644.0, "Last 30D Diamond Gain_new": 653.0, "Rank Change": -799, "Rev Change": -641517, "Member Change": -15}], "worlds": [{"World": "Teon", "total_clans_old": 1351, "all_time_rev_old": 157161100655, "total_member_old": 16554, "total_clans_new": 1352, "all_time_rev_new": 413179831917, "total_member_new": 16334, "last_7d_rev": 5374222805.0, "last_30d_rev": 24958636830.0, "rev_change": 256018731262, "rev_pct": 162.9, "clan_change": 1, "member_change": -220, "top10": 8, "top30": 15, "top50": 18, "top100": 36, "top10_old": 3, "top30_old": 7, "top50_old": 12, "top100_old": 21, "inflow": 32, "outflow": 9, "net_flow": 23}, {"World": "Leona", "total_clans_old": 965, "all_time_rev_old": 150562176079, "total_member_old": 13452, "total_clans_new": 938, "all_time_rev_new": 89658495259, "total_member_new": 12958, "last_7d_rev": 778730306.0, "last_30d_rev": 3474509328.0, "rev_change": -60903680820, "rev_pct": -40.45, "clan_change": -27, "member_change": -494, "top10": 1, "top30": 5, "top50": 11, "top100": 17, "top10_old": 3, "top30_old": 9, "top50_old": 13, "top100_old": 19, "inflow": 12, "outflow": 25, "net_flow": -13}, {"World": "Bartz", "total_clans_old": 1238, "all_time_rev_old": 82354792471, "total_member_old": 13724, "total_clans_new": 1219, "all_time_rev_new": 74892436302, "total_member_new": 13199, "last_7d_rev": 941217361.0, "last_30d_rev": 3923556929.0, "rev_change": -7462356169, "rev_pct": -9.06, "clan_change": -19, "member_change": -525, "top10": 0, "top30": 5, "top50": 8, "top100": 16, "top10_old": 0, "top30_old": 5, "top50_old": 9, "top100_old": 22, "inflow": 17, "outflow": 15, "net_flow": 2}, {"World": "Kain", "total_clans_old": 1314, "all_time_rev_old": 272874223798, "total_member_old": 25006, "total_clans_new": 1309, "all_time_rev_new": 67109892039, "total_member_new": 25017, "last_7d_rev": 420645578.0, "last_30d_rev": 2311996792.0, "rev_change": -205764331759, "rev_pct": -75.41, "clan_change": -5, "member_change": 11, "top10": 1, "top30": 5, "top50": 7, "top100": 14, "top10_old": 4, "top30_old": 8, "top50_old": 11, "top100_old": 21, "inflow": 11, "outflow": 23, "net_flow": -12}, {"World": "Aria", "total_clans_old": 340, "all_time_rev_old": 20912266133, "total_member_old": 6546, "total_clans_new": 345, "all_time_rev_new": 17024756171, "total_member_new": 6197, "last_7d_rev": 583251197.0, "last_30d_rev": 2268882677.0, "rev_change": -3887509962, "rev_pct": -18.59, "clan_change": 5, "member_change": -349, "top10": 0, "top30": 0, "top50": 3, "top100": 9, "top10_old": 0, "top30_old": 1, "top50_old": 2, "top100_old": 8, "inflow": 8, "outflow": 2, "net_flow": 6}, {"World": "Erica", "total_clans_old": 1091, "all_time_rev_old": 22894143425, "total_member_old": 10749, "total_clans_new": 1043, "all_time_rev_new": 15328677393, "total_member_new": 9967, "last_7d_rev": 378238087.0, "last_30d_rev": 1858448797.0, "rev_change": -7565466032, "rev_pct": -33.05, "clan_change": -48, "member_change": -782, "top10": 0, "top30": 0, "top50": 3, "top100": 8, "top10_old": 0, "top30_old": 0, "top50_old": 3, "top100_old": 9, "inflow": 2, "outflow": 8, "net_flow": -6}], "total_moved": 97, "inter_world_moves": 82, "intra_world_moves": 15};
+
+// ---------- Language ----------
+function setLang(lang) {
+  document.body.classList.toggle('lang-en', lang === 'en');
+  document.body.classList.toggle('lang-vi', lang === 'vi');
+  document.getElementById('btn-vi').classList.toggle('active', lang === 'vi');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  // Update placeholders & dropdown options
+  const isEN = lang === 'en';
+  document.getElementById('searchMoved').placeholder = isEN ? '🔍 Search clan name / union...' : '🔍 Tìm clan name / union...';
+  // Re-populate dropdowns to update text
+  populateFilters(isEN);
+}
+
+// ---------- Helpers ----------
+const fmtNum = n => (n === null || n === undefined || isNaN(n)) ? '—' : Number(n).toLocaleString('en-US');
+const fmtVND = n => {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  const v = Number(n);
+  if (v >= 1e9) return (v/1e9).toFixed(2) + 'B';
+  if (v >= 1e6) return (v/1e6).toFixed(1) + 'M';
+  if (v >= 1e3) return (v/1e3).toFixed(0) + 'K';
+  return v.toFixed(0);
+};
+const rankPill = n => {
+  let cls = 'rank-pill';
+  if (n <= 10) cls += ' top';
+  else if (n <= 30) cls += ' top10';
+  return `<span class="${cls}">${n}</span>`;
+};
+const deltaRank = d => {
+  if (d === 0 || d === null || d === undefined) return '<span class="change-flat">—</span>';
+  if (d > 0) return `<span class="change-up">▲ ${d}</span>`;
+  return `<span class="change-down">▼ ${Math.abs(d)}</span>`;
+};
+const deltaPct = (pct) => {
+  if (pct > 0) return `<span class="change-up">▲ ${pct.toFixed(2)}%</span>`;
+  if (pct < 0) return `<span class="change-down">▼ ${Math.abs(pct).toFixed(2)}%</span>`;
+  return `<span class="change-flat">0%</span>`;
+};
+const deltaNum = (n) => {
+  if (n > 0) return `<span class="change-up">▲ ${fmtNum(n)}</span>`;
+  if (n < 0) return `<span class="change-down">▼ ${fmtNum(Math.abs(n))}</span>`;
+  return `<span class="change-flat">0</span>`;
+};
+const deltaTopShare = (newVal, oldVal) => {
+  const d = newVal - oldVal;
+  if (d > 0) return ` <span class="change-up">(▲${d})</span>`;
+  if (d < 0) return ` <span class="change-down">(▼${Math.abs(d)})</span>`;
+  return '';
+};
+
+// ---------- World revenue table ----------
+function buildWorldTable() {
+  const rows = [...DATA.worlds].sort((a,b) => Number(b.all_time_rev_new) - Number(a.all_time_rev_new));
+  return `<div class="scroll-table"><table>
+    <thead><tr>
+      <th>#</th>
+      <th>World</th>
+      <th><span class="t-vi">Số clan (06/05)</span><span class="t-en">Clans (Before)</span></th>
+      <th><span class="t-vi">Số clan (14/05)</span><span class="t-en">Clans (After)</span></th>
+      <th>Δ Clan</th>
+      <th><span class="t-vi">All Time Rev (06/05)</span><span class="t-en">All Time Rev (Before)</span></th>
+      <th><span class="t-vi">All Time Rev (14/05)</span><span class="t-en">All Time Rev (After)</span></th>
+      <th><span class="t-vi">Δ Doanh thu</span><span class="t-en">Δ Revenue</span></th>
+      <th><span class="t-vi">% thay đổi</span><span class="t-en">% Change</span></th>
+    </tr></thead><tbody>
+    ${rows.map((r, i) => {
+      const isUp = Number(r.rev_change) > 0;
+      const cls = Math.abs(Number(r.rev_pct)) >= 20 ? 'highlight-row' : '';
+      return `<tr class="${cls}">
+        <td>${i+1}</td>
+        <td><span class="world-pill w-${r.World}">${r.World}</span></td>
+        <td>${fmtNum(r.total_clans_old)}</td>
+        <td>${fmtNum(r.total_clans_new)}</td>
+        <td>${deltaNum(Number(r.clan_change))}</td>
+        <td>${fmtVND(r.all_time_rev_old)}</td>
+        <td>${fmtVND(r.all_time_rev_new)}</td>
+        <td>${isUp ? '<span class="change-up">▲ ' + fmtVND(r.rev_change) + '</span>' : '<span class="change-down">▼ ' + fmtVND(Math.abs(Number(r.rev_change))) + '</span>'}</td>
+        <td>${deltaPct(Number(r.rev_pct))}</td>
+      </tr>`;
+    }).join('')}
+    </tbody></table></div>`;
+}
+
+// ---------- Moved table ----------
+let movedState = { sortKey: 'No._new', sortDir: 1, search: '', oldS: '', newS: '', hi: 'all' };
+
+function highlightFlag(r) {
+  if (movedState.hi === 'all') return true;
+  if (movedState.hi === 'rank-up') return r['Rank Change'] >= 10;
+  if (movedState.hi === 'rank-down') return r['Rank Change'] <= -10;
+  if (movedState.hi === 'top50') return r['No._new'] <= 50;
+  return true;
+}
+
+function renderMovedTable() {
+  const tbody = document.querySelector('#tableMoved tbody');
+  let rows = DATA.moved.filter(r => {
+    if (movedState.oldS && r['Server Name_old'] !== movedState.oldS) return false;
+    if (movedState.newS && r['Server Name_new'] !== movedState.newS) return false;
+    if (movedState.search) {
+      const s = movedState.search.toLowerCase();
+      const name = (r['Clan Name_new']||'').toLowerCase();
+      const oldName = (r['Clan Name_old']||'').toLowerCase();
+      const union = (r['Union_new']||'').toLowerCase();
+      if (!name.includes(s) && !oldName.includes(s) && !union.includes(s)) return false;
+    }
+    if (!highlightFlag(r)) return false;
+    return true;
+  });
+  rows.sort((a,b) => {
+    let av = a[movedState.sortKey], bv = b[movedState.sortKey];
+    if (typeof av === 'string' && typeof bv === 'string') return movedState.sortDir * av.localeCompare(bv);
+    return movedState.sortDir * ((Number(av)||0) - (Number(bv)||0));
+  });
+
+  document.getElementById('movedCountText').textContent = `${rows.length}/${DATA.moved.length}`;
+  document.getElementById('movedCountText_en').textContent = `${rows.length}/${DATA.moved.length}`;
+
+  tbody.innerHTML = rows.map(r => {
+    const isBigChange = Math.abs(r['Rank Change']) >= 10;
+    const cls = isBigChange ? 'highlight-row' : '';
+    const wasLabel = document.body.classList.contains('lang-en') ? 'was' : 'cũ';
+    const renamed = r['Clan Name_old'] !== r['Clan Name_new']
+      ? `<br><small style="color:var(--text-muted)">${wasLabel}: ${r['Clan Name_old']}</small>` : '';
+    const union = r['Union_new'] || r['Union_old'] || '';
+    return `<tr class="${cls}">
+      <td>${rankPill(r['No._new'])}</td>
+      <td><strong>${r['Clan Name_new']}</strong>${renamed}</td>
+      <td>${union ? `<span class="union-tag">${union}</span>` : '—'}</td>
+      <td><span class="server-tag old">${r['Server Name_old']}</span><span class="arrow">→</span><span class="server-tag new">${r['Server Name_new']}</span></td>
+      <td>${r['No._old']}</td>
+      <td>${r['No._new']}</td>
+      <td>${deltaRank(r['Rank Change'])}</td>
+      <td>${r['Total Member_new']}</td>
+      <td>${fmtVND(r['All Time Rev VND_new'])}</td>
+      <td>${fmtVND(r['Last 7D Rev_new'])}</td>
+    </tr>`;
+  }).join('');
+}
+
+function populateFilters(isEN) {
+  const allOpt = isEN ? '— All —' : '— Tất cả —';
+  const oldServers = [...new Set(DATA.moved.map(r => r['Server Name_old']))].sort();
+  const newServers = [...new Set(DATA.moved.map(r => r['Server Name_new']))].sort();
+  const oldSel = document.getElementById('filterOldServer');
+  const newSel = document.getElementById('filterNewServer');
+  oldSel.innerHTML = `<option value="">${allOpt}</option>` + oldServers.map(s => `<option value="${s}">${s}</option>`).join('');
+  newSel.innerHTML = `<option value="">${allOpt}</option>` + newServers.map(s => `<option value="${s}">${s}</option>`).join('');
+  oldSel.value = movedState.oldS;
+  newSel.value = movedState.newS;
+
+  const hiSel = document.getElementById('filterHighlight');
+  const hi = movedState.hi;
+  hiSel.innerHTML = isEN ?
+    `<option value="all">All</option><option value="rank-up">Big rank up (≥10)</option><option value="rank-down">Big rank down (≥10)</option><option value="top50">Top 50 (after)</option>` :
+    `<option value="all">Tất cả</option><option value="rank-up">Rank tăng mạnh (≥10)</option><option value="rank-down">Rank giảm mạnh (≥10)</option><option value="top50">Top 50 sau transfer</option>`;
+  hiSel.value = hi;
+}
+
+function setupMovedFilters() {
+  populateFilters(false);
+
+  document.getElementById('searchMoved').addEventListener('input', e => { movedState.search = e.target.value; renderMovedTable(); });
+  document.getElementById('filterOldServer').addEventListener('change', e => { movedState.oldS = e.target.value; renderMovedTable(); });
+  document.getElementById('filterNewServer').addEventListener('change', e => { movedState.newS = e.target.value; renderMovedTable(); });
+  document.getElementById('filterHighlight').addEventListener('change', e => { movedState.hi = e.target.value; renderMovedTable(); });
+
+  document.querySelectorAll('#tableMoved .sort-th').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.key;
+      if (movedState.sortKey === key) movedState.sortDir *= -1;
+      else { movedState.sortKey = key; movedState.sortDir = 1; }
+      document.querySelectorAll('#tableMoved .sort-th').forEach(t => t.classList.remove('sorted', 'sorted-asc'));
+      th.classList.add(movedState.sortDir === 1 ? 'sorted-asc' : 'sorted');
+      renderMovedTable();
+    });
+  });
+}
+
+// ---------- Insights ----------
+function buildTopShareTable() {
+  // Sort worlds by top100 desc
+  const worlds = [...DATA.worlds].sort((a,b) => Number(b.top100) - Number(a.top100));
+  return `<table>
+    <thead><tr>
+      <th>#</th>
+      <th>World</th>
+      <th><span class="t-vi">Top 10</span><span class="t-en">Top 10</span></th>
+      <th><span class="t-vi">Top 30</span><span class="t-en">Top 30</span></th>
+      <th><span class="t-vi">Top 50</span><span class="t-en">Top 50</span></th>
+      <th><span class="t-vi">Top 100</span><span class="t-en">Top 100</span></th>
+      <th><span class="t-vi">Clan đến</span><span class="t-en">Inflow</span></th>
+      <th><span class="t-vi">Clan đi</span><span class="t-en">Outflow</span></th>
+      <th><span class="t-vi">Net</span><span class="t-en">Net</span></th>
+      <th><span class="t-vi">Last 7D Rev</span><span class="t-en">Last 7D Rev</span></th>
+    </tr></thead><tbody>
+    ${worlds.map((r,i) => {
+      const cls = i === 0 ? 'highlight-row' : '';
+      return `<tr class="${cls}">
+        <td><strong>${i+1}</strong></td>
+        <td><span class="world-pill w-${r.World}">${r.World}</span></td>
+        <td><strong>${r.top10}</strong>${deltaTopShare(Number(r.top10), Number(r.top10_old))}</td>
+        <td><strong>${r.top30}</strong>${deltaTopShare(Number(r.top30), Number(r.top30_old))}</td>
+        <td><strong>${r.top50}</strong>${deltaTopShare(Number(r.top50), Number(r.top50_old))}</td>
+        <td><strong>${r.top100}</strong>${deltaTopShare(Number(r.top100), Number(r.top100_old))}</td>
+        <td><span class="change-up">+${r.inflow}</span></td>
+        <td><span class="change-down">-${r.outflow}</span></td>
+        <td>${deltaNum(Number(r.net_flow))}</td>
+        <td>${fmtVND(r.last_7d_rev)}</td>
+      </tr>`;
+    }).join('')}
+    </tbody></table>`;
+}
+
+function buildInsights() {
+  const ws = [...DATA.worlds].sort((a,b) => Number(b.top100) - Number(a.top100));
+  const teon = ws.find(w => w.World === 'Teon');
+  const kain = ws.find(w => w.World === 'Kain');
+  const leona = ws.find(w => w.World === 'Leona');
+  const bartz = ws.find(w => w.World === 'Bartz');
+  const erica = ws.find(w => w.World === 'Erica');
+  const aria = ws.find(w => w.World === 'Aria');
+
+  const items = [
+    {cls: 'up', vi: `<strong>🥇 Teon là world "sôi động" nhất sau transfer.</strong> Chiếm <strong>${teon.top100}/100</strong> clan trong top 100 (tăng từ ${teon.top100_old}/100 trước transfer — gấp ${(teon.top100/teon.top100_old).toFixed(1)}x), và độc chiếm <strong>${teon.top10}/10</strong> vị trí top 10 thế giới. Nhận ròng ${teon.net_flow} clan migrants. Last 7D Rev đạt ${fmtVND(teon.last_7d_rev)} — cao gấp ${(Number(teon.last_7d_rev)/Number(bartz.last_7d_rev)).toFixed(1)}x so với world xếp thứ 2.`,
+        en: `<strong>🥇 Teon is the hottest world after the transfer.</strong> It holds <strong>${teon.top100}/100</strong> top-100 clans (up from ${teon.top100_old}/100 before — a ${(teon.top100/teon.top100_old).toFixed(1)}x increase), and dominates <strong>${teon.top10}/10</strong> top-10 spots globally. Net inflow of ${teon.net_flow} migrants. Last 7D Rev reached ${fmtVND(teon.last_7d_rev)} — ${(Number(teon.last_7d_rev)/Number(bartz.last_7d_rev)).toFixed(1)}x the 2nd-place world.`},
+
+    {cls: 'down', vi: `<strong>📉 Kain là world chịu thiệt nhất.</strong> Top 100 giảm từ ${kain.top100_old} xuống <strong>${kain.top100}</strong> (−${kain.top100_old - kain.top100}), top 10 từ ${kain.top10_old} xuống <strong>${kain.top10}</strong>. Mất ròng ${Math.abs(kain.net_flow)} clan ra ngoài (${kain.outflow} ra, chỉ ${kain.inflow} vào). Các clan nặng ký như DOGE, Mystic, MYTH đã rời sang Teon.`,
+        en: `<strong>📉 Kain is the biggest loser.</strong> Top 100 dropped from ${kain.top100_old} to <strong>${kain.top100}</strong> (−${kain.top100_old - kain.top100}), top 10 from ${kain.top10_old} to <strong>${kain.top10}</strong>. Net outflow of ${Math.abs(kain.net_flow)} clans (${kain.outflow} out, only ${kain.inflow} in). Heavyweights like DOGE, Mystic, MYTH left for Teon.`},
+
+    {cls: 'down', vi: `<strong>📉 Leona đứng thứ 2 về top 100 nhưng cũng suy yếu.</strong> Top 100 còn <strong>${leona.top100}</strong> (từ ${leona.top100_old}). Net outflow ${Math.abs(leona.net_flow)} clan. Tuy vậy vẫn giữ ${leona.top10} vị trí top 10.`,
+        en: `<strong>📉 Leona ranks #2 in top 100 share but is weakening.</strong> Top 100 down to <strong>${leona.top100}</strong> (from ${leona.top100_old}). Net outflow of ${Math.abs(leona.net_flow)} clans. Still holds ${leona.top10} top-10 spot.`},
+
+    {cls: 'info', vi: `<strong>⚖️ Bartz ổn định nhất.</strong> Top 100 chỉ giảm nhẹ (${bartz.top100_old} → <strong>${bartz.top100}</strong>), và là 1 trong 3 world có net flow dương (+${bartz.net_flow}). Đây có thể coi là world "đáng giữ" trong số các world không phải Teon.`,
+        en: `<strong>⚖️ Bartz is the most stable.</strong> Top 100 dropped only slightly (${bartz.top100_old} → <strong>${bartz.top100}</strong>), and is one of only 3 worlds with positive net flow (+${bartz.net_flow}). The most "worth-keeping" world after Teon.`},
+
+    {cls: 'info', vi: `<strong>🆕 Aria có dấu hiệu vươn lên.</strong> Tuy là world non trẻ (chỉ ${aria.total_clans_new} clan), nhưng nhận thêm clan trong top (top 50 từ ${aria.top50_old} lên <strong>${aria.top50}</strong>, top 100 từ ${aria.top100_old} lên <strong>${aria.top100}</strong>) và có net inflow +${aria.net_flow}.`,
+        en: `<strong>🆕 Aria is showing growth.</strong> Despite being the smallest world (${aria.total_clans_new} clans), it gained top clans (top 50: ${aria.top50_old} → <strong>${aria.top50}</strong>, top 100: ${aria.top100_old} → <strong>${aria.top100}</strong>) with net inflow of +${aria.net_flow}.`},
+
+    {cls: 'down', vi: `<strong>📉 Erica yếu dần.</strong> Top 100 giảm từ ${erica.top100_old} xuống <strong>${erica.top100}</strong>, không có clan top 10/top 30 nào. Net outflow ${Math.abs(erica.net_flow)} clan. Mất ${Math.abs(erica.clan_change)} clan tổng.`,
+        en: `<strong>📉 Erica is fading.</strong> Top 100 down from ${erica.top100_old} to <strong>${erica.top100}</strong>, zero clans in top 10 or top 30. Net outflow ${Math.abs(erica.net_flow)} clans. Total clan loss: ${Math.abs(erica.clan_change)}.`},
+  ];
+
+  return `<ul class="insight-list">${items.map(it => `
+    <li class="${it.cls}">
+      <span class="t-vi">${it.vi}</span>
+      <span class="t-en">${it.en}</span>
+    </li>`).join('')}</ul>`;
+}
+
+function buildConclusion() {
+  const ws = [...DATA.worlds].sort((a,b) => Number(b.top100) - Number(a.top100));
+  const teon = ws.find(w => w.World === 'Teon');
+  const sharePctNew = (Number(teon.top100) / 100 * 100).toFixed(0);
+  const sharePctOld = (Number(teon.top100_old) / 100 * 100).toFixed(0);
+
+  return `
+    <div class="t-vi">
+      <strong>🎯 Kết luận:</strong> Server transfer đã tạo ra sự <strong>phân hóa mạnh giữa các world</strong>.
+      <strong>Teon</strong> trở thành điểm đến số 1 của top players — chiếm ${sharePctNew}% top 100 (so với ${sharePctOld}% trước transfer) và <strong>${teon.top10}/10 vị trí top 10 toàn server</strong>.
+      Các world cũ như Kain và Leona, tuy vẫn đông clan, đang dần mất sức cạnh tranh ở nhóm đầu.
+      Đối với vận hành: cần ưu tiên content/event/marketing cho <strong>Teon</strong> (world sôi động nhất, ROI cao nhất hiện tại),
+      đồng thời cân nhắc gói cứu trợ / event giữ chân cho <strong>Kain</strong> và <strong>Leona</strong> để tránh chảy máu thêm.
+    </div>
+    <div class="t-en">
+      <strong>🎯 Conclusion:</strong> The server transfer has caused <strong>sharp polarization between worlds</strong>.
+      <strong>Teon</strong> has become the #1 destination for top players — holding ${sharePctNew}% of top 100 (vs ${sharePctOld}% before) and <strong>${teon.top10}/10 of the global top-10 spots</strong>.
+      Older worlds like Kain and Leona, though still densely populated, are losing competitiveness at the top tier.
+      Operational recommendation: prioritize content/events/marketing for <strong>Teon</strong> (highest activity, highest ROI right now),
+      while considering retention events for <strong>Kain</strong> and <strong>Leona</strong> to stem further outflow.
+    </div>
+  `;
+}
+
+// ---------- Init ----------
+document.getElementById('worldTableWrap').innerHTML = buildWorldTable();
+setupMovedFilters();
+renderMovedTable();
+document.getElementById('topShareTable').innerHTML = buildTopShareTable();
+document.getElementById('insightsList').innerHTML = buildInsights();
+document.getElementById('conclusion').innerHTML = buildConclusion();
+
+// Re-render moved table when language switches (because "cũ"/"was" label changes inline)
+document.getElementById('btn-vi').addEventListener('click', renderMovedTable);
+document.getElementById('btn-en').addEventListener('click', renderMovedTable);
+
+// Initial placeholder
+document.getElementById('searchMoved').placeholder = '🔍 Tìm clan name / union...';
+</script>
+</body>
+</html>
