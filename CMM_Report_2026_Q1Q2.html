@@ -1249,4 +1249,28 @@
       <div class="subsection-title">Khu vực chiến sự (PvP Hotspots)</div>
       <ul class="bullet-list">
         <li><strong>Ancient Island:</strong> Chiến trường chính World Kain vs. World Teon. Khả năng huy động và sự hiện diện lãnh đạo (Mystic) quan trọng hơn sức mạnh thô server.</li>
-        <li><strong>Leona:</strong> Cibal mấ
+                <li><strong>Leona:</strong> <em>[Nội dung bị cắt — vui lòng bổ sung thủ công]</em></li>
+      </ul>
+    </div>
+  </div><!-- /t04 -->
+
+</main>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    if (b.getAttribute('onclick') === "switchTab('" + id + "')") {
+      b.classList.add('active');
+    }
+  });
+}
+</script>
+</body>
+</html>
