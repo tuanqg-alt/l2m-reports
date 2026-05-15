@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FB Social Listening · W20 · 2026-05-14</title>
+<style>
+/* ═══ DESIGN TOKENS — Intel Dashboard v4 ═══ */
+:root{
+  --bg-base:#0a0e1a;--bg-elevated:#131829;--bg-hover:#1a2138;--bg-deep:#060810;
+  --border-subtle:#1f2937;--border-default:#2d3748;--border-strong:#475569;
+  --text-primary:#f1f5f9;--text-secondary:#cbd5e1;--text-muted:#94a3b8;--text-dim:#64748b;
+  --brand-l2m:#a78bfa;--brand-l2m-bg:rgba(124,58,237,.12);--brand-l2m-border:rgba(124,58,237,.35);
+  --brand-lw:#34d399;--brand-lw-bg:rgba(5,150,105,.12);--brand-lw-border:rgba(5,150,105,.35);
+  --sem-sell:#f59e0b;--sem-buy:#38bdf8;--sem-bug:#f87171;--sem-feedback:#c084fc;
+  --sem-official:#10b981;--sem-community:#22d3ee;--sem-other:#94a3b8;
+  --heat-viral:#dc2626;--heat-hot:#f97316;--heat-active:#ea580c;--heat-notable:#60a5fa;
+  --region-vn:#ef4444;--region-th:#06b6d4;--region-id:#f59e0b;--region-sea:#8b5cf6;--region-ph:#10b981;
+  --t-xs:11px;--t-sm:12px;--t-md:13px;--t-base:14px;--t-lg:16px;--t-xl:20px;--t-2xl:28px;--t-3xl:36px;
+  --lh-tight:1.3;--lh-normal:1.55;--lh-loose:1.7;
+  --fw-normal:400;--fw-medium:500;--fw-semibold:600;--fw-bold:700;
+  --s-1:4px;--s-2:8px;--s-3:12px;--s-4:16px;--s-5:20px;--s-6:24px;--s-8:32px;--s-10:40px;
+  --r-sm:6px;--r-md:8px;--r-lg:12px;--r-full:999px;
+  --shadow-card:0 1px 3px rgba(0,0,0,.3);--shadow-elevated:0 8px 24px rgba(0,0,0,.4);
+  --tr-fast:120ms cubic-bezier(.4,0,.2,1);--tr-base:200ms cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:var(--t-base)}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:var(--bg-base);color:var(--text-primary);line-height:var(--lh-normal);min-height:100vh;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* ═══ HEADER ═══ */
+.app-header{background:rgba(19,24,41,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border-default);position:sticky;top:0;z-index:100}
+.app-header-bar{max-width:1180px;margin:0 auto;padding:var(--s-3) var(--s-5);
+  display:flex;align-items:center;gap:var(--s-4);flex-wrap:wrap}
+.app-title{display:flex;align-items:center;gap:var(--s-2);font-size:var(--t-lg);font-weight:var(--fw-bold);letter-spacing:-.01em}
+.app-title-dot{width:8px;height:8px;background:var(--brand-l2m);border-radius:50%;
+  box-shadow:0 0 12px var(--brand-l2m);animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.85)}}
+.app-meta{font-size:var(--t-sm);color:var(--text-muted);display:inline-flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}
+.app-meta-sep{color:var(--border-strong)}
+.app-meta strong{color:var(--text-secondary)}
+.app-spacer{flex:1}
+.lang-toggle{padding:6px var(--s-3);font-size:var(--t-xs);font-weight:var(--fw-bold);letter-spacing:.06em;
+  background:var(--bg-base);color:var(--text-muted);border:1px solid var(--border-default);
+  border-radius:var(--r-full);cursor:pointer;transition:var(--tr-base)}
+.lang-toggle:hover{background:var(--bg-hover);color:var(--text-primary);border-color:var(--brand-l2m)}
+
+/* Week ribbon */
+.week-nav{max-width:1180px;margin:0 auto;padding:0 var(--s-5) var(--s-2);
+  display:flex;align-items:center;gap:var(--s-1);font-size:var(--t-sm);flex-wrap:wrap}
+.week-nav-label{color:var(--text-dim);font-size:var(--t-xs);font-weight:var(--fw-bold);
+  text-transform:uppercase;letter-spacing:.08em;margin-right:var(--s-2)}
+.week-pill{padding:4px var(--s-3);border-radius:var(--r-full);color:var(--text-dim);background:transparent;
+  border:1px solid transparent;cursor:pointer;transition:var(--tr-base);text-decoration:none;
+  font-size:var(--t-xs);font-variant-numeric:tabular-nums}
+.week-pill:hover{background:var(--bg-hover);color:var(--text-secondary)}
+.week-pill.current{background:var(--brand-l2m-bg);color:var(--brand-l2m);
+  border-color:var(--brand-l2m-border);font-weight:var(--fw-semibold)}
+
+/* Game tabs */
+.game-tabs{max-width:1180px;margin:0 auto;padding:0 var(--s-5);display:flex;gap:0;
+  border-top:1px solid var(--border-subtle)}
+.game-tab{padding:var(--s-3) var(--s-4);font-size:var(--t-md);font-weight:var(--fw-semibold);
+  color:var(--text-muted);background:transparent;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;transition:var(--tr-base);display:inline-flex;align-items:center;gap:var(--s-2)}
+.game-tab:hover{color:var(--text-primary)}
+.game-tab.active.l2m{color:var(--brand-l2m);border-bottom-color:var(--brand-l2m)}
+.game-tab.active.lw{color:var(--brand-lw);border-bottom-color:var(--brand-lw)}
+.game-tab-count{font-size:10px;font-weight:var(--fw-bold);background:var(--bg-base);color:var(--text-muted);
+  padding:2px 8px;border-radius:var(--r-full);min-width:26px;text-align:center}
+.game-tab.active.l2m .game-tab-count{background:var(--brand-l2m-bg);color:var(--brand-l2m)}
+.game-tab.active.lw .game-tab-count{background:var(--brand-lw-bg);color:var(--brand-lw)}
+
+/* ═══ CONTENT ═══ */
+.content{max-width:1180px;margin:0 auto;padding:var(--s-6) var(--s-5)}
+.game-panel{display:none}
+.game-panel.active{display:block;animation:fadeIn 200ms ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.section{margin-bottom:var(--s-8)}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-3);
+  margin-bottom:var(--s-4);padding-bottom:var(--s-2);border-bottom:1px solid var(--border-subtle)}
+.section-title{font-size:var(--t-xs);font-weight:var(--fw-bold);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-muted)}
+.section-desc{font-size:var(--t-xs);color:var(--text-dim)}
+
+/* ═══ SUMMARY GRID ═══ */
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-3);margin-bottom:var(--s-5)}
+@media (max-width:920px){.summary-grid{grid-template-columns:repeat(2,1fr)}}
+.summary-card{background:var(--bg-elevated);border:1px solid var(--border-default);
+  border-radius:var(--r-md);padding:var(--s-4);transition:var(--tr-base)}
+.summary-card:hover{border-color:var(--border-strong)}
+.summary-card.span-2{grid-column:span 2}
+.summary-label{font-size:10px;font-weight:var(--fw-bold);color:var(--text-dim);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--s-3)}
+.summary-value{display:flex;align-items:baseline;gap:var(--s-2)}
+.summary-num{font-size:var(--t-3xl);font-weight:var(--fw-bold);line-height:1;
+  color:var(--text-primary);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.summary-sub{font-size:var(--t-sm);color:var(--text-dim);font-variant-numeric:tabular-nums}
+.summary-trend{margin-top:var(--s-2);font-size:var(--t-xs);color:var(--text-muted);
+  display:inline-flex;align-items:center;gap:4px}
+.trend-up{color:#34d399}.trend-down{color:#f87171}
+
+/* Region bar */
+.region-bar{display:flex;width:100%;height:36px;border-radius:var(--r-sm);overflow:hidden;
+  margin:var(--s-2) 0 var(--s-3);background:var(--bg-base)}
+.region-segment{display:flex;align-items:center;justify-content:center;font-size:var(--t-xs);
+  font-weight:var(--fw-bold);color:white;position:relative;transition:var(--tr-base);
+  cursor:default;font-variant-numeric:tabular-nums}
+.region-segment:hover{filter:brightness(1.15)}
+.region-segment.vn{background:var(--region-vn)}
+.region-segment.th{background:var(--region-th);color:#0a0e1a}
+.region-segment.id{background:var(--region-id);color:#0a0e1a}
+.region-segment.sea{background:var(--region-sea)}
+.region-segment.ph{background:var(--region-ph)}
+.region-legend{display:flex;flex-wrap:wrap;gap:var(--s-3);font-size:var(--t-xs);color:var(--text-muted)}
+.region-legend-item{display:inline-flex;align-items:center;gap:6px}
+.region-legend strong{color:var(--text-secondary)}
+.region-dot{width:8px;height:8px;border-radius:2px}
+
+/* Type donut */
+.type-card{display:flex;align-items:center;gap:var(--s-4)}
+.type-donut{flex-shrink:0;width:90px;height:90px}
+.type-legend{flex:1;display:flex;flex-direction:column;gap:4px;font-size:var(--t-sm)}
+.type-legend-row{display:flex;align-items:center;gap:var(--s-2);padding:2px 0;color:var(--text-secondary)}
+.type-legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.type-legend-count{margin-left:auto;color:var(--text-muted);font-variant-numeric:tabular-nums;
+  font-weight:var(--fw-semibold)}
+
+/* ═══ GROUP HEATMAP ═══ */
+.group-heatmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:var(--s-2)}
+.group-cell{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:var(--r-sm);
+  padding:var(--s-2) var(--s-3);display:flex;align-items:center;gap:var(--s-2);
+  transition:var(--tr-base);position:relative;overflow:hidden}
+.group-cell:hover{border-color:var(--border-strong);transform:translateY(-1px)}
+.group-cell::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--brand-l2m);opacity:var(--heat,0);transition:var(--tr-base)}
+.lw-panel .group-cell::before{background:var(--brand-lw)}
+.group-cell-flag{font-size:13px;flex-shrink:0}
+.group-cell-name{flex:1;font-size:var(--t-xs);color:var(--text-secondary);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.group-cell-count{font-size:var(--t-md);font-weight:var(--fw-bold);color:var(--text-primary);
+  font-variant-numeric:tabular-nums;min-width:18px;text-align:right}
+.group-cell-count.zero{color:var(--text-dim);font-weight:var(--fw-normal)}
+
+/* ═══ INSIGHTS ═══ */
+.insights{background:linear-gradient(135deg,var(--brand-l2m-bg),transparent 60%);
+  border:1px solid var(--brand-l2m-border);border-radius:var(--r-lg);
+  padding:var(--s-4) var(--s-5);margin-bottom:var(--s-6)}
+.lw-panel .insights{background:linear-gradient(135deg,var(--brand-lw-bg),transparent 60%);
+  border-color:var(--brand-lw-border)}
+.insights-title{font-size:var(--t-xs);font-weight:var(--fw-bold);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--brand-l2m);margin-bottom:var(--s-3);
+  display:flex;align-items:center;gap:var(--s-2)}
+.lw-panel .insights-title{color:var(--brand-lw)}
+.insights-list{display:flex;flex-direction:column;gap:var(--s-3);list-style:none}
+.insight-item{display:flex;gap:var(--s-3);font-size:var(--t-sm);color:var(--text-secondary);line-height:var(--lh-loose)}
+.insight-marker{flex-shrink:0;width:3px;background:var(--brand-l2m);border-radius:2px;align-self:stretch;opacity:.5}
+.lw-panel .insight-marker{background:var(--brand-lw)}
+.insight-item strong{color:var(--text-primary)}
+
+/* LW Alert (re-themed) */
+.alert-box{background:linear-gradient(135deg,rgba(251,146,60,.08),transparent 60%);
+  border:1px solid rgba(251,146,60,.3);border-radius:var(--r-lg);
+  padding:var(--s-4) var(--s-5);margin-bottom:var(--s-4)}
+.alert-title{font-size:var(--t-xs);font-weight:var(--fw-bold);letter-spacing:.1em;
+  text-transform:uppercase;color:#fb923c;margin-bottom:var(--s-2)}
+.alert-box p{font-size:var(--t-sm);color:var(--text-secondary);line-height:var(--lh-loose)}
+
+/* ═══ HOT CARDS — 3-zone ═══ */
+.hot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:var(--s-4)}
+@media (max-width:720px){.hot-grid{grid-template-columns:1fr}}
+.hot-card{background:var(--bg-elevated);border:1px solid var(--border-default);
+  border-radius:var(--r-lg);overflow:hidden;transition:var(--tr-base);position:relative}
+.hot-card:hover{border-color:var(--border-strong);transform:translateY(-2px);box-shadow:var(--shadow-elevated)}
+.hot-card[data-heat="viral"]{border-left:3px solid var(--heat-viral)}
+.hot-card[data-heat="hot"]{border-left:3px solid var(--heat-hot)}
+.hot-card[data-heat="active"]{border-left:3px solid var(--heat-active)}
+.hot-card[data-heat="notable"]{border-left:3px solid var(--heat-notable)}
+
+.hot-zone-meta{display:flex;align-items:center;gap:var(--s-2);padding:var(--s-3) var(--s-4);
+  background:var(--bg-base);border-bottom:1px solid var(--border-subtle);flex-wrap:wrap}
+.hot-author{font-size:var(--t-sm);font-weight:var(--fw-semibold);color:var(--text-primary)}
+.meta-dot{color:var(--text-dim);font-size:10px}
+.hot-time,.hot-group{font-size:var(--t-xs);color:var(--text-muted);font-variant-numeric:tabular-nums}
+.hot-group{max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  display:inline-flex;gap:4px;align-items:center}
+.hot-heat-badge{margin-left:auto;font-size:10px;font-weight:var(--fw-bold);text-transform:uppercase;
+  letter-spacing:.08em;padding:2px var(--s-2);border-radius:var(--r-full)}
+.hot-heat-badge.viral{color:var(--heat-viral);background:rgba(220,38,38,.12)}
+.hot-heat-badge.hot{color:var(--heat-hot);background:rgba(249,115,22,.12)}
+.hot-heat-badge.active{color:var(--heat-active);background:rgba(234,88,12,.12)}
+.hot-heat-badge.notable{color:var(--heat-notable);background:rgba(96,165,250,.12)}
+
+.hot-zone-content{padding:var(--s-3) var(--s-4)}
+.hot-text{font-size:var(--t-sm);color:var(--text-secondary);line-height:var(--lh-loose);
+  max-height:64px;overflow:hidden;white-space:pre-wrap;word-break:break-word;cursor:pointer;
+  position:relative;transition:var(--tr-base);margin-bottom:var(--s-2)}
+.hot-text.expanded{max-height:none}
+.hot-text:not(.expanded)::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;
+  background:linear-gradient(to bottom,transparent,var(--bg-elevated));pointer-events:none}
+.hot-type-badge{display:inline-flex;align-items:center;gap:4px;padding:3px var(--s-2);
+  border-radius:var(--r-full);font-size:10px;font-weight:var(--fw-bold);
+  text-transform:uppercase;letter-spacing:.06em}
+.type-sell{background:rgba(245,158,11,.15);color:var(--sem-sell)}
+.type-buy{background:rgba(56,189,248,.15);color:var(--sem-buy)}
+.type-bug{background:rgba(248,113,113,.15);color:var(--sem-bug)}
+.type-feedback{background:rgba(192,132,252,.15);color:var(--sem-feedback)}
+.type-official{background:rgba(16,185,129,.15);color:var(--sem-official)}
+.type-community{background:rgba(34,211,238,.15);color:var(--sem-community)}
+.type-other{background:rgba(148,163,184,.15);color:var(--sem-other)}
+
+.hot-zone-signal{padding:var(--s-3) var(--s-4);background:var(--bg-deep);
+  border-top:1px solid var(--border-subtle)}
+.hot-insight{padding-left:var(--s-3);border-left:2px solid var(--brand-l2m);margin-bottom:var(--s-3)}
+.lw-panel .hot-insight{border-left-color:var(--brand-lw)}
+.hot-insight-label{display:block;font-size:10px;font-weight:var(--fw-bold);
+  color:var(--brand-l2m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.lw-panel .hot-insight-label{color:var(--brand-lw)}
+.hot-insight-text{font-size:var(--t-sm);color:var(--text-secondary);line-height:var(--lh-loose)}
+.hot-insight-text strong{color:var(--text-primary)}
+
+.hot-eng{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}
+.eng-pill{display:inline-flex;align-items:center;gap:6px;padding:4px var(--s-3);
+  border-radius:var(--r-full);font-size:var(--t-xs);font-weight:var(--fw-bold);
+  font-variant-numeric:tabular-nums}
+.eng-pill-react{background:rgba(251,146,60,.12);color:#fb923c}
+.eng-pill-cmt{background:rgba(96,165,250,.12);color:#60a5fa}
+.eng-pill-total{background:var(--bg-hover);color:var(--text-primary);border:1px solid var(--border-default)}
+.eng-link{margin-left:auto;font-size:var(--t-xs);font-weight:var(--fw-semibold);color:var(--text-muted);
+  text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:var(--tr-base);
+  padding:4px var(--s-2);border-radius:var(--r-sm)}
+.eng-link:hover{color:var(--brand-l2m);background:var(--brand-l2m-bg)}
+.lw-panel .eng-link:hover{color:var(--brand-lw);background:var(--brand-lw-bg)}
+
+/* Comments */
+.hot-comments{margin-top:var(--s-3)}
+.hot-comments summary{list-style:none;cursor:pointer;font-size:var(--t-xs);color:var(--text-dim);
+  padding:var(--s-1) 0;display:inline-flex;align-items:center;gap:6px;user-select:none;transition:var(--tr-base)}
+.hot-comments summary::-webkit-details-marker{display:none}
+.hot-comments summary::before{content:'▶';font-size:8px;transition:var(--tr-base)}
+.hot-comments[open] summary::before{transform:rotate(90deg)}
+.hot-comments summary:hover{color:var(--text-secondary)}
+.cmt-list{margin-top:var(--s-2);display:flex;flex-direction:column;gap:var(--s-2)}
+.cmt{padding:var(--s-2) var(--s-3);background:var(--bg-base);border-radius:var(--r-sm);
+  border-left:2px solid var(--border-default)}
+.cmt-head{display:flex;align-items:center;gap:var(--s-2);margin-bottom:4px}
+.cmt-author{font-size:var(--t-xs);font-weight:var(--fw-semibold);color:var(--text-muted)}
+.cmt-likes{font-size:10px;color:var(--text-dim)}
+.cmt-text{font-size:var(--t-xs);color:var(--text-secondary);line-height:var(--lh-normal);word-break:break-word}
+
+/* Empty state */
+.empty-note{padding:var(--s-6);text-align:center;color:var(--text-dim);background:var(--bg-elevated);
+  border-radius:var(--r-lg);border:1px dashed var(--border-default);font-size:var(--t-sm);font-style:italic}
+
+/* ═══ LANG TOGGLE ═══ */
+[data-lang="en"] .lang-vn{display:none !important}
+[data-lang="vi"] .lang-en{display:none !important}
+
+/* ═══ FOOTER ═══ */
+.app-footer{max-width:1180px;margin:var(--s-10) auto var(--s-6);padding:var(--s-4) var(--s-5);
+  border-top:1px solid var(--border-subtle);font-size:var(--t-xs);color:var(--text-dim);text-align:center}
+.app-footer strong{color:var(--text-muted);font-weight:var(--fw-semibold)}
+
+/* ═══ A11Y ═══ */
+button:focus-visible,a:focus-visible,summary:focus-visible{
+  outline:2px solid var(--brand-l2m);outline-offset:2px;border-radius:var(--r-sm)}
+
+/* ═══ PRINT ═══ */
+@media print{
+  body{background:white;color:black}
+  .app-header,.week-nav,.game-tabs,.app-footer{display:none}
+  .hot-card,.summary-card{break-inside:avoid;border-color:#ccc}
+}
+
+/* ── Insight filter feature ─────────────────────────────── */
+.insight-filter-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 7px; padding: 4px 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: all .15s ease;
+  white-space: nowrap;
+}
+.insight-filter-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.25);
+  color: var(--text-primary);
+}
+.insight-filter-btn.active {
+  background: var(--brand-l2m);
+  border-color: var(--brand-l2m);
+  color: #fff;
+}
+.lw-panel .insight-filter-btn.active {
+  background: var(--brand-lw);
+  border-color: var(--brand-lw);
+}
+
+/* Filtered-out cards */
+.hot-card.dim-out {
+  opacity: 0.1;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.hot-card.filter-hi {
+  transition: box-shadow .2s, opacity .2s;
+}
+.l2m-panel .hot-card.filter-hi {
+  box-shadow: 0 0 0 2px var(--brand-l2m), 0 4px 16px rgba(99,179,237,0.15);
+}
+.lw-panel .hot-card.filter-hi {
+  box-shadow: 0 0 0 2px var(--brand-lw), 0 4px 16px rgba(178,132,80,0.15);
+}
+
+/* Filter status bar above hot-grid */
+.filter-bar {
+  display: none;
+  align-items: center; gap: 10px;
+  padding: 8px 14px; margin-bottom: 12px;
+  border-radius: 8px;
+  font-size: var(--t-sm);
+  background: rgba(99,179,237,0.07);
+  border: 1px solid rgba(99,179,237,0.2);
+}
+.lw-panel .filter-bar {
+  background: rgba(178,132,80,0.07);
+  border-color: rgba(178,132,80,0.2);
+}
+.filter-bar.visible { display: flex; }
+.filter-bar-label { color: var(--text-secondary); }
+.filter-bar-label strong { color: var(--text-primary); }
+.filter-bar-count {
+  margin-left: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 1px 8px;
+  font-size: 11px; color: var(--text-secondary);
+}
+.filter-bar-clear {
+  margin-left: auto; padding: 3px 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  color: var(--text-secondary); font-size: 11px;
+  cursor: pointer;
+}
+.filter-bar-clear:hover { background: rgba(255,255,255,0.12); color: #fff; }
+/* ───────────────────────────────────────────────────────── */
+
+</style>
+</head>
+<body data-lang="vi">
+
+<header class="app-header">
+  <div class="app-header-bar">
+    <div class="app-title">
+      <span class="app-title-dot"></span>
+      <span>FB Social Listening</span>
+    </div>
+    <div class="app-meta">
+      <span>W20</span>
+      <span class="app-meta-sep">·</span>
+      <span><span class="lang-vn">Scan</span><span class="lang-en">Scan</span> 2026-05-14 · 4 days (11/05–14/05/2026)</span>
+      <span class="app-meta-sep">·</span>
+      <span><strong>1121</strong> posts · <strong>28/36</strong> groups</span>
+    </div>
+    <div class="app-spacer"></div>
+    <button class="lang-toggle" onclick="toggleLang()" id="langBtn">EN</button>
+  </div>
+  <nav class="week-nav" aria-label="Week navigation"><span class="week-nav-label lang-vn">Tháng 5 2026</span><span class="week-nav-label lang-en">May 2026</span><a class="week-pill " href="#" title="2026-05-04 – 2026-05-10">W19 · 04–10</a><a class="week-pill current" href="#" title="2026-05-11 – 2026-05-17">W20 · 11–17</a><a class="week-pill " href="#" title="2026-05-18 – 2026-05-24">W21 · 18–24</a><a class="week-pill " href="#" title="2026-05-25 – 2026-05-31">W22 · 25–31</a></nav>
+  <div class="game-tabs" role="tablist">
+    <button class="game-tab l2m active" onclick="switchGame('l2m')" role="tab">
+      Lineage2M <span class="game-tab-count">844</span>
+    </button>
+    <button class="game-tab lw" onclick="switchGame('lw')" role="tab">
+      LineageW <span class="game-tab-count">277</span>
+    </button>
+  </div>
+</header>
+
+<main class="content">
+  <div class="game-panel active l2m-panel" id="panel-l2m"><section class="section"><div class="section-head"><span class="section-title"><span class="lang-vn">Tổng quan</span><span class="lang-en">Overview</span></span><span class="section-desc"><span class="lang-vn">24 giờ gần nhất · sort chronological</span><span class="lang-en">Last 24 hours · chronological</span></span></div><div class="summary-grid"><div class="summary-card"><div class="summary-label"><span class="lang-vn">Bài đăng</span><span class="lang-en">Posts</span></div><div class="summary-value"><span class="summary-num">844</span><span class="summary-sub">/ 24h</span></div></div><div class="summary-card"><div class="summary-label"><span class="lang-vn">Group có bài</span><span class="lang-en">Active groups</span></div><div class="summary-value"><span class="summary-num">20</span><span class="summary-sub">/ 20 enabled</span></div></div><div class="summary-card span-2"><div class="summary-label"><span class="lang-vn">Phân bổ theo khu vực</span><span class="lang-en">Regional distribution</span></div><div class="region-bar" role="img"><div class="region-segment vn" style="width:24.3%" title="Việt Nam: 205 posts">🇻🇳 24%</div><div class="region-segment th" style="width:35.0%" title="Thailand: 295 posts">🇹🇭 35%</div><div class="region-segment id" style="width:29.5%" title="Indonesia: 249 posts">🇮🇩 30%</div><div class="region-segment sea" style="width:11.3%" title="SEA: 95 posts">🌏 11%</div></div><div class="region-legend"><span class="region-legend-item"><span class="region-dot" style="background:var(--region-vn)"></span>Việt Nam · <strong>205</strong></span><span class="region-legend-item"><span class="region-dot" style="background:var(--region-th)"></span>Thailand · <strong>295</strong></span><span class="region-legend-item"><span class="region-dot" style="background:var(--region-id)"></span>Indonesia · <strong>249</strong></span><span class="region-legend-item"><span class="region-dot" style="background:var(--region-sea)"></span>SEA · <strong>95</strong></span></div></div></div><div class="summary-grid" style="grid-template-columns:minmax(280px,1fr) 2fr;"><div class="summary-card"><div class="summary-label"><span class="lang-vn">Phân loại bài</span><span class="lang-en">Post type</span></div><div class="type-card"><svg class="type-donut" viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#1f2937" stroke-width="4"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#f59e0b" stroke-width="4" stroke-dasharray="42.3 57.7" stroke-dashoffset="25.0" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#94a3b8" stroke-width="4" stroke-dasharray="32.2 67.8" stroke-dashoffset="-17.3" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#38bdf8" stroke-width="4" stroke-dasharray="15.8 84.2" stroke-dashoffset="-49.5" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#10b981" stroke-width="4" stroke-dasharray="6.9 93.1" stroke-dashoffset="-65.3" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#c084fc" stroke-width="4" stroke-dasharray="1.3 98.7" stroke-dashoffset="-72.2" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#22d3ee" stroke-width="4" stroke-dasharray="0.9 99.1" stroke-dashoffset="-73.5" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#f87171" stroke-width="4" stroke-dasharray="0.6 99.4" stroke-dashoffset="-74.4" transform="rotate(-90 21 21)"/><text x="21" y="22" text-anchor="middle" fill="#f1f5f9" font-size="8" font-weight="700" font-family="Inter">844</text><text x="21" y="28" text-anchor="middle" fill="#64748b" font-size="3" font-family="Inter">posts</text></svg><div class="type-legend"><div class="type-legend-row"><span class="type-legend-dot" style="background:#f59e0b"></span><span class="lang-vn">💰 Bán</span><span class="lang-en">💰 Sell</span><span class="type-legend-count">357 · 42%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#94a3b8"></span><span class="lang-vn">💬 Khác</span><span class="lang-en">💬 Other</span><span class="type-legend-count">272 · 32%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#38bdf8"></span><span class="lang-vn">🛒 Mua</span><span class="lang-en">🛒 Buy</span><span class="type-legend-count">133 · 16%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#10b981"></span><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span><span class="type-legend-count">58 · 7%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#c084fc"></span><span class="lang-vn">📢 Phản hồi</span><span class="lang-en">📢 Feedback</span><span class="type-legend-count">11 · 1%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#22d3ee"></span><span class="lang-vn">👥 Cộng đồng</span><span class="lang-en">👥 Community</span><span class="type-legend-count">8 · 1%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#f87171"></span><span class="lang-vn">🐛 Bug</span><span class="lang-en">🐛 Bug</span><span class="type-legend-count">5 · 1%</span></div></div></div></div><div class="summary-card"><div class="summary-label"><span class="lang-vn">Hoạt động theo group</span><span class="lang-en">Group activity</span></div><div class="group-heatmap" style="margin-top:var(--s-3)"><div class="group-cell" style="--heat:1.00" title="Lineage2M Indonesia · 231 posts"><span class="group-cell-flag">🇮🇩</span><span class="group-cell-name">Lineage2M Indonesia</span><span class="group-cell-count">231</span></div><div class="group-cell" style="--heat:0.79" title="Lineage2M TH - Buy Sell · 183 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage2M TH - Buy Sell</span><span class="group-cell-count">183</span></div><div class="group-cell" style="--heat:0.41" title="Lineage 2M - Buy/Sell Marketplace · 95 posts"><span class="group-cell-flag">🌏</span><span class="group-cell-name">Lineage 2M - Buy/Sell Ma…</span><span class="group-cell-count">95</span></div><div class="group-cell" style="--heat:0.29" title="Lineage2M Vietnam Official · 68 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M Vietnam Offici…</span><span class="group-cell-count">68</span></div><div class="group-cell" style="--heat:0.19" title="Lineage 2M (SEA) Thailand พูดคุย ซื้อขาย · 45 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage 2M (SEA) Thailan…</span><span class="group-cell-count">45</span></div><div class="group-cell" style="--heat:0.19" title="Lineage2M Thailand Official · 43 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage2M Thailand Offic…</span><span class="group-cell-count">43</span></div><div class="group-cell" style="--heat:0.16" title="Lineage2M Việt Nam: Mua Bán - Giao Lưu · 38 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M Việt Nam: Mua …</span><span class="group-cell-count">38</span></div><div class="group-cell" style="--heat:0.13" title="Lineage2M VNG Viet Nam · 30 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M VNG Viet Nam</span><span class="group-cell-count">30</span></div><div class="group-cell" style="--heat:0.08" title="LINEAGE 2M INDONESIA · 18 posts"><span class="group-cell-flag">🇮🇩</span><span class="group-cell-name">LINEAGE 2M INDONESIA</span><span class="group-cell-count">18</span></div><div class="group-cell" style="--heat:0.07" title="Lineage 2M TH พูดคุย ซื้อขาย · 17 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage 2M TH พูดคุย ซื้…</span><span class="group-cell-count">17</span></div><div class="group-cell" style="--heat:0.06" title="Lineage2M VN Mua Bán-Giao Lưu · 15 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M VN Mua Bán-Gia…</span><span class="group-cell-count">15</span></div><div class="group-cell" style="--heat:0.06" title="Lineage2M Vietnam · 14 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M Vietnam</span><span class="group-cell-count">14</span></div><div class="group-cell" style="--heat:0.06" title="Lineage2M VNG-Nhóm Chính Thức · 13 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M VNG-Nhóm Chính…</span><span class="group-cell-count">13</span></div><div class="group-cell" style="--heat:0.05" title="Lineage2M VNG VN - Mua Ban · 12 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M VNG VN - Mua B…</span><span class="group-cell-count">12</span></div><div class="group-cell" style="--heat:0.04" title="Lineage2M VN: Mua Bán - Giao Lưu · 9 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M VN: Mua Bán - …</span><span class="group-cell-count">9</span></div><div class="group-cell" style="--heat:0.03" title="Lineage2M VN - Trao Doi Mua Ban · 8 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M VN - Trao Doi …</span><span class="group-cell-count">8</span></div><div class="group-cell" style="--heat:0.03" title="Lineage2M Vietnam✅ · 7 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage2M Vietnam✅</span><span class="group-cell-count">7</span></div><div class="group-cell" style="--heat:0.02" title="Lineage2M SEA TH พูดคุยแลกเปลี่ยน · 4 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage2M SEA TH พูดคุยแ…</span><span class="group-cell-count">4</span></div><div class="group-cell" style="--heat:0.01" title="Lineage2M SEA TH พูดคุย · 2 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage2M SEA TH พูดคุย</span><span class="group-cell-count">2</span></div><div class="group-cell" style="--heat:0.00" title="Lineage 2M (SEA) Thailand พูดคุย · 1 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage 2M (SEA) Thailan…</span><span class="group-cell-count">1</span></div></div></div></div></section><section class="insights"><div class="insights-title"><span>💡</span><span class="lang-vn">Insight chính</span><span class="lang-en">Key insights</span></div><ul class="insights-list"><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">🔥 Bài nổi bật nhất [Bug · VN] 18 likes · 72 cmts (Lineage2M VNG Viet Nam): PHẢN HỒI VỀ VIỆC TỐ CÁO ĐÁNH CẮP BOT GAME LINEAGE2M  I. MỞ ĐẦU  Hôm nay có ch…</span><span class="lang-en">🔥 Top post [Bug · VN] 18 likes · 72 comments (Lineage2M VNG Viet Nam): PHẢN HỒI VỀ VIỆC TỐ CÁO ĐÁNH CẮP BOT GAME LINEAGE2M  I. MỞ ĐẦU  Hôm nay có ch…</span></div><button class="insight-filter-btn" data-types="top1" onclick="handleInsightFilter(this)"><span class="lang-vn">🔍 Xem bài này</span><span class="lang-en">🔍 View post</span></button></li><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">📦 Giao dịch mua/bán: 490/844 bài (58%) — region nhiều nhất: TH</span><span class="lang-en">📦 Trade activity: 490/844 posts (58%) — most active region: TH</span></div><button class="insight-filter-btn" data-types="sell,buy" onclick="handleInsightFilter(this)"><span class="lang-vn">🔍 Mua/Bán</span><span class="lang-en">🔍 Trade</span></button></li><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">📣 Official/event: 58 bài (Lineage2M Vietnam Official, Lineage2M Thailand Official)</span><span class="lang-en">📣 Official/event: 58 posts (Lineage2M Vietnam Official, Lineage2M Thailand Official)</span></div><button class="insight-filter-btn" data-types="official" onclick="handleInsightFilter(this)"><span class="lang-vn">🔍 Official</span><span class="lang-en">🔍 Official</span></button></li><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">⚠️ Bug/Feedback: 5 bug · 11 phản hồi — vd: PHẢN HỒI VỀ VIỆC TỐ CÁO ĐÁNH CẮP BOT GAME LINEAGE2M  I. MỞ Đ…</span><span class="lang-en">⚠️ Bug/Feedback: 5 bug · 11 feedback — e.g.: PHẢN HỒI VỀ VIỆC TỐ CÁO ĐÁNH CẮP BOT GAME LINEAGE2M  I. MỞ Đ…</span></div><button class="insight-filter-btn" data-types="bug,feedback" onclick="handleInsightFilter(this)"><span class="lang-vn">🔍 Bug & Phản hồi</span><span class="lang-en">🔍 Bug & Feedback</span></button></li><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">🏰 Tuyển clan/guild: 8 bài</span><span class="lang-en">🏰 Clan/guild recruitment: 8 posts</span></div><button class="insight-filter-btn" data-types="community" onclick="handleInsightFilter(this)"><span class="lang-vn">🔍 Clan/Guild</span><span class="lang-en">🔍 Clan/Guild</span></button></li><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">🌏 Region: TH: 295, ID: 249, VN: 205, SEA: 95</span><span class="lang-en">🌏 Region: TH: 295, ID: 249, VN: 205, SEA: 95</span></div></li></ul></section><section class="section"><div class="section-head"><span class="section-title"><span class="lang-vn">🔥 Bài nổi bật</span><span class="lang-en">🔥 Hot posts</span></span><span class="section-desc"><span class="lang-vn">Top 30 theo tương tác</span><span class="lang-en">Top 30 by engagement</span></span></div><div class="filter-bar" id="filter-bar-l2m"><span class="filter-bar-label"><span class="lang-vn">Đang lọc:</span><span class="lang-en">Filter:</span> <strong class="filter-bar-name"></strong></span><span class="filter-bar-count"></span><button class="filter-bar-clear" onclick="clearFilter('l2m')">✕ <span class="lang-vn">Bỏ lọc</span><span class="lang-en">Clear</span></button></div><div class="hot-grid" id="hot-grid-l2m"><article class="hot-card" data-type="official" data-heat="hot"><div class="hot-zone-meta"><span class="hot-author">Lê Tùng</span><span class="meta-dot">·</span><span class="hot-time">14/05 03:53</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge hot">🔥🔥 Hot · 21</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: fgGSMG9tdGZZUC1evTxdgA==
+Bùi TuấnAnhThanh TuấnMai Long</span><span class="lang-en">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: fgGSMG9tdGZZUC1evTxdgA==
+Bùi TuấnAnhThanh TuấnMai Long</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 13</span><span class="eng-pill eng-pill-cmt">💬 8</span><span class="eng-pill eng-pill-total">21 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568337964655907/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="hot"><div class="hot-zone-meta"><span class="hot-author">Auttachart Thongbua</span><span class="meta-dot">·</span><span class="hot-time">15/05 01:37</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Thailand Official">🇹🇭 Lineage2M Thailand Official</span><span class="hot-heat-badge hot">🔥🔥 Hot · 20</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">HBD.
+Không cần phát thưởng nhiều như người ta
+
+Hãy cho đi vừa đủ trong khả năng của mình
+
+Sự kiện không cần phải giống ai
+
+Chỉ cần phát thưởng xứng đáng, vậy là đủ
+
+#1YearAnni #1YearWithL2M #Lineage2MSEA</span><span class="lang-en">HBD.
+ไม่ต้องแจกให้มากอย่างใครเขา 
+
+จงแจกเอาเท่าที่เราจะแจกไหว
+
+กิจกรรมไม่จำเป็นต้องเหมือนใคร
+
+แค่แจกให้สมฐานะ เท่านั้นพอ
+
+#1YearAnni #1YearWithL2M #Lineage2MSEA</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 17</span><span class="eng-pill eng-pill-cmt">💬 3</span><span class="eng-pill eng-pill-total">20 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mthai/permalink/986977554146589/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="active"><div class="hot-zone-meta"><span class="hot-author">PeacefulWallaby8938</span><span class="meta-dot">·</span><span class="hot-time">14/05 00:12</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Thailand Official">🇹🇭 Lineage2M Thailand Official</span><span class="hot-heat-badge active">🔥 Active · 15</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">HBD Chơi cùng nhau lâu dài nhé, game này vui lắm đấy. NPH hào phóng thì cho vật phẩm tím xíu đi nhe, nhưng không lấy đá tím đâu, xin trước rồi đó 🥹
+#1YearAnni #1YearWithL2M #Lineage2MSEA</span><span class="lang-en">HBD อยู่กันไปนานๆนะ เกมส์นี้หนุกดีค้าบ เลอาใจดีแจกม่วงหน่อยค้าบ ไม่เอาหินม่วงนะครับดักไว้ก่อน🥹
+#1YearAnni #1YearWithL2M #Lineage2MSEA</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 14</span><span class="eng-pill eng-pill-cmt">💬 1</span><span class="eng-pill eng-pill-total">15 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mthai/permalink/985822017595476/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="active"><div class="hot-zone-meta"><span class="hot-author">Ông Bụt</span><span class="meta-dot">·</span><span class="hot-time">15/05 04:32</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge active">🔥 Active · 14</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật Lineage2m. Chúc anh chị em trong đội ngũ Lineage2m luôn khoẻ mạnh và thành công trong công tác phát triển Lineage2m  
+Nếu bỏ rơi gamer vui lòng xem ảnh đính kèm 🤧
+
+#Lineage2MSEA #1YearAnni #1YearWithL2M
+ID: loT78XQF5Riv4E3r3G6zIQ==</span><span class="lang-en">Chúc mừng sinh nhật Lineage2m. Chúc anh chị em trong đội ngũ Lineage2m luôn khoẻ mạnh và thành công trong công tác phát triển Lineage2m  
+Nếu bỏ rơi gamer vui lòng xem ảnh đính kèm 🤧
+
+#Lineage2MSEA #1YearAnni #1YearWithL2M
+ID: loT78XQF5Riv4E3r3G6zIQ==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 7</span><span class="eng-pill eng-pill-cmt">💬 7</span><span class="eng-pill eng-pill-total">14 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1569361504553553/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="active"><div class="hot-zone-meta"><span class="hot-author">SümmërNïght</span><span class="meta-dot">·</span><span class="hot-time">15/05 03:17</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Thailand Official">🇹🇭 Lineage2M Thailand Official</span><span class="hot-heat-badge active">🔥 Active · 12</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Happy Birthday nhaaa 🎂 Chúng ta đã ở cùng nhau được 1 năm rồi đó nhỉ. Cảm ơn vì đã cho em gặp được biết bao tình bạn đẹp nha 🎯
+
+#1YearAnni #1YearWithL2M #Lineage2MSEA</span><span class="lang-en">Happy Birthday น้าา 🎂 อยู่ด้วยกันมาก็ 1 ปีแล้วเนาะ ขอบคุณที่ทำให้เจอมิตรภาพมากมายนะคะ🎯
+
+#1YearAnni #1YearWithL2M #Lineage2MSEA</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 9</span><span class="eng-pill eng-pill-cmt">💬 3</span><span class="eng-pill eng-pill-total">12 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mthai/permalink/987010707476607/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="active"><div class="hot-zone-meta"><span class="hot-author">Ponlaphat Bo</span><span class="meta-dot">·</span><span class="hot-time">14/05 00:12</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Thailand Official">🇹🇭 Lineage2M Thailand Official</span><span class="hot-heat-badge active">🔥 Active · 11</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">HBD Lineage2M #1YearAnni #1YearwithL2m #Lineage2MSEA</span><span class="lang-en">HBD Lineage2M #1YearAnni #1YearwithL2m #Lineage2MSEA</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 11</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">11 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mthai/permalink/985653047612373/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="active"><div class="hot-zone-meta"><span class="hot-author">Nguyễn Anh</span><span class="meta-dot">·</span><span class="hot-time">14/05 04:27</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge active">🔥 Active · 10</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">chúc mừng sinh nhật L2M cho mình vài món tím
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+tkXGpNQS5Ya77FlCq618iw==</span><span class="lang-en">chúc mừng sinh nhật L2M cho mình vài món tím
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+tkXGpNQS5Ya77FlCq618iw==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 4</span><span class="eng-pill eng-pill-cmt">💬 6</span><span class="eng-pill eng-pill-total">10 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568457757977261/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Thái Sơn</span><span class="meta-dot">·</span><span class="hot-time">14/05 13:47</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 9</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật 1 tuổi 😻 #Lineage2m #1YearAnni #1YearWithL2M #Lineage2MSEA
+
+id:t7CmpY1LczFhsi4YCJYvbw==</span><span class="lang-en">Chúc mừng sinh nhật 1 tuổi 😻 #Lineage2m #1YearAnni #1YearWithL2M #Lineage2MSEA
+
+id:t7CmpY1LczFhsi4YCJYvbw==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 8</span><span class="eng-pill eng-pill-cmt">💬 1</span><span class="eng-pill eng-pill-total">9 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568814824608221/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="community" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Thái Nam</span><span class="meta-dot">·</span><span class="hot-time">14/05 10:30</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 8</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">1 năm ! một hành trình đáng nhớ 🥰
+
+Điều đáng nhớ nhất không phải món đồ hiếm hay rank cao, mà là cảm giác cả guild đứng chờ giờ boss, gọi nhau online giữa đêm và cùng ăn mừng sau một trận thắng khó quên.
+
+Lineage2M với mình không chỉ là game, mà là nơi lưu lại rất nhiều cảm xúc của tuổi trẻ ❤️
+
+Chúc Lineage2M bước sang năm mới bùng nổ hơn nữa!
+À quên ! Nếu có 1 điều ước trong game thì ước gì sau event này được tặng món vũ khí đỏ xịn xịn để farm. Giáo T3 ,T4 gì cũng dc 🤣🤣🤣🤣 . Đang sài giáo xanh ghẻ tậu nghiệp lắm admin ơi 😂
+
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+9gRV9K3LBdTXrREyrezLZw==</span><span class="lang-en">1 năm ! một hành trình đáng nhớ 🥰
+
+Điều đáng nhớ nhất không phải món đồ hiếm hay rank cao, mà là cảm giác cả guild đứng chờ giờ boss, gọi nhau online giữa đêm và cùng ăn mừng sau một trận thắng khó quên.
+
+Lineage2M với mình không chỉ là game, mà là nơi lưu lại rất nhiều cảm xúc của tuổi trẻ ❤️
+
+Chúc Lineage2M bước sang năm mới bùng nổ hơn nữa!
+À quên ! Nếu có 1 điều ước trong game thì ước gì sau event này được tặng món vũ khí đỏ xịn xịn để farm. Giáo T3 ,T4 gì cũng dc 🤣🤣🤣🤣 . Đang sài giáo xanh ghẻ tậu nghiệp lắm admin ơi 😂
+
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+9gRV9K3LBdTXrREyrezLZw==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 5</span><span class="eng-pill eng-pill-cmt">💬 3</span><span class="eng-pill eng-pill-total">8 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568675124622191/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Phạm Duy Thiện</span><span class="meta-dot">·</span><span class="hot-time">13/05 16:57</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 7</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật 1 tuổi LINEAGE2M.
+ #1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: OGES24TIYUBhBrP4m4iiAQ==</span><span class="lang-en">Chúc mừng sinh nhật 1 tuổi LINEAGE2M.
+ #1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: OGES24TIYUBhBrP4m4iiAQ==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 3</span><span class="eng-pill eng-pill-cmt">💬 4</span><span class="eng-pill eng-pill-total">7 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568007458022291/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Thanh Trung</span><span class="meta-dot">·</span><span class="hot-time">14/05 05:29</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 5</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật lineage2m  vừa tròn 1 tuổi,năm sau sinh nhật 2 tuổi fb nhắc lại nhaaaa :v [#1YearAnni](https://www.facebook.com/hashtag/1yearanni?__cft__[0]=AZYqB2FBjIXqbz2uF5MWAYDoc4ZwOON4e6-OiyiP_qlMBhqAIBTfd16q_xRFRl08ESn0ze6ypSH8K8VPtESgj_6ZmuhShapZihxNR-wIAqpN4RRHFoFWT03fMTzpN1aNKqmxftgGrHp1WmhDmPBa3YOWIEmEHfKhzh96gJtaCry8LOmm8F7_MI0skeqrWxMb4y0mRorXPjA9LrzI4CWV30vm&amp;__tn__=*NK-R) [#1YearWithL2M](https://www.facebook.com/hashtag/1yearwithl2m?__cft__[0]=AZYqB2FBjIXqbz2uF5MWAYDoc4ZwOON4e6-OiyiP_qlMBhqAIBTfd16q_xRFRl08ESn0ze6ypSH8K8VPtESgj_6ZmuhShapZihxNR-wIAqpN4RRHFoFWT03fMTzpN1aNKqmxftgGrHp1WmhDmPBa3YOWIEmEHfKhzh96gJtaCry8LOmm8F7_MI0skeqrWxMb4y0mRorXPjA9LrzI4CWV30vm&amp;__tn__=*NK-R) [#Lineage2MSEA](https://www.facebook.com/hashtag/lineage2msea?__cft__[0]=AZYqB2FBjIXqbz2uF5MWAYDoc4ZwOON4e6-OiyiP_qlMBhqAIBTfd16q_xRFRl08ESn0ze6ypSH8K8VPtESgj_6ZmuhShapZihxNR-wIAqpN4RRHFoFWT03fMTzpN1aNKqmxftgGrHp1WmhDmPBa3YOWIEmEHfKhzh96gJtaCry8LOmm8F7_MI0skeqrWxMb4y0mRorXPjA9LrzI4CWV30vm&amp;__tn__=*NK-R)   ID : iNs+pKyw6/QGnyyr8InJwQ==</span><span class="lang-en">Chúc mừng sinh nhật lineage2m  vừa tròn 1 tuổi,năm sau sinh nhật 2 tuổi fb nhắc lại nhaaaa :v [#1YearAnni](https://www.facebook.com/hashtag/1yearanni?__cft__[0]=AZYqB2FBjIXqbz2uF5MWAYDoc4ZwOON4e6-OiyiP_qlMBhqAIBTfd16q_xRFRl08ESn0ze6ypSH8K8VPtESgj_6ZmuhShapZihxNR-wIAqpN4RRHFoFWT03fMTzpN1aNKqmxftgGrHp1WmhDmPBa3YOWIEmEHfKhzh96gJtaCry8LOmm8F7_MI0skeqrWxMb4y0mRorXPjA9LrzI4CWV30vm&amp;__tn__=*NK-R) [#1YearWithL2M](https://www.facebook.com/hashtag/1yearwithl2m?__cft__[0]=AZYqB2FBjIXqbz2uF5MWAYDoc4ZwOON4e6-OiyiP_qlMBhqAIBTfd16q_xRFRl08ESn0ze6ypSH8K8VPtESgj_6ZmuhShapZihxNR-wIAqpN4RRHFoFWT03fMTzpN1aNKqmxftgGrHp1WmhDmPBa3YOWIEmEHfKhzh96gJtaCry8LOmm8F7_MI0skeqrWxMb4y0mRorXPjA9LrzI4CWV30vm&amp;__tn__=*NK-R) [#Lineage2MSEA](https://www.facebook.com/hashtag/lineage2msea?__cft__[0]=AZYqB2FBjIXqbz2uF5MWAYDoc4ZwOON4e6-OiyiP_qlMBhqAIBTfd16q_xRFRl08ESn0ze6ypSH8K8VPtESgj_6ZmuhShapZihxNR-wIAqpN4RRHFoFWT03fMTzpN1aNKqmxftgGrHp1WmhDmPBa3YOWIEmEHfKhzh96gJtaCry8LOmm8F7_MI0skeqrWxMb4y0mRorXPjA9LrzI4CWV30vm&amp;__tn__=*NK-R)   ID : iNs+pKyw6/QGnyyr8InJwQ==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 3</span><span class="eng-pill eng-pill-total">5 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568495907973446/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Lineage2M</span><span class="meta-dot">·</span><span class="hot-time">13/05 12:40</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 4</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Người Kế Thừa ơi, đừng quên tham gia sự kiện tuần này nhé, nhiều phần quà hấp dẫn đang chờ nhaaa 😆</span><span class="lang-en">Người Kế Thừa ơi, đừng quên tham gia sự kiện tuần này nhé, nhiều phần quà hấp dẫn đang chờ nhaaa 😆</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 4</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">4 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1567830134706690/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Thân Trọng Khải</span><span class="meta-dot">·</span><span class="hot-time">14/05 13:07</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 4</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">vậy là tròn 1 năm bên nhau &lt;3 
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: oF4xGp0IeNK4E4TJsY8IvQ==</span><span class="lang-en">vậy là tròn 1 năm bên nhau &lt;3 
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: oF4xGp0IeNK4E4TJsY8IvQ==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 3</span><span class="eng-pill eng-pill-cmt">💬 1</span><span class="eng-pill eng-pill-total">4 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568726997950337/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Quang Đông Bùi</span><span class="meta-dot">·</span><span class="hot-time">14/05 03:53</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 4</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển
+[#1YearAnni](https://www.facebook.com/hashtag/1yearanni?__cft__[0]=AZbvzzefVsBh1yAF9SDzQEQ1y1obgqG1-_xo9oCXjECdmTVJAQ4EzuL5d8m9rL5BzZkHoJ3H41opkzJ8OOMNpMXeRaxtWkirgygkz01n_2njKE-utPql2Af_4jvi7-ur2Yoev6ISrUmyAyrxaLRkiXSC5JZHWJOAPTZoFzkyvpHF0MgGdRiSiK59XYQJYIPMYubc8dmiPsnk7pXTYMgAuhFwFSFUAVsao5wfqypdtJco2rFfsVgD6DgOJn8_u8FfbhXY-ntHuQaOWEP_P-qeZvN7&amp;__tn__=*NK-y-R) [#1YearWithL2M](https://www.facebook.com/hashtag/1yearwithl2m?__cft__[0]=AZbvzzefVsBh1yAF9SDzQEQ1y1obgqG1-_xo9oCXjECdmTVJAQ4EzuL5d8m9rL5BzZkHoJ3H41opkzJ8OOMNpMXeRaxtWkirgygkz01n_2njKE-utPql2Af_4jvi7-ur2Yoev6ISrUmyAyrxaLRkiXSC5JZHWJOAPTZoFzkyvpHF0MgGdRiSiK59XYQJYIPMYubc8dmiPsnk7pXTYMgAuhFwFSFUAVsao5wfqypdtJco2rFfsVgD6DgOJn8_u8FfbhXY-ntHuQaOWEP_P-qeZvN7&amp;__tn__=*NK-y-R) [#Lineage2MSEA](https://www.facebook.com/hashtag/lineage2msea?__cft__[0]=AZbvzzefVsBh1yAF9SDzQEQ1y1obgqG1-_xo9oCXjECdmTVJAQ4EzuL5d8m9rL5BzZkHoJ3H41opkzJ8OOMNpMXeRaxtWkirgygkz01n_2njKE-utPql2Af_4jvi7-ur2Yoev6ISrUmyAyrxaLRkiXSC5JZHWJOAPTZoFzkyvpHF0MgGdRiSiK59XYQJYIPMYubc8dmiPsnk7pXTYMgAuhFwFSFUAVsao5wfqypdtJco2rFfsVgD6DgOJn8_u8FfbhXY-ntHuQaOWEP_P-qeZvN7&amp;__tn__=*NK-y-R)
+
+ ID: eBbYSc/IykJF13NAf9W8gg==</span><span class="lang-en">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển
+[#1YearAnni](https://www.facebook.com/hashtag/1yearanni?__cft__[0]=AZbvzzefVsBh1yAF9SDzQEQ1y1obgqG1-_xo9oCXjECdmTVJAQ4EzuL5d8m9rL5BzZkHoJ3H41opkzJ8OOMNpMXeRaxtWkirgygkz01n_2njKE-utPql2Af_4jvi7-ur2Yoev6ISrUmyAyrxaLRkiXSC5JZHWJOAPTZoFzkyvpHF0MgGdRiSiK59XYQJYIPMYubc8dmiPsnk7pXTYMgAuhFwFSFUAVsao5wfqypdtJco2rFfsVgD6DgOJn8_u8FfbhXY-ntHuQaOWEP_P-qeZvN7&amp;__tn__=*NK-y-R) [#1YearWithL2M](https://www.facebook.com/hashtag/1yearwithl2m?__cft__[0]=AZbvzzefVsBh1yAF9SDzQEQ1y1obgqG1-_xo9oCXjECdmTVJAQ4EzuL5d8m9rL5BzZkHoJ3H41opkzJ8OOMNpMXeRaxtWkirgygkz01n_2njKE-utPql2Af_4jvi7-ur2Yoev6ISrUmyAyrxaLRkiXSC5JZHWJOAPTZoFzkyvpHF0MgGdRiSiK59XYQJYIPMYubc8dmiPsnk7pXTYMgAuhFwFSFUAVsao5wfqypdtJco2rFfsVgD6DgOJn8_u8FfbhXY-ntHuQaOWEP_P-qeZvN7&amp;__tn__=*NK-y-R) [#Lineage2MSEA](https://www.facebook.com/hashtag/lineage2msea?__cft__[0]=AZbvzzefVsBh1yAF9SDzQEQ1y1obgqG1-_xo9oCXjECdmTVJAQ4EzuL5d8m9rL5BzZkHoJ3H41opkzJ8OOMNpMXeRaxtWkirgygkz01n_2njKE-utPql2Af_4jvi7-ur2Yoev6ISrUmyAyrxaLRkiXSC5JZHWJOAPTZoFzkyvpHF0MgGdRiSiK59XYQJYIPMYubc8dmiPsnk7pXTYMgAuhFwFSFUAVsao5wfqypdtJco2rFfsVgD6DgOJn8_u8FfbhXY-ntHuQaOWEP_P-qeZvN7&amp;__tn__=*NK-y-R)
+
+ ID: eBbYSc/IykJF13NAf9W8gg==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 2</span><span class="eng-pill eng-pill-total">4 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568385114651192/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Sang Trần</span><span class="meta-dot">·</span><span class="hot-time">13/05 16:57</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 4</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: 5NkYZvPCCz4qCq6/vJ/fww==
+
+Nam Phan Hồ Thạch Bánh Bao</span><span class="lang-en">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: 5NkYZvPCCz4qCq6/vJ/fww==
+
+Nam Phan Hồ Thạch Bánh Bao</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 4</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">4 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568006801355690/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Le Nhat</span><span class="meta-dot">·</span><span class="hot-time">15/05 02:56</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 3</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng Lineage2m sinh nhật 1 tuổi, chúc cho chúng ta có thêm ngày càng phát triển và ban quản trị thật nhiều sức khỏe. Xin hết !
+Lineage2m mãi đỉnh !
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+ID: t6uq3C1mw2G5h6q6Jsyu0g==</span><span class="lang-en">Chúc mừng Lineage2m sinh nhật 1 tuổi, chúc cho chúng ta có thêm ngày càng phát triển và ban quản trị thật nhiều sức khỏe. Xin hết !
+Lineage2m mãi đỉnh !
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+ID: t6uq3C1mw2G5h6q6Jsyu0g==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 3</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">3 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1569297844559919/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Mei Mei</span><span class="meta-dot">·</span><span class="hot-time">15/05 01:54</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 3</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+ID:   E00+QWxAjMsFe6WqLSAcbQ==</span><span class="lang-en">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+ID:   E00+QWxAjMsFe6WqLSAcbQ==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 3</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">3 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568889394600764/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Nguyễn Phi Long</span><span class="meta-dot">·</span><span class="hot-time">14/05 09:32</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 3</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật 1 tuổi LINEAGE2M. Mong game luôn thành công hơn trong 2026.
+
+[#1YearAnni](https://www.facebook.com/hashtag/1yearanni?__cft__[0]=AZb3Rktvehew6cQWU9UiJFQW4W3AVWQwwBrpNDnpTdwgQUJryrC4j6eqJUXNMKTIyGGvm8M430g-hx3A3vp7LpeTbbHiuS7UJfEONJEJTSdqJPJdn1poHRuh2y3leTkRSCbKMIJHJVeRyZLe8e506n1yui8pleZsnIKevGiaZMnlr2L7aWvrGfDktEtHsu8krbuEqBKuIe_M0sRZ6ZzLiQi5&amp;__tn__=*NK-R) [#1YearWithL2M](https://www.facebook.com/hashtag/1yearwithl2m?__cft__[0]=AZb3Rktvehew6cQWU9UiJFQW4W3AVWQwwBrpNDnpTdwgQUJryrC4j6eqJUXNMKTIyGGvm8M430g-hx3A3vp7LpeTbbHiuS7UJfEONJEJTSdqJPJdn1poHRuh2y3leTkRSCbKMIJHJVeRyZLe8e506n1yui8pleZsnIKevGiaZMnlr2L7aWvrGfDktEtHsu8krbuEqBKuIe_M0sRZ6ZzLiQi5&amp;__tn__=*NK-R) #[Lineage2MSEA](https://www.facebook.com/hashtag/lineage2msea?__cft__[0]=AZZxc6Dcl6XLaM4Xcx98LGPWx1Tf-HHEVrvnk7gu8oXMPI_u5LcUND-rNMirT0D06d_jznPcYLOoRuiZRgRULiQkDqOzB6neZr2d1O2_gDgXHrybhBFWNtxI3p1NuROR5qoYqHBMTciC_Jz8xxqJdhvEWRGC21xp3XuZvnpxTr-SeS8Lonk7q6Xc9L5Jx18fn1DqxELfiwryg1jwFNbX-3AE&amp;__tn__=*NK-R)
+
+ID: DoToFbBDL2yiBqnMc5zwqg==</span><span class="lang-en">Chúc mừng sinh nhật 1 tuổi LINEAGE2M. Mong game luôn thành công hơn trong 2026.
+
+[#1YearAnni](https://www.facebook.com/hashtag/1yearanni?__cft__[0]=AZb3Rktvehew6cQWU9UiJFQW4W3AVWQwwBrpNDnpTdwgQUJryrC4j6eqJUXNMKTIyGGvm8M430g-hx3A3vp7LpeTbbHiuS7UJfEONJEJTSdqJPJdn1poHRuh2y3leTkRSCbKMIJHJVeRyZLe8e506n1yui8pleZsnIKevGiaZMnlr2L7aWvrGfDktEtHsu8krbuEqBKuIe_M0sRZ6ZzLiQi5&amp;__tn__=*NK-R) [#1YearWithL2M](https://www.facebook.com/hashtag/1yearwithl2m?__cft__[0]=AZb3Rktvehew6cQWU9UiJFQW4W3AVWQwwBrpNDnpTdwgQUJryrC4j6eqJUXNMKTIyGGvm8M430g-hx3A3vp7LpeTbbHiuS7UJfEONJEJTSdqJPJdn1poHRuh2y3leTkRSCbKMIJHJVeRyZLe8e506n1yui8pleZsnIKevGiaZMnlr2L7aWvrGfDktEtHsu8krbuEqBKuIe_M0sRZ6ZzLiQi5&amp;__tn__=*NK-R) #[Lineage2MSEA](https://www.facebook.com/hashtag/lineage2msea?__cft__[0]=AZZxc6Dcl6XLaM4Xcx98LGPWx1Tf-HHEVrvnk7gu8oXMPI_u5LcUND-rNMirT0D06d_jznPcYLOoRuiZRgRULiQkDqOzB6neZr2d1O2_gDgXHrybhBFWNtxI3p1NuROR5qoYqHBMTciC_Jz8xxqJdhvEWRGC21xp3XuZvnpxTr-SeS8Lonk7q6Xc9L5Jx18fn1DqxELfiwryg1jwFNbX-3AE&amp;__tn__=*NK-R)
+
+ID: DoToFbBDL2yiBqnMc5zwqg==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 3</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">3 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568622967960740/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Nguyễn Đức Bình</span><span class="meta-dot">·</span><span class="hot-time">14/05 07:58</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 3</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">chúc mừng sinh nhật 1 tuổi lineage2m , mong game ngày càng phát triển và ra nhiều sự kiện mới =))
+
+[#1YearAnni](https://www.facebook.com/hashtag/1yearanni?__cft__[0]=AZZGYM0OgPOxnBVSMxfX1v7TYe4Ogfmx60M9HaY8kvOrNPu-wF0I9j7_tbqr88COx7iHJSN3lVn8XhKEI_lbpXvW92VdUomvT2K3DC-zHkF1V1bwl8m8D08xgLB71e1aFQilcPPphd-zWoD08tgTTeU3csVbWrUCq-HbQsQfN8qgUlt8HvZX2vV-VJrGCHtR49BkoD4YjcqDU0HCI68KoJI-&amp;__tn__=*NK-R) [#1YearWithL2M](https://www.facebook.com/hashtag/1yearwithl2m?__cft__[0]=AZZGYM0OgPOxnBVSMxfX1v7TYe4Ogfmx60M9HaY8kvOrNPu-wF0I9j7_tbqr88COx7iHJSN3lVn8XhKEI_lbpXvW92VdUomvT2K3DC-zHkF1V1bwl8m8D08xgLB71e1aFQilcPPphd-zWoD08tgTTeU3csVbWrUCq-HbQsQfN8qgUlt8HvZX2vV-VJrGCHtR49BkoD4YjcqDU0HCI68KoJI-&amp;__tn__=*NK-R) [#Lineage2MSEA](https://www.facebook.com/hashtag/lineage2msea?__cft__[0]=AZZGYM0OgPOxnBVSMxfX1v7TYe4Ogfmx60M9HaY8kvOrNPu-wF0I9j7_tbqr88COx7iHJSN3lVn8XhKEI_lbpXvW92VdUomvT2K3DC-zHkF1V1bwl8m8D08xgLB71e1aFQilcPPphd-zWoD08tgTTeU3csVbWrUCq-HbQsQfN8qgUlt8HvZX2vV-VJrGCHtR49BkoD4YjcqDU0HCI68KoJI-&amp;__tn__=*NK-R)
+
+ID : 4qPomSoGXYscFYwnSqIsVQ==</span><span class="lang-en">chúc mừng sinh nhật 1 tuổi lineage2m , mong game ngày càng phát triển và ra nhiều sự kiện mới =))
+
+[#1YearAnni](https://www.facebook.com/hashtag/1yearanni?__cft__[0]=AZZGYM0OgPOxnBVSMxfX1v7TYe4Ogfmx60M9HaY8kvOrNPu-wF0I9j7_tbqr88COx7iHJSN3lVn8XhKEI_lbpXvW92VdUomvT2K3DC-zHkF1V1bwl8m8D08xgLB71e1aFQilcPPphd-zWoD08tgTTeU3csVbWrUCq-HbQsQfN8qgUlt8HvZX2vV-VJrGCHtR49BkoD4YjcqDU0HCI68KoJI-&amp;__tn__=*NK-R) [#1YearWithL2M](https://www.facebook.com/hashtag/1yearwithl2m?__cft__[0]=AZZGYM0OgPOxnBVSMxfX1v7TYe4Ogfmx60M9HaY8kvOrNPu-wF0I9j7_tbqr88COx7iHJSN3lVn8XhKEI_lbpXvW92VdUomvT2K3DC-zHkF1V1bwl8m8D08xgLB71e1aFQilcPPphd-zWoD08tgTTeU3csVbWrUCq-HbQsQfN8qgUlt8HvZX2vV-VJrGCHtR49BkoD4YjcqDU0HCI68KoJI-&amp;__tn__=*NK-R) [#Lineage2MSEA](https://www.facebook.com/hashtag/lineage2msea?__cft__[0]=AZZGYM0OgPOxnBVSMxfX1v7TYe4Ogfmx60M9HaY8kvOrNPu-wF0I9j7_tbqr88COx7iHJSN3lVn8XhKEI_lbpXvW92VdUomvT2K3DC-zHkF1V1bwl8m8D08xgLB71e1aFQilcPPphd-zWoD08tgTTeU3csVbWrUCq-HbQsQfN8qgUlt8HvZX2vV-VJrGCHtR49BkoD4YjcqDU0HCI68KoJI-&amp;__tn__=*NK-R)
+
+ID : 4qPomSoGXYscFYwnSqIsVQ==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 3</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">3 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568581227964914/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">RadiantReindeer6772</span><span class="meta-dot">·</span><span class="hot-time">15/05 05:28</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Thailand Official">🇹🇭 Lineage2M Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">HBD Lineage2M Chúc game luôn có thật nhiều người chơi mới nhé
+#1YearAnni #1YearwithL2m #Lineage2MSEA</span><span class="lang-en">HBD Lineage2M ขอให้อัปเดตมีคนเล่นเยอะเยอะตลอดไปครับ
+#1YearAnni #1YearwithL2m #Lineage2MSEA</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mthai/permalink/987106260800385/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Bảo Nguyễn</span><span class="meta-dot">·</span><span class="hot-time">15/05 04:32</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng lineage2m sinh nhật 1 tuổi chúc cho game ngày càng phát triển và ban quản trị thật nhiều sức khoẻ
+Xin cho em được 1 món tím😆😆😆😆
+#1yearanni #1YearWithL2m #Lineage2MSEA 
+
+0OvJ6Ga0WtQDzCi3J6KCjA==</span><span class="lang-en">Chúc mừng lineage2m sinh nhật 1 tuổi chúc cho game ngày càng phát triển và ban quản trị thật nhiều sức khoẻ
+Xin cho em được 1 món tím😆😆😆😆
+#1yearanni #1YearWithL2m #Lineage2MSEA 
+
+0OvJ6Ga0WtQDzCi3J6KCjA==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1569349391221431/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Nontanan Juntasin</span><span class="meta-dot">·</span><span class="hot-time">14/05 19:19</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Thailand Official">🇹🇭 Lineage2M Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật, Happy Birthday, mong đây là ngày tốt lành. Chúc thọ bình an. Giàu không xuể nổi rồi #1YearAnni #1YearWithL2M #Lineage2MSEA</span><span class="lang-en">สุขสันต์วันเกิด แฮปปี้เบิร์ดเดย์ ขอให้เป็นวันที่ดี อายุวันโนสุขังปูตังอินา รวยไม่ไหวแล้ว #1YearAnni #1YearWithL2M #Lineage2MSEA</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mthai/permalink/986549240856087/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Mạnh Cường</span><span class="meta-dot">·</span><span class="hot-time">14/05 14:46</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng Lineage2m sinh nhật 1 tuổi, chúc cho chúng ta có thêm nhiều cái nữa về sau
+Lineage2m mãi đỉnh !
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+ID: KKo9ePujknVPj3Sr6EDwug==</span><span class="lang-en">Chúc mừng Lineage2m sinh nhật 1 tuổi, chúc cho chúng ta có thêm nhiều cái nữa về sau
+Lineage2m mãi đỉnh !
+#1YearAnni #1YearWithL2M #Lineage2MSEA
+
+ID: KKo9ePujknVPj3Sr6EDwug==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568848437938193/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Nguyễn Thiên Phước</span><span class="meta-dot">·</span><span class="hot-time">14/05 13:07</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển
+ #1YearAnni #1YearWithL2M #Lineage2MSEA
+
+ID:   E00+QWxAjMsFe6WqLSAcbQ==</span><span class="lang-en">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển
+ #1YearAnni #1YearWithL2M #Lineage2MSEA
+
+ID:   E00+QWxAjMsFe6WqLSAcbQ==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568733054616398/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Giang Thanh</span><span class="meta-dot">·</span><span class="hot-time">14/05 00:11</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật L2M tròn 1 tuoi,,#1YearAnni #1YearWithL2M #Lineage2MSEA  Adm Trinh Trinh Suong Suong Thai Nguyen  Yc+o5UXFfSrK7v8Guvas8w==</span><span class="lang-en">Chúc mừng sinh nhật L2M tròn 1 tuoi,,#1YearAnni #1YearWithL2M #Lineage2MSEA  Adm Trinh Trinh Suong Suong Thai Nguyen  Yc+o5UXFfSrK7v8Guvas8w==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 1</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568084294681274/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">อา' ชา</span><span class="meta-dot">·</span><span class="hot-time">15/05 04:41</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Thailand Official">🇹🇭 Lineage2M Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Happy Birthday nhaaa 🎂 Chúng ta đã ở cùng nhau được 1 năm rồi đó nhỉ. Cảm ơn vì đã cho em gặp được biết bao tình bạn đẹp nha 🎯
+#1YearAnni #1YearWithL2M #Lineage2MSEA</span><span class="lang-en">Happy Birthday น้าา 🎂 อยู่ด้วยกันมาก็ 1 ปีแล้วเนาะ ขอบคุณที่ทำให้เจอมิตรภาพมากมายนะคะ🎯
+#1YearAnni #1YearWithL2M #Lineage2MSEA</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mthai/permalink/987065207471157/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Huyền Châu</span><span class="meta-dot">·</span><span class="hot-time">15/05 04:32</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng Sinh Nhật Lineage2m , ước được nph cho em ghép được tím #1YearAnni #1YearWithL2M #Lineage2MSEA 
+ID : hfEdWe4do3klNnMtCNvoaQ==</span><span class="lang-en">Chúc mừng Sinh Nhật Lineage2m , ước được nph cho em ghép được tím #1YearAnni #1YearWithL2M #Lineage2MSEA 
+ID : hfEdWe4do3klNnMtCNvoaQ==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1569362031220167/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Cast Away</span><span class="meta-dot">·</span><span class="hot-time">15/05 04:40</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Thailand Official">🇹🇭 Lineage2M Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">HBD Lineage2M Giàu không xuể nổi rồi 🎉
+#1YearAnni #1YearwithL2m #Lineage2MSEA</span><span class="lang-en">HBD Lineage2M รวยไม่ไหวแล้ว
+#1YearAnni #1YearwithL2m #Lineage2MSEA</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mthai/permalink/987098570801154/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Nam Hoàng</span><span class="meta-dot">·</span><span class="hot-time">14/05 13:47</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng Lineage2m sinh nhật 1 tuổi,thành công!
+#1YearAnni #1YearWithL2M #Lineage2MSEA 
+
+ID: wGFBU47EZbuBtrDLUb/k8A==</span><span class="lang-en">Chúc mừng Lineage2m sinh nhật 1 tuổi,thành công!
+#1YearAnni #1YearWithL2M #Lineage2MSEA 
+
+ID: wGFBU47EZbuBtrDLUb/k8A==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568816467941390/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Toàn Trần</span><span class="meta-dot">·</span><span class="hot-time">14/05 11:13</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage2M Vietnam Official">🇻🇳 Lineage2M Vietnam Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: up0xt4GLycico8qsumNrCw==</span><span class="lang-en">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA
+ID: up0xt4GLycico8qsumNrCw==</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineage2mvng/permalink/1568700697952967/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article></div></section></div>
+  <div class="game-panel lw-panel" id="panel-lw"><section class="section"><div class="section-head"><span class="section-title"><span class="lang-vn">Tổng quan</span><span class="lang-en">Overview</span></span><span class="section-desc"><span class="lang-vn">24 giờ gần nhất · sort chronological</span><span class="lang-en">Last 24 hours · chronological</span></span></div><div class="summary-grid"><div class="summary-card"><div class="summary-label"><span class="lang-vn">Bài đăng</span><span class="lang-en">Posts</span></div><div class="summary-value"><span class="summary-num">277</span><span class="summary-sub">/ 24h</span></div></div><div class="summary-card"><div class="summary-label"><span class="lang-vn">Group có bài</span><span class="lang-en">Active groups</span></div><div class="summary-value"><span class="summary-num">16</span><span class="summary-sub">/ 16 enabled</span></div></div><div class="summary-card span-2"><div class="summary-label"><span class="lang-vn">Phân bổ theo khu vực</span><span class="lang-en">Regional distribution</span></div><div class="region-bar" role="img"><div class="region-segment vn" style="width:28.5%" title="Việt Nam: 79 posts">🇻🇳 29%</div><div class="region-segment th" style="width:64.6%" title="Thailand: 179 posts">🇹🇭 65%</div><div class="region-segment id" style="width:2.2%" title="Indonesia: 6 posts">🇮🇩 2%</div><div class="region-segment ph" style="width:4.7%" title="Philippines: 13 posts">🇵🇭 5%</div></div><div class="region-legend"><span class="region-legend-item"><span class="region-dot" style="background:var(--region-vn)"></span>Việt Nam · <strong>79</strong></span><span class="region-legend-item"><span class="region-dot" style="background:var(--region-th)"></span>Thailand · <strong>179</strong></span><span class="region-legend-item"><span class="region-dot" style="background:var(--region-id)"></span>Indonesia · <strong>6</strong></span><span class="region-legend-item"><span class="region-dot" style="background:var(--region-ph)"></span>Philippines · <strong>13</strong></span></div></div></div><div class="summary-grid" style="grid-template-columns:minmax(280px,1fr) 2fr;"><div class="summary-card"><div class="summary-label"><span class="lang-vn">Phân loại bài</span><span class="lang-en">Post type</span></div><div class="type-card"><svg class="type-donut" viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#1f2937" stroke-width="4"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#94a3b8" stroke-width="4" stroke-dasharray="71.1 28.9" stroke-dashoffset="25.0" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#f59e0b" stroke-width="4" stroke-dasharray="11.2 88.8" stroke-dashoffset="-46.1" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#10b981" stroke-width="4" stroke-dasharray="10.8 89.2" stroke-dashoffset="-57.3" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#22d3ee" stroke-width="4" stroke-dasharray="4.0 96.0" stroke-dashoffset="-68.1" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#38bdf8" stroke-width="4" stroke-dasharray="2.9 97.1" stroke-dashoffset="-72.1" transform="rotate(-90 21 21)"/><text x="21" y="22" text-anchor="middle" fill="#f1f5f9" font-size="8" font-weight="700" font-family="Inter">277</text><text x="21" y="28" text-anchor="middle" fill="#64748b" font-size="3" font-family="Inter">posts</text></svg><div class="type-legend"><div class="type-legend-row"><span class="type-legend-dot" style="background:#94a3b8"></span><span class="lang-vn">💬 Khác</span><span class="lang-en">💬 Other</span><span class="type-legend-count">197 · 71%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#f59e0b"></span><span class="lang-vn">💰 Bán</span><span class="lang-en">💰 Sell</span><span class="type-legend-count">31 · 11%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#10b981"></span><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span><span class="type-legend-count">30 · 11%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#22d3ee"></span><span class="lang-vn">👥 Cộng đồng</span><span class="lang-en">👥 Community</span><span class="type-legend-count">11 · 4%</span></div><div class="type-legend-row"><span class="type-legend-dot" style="background:#38bdf8"></span><span class="lang-vn">🛒 Mua</span><span class="lang-en">🛒 Buy</span><span class="type-legend-count">8 · 3%</span></div></div></div></div><div class="summary-card"><div class="summary-label"><span class="lang-vn">Hoạt động theo group</span><span class="lang-en">Group activity</span></div><div class="group-heatmap" style="margin-top:var(--s-3)"><div class="group-cell" style="--heat:1.00" title="Lineage W Vietnam Official · 56 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage W Vietnam Offici…</span><span class="group-cell-count">56</span></div><div class="group-cell" style="--heat:0.91" title="Lineage W Thailand Official · 51 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage W Thailand Offic…</span><span class="group-cell-count">51</span></div><div class="group-cell" style="--heat:0.91" title="Lineage W Thailand Community · 51 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage W Thailand Commu…</span><span class="group-cell-count">51</span></div><div class="group-cell" style="--heat:0.52" title="Lineage W Thailand · 29 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage W Thailand</span><span class="group-cell-count">29</span></div><div class="group-cell" style="--heat:0.45" title="Lineage W TH Trade · 25 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage W TH Trade</span><span class="group-cell-count">25</span></div><div class="group-cell" style="--heat:0.29" title="Lineage W TH Community &amp; Trade · 16 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage W TH Community &amp;…</span><span class="group-cell-count">16</span></div><div class="group-cell" style="--heat:0.27" title="Lineage W Viet Nam · 15 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage W Viet Nam</span><span class="group-cell-count">15</span></div><div class="group-cell" style="--heat:0.20" title="Lineage W Philippines Official · 11 posts"><span class="group-cell-flag">🇵🇭</span><span class="group-cell-name">Lineage W Philippines Of…</span><span class="group-cell-count">11</span></div><div class="group-cell" style="--heat:0.12" title="Lineage W SEA Thai Community · 7 posts"><span class="group-cell-flag">🇹🇭</span><span class="group-cell-name">Lineage W SEA Thai Commu…</span><span class="group-cell-count">7</span></div><div class="group-cell" style="--heat:0.11" title="Lineage W Indonesia Official · 6 posts"><span class="group-cell-flag">🇮🇩</span><span class="group-cell-name">Lineage W Indonesia Offi…</span><span class="group-cell-count">6</span></div><div class="group-cell" style="--heat:0.05" title="Lineage W VNG Viet Nam · 3 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage W VNG Viet Nam</span><span class="group-cell-count">3</span></div><div class="group-cell" style="--heat:0.04" title="Lineage W Vietnam Buy Sell &amp; Trade · 2 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage W Vietnam Buy Se…</span><span class="group-cell-count">2</span></div><div class="group-cell" style="--heat:0.04" title="Lineage W Community Philippines · 2 posts"><span class="group-cell-flag">🇵🇭</span><span class="group-cell-name">Lineage W Community Phil…</span><span class="group-cell-count">2</span></div><div class="group-cell" style="--heat:0.04" title="Lineage W VNG - Mua Bán &amp; Thảo Luận VN · 2 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage W VNG - Mua Bán …</span><span class="group-cell-count">2</span></div><div class="group-cell" style="--heat:0.02" title="Lineage W VNG 77K · 1 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage W VNG 77K</span><span class="group-cell-count">1</span></div><div class="group-cell" style="--heat:0.02" title="Lineage W VN Buy Sell &amp; Trade · 1 posts"><span class="group-cell-flag">🇻🇳</span><span class="group-cell-name">Lineage W VN Buy Sell &amp; …</span><span class="group-cell-count">1</span></div></div></div></div></section><div class="alert-box"><div class="alert-title">⚠️ <span class="lang-vn">LineageW: 102 bài từ 14 groups</span><span class="lang-en">LineageW: 102 posts from 14 groups</span></div><p class="lang-vn">LW VN Official: 17 bài. LW TH: 67 bài. PH: 7 bài.</p><p class="lang-en">LW VN Official: 17 posts. LW TH: 67 posts. PH: 7 posts.</p></div><section class="insights"><div class="insights-title"><span>💡</span><span class="lang-vn">Insight chính</span><span class="lang-en">Key insights</span></div><ul class="insights-list"><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">🔥 Bài nổi bật nhất [Bán · VN] 109 likes · 39 cmts (Lineage W Vietnam Official): Sau tầm 1 tháng chơi bản global,mình xin phép chia sẻ vài kinh nghiệm cho ae …</span><span class="lang-en">🔥 Top post [Sell · VN] 109 likes · 39 comments (Lineage W Vietnam Official): Sau tầm 1 tháng chơi bản global,mình xin phép chia sẻ vài kinh nghiệm cho ae …</span></div><button class="insight-filter-btn" data-types="top1" onclick="handleInsightFilter(this)"><span class="lang-vn">🔍 Xem bài này</span><span class="lang-en">🔍 View post</span></button></li><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">📦 Giao dịch mua/bán: 39/277 bài (14%) — region nhiều nhất: TH</span><span class="lang-en">📦 Trade activity: 39/277 posts (14%) — most active region: TH</span></div><button class="insight-filter-btn" data-types="sell,buy" onclick="handleInsightFilter(this)"><span class="lang-vn">🔍 Mua/Bán</span><span class="lang-en">🔍 Trade</span></button></li><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">📣 Official/event: 30 bài (Lineage W Thailand Official, Lineage W Vietnam Official)</span><span class="lang-en">📣 Official/event: 30 posts (Lineage W Thailand Official, Lineage W Vietnam Official)</span></div><button class="insight-filter-btn" data-types="official" onclick="handleInsightFilter(this)"><span class="lang-vn">🔍 Official</span><span class="lang-en">🔍 Official</span></button></li><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">🏰 Tuyển clan/guild: 11 bài</span><span class="lang-en">🏰 Clan/guild recruitment: 11 posts</span></div><button class="insight-filter-btn" data-types="community" onclick="handleInsightFilter(this)"><span class="lang-vn">🔍 Clan/Guild</span><span class="lang-en">🔍 Clan/Guild</span></button></li><li class="insight-item"><span class="insight-marker"></span><div><span class="lang-vn">🌏 Region: TH: 179, VN: 79, PH: 13, ID: 6</span><span class="lang-en">🌏 Region: TH: 179, VN: 79, PH: 13, ID: 6</span></div></li></ul></section><section class="section"><div class="section-head"><span class="section-title"><span class="lang-vn">🔥 Bài nổi bật</span><span class="lang-en">🔥 Hot posts</span></span><span class="section-desc"><span class="lang-vn">Top 30 theo tương tác</span><span class="lang-en">Top 30 by engagement</span></span></div><div class="filter-bar" id="filter-bar-lw"><span class="filter-bar-label"><span class="lang-vn">Đang lọc:</span><span class="lang-en">Filter:</span> <strong class="filter-bar-name"></strong></span><span class="filter-bar-count"></span><button class="filter-bar-clear" onclick="clearFilter('lw')">✕ <span class="lang-vn">Bỏ lọc</span><span class="lang-en">Clear</span></button></div><div class="hot-grid" id="hot-grid-lw"><article class="hot-card" data-type="feedback" data-heat="active"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">07/05 12:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge active">🔥 Active · 16</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🔥 KHÁCH MỜI ĐẶC BIỆT TẠI THAILAND SHOWCASE: KOL DaddyKim ĐÃ ĐẾN! 🔥
+
+Các Chiến Binh đã sẵn sàng cho màn bùng nổ đỉnh cao chưa? Sự kiện Lineage W Thailand Showcase diễn ra ngày 9/5 sẽ bùng cháy hơn bao giờ hết với sự xuất hiện của khách mời cực kỳ đặc biệt — Influencer/YouTuber hàng đầu DaddyKim!
+
+Với tầm ảnh hưởng cực lớn trong cộng đồng game, DaddyKim hứa hẹn mang đến nguồn năng lượng bùng nổ, góc nhìn sắc bén và những khoảnh khắc trò chuyện khó quên. Anh ấy sẽ chia sẻ bí quyết gì? Hay có bất ngờ gì đang chờ chúng ta trên lục địa Aden?
+
+Cùng nhau đếm ngược, và đừng bỏ lỡ cơ hội gặp gỡ DaddyKim trực tiếp!
+
+👉 Đăng ký tham gia SHOWCASE ngay tại đây: https://event.vnggames.com/lineagewsea/vip-pre-register-3?hl=th
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">🔥 การปรากฏตัวสุดพิเศษในงาน THAILAND SHOWCASE: KOL DaddyKim มาเยือนแล้ว! 🔥
+
+ท่านนักรบ พร้อมสำหรับความตื่นเต้นสุดยิ่งใหญ่กันหรือยัง? งาน Lineage W Thailand Showcase ที่กำลังจะจัดขึ้นในวันที่ 9 พฤษภาคมนี้ จะยิ่งร้อนแรงขึ้นไปอีกระดับด้วยการมาเยือนของแขกรับเชิญสุดพิเศษของเรา - Influencer/YouTuber ชั้นนำ DaddyKim!
+
+ในฐานะบุคคลผู้ทรงอิทธิพลอย่างมากในคอมมูนิตี้เกม DaddyKim รับประกันว่าจะนำพลังอันล้นเหลือ มุมมองที่เฉียบคม และช่วงเวลาแห่งการพูดคุยที่น่าจดจำมาสู่พวกเราอย่างแน่นอน เขาจะมาแชร์เคล็ดลับอะไร หรือจะเตรียมเซอร์ไพรส์แบบไหนมาให้พวกเราในทวีปอาเดนกันนะ?
+
+มาร่วมนับถอยหลัง และอย่าพลาดโอกาสที่จะได้พบปะและทักทายกับ DaddyKim แบบตัวเป็นๆ!
+
+👉 ลงทะเบียนเข้าร่วมงาน SHOWCASE ได้เลยที่นี่: https://event.vnggames.com/lineagewsea/vip-pre-register-3?hl=th
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 14</span><span class="eng-pill eng-pill-cmt">💬 2</span><span class="eng-pill eng-pill-total">16 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2184809132359478/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="active"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">10/05 10:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge active">🔥 Active · 13</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🔮 HÃY CÙNG ĐOÁN CLASS TIẾP THEO SẼ ĐƯỢC HÉ LỘ! 🔮
+
+Một nguồn sức mạnh mới đang âm thầm thức tỉnh, hỡi các Chiến Binh, đã đến lúc thể hiện trực giác nhạy bén của các bạn rồi!
+
+🎯 Xạ Thủ — người đến với độ chính xác không ai sánh bằng?
+⚔️ Hay Kiếm Sĩ Linh Hồn — người đến với tốc độ vượt ánh sáng?
+
+👇 Gõ câu trả lời vào phần bình luận bên dưới! Đáp án sẽ được tiết lộ sớm thôi
+
+👉 Và đừng quên tạo nhân vật trước tại đây: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">🔮 มาร่วมทายคลาสต่อไปที่จะถูกเปิดเผยกัน! 🔮
+
+ขุมพลังใหม่กำลังตื่นขึ้นอย่างเงียบเชียบ ท่านนักรบทั้งหลาย ถึงเวลาแสดงสัญชาตญาณอันเฉียบคมของพวกท่านแล้ว!
+
+🎯 มือปืน ผู้มาพร้อมความแม่นยำอันไร้ที่ติ?
+⚔️ หรือ นักดาบวิญญาณ ผู้มาพร้อมความเร็วเหนือแสง?
+
+👇 พิมพ์คำทายของท่านลงในคอมเมนต์ด้านล่างได้เลย! คำตอบจะถูกเฉลยเร็วๆ นี้
+
+👉 และอย่าลืมเข้าไปสร้างตัวละครล่วงหน้าของท่านให้เรียบร้อยที่นี่: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 4</span><span class="eng-pill eng-pill-cmt">💬 9</span><span class="eng-pill eng-pill-total">13 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2187269522113439/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">08/05 13:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge notable">💬 Notable · 8</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">📖 PHÁP SƯ TỐI THƯỢNG: SINH RA TỪ CÁI CHẾT, TỰ MÌNH KHAI SÁNG CON ĐƯỜNG
+
+"Đứa trẻ sinh ra từ cái chết, vật lộn với số phận tàn nhẫn khi bị định sẵn làm bình chứa cho nữ thần xấu xa, không ngừng chống lại tiếng thì thầm đòi hủy diệt và cám dỗ dẫn đến ô nhiễm, vậy mà vẫn bước ra đối mặt với thế giới đầy nguy hiểm, với hy vọng tự khai sáng con đường của mình."
+
+Hỡi Chiến Binh, bạn đã sẵn sàng giúp Pháp Sư Tối Thượng thách thức địa ngục và tự định đoạt số phận của nàng chưa?
+___________________________________
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">📖 จอมเวท: ถือกำเนิดจากความตาย และผู้เบิกเส้นทางของตนเอง
+
+&quot;เด็กน้อยผู้ถือกำเนิดจากความตาย ดิ้นรนต่อสู้กับโชคชะตาอันโหดร้ายที่ลิขิตให้เธอต้องกลายเป็นภาชนะของเทพีผู้ชั่วร้าย ต้องคอยต่อสู้กับเสียงกระซิบที่เพรียกหาการทำลายล้าง และสิ่งเย้ายวนที่นำไปสู่ความแปดเปื้อน ทว่ายังคงก้าวออกไปเผชิญโลกอันแสนอันตราย ด้วยความหวังที่จะเบิกเส้นทางด้วยตัวของเธอเอง&quot;
+
+ท่านนักรบ ท่านพร้อมที่จะช่วยเหลือจอมเวทในการท้าทายขุมนรก และกำหนดโชคชะตาของเธอเองแล้วหรือยัง?
+___________________________________
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 8</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">8 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2185678735605851/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="community" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Judgement Guild</span><span class="meta-dot">·</span><span class="hot-time">06/05 12:58</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Vietnam Official">🇻🇳 Lineage W Vietnam Official</span><span class="hot-heat-badge notable">💬 Notable · 8</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">JUDGEMENT GUILD - GUILD QUỐC TẾ**
+
+Lineage W (Ra mắt SEA) – Liên minh cạnh tranh hardcore
+
+Server: EVA 01
+
+Ngôn ngữ chính: Tiếng Anh
+
+Mục tiêu: PvP hardcore | Siege | World Boss | Kiểm soát GvG
+
+---
+
+Chúng tôi ở đây để thống trị server và khu vực thế giới (EVA) từ đầu game đến cuối game
+
+Chúng tôi là cộng đồng người chơi cạnh tranh cao và người chơi nạp, hiện đã có **60+ thành viên xác nhận sẵn sàng cho launch**. Nếu bạn quan tâm và sẵn sàng thử thách trong cộng đồng này, hãy comment bên dưới! (chúng tôi cũng có guild riêng cho người chơi casual / social trong cộng đồng)
+
+---
+
+Chúng tôi sẽ sử dụng **fixed party/đội cố định ngay từ khi launch** để tăng tốc leveling, PvP và boss nhằm đảm bảo hiệu quả và phối hợp tối đa (nếu có party, khuyến khích đăng ký cùng nhau theo cả đội)
+
+---
+
+CẤU TRÚC LIÊN MINH:
+
+Judgement I – (Cạnh tranh - Người chơi nạp mạnh / PvP đỉnh cao)
+
+Judgement II – (Cạnh tranh)
+
+Judgement III – (Bán cạnh tranh)
+
+Judgement IV – (F2P / Người chơi nạp thấp nhưng hoạt động)
+
+---
+
+CHÚNG TÔI CUNG CẤP
+
+Hướng dẫn và thông tin launch đã được kiểm chứng từ KR
+
+Hệ thống liên minh 4 guild có cấu trúc rõ ràng
+
+Đội fixed cho PvP / boss / siege
+
+PvP hàng ngày, boss, chuẩn bị siege
+
+Hệ thống Discord được tổ chức
+
+Phát triển công bằng dựa trên đóng góp
+
+Phối hợp cao giữa tất cả guild
+
+---
+
+KỲ VỌNG
+
+Hoạt động thường xuyên và ổn định
+
+Tham gia CTA khi online (PvP, boss, siege)
+
+Sẵn sàng PvP thường xuyên
+
+Tư duy đặt guild lên hàng đầu
+
+Sẵn sàng học hỏi và thích nghi
+
+Hiệu suất rất quan trọng
+
+Người chơi đóng góp ổn định sẽ được thăng cấp
+
+Người chơi không hoạt động hoặc hiệu suất thấp sẽ bị hạ cấp
+
+---
+
+QUY TẮC GIAO TIẾP
+
+Điều phối chính: Discord
+
+Voice War / PvP: Tiếng Anh (hiểu cơ bản là đủ)
+
+---
+
+THAM GIA CÙNG CHÚNG TÔI
+
+Comment sự quan tâm bên dưới và chúng tôi sẽ DM bạn</span><span class="lang-en">JUDGEMENT GUILD - GUILD QUỐC TẾ**
+
+Lineage W (Ra mắt SEA) – Liên minh cạnh tranh hardcore
+
+Server: EVA 01
+
+Ngôn ngữ chính: Tiếng Anh
+
+Mục tiêu: PvP hardcore | Siege | World Boss | Kiểm soát GvG
+
+---
+
+Chúng tôi ở đây để thống trị server và khu vực thế giới (EVA) từ đầu game đến cuối game
+
+Chúng tôi là cộng đồng người chơi cạnh tranh cao và người chơi nạp, hiện đã có **60+ thành viên xác nhận sẵn sàng cho launch**. Nếu bạn quan tâm và sẵn sàng thử thách trong cộng đồng này, hãy comment bên dưới! (chúng tôi cũng có guild riêng cho người chơi casual / social trong cộng đồng)
+
+---
+
+Chúng tôi sẽ sử dụng **fixed party/đội cố định ngay từ khi launch** để tăng tốc leveling, PvP và boss nhằm đảm bảo hiệu quả và phối hợp tối đa (nếu có party, khuyến khích đăng ký cùng nhau theo cả đội)
+
+---
+
+CẤU TRÚC LIÊN MINH:
+
+Judgement I – (Cạnh tranh - Người chơi nạp mạnh / PvP đỉnh cao)
+
+Judgement II – (Cạnh tranh)
+
+Judgement III – (Bán cạnh tranh)
+
+Judgement IV – (F2P / Người chơi nạp thấp nhưng hoạt động)
+
+---
+
+CHÚNG TÔI CUNG CẤP
+
+Hướng dẫn và thông tin launch đã được kiểm chứng từ KR
+
+Hệ thống liên minh 4 guild có cấu trúc rõ ràng
+
+Đội fixed cho PvP / boss / siege
+
+PvP hàng ngày, boss, chuẩn bị siege
+
+Hệ thống Discord được tổ chức
+
+Phát triển công bằng dựa trên đóng góp
+
+Phối hợp cao giữa tất cả guild
+
+---
+
+KỲ VỌNG
+
+Hoạt động thường xuyên và ổn định
+
+Tham gia CTA khi online (PvP, boss, siege)
+
+Sẵn sàng PvP thường xuyên
+
+Tư duy đặt guild lên hàng đầu
+
+Sẵn sàng học hỏi và thích nghi
+
+Hiệu suất rất quan trọng
+
+Người chơi đóng góp ổn định sẽ được thăng cấp
+
+Người chơi không hoạt động hoặc hiệu suất thấp sẽ bị hạ cấp
+
+---
+
+QUY TẮC GIAO TIẾP
+
+Điều phối chính: Discord
+
+Voice War / PvP: Tiếng Anh (hiểu cơ bản là đủ)
+
+---
+
+THAM GIA CÙNG CHÚNG TÔI
+
+Comment sự quan tâm bên dưới và chúng tôi sẽ DM bạn</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 7</span><span class="eng-pill eng-pill-cmt">💬 1</span><span class="eng-pill eng-pill-total">8 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagewvn.official/permalink/1698932824461701/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="other" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Phúc An</span><span class="meta-dot">·</span><span class="hot-time">08/05 08:25</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Viet Nam">🇻🇳 Lineage W Viet Nam</span><span class="hot-heat-badge notable">💬 Notable · 7</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">box zl gần 900 thành viên https://zalo.me/g/dutpdk961
+
+discord https://discord.gg/wbP7nZS8 
+
+THÔNG BÁO: MỞ THÊM GIỚI HẠN SERVER TẠO TRƯỚC NHÂN VẬT - CƠ HỘI CUỐI CÙNG! 
+
+Các Chiến Binh chú ý! Đáp lại sự ủng hộ quá cuồng nhiệt từ cộng đồng, chúng tôi sẽ chính thức mở rộng giới hạn server để tạo trước nhân vật!
+
+Thời gian:  09:00 ngày 09/05/2026.
+
+Đây là cơ hội cuối cùng để bạn khắc tên mình lên bảng vàng và giữ chỗ cho hệ phái yêu thích trước khi bước lục địa Aden. 
+
+Số lượng cực kỳ có hạn, hãy chuẩn bị sẵn sàng nha!</span><span class="lang-en">box zl gần 900 thành viên https://zalo.me/g/dutpdk961
+
+discord https://discord.gg/wbP7nZS8 
+
+THÔNG BÁO: MỞ THÊM GIỚI HẠN SERVER TẠO TRƯỚC NHÂN VẬT - CƠ HỘI CUỐI CÙNG! 
+
+Các Chiến Binh chú ý! Đáp lại sự ủng hộ quá cuồng nhiệt từ cộng đồng, chúng tôi sẽ chính thức mở rộng giới hạn server để tạo trước nhân vật!
+
+Thời gian:  09:00 ngày 09/05/2026.
+
+Đây là cơ hội cuối cùng để bạn khắc tên mình lên bảng vàng và giữ chỗ cho hệ phái yêu thích trước khi bước lục địa Aden. 
+
+Số lượng cực kỳ có hạn, hãy chuẩn bị sẵn sàng nha!</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 3</span><span class="eng-pill eng-pill-cmt">💬 4</span><span class="eng-pill eng-pill-total">7 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/658131069679603/permalink/1419427383549964/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">08/05 11:01</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge notable">💬 Notable · 5</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🔮 PHÁP SƯ TỐI THƯỢNG: BÌNH CHỨA BÓNG TỐI VÀ CUỘC CHIẾN GIÀNH SỐ PHẬN
+
+Sinh ra giữa chiến trường đẫm máu chất đầy tử thi, Pháp Sư Tối Thượng bị trói buộc vào số phận tàn khốc. Từ bóng tối sâu thẳm, một thực thể đen tối không ngừng thèm khát nàng, gọi nàng là "con của ta" và coi nàng như "bình chứa sự sống quý giá".
+
+Mỗi đêm trôi qua là một cuộc đấu tranh kịch liệt, khi nàng phải kháng lại tiếng thì thầm cám dỗ vang vọng trong đầu. Thế nhưng nàng cương quyết từ chối khuất phục trước sự thống trị của địa ngục. Nàng chọn bước theo ánh sáng soi đường từ ảo ảnh thời thơ ấu, để tự tay định đoạt số phận của mình.
+
+Hỡi Chiến Binh, bạn đã sẵn sàng sát cánh cùng Pháp Sư Tối Thượng trên con đường đầy nguy hiểm này, thách thức tiếng gọi của nữ thần xấu xa chưa?
+___________________________________
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">🔮 จอมเวท: ภาชนะแห่งความมืดมิดและการต่อสู้เพื่อโชคชะตา
+
+ถือกำเนิดขึ้นท่ามกลางสมรภูมิอาบเลือดที่เต็มไปด้วยซากศพ จอมเวทผู้นี้ถูกผูกมัดไว้กับโชคชะตาอันแสนโหดร้าย จากเงามืดมิดเบื้องลึก ตัวตนอันดำมืดคอยปรารถนาในตัวเธออย่างไม่หยุดหย่อน เรียกขานเธอว่า &quot;ลูกของข้า&quot; และถือว่าเธอคือ &quot;ภาชนะแห่งชีวิตอันล้ำค่า&quot;
+
+ทุกคืนวันที่ผ่านไปคือการต่อสู้อันดุเดือด เมื่อเธอต้องต่อต้านเสียงกระซิบอันเย้ายวนที่ดังก้องอยู่ในหัว ทว่า เธอปฏิเสธอย่างหนักแน่นที่จะยอมจำนนต่อการครอบงำของขุมนรก เธอเลือกที่จะเดินตามแสงสว่างนำทางจากภาพลวงตาในวัยเด็ก เพื่อกำหนดโชคชะตาด้วยมือของเธอเอง
+
+ท่านนักรบ ท่านพร้อมที่จะยืนหยัดเคียงข้างจอมเวทบนเส้นทางอันแสนอันตรายนี้ และท้าทายเสียงเพรียกจากเทพีผู้ชั่วร้ายแล้วหรือยัง?
+___________________________________
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 5</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">5 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2185601908946867/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">08/05 08:01</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge notable">💬 Notable · 5</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🚨 THÔNG BÁO: MỞ RỘNG GIỚI HẠN SERVER TẠO TRƯỚC NHÂN VẬT — CƠ HỘI CUỐI CÙNG! 🚨
+
+Thông báo tới các Chiến Binh! Do nhận được sự hưởng ứng nhiệt tình vượt mức từ cộng đồng, chúng tôi chính thức thông báo mở rộng giới hạn server tạo trước nhân vật vào ngày 9 tháng 5 năm 2026 lúc 09:00 sáng.
+
+Ngày mai, sự kiện Thailand Showcase sẽ chính thức khởi màn! 🎉 Hãy cùng nhau trải nghiệm màn tạo nhân vật trước đầy hồi hộp bên cạnh sự kiện Showcase vào ngày mai nhé! 🔥⚔️
+
+Đây là cơ hội cuối cùng để bạn đặt tên và chọn class yêu thích, trước khi bước vào thời đại đẫm máu trên lục địa Aden. Số lượng có hạn, hãy chuẩn bị sẵn sàng!
+___________________________________
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">🚨 ประกาศ: ขยายลิมิตเซิร์ฟเวอร์สำหรับการสร้างตัวละครล่วงหน้า - โอกาสสุดท้าย! 🚨
+
+ประกาศถึงท่านนักรบ! เนื่องจากได้รับการตอบรับอย่างล้นหลามจากคอมมูนิตี้ เราจึงขอประกาศขยายลิมิตเซิร์ฟเวอร์สำหรับการสร้างตัวละครล่วงหน้าอย่างเป็นทางการ ในวันที่ 9 พฤษภาคม 2026 เวลา 09:00 น.
+
+พรุ่งนี้ งาน Thailand Showcase จะเริ่มต้นขึ้นอย่างเป็นทางการ!🎉 มาร่วมสัมผัสความตื่นเต้นของการสร้างตัวละครล่วงหน้า ไปพร้อมกับงาน Showcase ในวันพรุ่งนี้ด้วยกัน! 🔥⚔️
+
+นี่คือโอกาสสุดท้ายของท่านในการจับจองชื่อและคลาสที่ชื่นชอบ ก่อนก้าวเข้าสู่ยุคแห่งการนองเลือดบนทวีปอาเดน ที่นั่งมีจำนวนจำกัด เตรียมตัวให้พร้อม!
+___________________________________
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 5</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">5 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2185500398957018/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">06/05 13:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge notable">💬 Notable · 5</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">⚔️ FARM LIÊN TỤC KỂ CẢ KHI OFFLINE — ĐỘC QUYỀN TRONG LINEAGE W SEA!
+
+Tính năng độc quyền chỉ có ở phiên bản SEA! Bây giờ bạn có thể đăng xuất thoải mái, vì nhân vật của bạn sẽ vẫn tiếp tục tự động farm quái và thu thập phần thưởng liên tục.
+
+Bản nâng cấp này đảm bảo mang lại trải nghiệm farm đặc biệt, tiện lợi và tốt nhất dành cho tất cả các Chiến Binh!
+
+👉 Tạo trước nhân vật ngay bây giờ để chuẩn bị cho trải nghiệm đặc biệt này: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">⚔️ ฟาร์มต่อเนื่องไม่มีสะดุดแม้ตอนออฟไลน์ - เฉพาะใน LINEAGE W SEA เท่านั้น!
+
+ฟีเจอร์พิเศษสุดเอ็กซ์คลูซีฟที่มีเฉพาะในเวอร์ชัน SEA! ตอนนี้ท่านสามารถล็อกออฟได้อย่างสบายใจ เพราะตัวละครของท่านจะยังคงเดินหน้าออโต้ฟาร์มมอนสเตอร์และกวาดของรางวัลให้อย่างต่อเนื่อง
+
+การอัปเกรดครั้งนี้รับประกันว่าจะมอบประสบการณ์การฟาร์มที่พิเศษ สะดวกสบาย และยอดเยี่ยมที่สุดให้กับท่านนักรบทุกท่าน!
+
+👉 สร้างตัวละครล่วงหน้าเลยตอนนี้ เพื่อเตรียมพร้อมรับประสบการณ์สุดพิเศษ: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 5</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">5 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2184057002434691/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">09/05 10:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge notable">💬 Notable · 4</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🌿 TỘC ELF: TIẾNG THÌ THẦM CỦA SỰ SA ĐỌA VÀ ẢO GIÁC TỬ THẦN
+
+Đằng sau vẻ yên bình của làng Elf ẩn chứa một sự thật đẫm máu. Vì ngu muội mà trở thành nạn nhân của "tiếng thì thầm ngọt ngào", cả tộc Elf đều tự nguyện dâng hiến sinh mạng mình làm "vật tế" cho thế lực đen tối.
+
+"Ta tự hỏi liệu đôi mắt này có đang lừa dối ta không" — Khi ảo giác che giấu sự thật tan vỡ, khu rừng già chỉ còn là nghĩa địa rùng rợn dưới gót chân của bầy ác quỷ. Đối mặt với sự hy sinh đau thương của tộc mình, liệu người Elf sống sót sẽ khuất phục trước vực thẳm tuyệt vọng, hay sẽ giương cung để trả thù?
+
+Hỡi Chiến Binh, bạn đã sẵn sàng giúp Elf vượt qua màn sương ảo giác và thanh tẩy khu rừng chưa?
+___________________________________
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">🌿 เอลฟ์: เสียงกระซิบแห่งความเสื่อมทรามและภาพลวงตามรณะ
+
+เบื้องหลังภาพลักษณ์อันเงียบสงบของหมู่บ้านเอลฟ์ คือความจริงอันนองเลือด ด้วยความเขลาที่หลงกลตกเป็นเหยื่อของ &quot;เสียงกระซิบอันแสนหวาน&quot; เหล่าผองเผ่าเอลฟ์ต่างยินยอมพร้อมใจที่จะมอบชีวิตของตนเพื่อเป็น &quot;เครื่องสังเวย&quot; แก่ความชั่วร้ายอันมืดมิด
+
+&quot;ข้าสงสัยเหลือเกินว่าดวงตาคู่นี้กำลังหลอกลวงข้าอยู่หรือไม่&quot; - เมื่อภาพลวงตาที่ซ่อนเร้นความจริงได้แตกสลายลง ป่าใหญ่แห่งนี้กลับกลายเป็นเพียงสุสานอันน่าสยดสยองภายใต้การเหยียบย่ำของเหล่าปีศาจ เผชิญหน้ากับการเสียสละอันน่าเศร้าของเผ่าพันธุ์ เอลฟ์ผู้รอดชีวิตจะยอมจำนนต่อห้วงเหวแห่งความสิ้นหวัง หรือจะง้างคันธนูเพื่อทวงแค้น?
+
+ท่านนักรบ ท่านพร้อมที่จะช่วยเหลือเอลฟ์ในการฝ่าฟันหมอกควันแห่งคำลวง และชำระล้างพฤกษาโลกให้บริสุทธิ์แล้วหรือยัง?
+
+👉 สร้างตัวละครล่วงหน้าของท่านได้แล้วตอนนี้: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 4</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">4 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2186385138868544/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="community" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">12/05 13:01</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge notable">💬 Notable · 4</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">💌 FAQ CÙNG ALISA: TẤT CẢ NHỮNG GÌ BẠN CẦN BIẾT VỀ PRE-REGISTER
+
+Chào các Chiến Binh! Trong những ngày qua, Alisa nhận được rất nhiều câu hỏi về Pre-Register. Hôm nay Alisa sẽ trả lời những câu hỏi phổ biến nhất để mọi người cùng chuẩn bị sẵn sàng nhé!
+
+1️⃣ Đăng ký trước trên PC như thế nào?
+Dễ lắm! Chỉ cần cài nền tảng PURPLE > Vào Store > Chọn game Lineage W > rồi nhấn nút "Đăng ký trước" là xong!
+
+2️⃣ Càng nhiều người đăng ký, phần thưởng càng tốt hơn đúng không?
+Đúng vậy! Càng nhiều người đăng ký, chúng ta càng mở khóa được nhiều phần thưởng đặc biệt theo mốc đăng ký. Đừng quên rủ bạn bè cùng đăng ký để nhận quà thật nhiều nhé!
+
+3️⃣ Nhận phần thưởng Pre-Register như thế nào?
+Lưu ý rằng mỗi tài khoản chỉ nhận phần thưởng Pre-Register 1 lần thôi nhé. Phần thưởng sẽ được gửi trực tiếp đến nhân vật đầu tiên đăng nhập vào game khi game mở cửa chính thức.
+
+💬 Các Chiến Binh còn câu hỏi nào khác không? Comment bên dưới nhé, Alisa sẽ trả lời hết cho mọi người!
+
+👉 Đăng ký trước ngay tại đây: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">💌 FAQ กับอลิสา: ทุกเรื่องที่ต้องรู้เกี่ยวกับการลงทะเบียนล่วงหน้า
+
+สวัสดีค่ะเหล่านักรบ! ช่วงหลายวันที่ผ่านมา อลิสาได้รับคำถามจากทุกคนเกี่ยวกับการลงทะเบียนล่วงหน้าเข้ามาเยอะมาก วันนี้อลิสาเลยจะมาตอบคำถามยอดฮิต เพื่อให้พวกเราทุกคนเตรียมตัวกันให้พร้อมที่สุดค่ะ!
+
+1️⃣ จะลงทะเบียนล่วงหน้าบน PC ได้ยังไงคะ?
+ง่ายมากๆ เลยค่ะ! แค่ติดตั้งแพลตฟอร์ม PURPLE &gt; เข้าไปที่ Store &gt; เลือกเกม Lineage W &gt; แล้วคลิกที่ปุ่ม &quot;ลงทะเบียนล่วงหน้า&quot; เพื่อเตรียมตัวให้พร้อมได้เลยค่ะ
+
+2️⃣ ยิ่งยอดลงทะเบียนเยอะ ของรางวัลจะยิ่งดีขึ้นใช่ไหมคะ?
+ถูกต้องเลยค่ะ! ยิ่งมีคนลงทะเบียนมากเท่าไหร่ พวกเราก็จะยิ่งปลดล็อกของรางวัลสุดพิเศษตามเป้ายอดลงทะเบียนได้มากขึ้นเท่านั้น อย่าลืมชวนเพื่อนๆ มาร่วมลงทะเบียนแล้วรับของขวัญไปด้วยกันเยอะๆ นะคะ!
+
+3️⃣ จะรับของรางวัลจากการลงทะเบียนล่วงหน้าได้ยังไงคะ?
+โปรดทราบว่าแต่ละบัญชีจะรับของรางวัลจากการลงทะเบียนล่วงหน้าได้เพียง 1 ครั้งเท่านั้นนะคะ โดยของรางวัลจะถูกส่งตรงไปยังตัวละครแรกที่คุณล็อกอินเข้าเกมเมื่อเกมเปิดให้บริการอย่างเป็นทางการค่ะ
+
+💬 เหล่านักรบมีคำถามอื่นๆ เพิ่มเติมอีกไหมคะ? คอมเมนต์ทิ้งไว้ด้านล่างได้เลย เดี๋ยวอลิสาจะเข้ามาตอบให้ครบทุกคนเลยค่ะ!
+
+👉 ลงทะเบียนล่วงหน้าตอนนี้ได้ที่นี่เลย: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 4</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">4 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2189085855265139/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">09/05 12:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge notable">💬 Notable · 3</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">📖 TỘC ELF: CON ĐƯỜNG CỨU CHUỘC MUÔN ĐỜI
+
+"Người phải bước trên con đường cứu chuộc mãi mãi, vạn vật rồi sẽ tàn lụi, chỉ có người trổ hoa từ cây vĩnh cửu mới nở rộ đến tận trời xanh. Thế nhưng vết máu của tộc mình đã nhuốm đỏ đôi tay nàng, không thể nào gột rửa cho sạch. Vì vậy, cuộc đời chuộc tội đang chờ đợi nàng."
+
+Hỡi Chiến Binh, bạn đã sẵn sàng dẫn đường cho Elf vượt qua bóng tối, đối mặt với quá khứ và tìm kiếm sự cứu chuộc tối thượng của nàng chưa?
+
+👉 Tạo trước nhân vật của bạn ngay bây giờ: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">📖 เอลฟ์: เส้นทางแห่งการไถ่บาปชั่วนิรันดร์
+
+&quot;ผู้ที่จะต้องเดินบนเส้นทางแห่งการไถ่บาปไปชั่วนิรันดร์ ทุกสรรพสิ่งย่อมดับสูญ มีเพียงผู้ที่ผลิดอกออกจากพฤกษาแห่งนิรันดร์เท่านั้นที่จะเบ่งบานค้ำฟ้า ทว่ารอยเลือดของเผ่าพันธุ์ที่อาบสองมือของเธอนั้นไม่อาจล้างให้เลือนหาย ดังนั้น ชีวิตแห่งการชดใช้จึงรอคอยเธออยู่&quot;
+
+ท่านนักรบ ท่านพร้อมที่จะนำทางเอลฟ์ฝ่าฟันความมืดมิด เผชิญหน้ากับอดีต และค้นหาการไถ่บาปอันสูงสุดของเธอแล้วหรือยัง?
+
+👉 สร้างตัวละครล่วงหน้าของท่านได้แล้วตอนนี้: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 3</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">3 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2186459355527789/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="community" data-heat="notable"><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">13/05 04:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span><span class="hot-heat-badge notable">💬 Notable · 3</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">⚔️ KIẾM SĨ LINH HỒN: VŨ ĐIỆU TỬ THẦN TRONG BÓNG TỐI
+
+Với sự nhanh nhẹn như hồn ma và ngọn lửa linh hồn đỏ rực bùng cháy, Kiếm Sĩ Linh Hồn đã biến mọi chiến trường nhuốm đẫm máu thành sân khấu của riêng nàng. Giữa vòng vây của bầy ác quỷ, lưỡi kiếm vung lên không chỉ xé toạc thân xác mà còn thu hoạch linh hồn của kẻ thù.
+
+Hồn ma gieo rắc sợ hãi — thực thể mượn sức mạnh bóng tối để sinh tồn và trừng phạt.
+
+Hỡi các Chiến Binh, bạn đã sẵn sàng hóa thân thành lưỡi kiếm thu hoạch linh hồn hung hãn và vô song này trên lục địa Aden chưa?
+
+👉 Đăng ký trước ngay để thức tỉnh sức mạnh Kiếm Sĩ Linh Hồn: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+
+___________________________________
+
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch...
+
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+
+🔸 Discord: https://discord.gg/lineagew
+
+#LineageW #LineageWSEA
+
+#TheUltimateLineageMMORPG  
+
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">⚔️ นักดาบวิญญาณ: การร่ายรำแห่งความตายในเงามืด
+
+ด้วยความคล่องแคล่วดุจภูตพรายและพลังวิญญาณสีแดงที่ลุกโชน นักดาบวิญญาณได้เปลี่ยนทุกสมรภูมิที่อาบชโลมไปด้วยเลือดให้กลายเป็นเวทีของเธอ ท่ามกลางวงล้อมของเหล่าปีศาจ คมดาบที่แกว่งไกวไม่เพียงแต่ฉีกกระชากเลือดเนื้อ แต่ยังเก็บเกี่ยววิญญาณของเหล่าศัตรูอีกด้วย
+
+ภูตพรายผู้หว่านความหวาดกลัว ตัวตนที่หยิบยืมพลังแห่งความมืดมิดเพื่อเอาชีวิตรอดและลงทัณฑ์
+
+เหล่านักรบทั้งหลาย คุณพร้อมหรือยังที่จะสวมบทบาทเป็นคมดาบผู้เก็บเกี่ยววิญญาณอันเกรี้ยวกราดและไร้เทียมทานนี้ บนทวีปอาเดน?
+
+👉 ลงทะเบียนล่วงหน้าของคุณตอนนี้ เพื่อปลุกพลังแห่งนักดาบวิญญาณ:https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+
+___________________________________
+
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch...
+
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+
+🔸 Discord: https://discord.gg/lineagew
+
+#LineageW #LineageWSEA
+
+#TheUltimateLineageMMORPG  
+
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 1</span><span class="eng-pill eng-pill-total">3 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2189602285213496/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">11/05 13:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🔥 XẠ THỦ — SINH RA TỪ TRO TÀN CỦA VALAKAS
+
+Khi Valakas thức dậy, vùng đất yên bình — nơi cô gái không nguồn gốc lớn lên giữa tiếng búa đập sắt và mùi thuốc súng của tộc người lùn — đã bị thiêu rụi chỉ còn tro tàn.
+
+Cô không có quá khứ để quay về, không còn nơi nương náu nữa. Chỉ có khẩu súng tự chế bằng đôi tay mình, và thế giới rộng lớn đang chờ đợi phía trước.
+
+Xạ Thủ bước vào Aden không phải vì lý tưởng hay danh dự, mà khi ngôi nhà duy nhất đã đổ sụp, bước tiếp về phía trước là lựa chọn duy nhất còn lại.
+
+Aden đang cần những kẻ dũng cảm không biết sợ hãi — tiếng gọi đó đang vang lên với bạn không, hỡi Chiến Binh?
+
+⚔️ Tạo trước nhân vật ngay bây giờ: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  </span><span class="lang-en">🔥 มือปืน - ถือกำเนิดจากเถ้าถ่านแห่งวาลาคัส
+
+เมื่อวาลาคัสตื่นขึ้น ดินแดนที่เคยสงบสุข — ที่ซึ่งเด็กสาวไร้ที่มาได้เติบโตขึ้นท่ามกลางเสียงค้อนตีเหล็กและกลิ่นดินปืนของเผ่าคนแคระ — ได้ถูกแผดเผาจนเหลือเพียงเถ้าถ่าน
+
+เธอไม่มีอดีตให้หวนกลับ ไม่มีที่ให้พักพิงอีกต่อไป มีเพียงปืนที่สร้างขึ้นด้วยสองมือของเธอเอง และโลกอันกว้างใหญ่ที่รออยู่เบื้องหน้า
+
+มือปืนก้าวเข้าสู่อาเดนไม่ใช่เพื่ออุดมการณ์หรือเกียรติยศ แต่เมื่อบ้านเพียงหลังเดียวพังทลายลง การก้าวเดินต่อไปจึงเป็นทางเลือกเดียวที่มี
+
+อาเดนกำลังต้องการผู้กล้าที่ไร้ความหวาดกลัว เสียงนั้นกำลังเพรียกหาคุณอยู่หรือไม่ เหล่านักรบ?
+
+⚔️ สร้างตัวละครล่วงหน้าได้แล้วตอนนี้: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2188251642015227/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">07/05 12:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">⚔️ HIỆP SĨ: TỪ CHIẾN BINH VINH QUANG ĐẾN HÀNH TRÌNH CỨU CHUỘC
+
+Kẻ lang thang vật lộn để duy trì đức tin và lời thề máu với quân vương bất tử. Cái chết không có nghĩa lý gì với hắn, chừng nào lời thề vẫn còn tồn tại.
+
+Hỡi Chiến Binh, bạn có chọn hóa thân thành Hiệp Sĩ vô úy này không?
+
+👉 Tạo trước nhân vật ngay bây giờ để chuẩn bị cho chiến trường khốc liệt: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">⚔️ อัศวิน: จากนักรบผู้ทรงเกียรติ สู่การตามหาหนทางแห่งการไถ่บาป
+
+ผู้พเนจรที่ดิ้นรนเพื่อยืนหยัดในศรัทธาและคำสาบานเลือดที่มีต่อองค์ราชันย์ผู้เป็นอมตะ ความตายไร้ความหมายสำหรับเขา ตราบใดที่สัตย์สาบานยังคงอยู่
+
+ท่านนักรบ ท่านจะเลือกสวมบทบาทเป็นอัศวินผู้ไร้ความหวาดกลัวผู้นี้หรือไม่?
+
+👉 สร้างตัวละครล่วงหน้าเลยตอนนี้ เพื่อเตรียมพร้อมสำหรับสมรภูมิอันดุเดือด: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 1</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2184809159026142/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">07/05 10:01</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">💥 LINEAGE W THAILAND SHOWCASE: CHUẨN BỊ CHO NHỮNG BẤT NGỜ ĐỈNH CAO!
+
+Thông báo tới các Chiến Binh! Sau thành công vang dội tại Việt Nam và Indonesia, điểm đến tiếp theo của Lineage W là Thái Lan vào ngày 9 tháng 5 này, hứa hẹn mang lại trải nghiệm vô cùng ấn tượng!
+
+Không chỉ được ngắm áo choàng của class Monarch theo kích thước thật, người tham dự còn được trải nghiệm khu check-in phong cách "dark fantasy" hoành tráng và mang về những món quà premium độc quyền chất lượng cao.
+
+Hơn nữa, CEO Bae Jung Yong đích thân sẽ tiết lộ công nghệ thiết kế ẩn sau thế giới u tối của Lineage W!
+
+Còn bí mật gì đang ẩn giấu trong sự kiện này nữa?
+
+👉 Nhấn link để đọc thêm chi tiết: https://thisisgamethailand.com/games/console-pc/pc/lineage-w-showcase-in-thailand-pr4/
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/...</span><span class="lang-en">💥 LINEAGE W THAILAND SHOWCASE: เตรียมตัวพบกับเซอร์ไพรส์สุดยิ่งใหญ่!
+
+ประกาศถึงท่านนักรบ! หลังจากประสบความสำเร็จอย่างล้นหลามในเวียดนามและอินโดนีเซีย จุดหมายต่อไปของ Lineage W คือประเทศไทยในวันที่ 9 พฤษภาคมนี้ ซึ่งรับประกันได้เลยว่าจะเต็มไปด้วยประสบการณ์สุดตื่นตาตื่นใจ!
+
+ท่านจะไม่เพียงแค่ได้ชมผ้าคลุมของคลาส Monarch ขนาดเท่าของจริงเท่านั้น แต่ผู้เข้าร่วมงานยังจะได้ดื่มด่ำไปกับโซนเช็คอินสไตล์ &quot;ดาร์กแฟนตาซี&quot; สุดอลังการ พร้อมรับของพรีเมียมสุดเอ็กซ์คลูซีฟคุณภาพสูงกลับบ้านอีกด้วย
+
+ยิ่งไปกว่านั้น CEO Bae Jung Yong จะมาเปิดเผยเทคโนโลยีการออกแบบที่ซ่อนอยู่เบื้องหลังโลกอันมืดมิดของ Lineage W ด้วยตัวเอง!
+
+ยังมีความลับอะไรซ่อนอยู่ในงานนี้อีกบ้าง?
+
+👉 คลิกลิงก์บทความเพื่ออ่านรายละเอียดเพิ่มเติมได้เลย: https://thisisgamethailand.com/games/console-pc/pc/lineage-w-showcase-in-thailand-pr4/
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2184737805699944/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">07/05 08:01</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">⚔️ HIỆP SĨ: LƯỠI GƯƠM ĐẪM MÁU VÀ LÝ TƯỞNG TAN VỠ
+
+Hiệp Sĩ sẽ chiến đấu và hy sinh vì danh dự mà thôi. Nhưng khi lưỡi gươm phải nhuốm máu, và đồng đội ngã xuống trong bóng tối, niềm tin mãnh liệt vào lý tưởng chiến đấu bỗng tan vỡ.
+
+Cuộc phục kích bất ngờ, bí mật đáng sợ ẩn giấu dưới lớp giáp — Hiệp Sĩ đang tìm kiếm điều gì trên lục địa Aden nguy hiểm này?
+
+Lòng trung thành là vũ khí, đồng thời cũng là bản án tử hình. Tại ngã tư số phận, chọn kiên định với niềm tin của mình mãi mãi, hay...</span><span class="lang-en">⚔️ อัศวิน: ดาบอาบเลือดและอุดมการณ์ที่แตกสลาย
+
+อัศวินจะต่อสู้และยอมพลีชีพเพื่อเกียรติยศเท่านั้น แต่เมื่อดาบต้องชโลมไปด้วยเลือด และสหายร่วมรบต้องร่วงหล่นในความมืดมิด ศรัทธาอันแรงกล้าในอุดมการณ์แห่งการต่อสู้ก็พลันแตกสลายลง
+
+การซุ่มโจมตีโดยไม่ทันตั้งตัว ความลับอันน่าสะพรึงกลัวที่ซ่อนอยู่ภายใต้ชุดเกราะ อัศวินกำลังตามหาสิ่งใดกันแน่ ท่ามกลางทวีปอาเดนอันแสนอันตรายแห่งนี้?
+
+ความจงรักภักดีคืออาวุธ และในขณะเดียวกันมันก็คือคำพิพากษาประหารชีวิต ณ ทางแยกแห่งโชคชะตา จะเลือกยึดมั่นในความเชื่อของตนเองตลอดไป หรือจะเริ่มต้นการเดินทางเพื่อไถ่บาป?
+
+👉 สร้างตัวละครล่วงหน้าเลยตอนนี้ เพื่อร่วมเผชิญหน้ากับทางแยกแห่งโชคชะตาอันเข้มข้นของอัศวิน:: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 1</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2184672335706491/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">07/05 02:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">⏳ TẠO TRƯỚC NHÂN VẬT ĐÃ QUA NỬA CHẶNG ĐƯỜNG: BẠN ĐÃ SẴN SÀNG CHƯA? ⏳
+
+Hành trình đến lục địa Aden đã đi được nửa chặng rồi! Đây là thời điểm hoàn hảo nhất để xây dựng nền móng huyền thoại của bạn và đặt trước cái tên độc nhất vô nhị.
+
+Hỡi Chiến Binh, hãy hoàn tất việc tạo trước nhân vật ngay hôm nay. Chỉ cần chuẩn bị sẵn sàng từ bây giờ, nhân vật của bạn sẽ lao thẳng vào chiến trường ngay khi game ra mắt chính thức!
+
+Bước vào thời đại hào hùng của bạn ngay từ ngày đầu tiên</span><span class="lang-en">⏳ การสร้างตัวละครล่วงหน้าผ่านมาครึ่งทางแล้ว: ท่านพร้อมหรือยัง? ⏳
+
+การเดินทางสู่ทวีปอาเดนได้ดำเนินมาถึงครึ่งทางแล้ว! ตอนนี้คือช่วงเวลาที่เหมาะสมที่สุดในการสร้างรากฐานตำนานของท่าน และจับจองชื่อที่ไม่เหมือนใคร
+
+ท่านนักรบ มาร่วมสร้างตัวละครล่วงหน้าของท่านให้เสร็จสมบูรณ์ได้แล้ววันนี้ เพียงเตรียมตัวให้พร้อมตั้งแต่ตอนนี้ ตัวละครของท่านก็จะพร้อมกระโจนเข้าสู่สมรภูมิทันทีที่เกมเปิดตัวอย่างเป็นทางการ!
+
+ก้าวเข้าสู่ช่วงเวลาแห่งความรุ่งโรจน์ของท่านตั้งแต่วันแรก
+
+👉 สร้างตัวละครล่วงหน้าเลยตอนนี้: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2184478955725829/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">06/05 11:01</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">⚔️ LƯỢT ĐĂNG KÝ TRƯỚC VƯỢT MỐC 1.000.000 — LINEAGE W SEA TIẾN VỀ PHÍA VINH QUANG!
+
+Chương mới của Lineage W đã tạo nên cột mốc lịch sử, chính thức đạt ✨ 1.000.000 ✨ lượt đăng ký trước!
+
+Alisa xin chân thành cảm ơn tất cả các Chiến Binh vì tình yêu và sự ủng hộ! Hãy cùng tiếp tục truyền đi sự rực rỡ này và hoàn tất đăng ký của bạn để nhận bộ phần thưởng độc quyền kỷ niệm cột mốc 1.000.000 lượt đăng ký trước này!</span><span class="lang-en">⚔️ ยอดลงทะเบียนล่วงหน้าทะลุ 1,000,000 ครั้ง - LINEAGE W SEA มุ่งหน้าสู่ความรุ่งโรจน์อย่างต่อเนื่อง!
+
+บทใหม่ของ Lineage W ได้สร้างปรากฏการณ์อันยิ่งใหญ่ ด้วยการบรรลุเป้าหมายยอดลงทะเบียนล่วงหน้าทะลุ ✨ 1,000,000 ครั้ง ✨ อย่างเป็นทางการ!
+
+อลิซาขอขอบคุณท่านนักรบทุกท่านจากใจจริงสำหรับความรักและการสนับสนุน! มาร่วมส่งต่อความรุ่งโรจน์นี้ต่อไป และทำการลงทะเบียนของท่านให้เสร็จสมบูรณ์ เพื่อรับเซ็ตของรางวัลสุดเอ็กซ์คลูซีฟสำหรับการฉลองก้าวสำคัญแห่งยอดลงทะเบียนล่วงหน้า 1,000,000 ครั้งนี้!
+
+👉 ลงทะเบียนล่วงหน้าได้เลยที่นี่: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2183979142442477/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="community" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">12/05 14:20</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🔥 THÔNG BÁO ĐẾN TẤT CẢ BATTLE REPORTER: KIỂM TRA EMAIL NGAY! 🔥
+
+Hỡi các Chiến Binh! Dự án Battle Reporter vừa chính thức gửi đi thông điệp quan trọng. Đề nghị tất cả ứng viên kiểm tra hộp thư email ngay lập tức, để nhận nhiệm vụ đặc biệt và chuẩn bị cho sứ mệnh vĩ đại đang chờ phía trước!
+
+👉 Cơ hội vẫn luôn mở cho tất cả Chiến Binh! Xem thêm chi tiết về dự án Battle Reporter tại đây: https://event.vnggames.com/lineagewsea/battle-reporter//claim?p=MzQ%3D
+
+Đội ngũ sẽ tiếp tục gửi email...</span><span class="lang-en">🔥 ประกาศถึง Battle Reporter ทุกท่าน: เช็กอีเมลของคุณด่วน! 🔥
+
+เหล่านักรบเอ๋ย! ขณะนี้โปรเจกต์ Battle Reporter ได้ส่งสาส์นสำคัญออกไปอย่างเป็นทางการแล้ว ขอให้ผู้สมัครที่มีความสามารถทุกท่านรีบเช็กกล่องอีเมลของคุณทันที เพื่อรับคำสั่งพิเศษและเตรียมความพร้อมสำหรับภารกิจอันยิ่งใหญ่ที่รออยู่เบื้องหน้า!
+
+👉 โอกาสยังคงเปิดรับนักรบทุกท่านเสมอ! ดูรายละเอียดเพิ่มเติมเกี่ยวกับโปรเจกต์ Battle Reporter ได้ที่นี่: https://event.vnggames.com/lineagewsea/battle-reporter//claim?p=MzQ%3D 
+
+ทีมงานจะทยอยส่งอีเมลอย่างต่อเนื่องในอีกไม่กี่วันข้างหน้านี้ อดใจรอกันสักนิดนึงนะ~
+
+👉 สร้างตัวละครล่วงหน้าของคุณตอนนี้เลยที่:  https://lineagew.ncvgames.com/.../char.../precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/.../char.../precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch...
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 2</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">2 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2189138975259827/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">11/05 11:01</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🎯 XẠ THỦ: TIẾNG VANG CỦA THUỐC SÚNG  ĐỘ CHÍNH XÁC TUYỆT ĐỈNH!
+
+Xạ Thủ không chỉ chiến đấu bằng sức mạnh, mà bằng tốc độ, bản năng và độ chính xác không ai sánh bằng. Mỗi viên đạn là một bản án, mỗi lần kéo cò là ranh giới giữa sự sống và cái chết.
+
+Họ là những linh hồn lữ hành gánh chịu bí mật từ quá khứ không ai biết, và phía trước họ là cuộc chiến không bao giờ kết thúc.
+
+Hỡi các Chiến Binh, bạn đã sẵn sàng sở hữu sức mạnh hủy diệt này và thay đổi hoàn toàn diện mạo chiến trường Aden chưa?</span><span class="lang-en">🎯 มือปืน: เสียงคำรามแห่งดินปืน  ความแม่นยำขั้นสุด!
+
+มือปืนไม่ได้ต่อสู้ด้วยพละกำลังเพียงอย่างเดียว แต่พวกเขาต่อสู้ด้วยความเร็ว สัญชาตญาณ และความแม่นยำอย่างไร้ที่ติ กระสุนทุกนัดคือคำพิพากษา และการเหนี่ยวไกทุกครั้งคือเส้นแบ่งระหว่างความเป็นและความตาย
+
+พวกเขาคือวิญญาณพเนจรผู้แบกรับความลับจากอดีตที่ไม่มีใครล่วงรู้ และเบื้องหน้าของพวกเขาคือสงครามที่ไม่มีวันสิ้นสุด
+
+เหล่านักรบเอ๋ย คุณพร้อมหรือยังที่จะครอบครองพลังทำลายล้างนี้ และพลิกโฉมหน้าของสมรภูมิอาเดนอย่างสิ้นเชิง?
+
+👉 สร้างตัวละครล่วงหน้าได้แล้วตอนนี้ เพื่อก้าวขึ้นเป็นแนวหน้าของคลาสมือปืน: https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2188173778689680/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">09/05 02:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">💥 CHÍNH THỨC MỞ RỘNG GIỚI HẠN SERVER TẠO TRƯỚC NHÂN VẬT! 💥
+
+Cổng đã chính thức mở rộng! Các Chiến Binh có thể quay trở lại tạo trước nhân vật, chọn class và đặt tên độc quyền của mình một lần nữa.
+
+Đừng do dự dù chỉ một giây, vì số quota bổ sung sẽ hết rất nhanh. Hãy vào ngay để định đoạt số phận của bạn trên chiến trường khốc liệt của lục địa Aden ngay bây giờ!
+👇 Comment bên dưới và khoe màn tạo nhân vật của bạn đi!</span><span class="lang-en">💥 ขยายลิมิตเซิร์ฟเวอร์สำหรับการสร้างตัวละครล่วงหน้าอย่างเป็นทางการแล้ว! 💥
+
+ประตูได้เปิดกว้างขึ้นอย่างเป็นทางการ! ท่านนักรบสามารถกลับเข้ามาสร้างตัวละครล่วงหน้า เลือกคลาส และจับจองชื่อสุดเอ็กซ์คลูซีฟของท่านได้อีกครั้ง
+
+อย่าลังเลแม้แต่วินาทีเดียว เพราะโควตาที่เพิ่มขึ้นมานี้จะเต็มไวมากๆ รีบเข้ามากำหนดโชคชะตาของท่านในสมรภูมิอันดุเดือดแห่งทวีปอาเดนได้แล้วตอนนี้!
+👇 คอมเมนต์ด้านล่างและอวดโฉมงานสร้างตัวละครของท่านกันเลย!
+___________________________________
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2186119972228394/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">13/05 12:31</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">⏳ ĐẾM NGƯỢC: CHUẨN BỊ ĐÓNG HỆ THỐNG TẠO TRƯỚC NHÂN VẬT CHÍNH THỨC! ⏳
+
+Thông báo tới các Chiến Binh! Thời gian sắp hết rồi. Đây là cơ hội cuối cùng — chỉ còn đêm nay thôi! — để bạn hoàn tất tạo trước nhân vật, đặt tên độc quyền và chốt nghề nghiệp yêu thích. Cổng hệ thống sẽ chính thức đóng lại vào đêm nay lúc 23:59.
+
+Đội ngũ xin chân thành cảm ơn tất cả các Chiến Binh từ tận đáy lòng, vì sự tham gia và ủng hộ nhiệt tình! Sự hưởng ứng tuyệt vời của các bạn đã thắp sáng ngọn lửa trên lục địa Aden rồi.
+
+Ai chưa tạo nhân vật, phải...</span><span class="lang-en">⏳ นับถอยหลัง: เตรียมปิดระบบสร้างตัวละครล่วงหน้าอย่างเป็นทางการ! ⏳
+
+ประกาศถึงเหล่านักรบ! เวลาใกล้หมดลงแล้ว นี่คือ โอกาสสุดท้าย คืนนี้คืนเดียวเท่านั้น! ที่คุณจะได้สร้างตัวละครล่วงหน้าให้เสร็จสมบูรณ์ จองชื่อสุดเอ็กซ์คลูซีฟ และล็อกอาชีพที่คุณชื่นชอบไว้ โดยประตูสู่ระบบจะปิดลงอย่างเป็นทางการในคืนนี้ เวลา 23:59 น.
+
+ทีมงานขอขอบคุณเหล่านักรบทุกท่านจากใจจริง สำหรับการเข้าร่วมและการสนับสนุนอย่างล้นหลาม! กระแสตอบรับที่ยอดเยี่ยมของพวกคุณได้จุดไฟแห่งทวีปอาเดนให้ลุกโชนขึ้นแล้ว
+
+ใครที่ยังไม่ได้สร้างตัวละคร ต้องรีบแล้วนะ!
+
+ขอขอบคุณเหล่านักรบทุกท่านที่มาร่วมเป็นส่วนหนึ่งในจุดเริ่มต้นนี้!
+
+👉 สร้างตัวละครของคุณได้ที่นี่เลย: https://lineagew.ncvgames.com/.../char.../precharacter/index
+
+___________________________________
+
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch...
+
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+
+🔸 Discord: https://discord.gg/lineagew
+
+#LineageW #LineageWSEA
+
+#TheUltimateLineageMMORPG  
+
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2189941915179533/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">13/05 06:56</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🚨 CƠ HỘI CUỐI CÙNG: MỞ LẠI HỆ THỐNG TẠO TRƯỚC NHÂN VẬT! 🚨
+
+Thông báo tới các Chiến Binh! Để đáp ứng làn sóng quan tâm mãnh liệt từ cộng đồng, hệ thống tạo trước nhân vật sẽ chính thức mở lại một lần nữa!
+
+🗓️ Thời gian: Hôm nay 13 tháng 5 lúc 14:00 (GMT+7)
+
+Đây là cơ hội cuối cùng để bạn khắc tên nhân vật và chuẩn bị mọi thứ sẵn sàng trước khi cổng lục địa Aden chính thức mở ra.
+
+Tuyệt đối không được bỏ lỡ! Hãy chuẩn bị sẵn sàng và cùng nhau lên chuyến tàu cuối cùng của hành trình tạo trước nhân vật!</span><span class="lang-en">🚨 โอกาสสุดท้าย: เปิดระบบสร้างตัวละครล่วงหน้าอีกครั้ง! 🚨
+
+ประกาศถึงเหล่านักรบ! เพื่อตอบรับกระแสความสนใจอันล้นหลามจากคอมมูนิตี้ของเรา ระบบสร้างตัวละครล่วงหน้า จะกลับมาเปิดให้ใช้งานอย่างเป็นทางการอีกครั้งหนึ่ง!
+
+🗓️ เวลา: วันนี้ 13 พฤษภาคม เวลา 14:00 น. (GMT+7)
+
+นี่คือโอกาสสุดท้ายที่คุณจะได้สลักชื่อจองตัวละคร และเตรียมทุกอย่างให้พร้อมก่อนที่ประตูแห่งทวีปอาเดนจะเปิดออกอย่างเป็นทางการ
+
+ห้ามพลาดเด็ดขาด! เตรียมตัวให้พร้อมแล้วมากระโดดขึ้นขบวนรถไฟเที่ยวสุดท้ายของการสร้างตัวละครล่วงหน้าไปด้วยกัน!
+
+👉 สร้างตัวละครของคุณได้ที่นี่เลย: https://lineagew.ncvgames.com/.../char.../precharacter/index
+___________________________________
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch...
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2189733001867091/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Lineage W</span><span class="meta-dot">·</span><span class="hot-time">12/05 11:00</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">🩸 KẺ PHẢN BỘI, NGƯỜI THỪA KẾ NGAI VÀNG VÀ LỜI THỀ HUYẾT THỐNG.
+
+Vương quốc không sụp đổ bởi lưỡi gươm kẻ thù từ bên ngoài, mà tan vỡ bởi những cú phản bội từ chính nội điện. Ngai vàng bị tranh đoạt, dòng tộc hoàng gia bị truy sát, và lịch sử được viết lại bởi bàn tay của kẻ chiến thắng.
+
+Và hắn... Hiệp Sĩ đã đặt lòng trung thành sai chỗ, đứng giữa đống đổ nát mà chính mình vô tình góp phần tạo ra. Khi không tìm thấy con đường chuộc tội cho bản thân, thứ duy nhất còn lại là hành trình cuối cùng để lấy lại tất cả.
+
+Hai số phận cuối cùng bị trói buộc bởi lời thề...</span><span class="lang-en">🩸 ผู้ทรยศ ทายาทแห่งบัลลังก์ และคำสัตย์สาบานแห่งสายเลือด.
+
+อาณาจักรไม่ได้ล่มสลายด้วยคมดาบจากศัตรูภายนอก แต่พินาศสิ้นจากการหักหลังกันเองภายในราชสำนัก บัลลังก์ถูกแย่งชิง เชื้อพระวงศ์ถูกตามล่า และประวัติศาสตร์ถูกเขียนขึ้นใหม่โดยน้ำมือของผู้ชนะ
+
+และเขา... อัศวินผู้วางความภักดีไว้ผิดที่ ยืนอยู่ท่ามกลางซากปรักหักพังที่ตัวเองมีส่วนสร้างขึ้นอย่างไม่ตั้งใจ เมื่อไม่พบหนทางไถ่บาปให้แก่ตนเอง สิ่งเดียวที่หลงเหลืออยู่คือเส้นทางสุดท้ายที่จะกู้คืนทุกอย่างกลับมา
+
+สองโชคชะตาที่ท้ายที่สุดถูกผูกมัดไว้ด้วยคำสัตย์สาบานแห่งสายเลือดเพียงหนึ่งเดียว
+
+👉 ลงทะเบียนล่วงหน้าวันนี้ และขีดเขียนโชคชะตาด้วยมือของคุณเอง! https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+
+___________________________________
+🔥 Pre-Create : https://lineagew.ncvgames.com/th-th/preorder/character/precharacter/index
+🔸 Pre-Register: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brand Site: https://lineagew.ncvgames.com/th-th/conts/lw_launch#section-8
+🔸 Group: http://www.facebook.com/groups/lineagew.th/
+🔸 YouTube: https://www.youtube.com/@LineageW_TH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 1</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">1 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2189007655272959/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="community" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Traderium</span><span class="meta-dot">·</span><span class="hot-time">06/05 05:46</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Community Philippines">🇵🇭 Lineage W Community Philippine…</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">👑 MONARCH: THE ONE WHO RISKS IT ALL TO REWRITE HISTORY
+
+They are the heirs to a bloodline destined to face endless trials. The ones who will either shine brilliantly in glorious victory - or fade into the flow of history in bitter defeat.
+
+A Monarch must walk a fierce and unforgiving path to forge their own destiny. They will establish their own Blood Pledge, driven by the burning desire to reclaim the throne that rightfully belongs to their clan.
+
+Is this the destiny that you, Warriors, have been waiting for?
+
+👉 PRE-CREATE YOUR CHARACTER NOW TO STEP INTO THE LIFE OF A SOVEREIGN: https://lineagew.ncvgames.com/en-ph/preorder/character/precharacter/index
+__________________________________
+🔥 Pre-creation: https://lineagew.ncvgames.com/en-ph/preorder/character/precharacter/index
+🔸 Pre-registration: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brandsite:  https://lineagew.ncvgames.com/en-ph/conts/lw_launch
+🔸 Group:  https://www.facebook.com/groups/lineagew.ph
+🔸 YouTube: https://www.youtube.com/@LineageW_PH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">👑 MONARCH: THE ONE WHO RISKS IT ALL TO REWRITE HISTORY
+
+They are the heirs to a bloodline destined to face endless trials. The ones who will either shine brilliantly in glorious victory - or fade into the flow of history in bitter defeat.
+
+A Monarch must walk a fierce and unforgiving path to forge their own destiny. They will establish their own Blood Pledge, driven by the burning desire to reclaim the throne that rightfully belongs to their clan.
+
+Is this the destiny that you, Warriors, have been waiting for?
+
+👉 PRE-CREATE YOUR CHARACTER NOW TO STEP INTO THE LIFE OF A SOVEREIGN: https://lineagew.ncvgames.com/en-ph/preorder/character/precharacter/index
+__________________________________
+🔥 Pre-creation: https://lineagew.ncvgames.com/en-ph/preorder/character/precharacter/index
+🔸 Pre-registration: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brandsite:  https://lineagew.ncvgames.com/en-ph/conts/lw_launch
+🔸 Group:  https://www.facebook.com/groups/lineagew.ph
+🔸 YouTube: https://www.youtube.com/@LineageW_PH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 0</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">0 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/255198699017478/permalink/1660427451827922/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="other" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Anonymous participant</span><span class="meta-dot">·</span><span class="hot-time">06/05 07:20</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand">🇹🇭 Lineage W Thailand</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Nhìn phần thưởng sự kiện Showcase mà choáng luôn, phát thưởng hào phóng thật! Bạn nào chưa đăng ký tham dự thì chạy đi đăng ký ngay đi, chậm hết suất là tiếc lắm đó. Lần này chắc chắn mang đầy quà về nhà luôn!
+
+https://www.facebook.com/share/p/1AvtZ6n9wR/</span><span class="lang-en">เห็นของรางวัลงาน Showcase แล้วอึ้งเลย แจกหนักจริง! พวกนายคนไหนยังไม่ลงชื่อเข้าร่วมงาน รีบไปกดเลยนะ ช้าหมดโควต้าเดี๋ยวจะหาว่าไม่เตือน ของติดมือกลับบ้านเพียบแน่นอนรอบนี้ 
+
+https://www.facebook.com/share/p/1AvtZ6n9wR/</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 0</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">0 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/832740388825196/permalink/1352141946885035/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Anonymous participant</span><span class="meta-dot">·</span><span class="hot-time">06/05 07:29</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Thailand Official">🇹🇭 Lineage W Thailand Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Thật sự không đùa! Phần thưởng phát nhiều thế này cơ à? 🤯 Ai chưa đăng ký sự kiện Showcase thì đăng ký ngay đi nào, không thì tiếc lắm đó. Tôi vừa xem qua rồi, quà tặng nhiều lắm!
+
+https://www.facebook.com/share/p/1ESQWsCi6K/</span><span class="lang-en">เอาจริงดิ! ของรางวัลแจกโหดขนาดนี้เลยอ่อ? 🤯 ใครยังไม่ลงทะเบียนงาน Showcase รีบจัดด่วนเลยครับ ไม่งั้นพลาดแล้วจะเสียดายแย่ ผมไปส่องมาแล้วของแจกอย่างเยอะ!
+
+https://www.facebook.com/share/p/1ESQWsCi6K/</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 0</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">0 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.th/permalink/2183853572455034/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="other" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Trung Híp</span><span class="meta-dot">·</span><span class="hot-time">13/05 12:14</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W VNG - Mua Bán &amp; Thảo Luận VN">🇻🇳 Lineage W VNG - Mua Bán &amp;amp; …</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">ĐẾM NGƯỢC: CỔNG TẠO TRƯỚC NHÂN VẬT CHÍNH THỨC KHÉP LẠI! 
+
+Các Chiến Binh chú ý! Thời gian không còn nhiều. Đây là CƠ HỘI CUỐI CÙNG CHỈ 1 ĐÊM DUY NHẤT để bạn hoàn tất việc tạo trước nhân vật, xí ngay tên độc quyền và giữ chỗ cho hệ phái yêu thích của mình. Đúng 23:59 tối nay, cổng đăng ký sẽ chính thức đóng lại.
+
+Xin gửi lời tri ân sâu sắc nhất đến tất cả các Chiến Binh vì sự tham gia và ủng hộ vô cùng nhiệt huyết! Sự hưởng ứng tuyệt vời của các bạn đã thắp sáng ngọn lửa trên lục địa Aden.
+
+Ai chưa kịp tạo nhân vật thì nhanh tay lên nào! 
+
+Cảm ơn các Chiến Binh đã đồng hành và tham gia!
+
+___________________________________
+
+ Tạo nhân vật trước: [https://lineagew.ncvgames.com/.../char.../precharacter/index](https://lineagew.ncvgames.com/vi-vn/preorder/character/precharacter/index?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExcVRnSm5zNXdtZFBlS0FwOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR6JEcSt1cguRHh1wmuhB_jbZO0-a0M_LzL_9exgUzzMqOHmQgsXd2_1wQ9_sw_aem_3yQSpcmC6_fqAcb7YuINEQ)
+
+ Đăng ký trước: [https://lineagewvn.onelink.me/0eGn/cckl3q4r](https://lineagewvn.onelink.me/0eGn/cckl3q4r?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExcVRnSm5zNXdtZFBlS0FwOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR7ONeGZ4gN5wbLXOwQ4uZDNuy6OaBfjKy2O_p6YxYxC_oNJgCyz78qiNCQi3Q_aem__yrJfLEEl0pmCiIvVjZ_ag)
+
+ Brandsite: [https://lineagew.vnggames.com/vi-vn/conts/lw_launch#main](https://lineagew.vnggames.com/vi-vn/conts/lw_launch?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExcVRnSm5zNXdtZFBlS0FwOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR4sVRYbBPdu4OdX1BWPrweHIVcHBE6JltGT_fmf14JK_2D-dfUupOGThi4R9A_aem_NMqajEp32Huty9eEq3IswQ#main)
+
+ Group: https://www.facebook.com/groups/2939820399483269
+
+ YouTube: [https://www.youtube.com/@LineageW_VN](https://www.youtube.com/@LineageW_VN?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExcVRnSm5zNXdtZFBlS0FwOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR6dtAuo2W4DI7zEMnGjp3oAuUlFFB6haxeyS6S8AFRapiLurixNMHdOZ2yrYg_aem_-tK8FpG765ztuDIOjwILXQ)</span><span class="lang-en">ĐẾM NGƯỢC: CỔNG TẠO TRƯỚC NHÂN VẬT CHÍNH THỨC KHÉP LẠI! 
+
+Các Chiến Binh chú ý! Thời gian không còn nhiều. Đây là CƠ HỘI CUỐI CÙNG CHỈ 1 ĐÊM DUY NHẤT để bạn hoàn tất việc tạo trước nhân vật, xí ngay tên độc quyền và giữ chỗ cho hệ phái yêu thích của mình. Đúng 23:59 tối nay, cổng đăng ký sẽ chính thức đóng lại.
+
+Xin gửi lời tri ân sâu sắc nhất đến tất cả các Chiến Binh vì sự tham gia và ủng hộ vô cùng nhiệt huyết! Sự hưởng ứng tuyệt vời của các bạn đã thắp sáng ngọn lửa trên lục địa Aden.
+
+Ai chưa kịp tạo nhân vật thì nhanh tay lên nào! 
+
+Cảm ơn các Chiến Binh đã đồng hành và tham gia!
+
+___________________________________
+
+ Tạo nhân vật trước: [https://lineagew.ncvgames.com/.../char.../precharacter/index](https://lineagew.ncvgames.com/vi-vn/preorder/character/precharacter/index?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExcVRnSm5zNXdtZFBlS0FwOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR6JEcSt1cguRHh1wmuhB_jbZO0-a0M_LzL_9exgUzzMqOHmQgsXd2_1wQ9_sw_aem_3yQSpcmC6_fqAcb7YuINEQ)
+
+ Đăng ký trước: [https://lineagewvn.onelink.me/0eGn/cckl3q4r](https://lineagewvn.onelink.me/0eGn/cckl3q4r?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExcVRnSm5zNXdtZFBlS0FwOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR7ONeGZ4gN5wbLXOwQ4uZDNuy6OaBfjKy2O_p6YxYxC_oNJgCyz78qiNCQi3Q_aem__yrJfLEEl0pmCiIvVjZ_ag)
+
+ Brandsite: [https://lineagew.vnggames.com/vi-vn/conts/lw_launch#main](https://lineagew.vnggames.com/vi-vn/conts/lw_launch?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExcVRnSm5zNXdtZFBlS0FwOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR4sVRYbBPdu4OdX1BWPrweHIVcHBE6JltGT_fmf14JK_2D-dfUupOGThi4R9A_aem_NMqajEp32Huty9eEq3IswQ#main)
+
+ Group: https://www.facebook.com/groups/2939820399483269
+
+ YouTube: [https://www.youtube.com/@LineageW_VN](https://www.youtube.com/@LineageW_VN?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExcVRnSm5zNXdtZFBlS0FwOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR6dtAuo2W4DI7zEMnGjp3oAuUlFFB6haxeyS6S8AFRapiLurixNMHdOZ2yrYg_aem_-tK8FpG765ztuDIOjwILXQ)</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 0</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">0 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/2939820399483269/permalink/3997027407095891/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="official" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Retlew Nhoj Aquino</span><span class="meta-dot">·</span><span class="hot-time">14/05 13:27</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Philippines Official">🇵🇭 Lineage W Philippines Official</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">Warriors of SEA, the time to enter the continent of Aden is approaching. Before the gates open, ensure your armory is fully equipped!
+
+Lineage W offers a seamless cross-platform experience. Choose your battlefield:
+
+💻 PC: Experience massive battles in high fidelity via the official PURPLE launcher.
+
+📱 Mobile: Fight anywhere, anytime on iOS (App Store) and Android (Google Play).
+
+📱 Minimum/Recommended System Requirements for Mobile        
+
+[Minimum requirement]
+Galaxy S9 / Android 10
+iPhone X / iOS 13.0
+
+[Recommendation]
+Galaxy S21 / Android 15
+iPhone 13MAX / iOS 16.0
+
+💻 Minimum/Recommended System Requirements for PC        
+
+[Minimum Requirement]
+
+64-bit Windows 10 / 11
+AMD Ryzen 3 2200G 
+Intel® Core™ i5-3570
+8GB
+AMD RX 580 8G
+NVIDIA GTX 750 Ti 2G
+DirectX 11
+
+[Recommendation]
+
+64-bit Windows 11
+AMD Ryzen 5 3600
+Intel® Core™ i7-7700
+16GB
+Radeon RX 6800
+NVIDIA RTX 2060 6G / AMD
+DirectX 11
+
+#LineageW 
+#followerseveryone 
+#fbpagesreels</span><span class="lang-en">Warriors of SEA, the time to enter the continent of Aden is approaching. Before the gates open, ensure your armory is fully equipped!
+
+Lineage W offers a seamless cross-platform experience. Choose your battlefield:
+
+💻 PC: Experience massive battles in high fidelity via the official PURPLE launcher.
+
+📱 Mobile: Fight anywhere, anytime on iOS (App Store) and Android (Google Play).
+
+📱 Minimum/Recommended System Requirements for Mobile        
+
+[Minimum requirement]
+Galaxy S9 / Android 10
+iPhone X / iOS 13.0
+
+[Recommendation]
+Galaxy S21 / Android 15
+iPhone 13MAX / iOS 16.0
+
+💻 Minimum/Recommended System Requirements for PC        
+
+[Minimum Requirement]
+
+64-bit Windows 10 / 11
+AMD Ryzen 3 2200G 
+Intel® Core™ i5-3570
+8GB
+AMD RX 580 8G
+NVIDIA GTX 750 Ti 2G
+DirectX 11
+
+[Recommendation]
+
+64-bit Windows 11
+AMD Ryzen 5 3600
+Intel® Core™ i7-7700
+16GB
+Radeon RX 6800
+NVIDIA RTX 2060 6G / AMD
+DirectX 11
+
+#LineageW 
+#followerseveryone 
+#fbpagesreels</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 0</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">0 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/lineagew.ph/permalink/932364226296109/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article><article class="hot-card" data-type="other" data-heat=""><div class="hot-zone-meta"><span class="hot-author">Traderium</span><span class="meta-dot">·</span><span class="hot-time">14/05 01:32</span><span class="meta-dot">·</span><span class="hot-group" title="Lineage W Community Philippines">🇵🇭 Lineage W Community Philippine…</span></div><div class="hot-zone-content"><div class="hot-text" onclick="this.classList.toggle('expanded')"><span class="lang-vn">⏳ COUNTDOWN: PRE-CREATION GATES OFFICIALLY CLOSE! ⏳
+
+Attention, Warriors! Time is running out. This is your LAST CHANCE FOR ONE NIGHT ONLY to complete your character pre-creation, secure your exclusive name, and lock in your favorite class. At exactly 23:59 tonight, the registration gates will officially close.
+
+We want to send our deepest gratitude to all Warriors for your enthusiastic participation and support! Your incredible response has lit the fire in the continent of Aden.
+
+If you haven't created your character yet, hurry up!
+
+Thank you, Warriors, for participating!
+__________________________________
+🔥 Pre-creation: https://lineagew.ncvgames.com/en-ph/preorder/character/precharacter/index
+🔸 Pre-registration: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brandsite:  https://lineagew.ncvgames.com/en-ph/conts/lw_launch
+🔸 Group:  https://www.facebook.com/groups/lineagew.ph
+🔸 YouTube: https://www.youtube.com/@LineageW_PH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span><span class="lang-en">⏳ COUNTDOWN: PRE-CREATION GATES OFFICIALLY CLOSE! ⏳
+
+Attention, Warriors! Time is running out. This is your LAST CHANCE FOR ONE NIGHT ONLY to complete your character pre-creation, secure your exclusive name, and lock in your favorite class. At exactly 23:59 tonight, the registration gates will officially close.
+
+We want to send our deepest gratitude to all Warriors for your enthusiastic participation and support! Your incredible response has lit the fire in the continent of Aden.
+
+If you haven't created your character yet, hurry up!
+
+Thank you, Warriors, for participating!
+__________________________________
+🔥 Pre-creation: https://lineagew.ncvgames.com/en-ph/preorder/character/precharacter/index
+🔸 Pre-registration: https://lineagewsa.onelink.me/q8Gt/z3r2tfk3
+🔸 Brandsite:  https://lineagew.ncvgames.com/en-ph/conts/lw_launch
+🔸 Group:  https://www.facebook.com/groups/lineagew.ph
+🔸 YouTube: https://www.youtube.com/@LineageW_PH
+🔸 Discord: https://discord.gg/lineagew
+#LineageW #LineageWSEA
+#TheUltimateLineageMMORPG  
+#LW #Lineage #MMORPG #NCVGames</span></div><span class="hot-type-badge type-official"><span class="lang-vn">📣 Official</span><span class="lang-en">📣 Official</span></span></div><div class="hot-zone-signal"><div class="hot-eng"><span class="eng-pill eng-pill-react">👍 0</span><span class="eng-pill eng-pill-cmt">💬 0</span><span class="eng-pill eng-pill-total">0 <span class="lang-vn">tương tác</span><span class="lang-en">interactions</span></span><a class="eng-link" href="https://www.facebook.com/groups/255198699017478/permalink/1666737251196942/" target="_blank" rel="noopener"><span class="lang-vn">Xem bài</span><span class="lang-en">View post</span> ↗</a></div></div></article></div></section></div>
+</main>
+
+<footer class="app-footer">
+  <strong>FB Social Listening v4.0</strong> · Scope B Apify ·
+  <span class="lang-vn">Generated</span><span class="lang-en">Generated</span>
+  2026-05-15 08:54 · Lineage2M · NCV Games
+</footer>
+
+<script>
+function toggleLang() {
+  const body = document.body;
+  const btn = document.getElementById('langBtn');
+  const next = body.dataset.lang === 'vi' ? 'en' : 'vi';
+  body.dataset.lang = next;
+  btn.textContent = next === 'vi' ? 'EN' : 'VI';
+}
+function switchGame(game) {
+  document.querySelectorAll('.game-tab').forEach(t => t.classList.toggle('active', t.classList.contains(game)));
+  document.querySelectorAll('.game-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + game));
+}
+</script>
+
+
+<script>
+// ── Insight Filter Feature ───────────────────────────────────────────
+(function() {
+  // State per panel
+  const state = { l2m: null, lw: null };
+
+  // Get panel ID from a button inside it
+  function getPanelId(btn) {
+    const panel = btn.closest('.game-panel');
+    if (!panel) return null;
+    return panel.id === 'panel-l2m' ? 'l2m' : 'lw';
+  }
+
+  // Get label text for a button
+  function getBtnLabel(btn) {
+    const lang = document.body.dataset.lang || 'vi';
+    const span = btn.querySelector(lang === 'en' ? '.lang-en' : '.lang-vn');
+    return span ? span.textContent.replace('🔍', '').trim() : '';
+  }
+
+  window.handleInsightFilter = function(btn) {
+    const panelId = getPanelId(btn);
+    if (!panelId) return;
+
+    const types = btn.dataset.types; // e.g. "sell,buy" or "top1"
+    const grid = document.getElementById('hot-grid-' + panelId);
+    const bar  = document.getElementById('filter-bar-' + panelId);
+
+    // Toggle: if this button is already active → clear
+    if (btn.classList.contains('active')) {
+      clearFilter(panelId);
+      return;
+    }
+
+    // Clear previous active btn in this panel
+    const panel = btn.closest('.game-panel');
+    panel.querySelectorAll('.insight-filter-btn.active')
+         .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state[panelId] = types;
+
+    // Apply filter
+    const cards = grid.querySelectorAll('.hot-card');
+    let matchCount = 0;
+
+    if (types === 'top1') {
+      // Scroll to first card, highlight it
+      cards.forEach((c, i) => {
+        if (i === 0) { c.classList.add('filter-hi'); c.classList.remove('dim-out'); }
+        else { c.classList.add('dim-out'); c.classList.remove('filter-hi'); }
+      });
+      matchCount = 1;
+      cards[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      const typeList = types.split(',');
+      cards.forEach(c => {
+        const t = c.dataset.type || '';
+        const matches = typeList.includes(t);
+        c.classList.toggle('filter-hi', matches);
+        c.classList.toggle('dim-out', !matches);
+        if (matches) matchCount++;
+      });
+    }
+
+    // Show filter bar
+    const label = getBtnLabel(btn);
+    const nameEl = bar.querySelector('.filter-bar-name');
+    const countEl = bar.querySelector('.filter-bar-count');
+    if (nameEl) nameEl.textContent = label;
+    if (countEl) countEl.textContent = matchCount + ' bài';
+    bar.classList.add('visible');
+
+    // Scroll to hot section
+    const section = grid.closest('section') || grid;
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  window.clearFilter = function(panelId) {
+    state[panelId] = null;
+    const panel = document.getElementById('panel-' + panelId);
+    const bar   = document.getElementById('filter-bar-' + panelId);
+
+    if (panel) {
+      panel.querySelectorAll('.insight-filter-btn.active')
+           .forEach(b => b.classList.remove('active'));
+      panel.querySelectorAll('.hot-card')
+           .forEach(c => { c.classList.remove('filter-hi', 'dim-out'); });
+    }
+    if (bar) bar.classList.remove('visible');
+  };
+
+  // Also clear filter when switching tabs (so filter from L2M doesn't affect LW)
+  document.querySelectorAll('.tab-btn').forEach(tab => {
+    tab.addEventListener('click', function() {
+      clearFilter('l2m');
+      clearFilter('lw');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
