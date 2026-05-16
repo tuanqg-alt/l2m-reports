@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>L2M GameOps Report — April 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d1117;color:#e6edf3;font-family:-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:1.5}
+.page{max-width:1200px;margin:0 auto;padding:20px 16px}
+
+/* Header */
+.hdr{background:linear-gradient(135deg,#161b22,#0d1117);border:1px solid #30363d;border-radius:10px;padding:20px 24px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.hdr h1{font-size:18px;font-weight:700;color:#58a6ff;margin-bottom:4px}
+.hdr .meta{font-size:11px;color:#8b949e}
+.badge{background:#21262d;border:1px solid #30363d;border-radius:12px;padding:3px 10px;font-size:11px;color:#8b949e;white-space:nowrap}
+
+/* Tab nav */
+.tab-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid #30363d;padding-bottom:12px}
+.tab-btn{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:600;color:#8b949e;cursor:pointer;transition:all .15s}
+.tab-btn:hover{background:#21262d;color:#e6edf3}
+.tab-btn.active{color:#0d1117;border-color:transparent}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* KPI row */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px}
+.kpi .lbl{font-size:10px;color:#8b949e;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px}
+.kpi .val{font-size:22px;font-weight:700}
+.kpi .sub{font-size:11px;color:#8b949e;margin-top:4px}
+.c-gold{color:#e3b341}.c-blue{color:#58a6ff}.c-green{color:#3fb950}.c-purple{color:#bc8cff}.c-red{color:#f85149}.c-teal{color:#39d353}
+
+/* Cards */
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px 20px;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.card-sub{font-size:11px;color:#8b949e;margin-bottom:14px}
+
+/* Charts */
+.chart-h240{position:relative;height:240px}
+.chart-h180{position:relative;height:180px}
+
+/* Grid layouts */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{background:#21262d;color:#8b949e;font-weight:600;padding:8px 10px;text-align:left;border-bottom:1px solid #30363d}
+.tbl td{padding:7px 10px;border-bottom:1px solid #21262d}
+.tbl tr:hover td{background:#1c2128}
+.r{text-align:right;font-variant-numeric:tabular-nums}
+.bar-w{display:flex;align-items:center;gap:8px}
+.bar-f{height:5px;border-radius:3px}
+
+/* Insight boxes */
+.ins{background:#1c2128;border-left:3px solid #58a6ff;border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:10px;font-size:12px;line-height:1.7}
+.ins.ok{border-color:#3fb950}.ins.warn{border-color:#e3b341}.ins.pred{border-color:#bc8cff}
+.ins strong{color:#e6edf3}
+
+/* Week boxes */
+.wk-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.wk{background:#1c2128;border-radius:6px;padding:12px;text-align:center}
+.wk .wl{font-size:10px;color:#8b949e;margin-bottom:5px}
+.wk .wv{font-size:17px;font-weight:700}
+.wk .ws{font-size:10px;color:#8b949e;margin-top:3px}
+
+/* Prediction cards */
+.pred-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+.pred-c{background:#1c2128;border-radius:8px;padding:14px}
+.pred-c .pl{font-size:10px;color:#8b949e;margin-bottom:6px;text-transform:uppercase}
+.pred-c .pv{font-size:20px;font-weight:700}
+.pred-c .ps{font-size:11px;color:#8b949e;margin-top:4px}
+.pred-total{text-align:center;padding:16px 0 4px}
+
+/* Event legend */
+.ev-leg{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.ev-i{display:flex;align-items:center;gap:5px;font-size:11px;color:#8b949e}
+.ev-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* Conf badge */
+.conf{display:inline-block;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600;background:rgba(227,179,65,.12);color:#e3b341;border:1px solid rgba(227,179,65,.25)}
+
+footer{text-align:center;color:#484f58;font-size:11px;margin-top:24px;padding-top:14px;border-top:1px solid #30363d}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hdr">
+  <div>
+    <h1>📊 Lineage2M — GameOps Analytics Report · April 2026</h1>
+    <div class="meta">Daily data · Nguồn: Atlas VNG export · Generated: 16/05/2026 · v2.0</div>
+  </div>
+  <span class="badge">Pilot v2.0</span>
+</div>
+
+<div class="tab-nav" id="tabNav">
+  <button class="tab-btn active" onclick="switchTab('Total')" id="btn-Total" style="background:#58a6ff;color:#0d1117">Total</button>
+  <button class="tab-btn" onclick="switchTab('TH')" id="btn-TH" style="">TH — Thailand</button>
+  <button class="tab-btn" onclick="switchTab('VN')" id="btn-VN" style="">VN — Vietnam</button>
+  <button class="tab-btn" onclick="switchTab('ID')" id="btn-ID" style="">ID — Indonesia</button>
+  <button class="tab-btn" onclick="switchTab('SG')" id="btn-SG" style="">SG — Singapore</button>
+  <button class="tab-btn" onclick="switchTab('PH')" id="btn-PH" style="">PH — Philippines</button>
+  <button class="tab-btn" onclick="switchTab('MY')" id="btn-MY" style="">MY — Malaysia</button>
+</div>
+<div class="tab-pane active" id="pane-Total">
+<div class="kpi-row">
+  <div class="kpi"><div class="lbl">Total Revenue Apr</div><div class="val c-gold">47.05B</div><div class="sub">VND · Daily avg: 1.568B</div></div>
+  <div class="kpi"><div class="lbl">DAU Avg</div><div class="val c-blue">165,883</div><div class="sub">MAU cuối tháng: 242,427</div></div>
+  <div class="kpi"><div class="lbl">Total PU · NRU</div><div class="val c-green">26,005 · 24,553</div><div class="sub">Paying Users · New Users</div></div>
+  <div class="kpi"><div class="lbl">ARPPU Avg</div><div class="val c-purple">1.80M</div><div class="sub">ARPU: 9,393 VND/user/ngày</div></div>
+</div>
+<div class="wk-row">
+  <div class="wk"><div class="wl">W1 · Apr 1–7</div><div class="wv c-gold">12.6B</div><div class="ws">1.80B avg/ngày</div></div>
+  <div class="wk"><div class="wl">W2 · Apr 8–14 🗡️</div><div class="wv c-gold">11.1B</div><div class="ws">1.59B avg/ngày</div></div>
+  <div class="wk" style="border:1px solid #30363d"><div class="wl">W3 · Apr 15–21 📉</div><div class="wv c-red">8.7B</div><div class="ws">1.24B avg/ngày</div></div>
+  <div class="wk" style="border:1px solid rgba(63,185,80,.3)"><div class="wl">W4 · Apr 22–30 🏹</div><div class="wv c-teal">14.6B</div><div class="ws">1.62B avg/ngày</div></div>
+</div>
+<div class="card">
+  <div class="card-title">💰 Daily Revenue (tỷ VND)</div><div class="ev-leg">
+    <div class="ev-i"><div class="ev-dot" style="background:#e3b341"></div>08/04: Tháp Ngạo Mạn T5–T6</div>
+    <div class="ev-i"><div class="ev-dot" style="background:#3fb950"></div>22/04: Ra mắt Vũ Khí Nỏ</div>
+    <div class="ev-i"><div class="ev-dot" style="background:#58a6ff"></div>7-day MA</div>
+  </div><div class="chart-h240"><canvas id="rev-Total"></canvas></div></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">👥 DAU & MAU (nghìn)</div><div class="chart-h180"><canvas id="dau-Total"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">💳 PU & ARPPU (triệu VND)</div><div class="chart-h180"><canvas id="pu-Total"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">🔁 Retention Rate — RR01 & RR07 (%)</div><div class="chart-h180"><canvas id="rr-Total"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">🆕 NRU & DPU (người)</div><div class="chart-h180"><canvas id="nru-Total"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="card"><div class="card-title">🌏 Revenue Breakdown by Country</div><div class="card-sub">Tổng tháng 4 · Sorted by Revenue</div><table class="tbl"><tr><th>Country</th><th class="r">Revenue (tỷ)</th><th class="r">Share</th><th class="r">PU</th><th class="r">ARPPU avg</th><th class="r">DAU avg</th><th>Bar</th></tr><tr>
+  <td><span style="color:#f78166;font-weight:600">TH</span> Thailand</td>
+  <td class="r">18.61B</td>
+  <td class="r">39.6%</td>
+  <td class="r">10,554</td>
+  <td class="r">1.73M</td>
+  <td class="r">3,478</td>
+  <td><div class="bar-w"><div class="bar-f" style="width:87px;background:#f78166"></div></div></td>
+</tr><tr>
+  <td><span style="color:#3fb950;font-weight:600">VN</span> Vietnam</td>
+  <td class="r">9.24B</td>
+  <td class="r">19.6%</td>
+  <td class="r">7,220</td>
+  <td class="r">1.27M</td>
+  <td class="r">5,899</td>
+  <td><div class="bar-w"><div class="bar-f" style="width:43px;background:#3fb950"></div></div></td>
+</tr><tr>
+  <td><span style="color:#e3b341;font-weight:600">ID</span> Indonesia</td>
+  <td class="r">8.94B</td>
+  <td class="r">19.0%</td>
+  <td class="r">3,787</td>
+  <td class="r">2.39M</td>
+  <td class="r">1,985</td>
+  <td><div class="bar-w"><div class="bar-f" style="width:41px;background:#e3b341"></div></div></td>
+</tr><tr>
+  <td><span style="color:#bc8cff;font-weight:600">SG</span> Singapore</td>
+  <td class="r">6.38B</td>
+  <td class="r">13.6%</td>
+  <td class="r">1,917</td>
+  <td class="r">3.36M</td>
+  <td class="r">11,582</td>
+  <td><div class="bar-w"><div class="bar-f" style="width:29px;background:#bc8cff"></div></div></td>
+</tr><tr>
+  <td><span style="color:#39d353;font-weight:600">PH</span> Philippines</td>
+  <td class="r">1.52B</td>
+  <td class="r">3.2%</td>
+  <td class="r">1,514</td>
+  <td class="r">1.02M</td>
+  <td class="r">755</td>
+  <td><div class="bar-w"><div class="bar-f" style="width:7px;background:#39d353"></div></div></td>
+</tr><tr>
+  <td><span style="color:#ff7b72;font-weight:600">MY</span> Malaysia</td>
+  <td class="r">1.33B</td>
+  <td class="r">2.8%</td>
+  <td class="r">872</td>
+  <td class="r">1.65M</td>
+  <td class="r">413</td>
+  <td><div class="bar-w"><div class="bar-f" style="width:6px;background:#ff7b72"></div></div></td>
+</tr></table></div>
+<div class="card"><div class="card-title">🔍 Key Insights</div>
+<div class="ins ok"><strong>✅ Content update → Revenue spike pattern rõ ràng:</strong> 08/04 (Tháp Ngạo Mạn T5–T6) +75% vs avg. 22/04 (Ra mắt Nỏ — 14 class) là ngày cao nhất tháng: 3.01B VND (+92%). Pattern: big content update → 1.5–2.4× spike vs 7-day MA trước đó.</div>
+<div class="ins warn"><strong>⚠️ W3 (15–21/04) là tuần yếu nhất — không có content update:</strong> Chỉ 8.7B, thấp hơn 22% so với W2. Khoảng trống nội dung = revenue sụt đều. Tháng 5 có 2 event (06/05 + 20/05) → hạn chế được tuần chết.</div>
+<div class="ins"><strong>📊 TH dẫn đầu (39.6%), nhưng SG ARPPU cao nhất (~3.3M/PU):</strong> VN có PU nhiều nhất (7,220) nhưng ARPPU thấp nhất top-4 — whale tập trung ở SG/TH. MAU tăng +36.9% xuyên tháng (177K → 242K).</div>
+</div>
+<div class="card">
+  <div class="card-title">🔮 Dự Báo Revenue — Tháng 5/2026 <span class="conf" style="margin-left:8px">Confidence: TRUNG BÌNH</span></div>
+  <div class="card-sub">2 event catalysts · Baseline 7d-MA: 1.37B/ngày</div>
+  <div class="g2" style="margin-bottom:12px">
+    <div class="ins pred" style="margin:0"><strong>⚡ 06/05 — REBOOT Class Thương</strong><br>Mechanic rework Spear class. Uplift 1.52× (benchmark: Tháp Ngạo Mạn).<br><span class="c-gold" style="font-size:15px;font-weight:700">Dự báo: ~2.09B VND</span></div>
+    <div class="ins pred" style="margin:0;border-color:#3fb950"><strong>🌟 20/05 — Class Mythic Raul + Great Rift Zepar's Hall</strong><br><strong>Class Mythic đầu tiên trong lịch sử game</strong> + 7 Hero class + Great Rift cross-server + Pa'agrio Seal. Uplift 2.91×.<br><span class="c-green" style="font-size:15px;font-weight:700">Dự báo: ~3.98B VND</span></div>
+  </div>
+  <div class="chart-h240"><canvas id="may-pred"></canvas></div>
+  <div class="pred-total">
+    <span style="font-size:12px;color:#8b949e">Dự báo tổng tháng 5: </span>
+    <span style="font-size:22px;font-weight:700;color:#3fb950;margin:0 10px">44B – 53B VND</span>
+    <span style="font-size:11px;color:#8b949e">(±10% · vs Apr: 47.0B)</span>
+  </div>
+  <div class="ins warn" style="margin-top:12px;margin-bottom:0"><strong>⚠️ Giới hạn:</strong> Chỉ có 1 tháng data. May-20 là event loại mới (Mythic class lần đầu) — chưa có precedent. Cần data tháng 2–3/2026 để tăng độ chính xác mô hình.</div>
+</div>
+</div>
+<div class="tab-pane" id="pane-TH">
+<div class="kpi-row">
+  <div class="kpi"><div class="lbl">Total Revenue Apr</div><div class="val c-gold">18.61B</div><div class="sub">VND · Daily avg: 0.620B</div></div>
+  <div class="kpi"><div class="lbl">DAU Avg</div><div class="val c-blue">3,478</div><div class="sub">MAU cuối tháng: 6,084</div></div>
+  <div class="kpi"><div class="lbl">Total PU · NRU</div><div class="val c-green">10,554 · 614</div><div class="sub">Paying Users · New Users</div></div>
+  <div class="kpi"><div class="lbl">ARPPU Avg</div><div class="val c-purple">1.73M</div><div class="sub">ARPU: 176,101 VND/user/ngày</div></div>
+</div>
+<div class="card">
+  <div class="card-title">💰 Daily Revenue (tỷ VND)</div><div class="chart-h240"><canvas id="rev-TH"></canvas></div></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">👥 DAU & MAU (nghìn)</div><div class="chart-h180"><canvas id="dau-TH"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">💳 PU & ARPPU (triệu VND)</div><div class="chart-h180"><canvas id="pu-TH"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">🔁 Retention Rate — RR01 & RR07 (%)</div><div class="chart-h180"><canvas id="rr-TH"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">🆕 NRU & DPU (người)</div><div class="chart-h180"><canvas id="nru-TH"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="card"><div class="card-title">🔍 Key Insights</div>
+<div class="ins ok"><strong>📍 TH (Thailand) — 39.6% tổng revenue:</strong> Tổng tháng 4: 18.61B VND · DAU avg: 3,478 · PU tổng: 10,554</div>
+<div class="ins"><strong>💰 ARPPU avg: 1.73M VND/PU · ARPU avg: 176,101 VND/user/ngày</strong><br>Max revenue ngày: 1.37B (22/04)</div>
+<div class="ins warn"><strong>⚠️ Retention RR01 avg: 38.3% · RR07 avg: 12.0%</strong><br>Cần monitor nếu thấp hơn baseline các nước khác.</div>
+</div>
+</div>
+<div class="tab-pane" id="pane-VN">
+<div class="kpi-row">
+  <div class="kpi"><div class="lbl">Total Revenue Apr</div><div class="val c-gold">9.24B</div><div class="sub">VND · Daily avg: 0.308B</div></div>
+  <div class="kpi"><div class="lbl">DAU Avg</div><div class="val c-blue">5,899</div><div class="sub">MAU cuối tháng: 11,758</div></div>
+  <div class="kpi"><div class="lbl">Total PU · NRU</div><div class="val c-green">7,220 · 1,510</div><div class="sub">Paying Users · New Users</div></div>
+  <div class="kpi"><div class="lbl">ARPPU Avg</div><div class="val c-purple">1.27M</div><div class="sub">ARPU: 51,687 VND/user/ngày</div></div>
+</div>
+<div class="card">
+  <div class="card-title">💰 Daily Revenue (tỷ VND)</div><div class="chart-h240"><canvas id="rev-VN"></canvas></div></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">👥 DAU & MAU (nghìn)</div><div class="chart-h180"><canvas id="dau-VN"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">💳 PU & ARPPU (triệu VND)</div><div class="chart-h180"><canvas id="pu-VN"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">🔁 Retention Rate — RR01 & RR07 (%)</div><div class="chart-h180"><canvas id="rr-VN"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">🆕 NRU & DPU (người)</div><div class="chart-h180"><canvas id="nru-VN"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="card"><div class="card-title">🔍 Key Insights</div>
+<div class="ins ok"><strong>📍 VN (Vietnam) — 19.6% tổng revenue:</strong> Tổng tháng 4: 9.24B VND · DAU avg: 5,899 · PU tổng: 7,220</div>
+<div class="ins"><strong>💰 ARPPU avg: 1.27M VND/PU · ARPU avg: 51,687 VND/user/ngày</strong><br>Max revenue ngày: 0.72B (02/04)</div>
+<div class="ins warn"><strong>⚠️ Retention RR01 avg: 35.8% · RR07 avg: 9.2%</strong><br>Cần monitor nếu thấp hơn baseline các nước khác.</div>
+</div>
+</div>
+<div class="tab-pane" id="pane-ID">
+<div class="kpi-row">
+  <div class="kpi"><div class="lbl">Total Revenue Apr</div><div class="val c-gold">8.94B</div><div class="sub">VND · Daily avg: 0.298B</div></div>
+  <div class="kpi"><div class="lbl">DAU Avg</div><div class="val c-blue">1,985</div><div class="sub">MAU cuối tháng: 3,409</div></div>
+  <div class="kpi"><div class="lbl">Total PU · NRU</div><div class="val c-green">3,787 · 316</div><div class="sub">Paying Users · New Users</div></div>
+  <div class="kpi"><div class="lbl">ARPPU Avg</div><div class="val c-purple">2.39M</div><div class="sub">ARPU: 148,777 VND/user/ngày</div></div>
+</div>
+<div class="card">
+  <div class="card-title">💰 Daily Revenue (tỷ VND)</div><div class="chart-h240"><canvas id="rev-ID"></canvas></div></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">👥 DAU & MAU (nghìn)</div><div class="chart-h180"><canvas id="dau-ID"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">💳 PU & ARPPU (triệu VND)</div><div class="chart-h180"><canvas id="pu-ID"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">🔁 Retention Rate — RR01 & RR07 (%)</div><div class="chart-h180"><canvas id="rr-ID"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">🆕 NRU & DPU (người)</div><div class="chart-h180"><canvas id="nru-ID"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="card"><div class="card-title">🔍 Key Insights</div>
+<div class="ins ok"><strong>📍 ID (Indonesia) — 19.0% tổng revenue:</strong> Tổng tháng 4: 8.94B VND · DAU avg: 1,985 · PU tổng: 3,787</div>
+<div class="ins"><strong>💰 ARPPU avg: 2.39M VND/PU · ARPU avg: 148,777 VND/user/ngày</strong><br>Max revenue ngày: 0.71B (22/04)</div>
+<div class="ins warn"><strong>⚠️ Retention RR01 avg: 39.4% · RR07 avg: 11.8%</strong><br>Cần monitor nếu thấp hơn baseline các nước khác.</div>
+</div>
+</div>
+<div class="tab-pane" id="pane-SG">
+<div class="kpi-row">
+  <div class="kpi"><div class="lbl">Total Revenue Apr</div><div class="val c-gold">6.38B</div><div class="sub">VND · Daily avg: 0.213B</div></div>
+  <div class="kpi"><div class="lbl">DAU Avg</div><div class="val c-blue">11,582</div><div class="sub">MAU cuối tháng: 20,864</div></div>
+  <div class="kpi"><div class="lbl">Total PU · NRU</div><div class="val c-green">1,917 · 187</div><div class="sub">Paying Users · New Users</div></div>
+  <div class="kpi"><div class="lbl">ARPPU Avg</div><div class="val c-purple">3.36M</div><div class="sub">ARPU: 18,345 VND/user/ngày</div></div>
+</div>
+<div class="card">
+  <div class="card-title">💰 Daily Revenue (tỷ VND)</div><div class="chart-h240"><canvas id="rev-SG"></canvas></div></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">👥 DAU & MAU (nghìn)</div><div class="chart-h180"><canvas id="dau-SG"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">💳 PU & ARPPU (triệu VND)</div><div class="chart-h180"><canvas id="pu-SG"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">🔁 Retention Rate — RR01 & RR07 (%)</div><div class="chart-h180"><canvas id="rr-SG"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">🆕 NRU & DPU (người)</div><div class="chart-h180"><canvas id="nru-SG"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="card"><div class="card-title">🔍 Key Insights</div>
+<div class="ins ok"><strong>📍 SG (Singapore) — 13.6% tổng revenue:</strong> Tổng tháng 4: 6.38B VND · DAU avg: 11,582 · PU tổng: 1,917</div>
+<div class="ins"><strong>💰 ARPPU avg: 3.36M VND/PU · ARPU avg: 18,345 VND/user/ngày</strong><br>Max revenue ngày: 0.65B (04/04)</div>
+<div class="ins warn"><strong>⚠️ Retention RR01 avg: 36.9% · RR07 avg: 15.4%</strong><br>Cần monitor nếu thấp hơn baseline các nước khác.</div>
+</div>
+</div>
+<div class="tab-pane" id="pane-PH">
+<div class="kpi-row">
+  <div class="kpi"><div class="lbl">Total Revenue Apr</div><div class="val c-gold">1.52B</div><div class="sub">VND · Daily avg: 0.051B</div></div>
+  <div class="kpi"><div class="lbl">DAU Avg</div><div class="val c-blue">755</div><div class="sub">MAU cuối tháng: 1,675</div></div>
+  <div class="kpi"><div class="lbl">Total PU · NRU</div><div class="val c-green">1,514 · 340</div><div class="sub">Paying Users · New Users</div></div>
+  <div class="kpi"><div class="lbl">ARPPU Avg</div><div class="val c-purple">1.02M</div><div class="sub">ARPU: 67,029 VND/user/ngày</div></div>
+</div>
+<div class="card">
+  <div class="card-title">💰 Daily Revenue (tỷ VND)</div><div class="chart-h240"><canvas id="rev-PH"></canvas></div></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">👥 DAU & MAU (nghìn)</div><div class="chart-h180"><canvas id="dau-PH"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">💳 PU & ARPPU (triệu VND)</div><div class="chart-h180"><canvas id="pu-PH"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">🔁 Retention Rate — RR01 & RR07 (%)</div><div class="chart-h180"><canvas id="rr-PH"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">🆕 NRU & DPU (người)</div><div class="chart-h180"><canvas id="nru-PH"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="card"><div class="card-title">🔍 Key Insights</div>
+<div class="ins ok"><strong>📍 PH (Philippines) — 3.2% tổng revenue:</strong> Tổng tháng 4: 1.52B VND · DAU avg: 755 · PU tổng: 1,514</div>
+<div class="ins"><strong>💰 ARPPU avg: 1.02M VND/PU · ARPU avg: 67,029 VND/user/ngày</strong><br>Max revenue ngày: 0.09B (26/04)</div>
+<div class="ins warn"><strong>⚠️ Retention RR01 avg: 32.2% · RR07 avg: 7.3%</strong><br>Cần monitor nếu thấp hơn baseline các nước khác.</div>
+</div>
+</div>
+<div class="tab-pane" id="pane-MY">
+<div class="kpi-row">
+  <div class="kpi"><div class="lbl">Total Revenue Apr</div><div class="val c-gold">1.33B</div><div class="sub">VND · Daily avg: 0.044B</div></div>
+  <div class="kpi"><div class="lbl">DAU Avg</div><div class="val c-blue">413</div><div class="sub">MAU cuối tháng: 794</div></div>
+  <div class="kpi"><div class="lbl">Total PU · NRU</div><div class="val c-green">872 · 94</div><div class="sub">Paying Users · New Users</div></div>
+  <div class="kpi"><div class="lbl">ARPPU Avg</div><div class="val c-purple">1.65M</div><div class="sub">ARPU: 107,792 VND/user/ngày</div></div>
+</div>
+<div class="card">
+  <div class="card-title">💰 Daily Revenue (tỷ VND)</div><div class="chart-h240"><canvas id="rev-MY"></canvas></div></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">👥 DAU & MAU (nghìn)</div><div class="chart-h180"><canvas id="dau-MY"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">💳 PU & ARPPU (triệu VND)</div><div class="chart-h180"><canvas id="pu-MY"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="g2">
+  <div class="card" style="margin:0"><div class="card-title">🔁 Retention Rate — RR01 & RR07 (%)</div><div class="chart-h180"><canvas id="rr-MY"></canvas></div></div>
+  <div class="card" style="margin:0"><div class="card-title">🆕 NRU & DPU (người)</div><div class="chart-h180"><canvas id="nru-MY"></canvas></div></div>
+</div>
+<div style="margin-bottom:14px"></div>
+<div class="card"><div class="card-title">🔍 Key Insights</div>
+<div class="ins ok"><strong>📍 MY (Malaysia) — 2.8% tổng revenue:</strong> Tổng tháng 4: 1.33B VND · DAU avg: 413 · PU tổng: 872</div>
+<div class="ins"><strong>💰 ARPPU avg: 1.65M VND/PU · ARPU avg: 107,792 VND/user/ngày</strong><br>Max revenue ngày: 0.10B (27/04)</div>
+<div class="ins warn"><strong>⚠️ Retention RR01 avg: 37.5% · RR07 avg: 15.2%</strong><br>Cần monitor nếu thấp hơn baseline các nước khác.</div>
+</div>
+</div>
+
+<script>
+const TABS_DATA = {"Total": {"labels": ["01/04", "02/04", "03/04", "04/04", "05/04", "06/04", "07/04", "08/04", "09/04", "10/04", "11/04", "12/04", "13/04", "14/04", "15/04", "16/04", "17/04", "18/04", "19/04", "20/04", "21/04", "22/04", "23/04", "24/04", "25/04", "26/04", "27/04", "28/04", "29/04", "30/04"], "rev": [2.685, 2.499, 1.966, 1.923, 1.198, 1.405, 0.949, 2.749, 1.524, 1.7, 1.483, 1.098, 1.304, 1.288, 1.452, 1.072, 1.138, 1.209, 1.165, 1.518, 1.144, 3.013, 1.482, 1.704, 1.912, 1.18, 1.508, 1.51, 1.265, 1.006], "rev_ma": [null, null, null, null, null, null, 1.804, 1.813, 1.673, 1.635, 1.573, 1.558, 1.544, 1.592, 1.407, 1.342, 1.262, 1.223, 1.233, 1.263, 1.243, 1.466, 1.524, 1.605, 1.706, 1.708, 1.706, 1.758, 1.509, 1.441], "dau": [177.0, 171.4, 167.4, 161.7, 164.9, 167.0, 169.8, 180.7, 149.9, 163.9, 162.7, 161.9, 160.5, 159.7, 162.6, 160.8, 163.5, 162.2, 162.0, 159.2, 164.6, 188.3, 163.3, 160.8, 164.3, 166.0, 166.1, 167.0, 174.7, 172.5], "mau": [177.0, 186.0, 191.6, 194.4, 199.1, 201.0, 203.0, 211.4, 213.5, 220.9, 222.7, 224.9, 225.3, 225.8, 226.3, 227.4, 227.8, 228.3, 228.9, 229.4, 231.1, 231.6, 232.1, 232.7, 234.3, 236.0, 236.5, 236.9, 239.8, 242.4], "pu": [1018, 906, 764, 783, 748, 793, 789, 1598, 983, 848, 856, 823, 813, 724, 870, 734, 711, 786, 963, 929, 832, 1488, 932, 802, 803, 731, 736, 732, 753, 757], "arpu": [15.2, 14.6, 11.7, 11.9, 7.3, 8.4, 5.6, 15.2, 10.2, 10.4, 9.1, 6.8, 8.1, 8.1, 8.9, 6.7, 7.0, 7.5, 7.2, 9.5, 7.0, 16.0, 9.1, 10.6, 11.6, 7.1, 9.1, 9.0, 7.2, 5.8], "arppu": [2.64, 2.76, 2.57, 2.46, 1.6, 1.77, 1.2, 1.72, 1.55, 2.0, 1.73, 1.33, 1.6, 1.78, 1.67, 1.46, 1.6, 1.54, 1.21, 1.63, 1.38, 2.02, 1.59, 2.12, 2.38, 1.61, 2.05, 2.06, 1.68, 1.33], "rr01": [33.7, 46.4, 75.7, 29.9, 85.9, 41.2, 12.1, 9.1, 47.5, 95.0, 90.7, 95.1, 30.0, 42.1, 41.5, 25.5, 42.2, 46.4, 32.6, 34.5, 15.5, 42.0, 38.3, 42.9, 91.0, 90.3, 31.3, 39.4, 22.6, 28.5], "rr07": [15.4, 25.2, 5.5, 22.8, 2.4, 9.1, 36.9, 47.8, 79.3, 93.1, 87.0, 69.3, 8.3, 12.3, 17.9, 5.4, 18.4, 13.4, 7.0, 10.1, 61.2, 15.4, 13.1, 26.3, 88.1, 81.9, 13.0, 10.2, 34.9, 28.5], "nru": [104, 151, 345, 127, 984, 187, 586, 696, 1195, 7026, 1017, 1895, 120, 171, 123, 149, 147, 112, 129, 139, 897, 188, 175, 198, 985, 1336, 131, 127, 2694, 2419], "dpu": [1018, 906, 764, 783, 748, 793, 789, 1598, 983, 848, 856, 823, 813, 724, 870, 734, 711, 786, 963, 929, 832, 1488, 932, 802, 803, 731, 736, 732, 753, 757], "color": "#58a6ff"}, "TH": {"labels": ["01/04", "02/04", "03/04", "04/04", "05/04", "06/04", "07/04", "08/04", "09/04", "10/04", "11/04", "12/04", "13/04", "14/04", "15/04", "16/04", "17/04", "18/04", "19/04", "20/04", "21/04", "22/04", "23/04", "24/04", "25/04", "26/04", "27/04", "28/04", "29/04", "30/04"], "rev": [1.078, 0.599, 0.623, 0.596, 0.484, 0.529, 0.487, 1.251, 0.634, 0.652, 0.65, 0.423, 0.482, 0.387, 0.542, 0.469, 0.506, 0.559, 0.545, 0.628, 0.457, 1.373, 0.663, 0.697, 0.853, 0.507, 0.58, 0.489, 0.422, 0.443], "rev_ma": [null, null, null, null, null, null, 0.628, 0.653, 0.658, 0.662, 0.67, 0.661, 0.654, 0.64, 0.539, 0.515, 0.494, 0.481, 0.498, 0.519, 0.529, 0.648, 0.676, 0.703, 0.745, 0.74, 0.733, 0.738, 0.602, 0.57], "dau": [3.7, 3.6, 3.5, 3.5, 3.4, 3.5, 3.5, 4.1, 3.4, 3.4, 3.4, 3.3, 3.3, 3.3, 3.3, 3.3, 3.4, 3.4, 3.4, 3.5, 3.4, 4.1, 3.5, 3.5, 3.4, 3.5, 3.4, 3.5, 3.5, 3.4], "mau": [3.7, 4.1, 4.3, 4.4, 4.5, 4.6, 4.7, 5.0, 5.0, 5.0, 5.1, 5.1, 5.2, 5.2, 5.3, 5.4, 5.4, 5.5, 5.5, 5.6, 5.6, 5.7, 5.8, 5.8, 5.8, 5.9, 5.9, 6.0, 6.0, 6.1], "pu": [416, 362, 318, 322, 297, 316, 312, 588, 401, 337, 349, 357, 333, 278, 363, 311, 305, 331, 389, 374, 333, 593, 383, 323, 330, 290, 331, 315, 300, 297], "arpu": [291.6, 168.0, 176.1, 171.3, 141.0, 149.3, 139.5, 301.8, 184.5, 190.2, 191.4, 129.1, 146.3, 118.4, 161.8, 140.9, 149.2, 164.2, 160.9, 182.1, 133.9, 337.2, 191.0, 200.6, 254.0, 146.8, 170.1, 141.2, 120.2, 130.5], "arppu": [2.59, 1.66, 1.96, 1.85, 1.63, 1.67, 1.56, 2.13, 1.58, 1.93, 1.86, 1.19, 1.45, 1.39, 1.49, 1.51, 1.66, 1.69, 1.4, 1.68, 1.37, 2.32, 1.73, 2.16, 2.59, 1.75, 1.75, 1.55, 1.41, 1.49], "rr01": [48.0, 52.9, 47.1, 35.7, 26.1, 45.5, 40.9, 50.0, 27.8, 27.3, 11.8, 38.5, 18.2, 17.9, 50.0, 38.1, 41.9, 42.1, 32.0, 33.3, 13.6, 68.0, 37.5, 46.7, 50.0, 36.8, 42.9, 46.7, 38.5, 44.4], "rr07": [12.0, 11.8, 29.4, 7.1, 21.7, 9.1, 4.5, 4.2, 11.1, 18.2, 0.0, 30.8, 9.1, 10.7, 17.9, 4.8, 9.7, 31.6, 12.0, 4.8, 4.5, 8.0, 8.3, 20.0, 16.7, 10.5, 7.1, 6.7, 7.7, 11.1], "nru": [25, 17, 17, 14, 23, 22, 22, 24, 18, 11, 17, 13, 22, 28, 28, 21, 31, 19, 25, 21, 22, 25, 24, 15, 18, 19, 14, 15, 26, 18], "dpu": [384, 347, 303, 302, 283, 293, 295, 562, 365, 308, 314, 324, 310, 263, 328, 289, 282, 315, 357, 351, 307, 546, 363, 304, 319, 269, 311, 279, 274, 280], "color": "#f78166"}, "VN": {"labels": ["01/04", "02/04", "03/04", "04/04", "05/04", "06/04", "07/04", "08/04", "09/04", "10/04", "11/04", "12/04", "13/04", "14/04", "15/04", "16/04", "17/04", "18/04", "19/04", "20/04", "21/04", "22/04", "23/04", "24/04", "25/04", "26/04", "27/04", "28/04", "29/04", "30/04"], "rev": [0.48, 0.72, 0.274, 0.186, 0.225, 0.36, 0.218, 0.579, 0.502, 0.367, 0.394, 0.21, 0.235, 0.262, 0.519, 0.205, 0.197, 0.225, 0.244, 0.299, 0.176, 0.522, 0.195, 0.247, 0.252, 0.167, 0.221, 0.185, 0.43, 0.148], "rev_ma": [null, null, null, null, null, null, 0.352, 0.366, 0.335, 0.348, 0.378, 0.376, 0.358, 0.364, 0.356, 0.313, 0.289, 0.265, 0.27, 0.279, 0.266, 0.267, 0.265, 0.272, 0.276, 0.265, 0.254, 0.255, 0.242, 0.236], "dau": [5.8, 5.8, 5.9, 5.9, 5.7, 5.7, 5.9, 8.7, 5.8, 5.8, 5.5, 5.4, 5.5, 5.6, 5.7, 5.8, 5.8, 5.6, 5.6, 5.7, 5.8, 8.5, 5.8, 5.7, 5.3, 5.5, 5.7, 5.6, 6.2, 5.7], "mau": [5.8, 6.9, 7.6, 8.0, 8.4, 8.6, 8.9, 9.8, 9.9, 9.9, 10.0, 10.1, 10.2, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9, 11.0, 11.1, 11.3, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8], "pu": [292, 238, 206, 212, 226, 242, 224, 513, 266, 235, 228, 214, 236, 217, 257, 194, 185, 222, 271, 269, 239, 436, 256, 192, 222, 198, 181, 164, 206, 179], "arpu": [82.2, 124.6, 46.2, 31.5, 39.4, 63.0, 36.7, 66.7, 86.2, 62.9, 71.2, 38.6, 42.4, 47.1, 91.2, 35.6, 33.9, 40.1, 43.5, 52.7, 30.4, 61.7, 33.3, 43.1, 47.8, 30.5, 39.0, 33.0, 69.7, 26.2], "arppu": [1.64, 3.03, 1.33, 0.88, 1.0, 1.49, 0.97, 1.13, 1.89, 1.56, 1.73, 0.98, 0.99, 1.21, 2.02, 1.06, 1.07, 1.02, 0.9, 1.11, 0.73, 1.2, 0.76, 1.28, 1.13, 0.84, 1.22, 1.13, 2.09, 0.83], "rr01": [28.6, 48.7, 55.9, 35.0, 28.9, 52.0, 18.0, 37.5, 48.9, 39.0, 34.1, 41.7, 35.3, 45.7, 28.9, 16.1, 31.7, 52.6, 31.1, 44.4, 27.3, 37.2, 33.8, 27.1, 35.6, 39.2, 20.8, 45.2, 31.7, 22.4], "rr07": [11.4, 25.6, 8.8, 10.0, 6.6, 8.0, 6.0, 20.8, 14.9, 14.6, 4.5, 8.3, 5.9, 5.7, 2.6, 5.4, 9.8, 13.2, 4.4, 5.6, 2.3, 7.7, 16.9, 6.8, 15.6, 9.8, 7.5, 4.8, 9.5, 3.0], "nru": [35, 39, 34, 40, 76, 50, 50, 48, 47, 41, 44, 48, 34, 35, 38, 56, 41, 38, 45, 54, 88, 78, 71, 59, 45, 51, 53, 42, 63, 67], "dpu": [251, 202, 180, 185, 197, 209, 201, 448, 235, 212, 208, 190, 218, 194, 231, 169, 167, 201, 244, 238, 216, 387, 232, 169, 203, 183, 168, 149, 187, 166], "color": "#3fb950"}, "ID": {"labels": ["01/04", "02/04", "03/04", "04/04", "05/04", "06/04", "07/04", "08/04", "09/04", "10/04", "11/04", "12/04", "13/04", "14/04", "15/04", "16/04", "17/04", "18/04", "19/04", "20/04", "21/04", "22/04", "23/04", "24/04", "25/04", "26/04", "27/04", "28/04", "29/04", "30/04"], "rev": [0.324, 0.542, 0.259, 0.306, 0.221, 0.335, 0.114, 0.436, 0.152, 0.394, 0.233, 0.191, 0.323, 0.439, 0.227, 0.18, 0.174, 0.202, 0.149, 0.311, 0.345, 0.708, 0.219, 0.346, 0.432, 0.165, 0.396, 0.449, 0.246, 0.123], "rev_ma": [null, null, null, null, null, null, 0.3, 0.316, 0.261, 0.28, 0.269, 0.265, 0.263, 0.31, 0.28, 0.284, 0.253, 0.248, 0.242, 0.24, 0.227, 0.296, 0.301, 0.326, 0.359, 0.361, 0.373, 0.388, 0.322, 0.308], "dau": [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.3, 1.9, 1.9, 1.9, 1.9, 2.1, 1.9, 2.0, 2.0, 2.0, 1.9, 1.9, 1.9, 1.9, 2.4, 2.0, 2.0, 1.9, 1.9, 1.9, 1.9, 2.0, 1.9], "mau": [2.0, 2.3, 2.4, 2.5, 2.5, 2.6, 2.7, 2.8, 2.8, 2.9, 2.9, 2.9, 2.9, 3.0, 3.0, 3.0, 3.1, 3.1, 3.1, 3.1, 3.2, 3.2, 3.2, 3.3, 3.3, 3.3, 3.3, 3.4, 3.4, 3.4], "pu": [149, 139, 112, 118, 103, 116, 122, 246, 156, 126, 127, 114, 120, 100, 112, 103, 98, 108, 133, 134, 111, 223, 132, 122, 112, 105, 111, 101, 120, 114], "arpu": [159.2, 268.2, 128.4, 153.7, 109.8, 167.8, 58.4, 188.7, 78.5, 202.7, 121.1, 98.8, 156.9, 233.0, 114.5, 92.0, 88.6, 104.4, 79.4, 165.4, 178.5, 296.1, 112.0, 176.4, 221.9, 85.1, 203.8, 235.3, 121.2, 63.7], "arppu": [2.18, 3.9, 2.31, 2.6, 2.15, 2.89, 0.94, 1.77, 0.97, 3.13, 1.84, 1.67, 2.7, 4.39, 2.03, 1.75, 1.77, 1.87, 1.12, 2.32, 3.11, 3.17, 1.66, 2.84, 3.86, 1.57, 3.56, 4.45, 2.05, 1.07], "rr01": [75.0, 60.0, 37.5, 42.9, 26.7, 50.0, 14.3, 57.1, 50.0, 21.4, 57.1, 25.0, 20.0, 25.0, 33.3, 35.3, 50.0, 45.5, 57.1, 0.0, 60.0, 37.5, 33.3, 41.7, 25.0, 30.8, 50.0, 55.6, 14.3, 50.0], "rr07": [12.5, 40.0, 0.0, 14.3, 6.7, 12.5, 0.0, 28.6, 50.0, 0.0, 28.6, 12.5, 0.0, 6.3, 0.0, 0.0, 50.0, 0.0, 14.3, 0.0, 13.3, 6.3, 0.0, 0.0, 0.0, 0.0, 33.3, 0.0, 0.0, 25.0], "nru": [8, 10, 8, 14, 15, 8, 7, 7, 10, 14, 7, 8, 5, 16, 9, 17, 6, 11, 7, 5, 15, 16, 15, 12, 8, 13, 6, 9, 14, 16], "dpu": [168, 151, 116, 128, 111, 121, 126, 266, 176, 140, 141, 122, 123, 112, 126, 111, 105, 120, 144, 144, 120, 237, 139, 131, 123, 113, 116, 107, 129, 130], "color": "#e3b341"}, "SG": {"labels": ["01/04", "02/04", "03/04", "04/04", "05/04", "06/04", "07/04", "08/04", "09/04", "10/04", "11/04", "12/04", "13/04", "14/04", "15/04", "16/04", "17/04", "18/04", "19/04", "20/04", "21/04", "22/04", "23/04", "24/04", "25/04", "26/04", "27/04", "28/04", "29/04", "30/04"], "rev": [0.288, 0.379, 0.403, 0.653, 0.143, 0.135, 0.077, 0.342, 0.135, 0.176, 0.141, 0.203, 0.171, 0.128, 0.083, 0.145, 0.192, 0.117, 0.121, 0.217, 0.085, 0.283, 0.317, 0.269, 0.243, 0.16, 0.181, 0.32, 0.1, 0.169], "rev_ma": [null, null, null, null, null, null, 0.297, 0.305, 0.27, 0.237, 0.164, 0.173, 0.178, 0.185, 0.148, 0.15, 0.152, 0.148, 0.137, 0.143, 0.137, 0.166, 0.19, 0.201, 0.219, 0.225, 0.22, 0.253, 0.227, 0.206], "dau": [11.6, 11.4, 11.7, 11.0, 10.9, 10.7, 10.7, 17.2, 11.4, 11.9, 11.1, 10.7, 10.8, 10.7, 11.1, 11.7, 11.4, 11.3, 11.5, 11.1, 11.3, 17.0, 11.2, 10.6, 10.8, 10.9, 11.2, 11.5, 11.7, 11.3], "mau": [11.6, 13.2, 14.5, 15.2, 16.1, 16.6, 17.0, 19.1, 19.2, 19.2, 19.3, 19.3, 19.4, 19.6, 19.7, 20.1, 20.2, 20.2, 20.3, 20.5, 20.5, 20.5, 20.6, 20.6, 20.6, 20.7, 20.8, 20.8, 20.8, 20.9], "pu": [65, 62, 51, 63, 46, 49, 53, 110, 70, 65, 67, 67, 65, 53, 63, 52, 57, 58, 67, 69, 68, 93, 70, 71, 58, 64, 56, 58, 60, 67], "arpu": [24.7, 33.2, 34.5, 59.6, 13.2, 12.6, 7.2, 19.9, 11.8, 14.7, 12.7, 18.9, 15.8, 11.9, 7.5, 12.4, 16.9, 10.4, 10.5, 19.6, 7.6, 16.6, 28.2, 25.2, 22.5, 14.7, 16.1, 27.9, 8.5, 15.0], "arppu": [4.43, 6.11, 7.9, 10.37, 3.12, 2.76, 1.45, 3.11, 1.93, 2.71, 2.1, 3.03, 2.63, 2.42, 1.31, 2.79, 3.37, 2.01, 1.81, 3.15, 1.25, 3.04, 4.53, 3.78, 4.19, 2.5, 3.23, 5.51, 1.66, 2.52], "rr01": [25.0, 38.5, 33.3, 14.3, 28.6, 7.1, 90.9, 25.0, 50.0, 57.1, 40.0, 50.0, 100.0, 57.1, 50.0, 33.3, 16.7, 0.0, 33.3, 0.0, 63.6, 50.0, 33.3, 50.0, 0.0, 33.3, 33.3, 25.0, 44.4, 25.0], "rr07": [0.0, 15.4, 11.1, 0.0, 14.3, 7.1, 27.3, 0.0, 50.0, 71.4, 0.0, 16.7, 0.0, 28.6, 0.0, 0.0, 0.0, 0.0, 0.0, 50.0, 54.5, 0.0, 0.0, 25.0, 0.0, 33.3, 0.0, 25.0, 33.3, 0.0], "nru": [4, 13, 9, 7, 7, 14, 11, 4, 2, 7, 5, 6, 2, 7, 4, 3, 6, 1, 3, 4, 11, 4, 6, 4, 5, 3, 6, 8, 9, 12], "dpu": [56, 51, 34, 47, 40, 43, 39, 69, 55, 46, 47, 55, 48, 36, 46, 48, 47, 48, 61, 57, 47, 76, 48, 51, 38, 44, 41, 44, 43, 46], "color": "#bc8cff"}, "PH": {"labels": ["01/04", "02/04", "03/04", "04/04", "05/04", "06/04", "07/04", "08/04", "09/04", "10/04", "11/04", "12/04", "13/04", "14/04", "15/04", "16/04", "17/04", "18/04", "19/04", "20/04", "21/04", "22/04", "23/04", "24/04", "25/04", "26/04", "27/04", "28/04", "29/04", "30/04"], "rev": [0.061, 0.059, 0.039, 0.041, 0.041, 0.026, 0.029, 0.076, 0.073, 0.042, 0.043, 0.037, 0.044, 0.046, 0.047, 0.051, 0.038, 0.08, 0.043, 0.039, 0.057, 0.077, 0.035, 0.072, 0.08, 0.094, 0.024, 0.027, 0.023, 0.077], "rev_ma": [null, null, null, null, null, null, 0.042, 0.044, 0.047, 0.047, 0.047, 0.047, 0.049, 0.052, 0.047, 0.044, 0.044, 0.049, 0.05, 0.049, 0.051, 0.055, 0.053, 0.058, 0.058, 0.065, 0.063, 0.059, 0.051, 0.057], "dau": [0.8, 0.8, 0.8, 0.7, 0.8, 0.8, 0.7, 1.0, 0.8, 0.8, 0.8, 0.7, 0.8, 0.7, 0.8, 0.7, 0.8, 0.7, 0.7, 0.7, 0.7, 0.9, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7], "mau": [0.8, 0.9, 1.0, 1.0, 1.1, 1.1, 1.2, 1.2, 1.2, 1.3, 1.3, 1.3, 1.3, 1.4, 1.4, 1.4, 1.4, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.6, 1.6, 1.6, 1.6, 1.6, 1.7, 1.7], "pu": [56, 65, 49, 42, 50, 43, 49, 75, 55, 53, 51, 41, 33, 49, 44, 39, 35, 40, 62, 41, 52, 88, 44, 46, 56, 43, 37, 62, 44, 70], "arpu": [77.2, 76.9, 52.1, 54.7, 52.3, 33.0, 38.9, 79.5, 93.4, 56.2, 57.0, 50.6, 55.4, 62.0, 63.0, 68.7, 49.2, 107.7, 62.7, 55.4, 77.9, 85.3, 51.1, 97.1, 110.3, 133.6, 33.6, 38.7, 31.3, 106.2], "arppu": [1.09, 0.91, 0.8, 0.97, 0.83, 0.61, 0.59, 1.01, 1.33, 0.8, 0.85, 0.9, 1.33, 0.93, 1.07, 1.3, 1.07, 1.99, 0.69, 0.94, 1.1, 0.87, 0.8, 1.57, 1.42, 2.19, 0.66, 0.44, 0.53, 1.1], "rr01": [14.3, 30.0, 30.8, 37.5, 33.3, 40.0, 18.2, 16.7, 62.5, 60.0, 64.3, 18.2, 35.7, 17.6, 22.2, 13.3, 16.7, 50.0, 30.0, 37.5, 11.1, 30.8, 57.1, 30.8, 25.0, 42.9, 14.3, 33.3, 26.7, 46.2], "rr07": [0.0, 0.0, 7.7, 0.0, 11.1, 10.0, 0.0, 0.0, 25.0, 40.0, 7.1, 0.0, 7.1, 0.0, 0.0, 0.0, 0.0, 16.7, 0.0, 0.0, 0.0, 23.1, 0.0, 15.4, 12.5, 14.3, 0.0, 22.2, 0.0, 7.7], "nru": [7, 10, 13, 8, 18, 20, 11, 12, 8, 10, 14, 11, 14, 17, 9, 15, 12, 12, 10, 8, 9, 13, 7, 13, 8, 7, 7, 9, 15, 13], "dpu": [39, 46, 40, 28, 34, 29, 41, 60, 39, 39, 48, 27, 23, 36, 34, 35, 26, 23, 42, 30, 32, 69, 37, 37, 44, 34, 27, 35, 37, 36], "color": "#39d353"}, "MY": {"labels": ["01/04", "02/04", "03/04", "04/04", "05/04", "06/04", "07/04", "08/04", "09/04", "10/04", "11/04", "12/04", "13/04", "14/04", "15/04", "16/04", "17/04", "18/04", "19/04", "20/04", "21/04", "22/04", "23/04", "24/04", "25/04", "26/04", "27/04", "28/04", "29/04", "30/04"], "rev": [0.078, 0.02, 0.045, 0.025, 0.082, 0.018, 0.024, 0.063, 0.024, 0.068, 0.02, 0.033, 0.047, 0.022, 0.035, 0.021, 0.031, 0.025, 0.061, 0.023, 0.024, 0.046, 0.052, 0.071, 0.052, 0.087, 0.105, 0.038, 0.043, 0.046], "rev_ma": [null, null, null, null, null, null, 0.042, 0.04, 0.04, 0.043, 0.043, 0.036, 0.04, 0.04, 0.036, 0.035, 0.03, 0.03, 0.034, 0.031, 0.031, 0.033, 0.037, 0.043, 0.047, 0.051, 0.062, 0.065, 0.064, 0.063], "dau": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.6, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.6, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4], "mau": [0.4, 0.5, 0.5, 0.5, 0.6, 0.6, 0.6, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8], "pu": [32, 32, 18, 20, 23, 23, 26, 60, 29, 27, 29, 25, 20, 23, 29, 33, 28, 23, 36, 36, 25, 48, 43, 42, 23, 28, 18, 26, 20, 27], "arpu": [205.3, 50.1, 104.3, 64.9, 184.7, 44.4, 56.3, 103.3, 63.3, 190.5, 56.7, 81.4, 117.2, 55.3, 85.2, 53.2, 78.2, 63.9, 148.6, 51.5, 63.5, 82.4, 120.7, 172.4, 123.6, 236.7, 246.7, 96.2, 114.5, 118.5], "arppu": [2.44, 0.64, 2.51, 1.27, 3.57, 0.8, 0.92, 1.04, 0.83, 2.51, 0.69, 1.31, 2.36, 0.96, 1.19, 0.64, 1.09, 1.09, 1.68, 0.64, 0.95, 0.96, 1.22, 1.69, 2.26, 3.11, 5.82, 1.47, 2.15, 1.7], "rr01": [0.0, 33.3, 100.0, null, 100.0, 25.0, 0.0, 66.7, 0.0, 0.0, 0.0, 0.0, 25.0, 66.7, 66.7, 0.0, 50.0, 25.0, 200.0, 75.0, 20.0, 66.7, 22.2, 25.0, 50.0, 0.0, null, 0.0, 33.3, 0.0], "rr07": [0.0, 0.0, 50.0, null, 33.3, 25.0, 0.0, 33.3, 33.3, 0.0, 0.0, 0.0, 37.5, 33.3, 33.3, 20.0, 25.0, 25.0, 0.0, 0.0, 0.0, 33.3, 11.1, 0.0, 0.0, 0.0, null, 0.0, 33.3, 0.0], "nru": [2, 3, 2, 0, 3, 4, 2, 3, 3, 1, 1, 1, 8, 6, 3, 5, 4, 4, 1, 4, 5, 3, 9, 4, 2, 3, 0, 2, 3, 3], "dpu": [23, 28, 17, 20, 19, 21, 23, 49, 28, 23, 24, 23, 22, 18, 26, 28, 23, 18, 32, 27, 19, 42, 34, 36, 17, 22, 15, 24, 17, 20], "color": "#ff7b72"}};
+const MAY_DATES = ["01/05", "02/05", "03/05", "04/05", "05/05", "06/05", "07/05", "08/05", "09/05", "10/05", "11/05", "12/05", "13/05", "14/05", "15/05", "16/05", "17/05", "18/05", "19/05", "20/05", "21/05", "22/05", "23/05", "24/05", "25/05", "26/05", "27/05", "28/05", "29/05", "30/05", "31/05"];
+const MAY_PROJ  = [1.369, 1.369, 1.369, 1.369, 1.437, 2.086, 1.848, 1.848, 1.369, 1.369, 1.369, 1.369, 1.369, 1.369, 1.369, 1.369, 1.369, 1.369, 1.505, 3.982, 2.19, 2.19, 1.369, 1.369, 1.369, 1.369, 1.369, 1.369, 1.369, 1.369, 1.369];
+const BASE_LINE = 1.369;
+
+Chart.defaults.color = '#8b949e';
+Chart.defaults.borderColor = '#30363d';
+const GRID = {color:'#1c2128'};
+
+function makeCharts(tabId) {
+  const d = TABS_DATA[tabId];
+  const clr = d.color;
+  const labs = d.labels;
+
+  // Revenue
+  const revCtx = document.getElementById('rev-' + tabId);
+  if (revCtx && !revCtx._chart) {
+    revCtx._chart = new Chart(revCtx, {type:'bar', data:{labels:labs, datasets:[
+      {label:'Revenue (tỷ VND)', data:d.rev,
+        backgroundColor: d.rev.map(v => v > 2.5 ? 'rgba(63,185,80,0.85)' : v > 1.8 ? 'rgba(227,179,65,0.65)' : clr.replace(')',',0.5)').replace('rgb','rgba')),
+        borderColor:'transparent', order:2},
+      {label:'7-day MA', data:d.rev_ma, type:'line', borderColor:'#58a6ff', borderWidth:2, pointRadius:0, fill:false, tension:0.3, order:1, spanGaps:true}
+    ]}, options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{boxWidth:10,padding:12}}, tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y?.toFixed(3)}B`}}},
+      scales:{x:{grid:GRID,ticks:{maxRotation:45,font:{size:9}}}, y:{grid:GRID,ticks:{callback:v=>v+'B'}}}}});
+  }
+
+  // DAU/MAU
+  const dauCtx = document.getElementById('dau-' + tabId);
+  if (dauCtx && !dauCtx._chart) {
+    dauCtx._chart = new Chart(dauCtx, {type:'line', data:{labels:labs, datasets:[
+      {label:'DAU (K)', data:d.dau, borderColor:clr, backgroundColor:clr.replace(')',',0.08)').replace('rgb','rgba'), fill:true, tension:0.3, pointRadius:1},
+      {label:'MAU (K)', data:d.mau, borderColor:'#3fb950', borderDash:[5,3], tension:0.3, pointRadius:0, fill:false}
+    ]}, options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{boxWidth:10}}},
+      scales:{x:{grid:GRID,ticks:{maxRotation:45,font:{size:9}}}, y:{grid:GRID,ticks:{callback:v=>v+'K'}}}}});
+  }
+
+  // PU + ARPPU
+  const puCtx = document.getElementById('pu-' + tabId);
+  if (puCtx && !puCtx._chart) {
+    puCtx._chart = new Chart(puCtx, {type:'bar', data:{labels:labs, datasets:[
+      {label:'PU', data:d.pu, backgroundColor:'rgba(188,140,255,0.6)', yAxisID:'y1', order:2},
+      {label:'ARPPU (M VND)', data:d.arppu, type:'line', borderColor:'#e3b341', borderWidth:2, pointRadius:0, fill:false, yAxisID:'y2', order:1, spanGaps:true}
+    ]}, options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{boxWidth:10}}},
+      scales:{x:{grid:GRID,ticks:{maxRotation:45,font:{size:9}}},
+        y1:{grid:GRID,position:'left',title:{display:true,text:'PU',font:{size:9}}},
+        y2:{grid:{display:false},position:'right',title:{display:true,text:'ARPPU (M)',font:{size:9}}}}}});
+  }
+
+  // RR
+  const rrCtx = document.getElementById('rr-' + tabId);
+  if (rrCtx && !rrCtx._chart) {
+    rrCtx._chart = new Chart(rrCtx, {type:'line', data:{labels:labs, datasets:[
+      {label:'RR01 (%)', data:d.rr01, borderColor:'#3fb950', backgroundColor:'rgba(63,185,80,0.07)', fill:true, tension:0.3, pointRadius:1},
+      {label:'RR07 (%)', data:d.rr07, borderColor:'#e3b341', tension:0.3, pointRadius:1, fill:false}
+    ]}, options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{boxWidth:10}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y?.toFixed(1)}%`}}},
+      scales:{x:{grid:GRID,ticks:{maxRotation:45,font:{size:9}}}, y:{grid:GRID,ticks:{callback:v=>v+'%'}}}}});
+  }
+
+  // NRU + DPU
+  const nruCtx = document.getElementById('nru-' + tabId);
+  if (nruCtx && !nruCtx._chart) {
+    nruCtx._chart = new Chart(nruCtx, {type:'bar', data:{labels:labs, datasets:[
+      {label:'NRU', data:d.nru, backgroundColor:'rgba(57,211,83,0.6)', yAxisID:'y1', order:2},
+      {label:'DPU', data:d.dpu, backgroundColor:'rgba(88,166,255,0.5)', yAxisID:'y2', order:1}
+    ]}, options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{boxWidth:10}}},
+      scales:{x:{grid:GRID,ticks:{maxRotation:45,font:{size:9}}},
+        y1:{grid:GRID,position:'left',title:{display:true,text:'NRU',font:{size:9}}},
+        y2:{grid:{display:false},position:'right',title:{display:true,text:'DPU',font:{size:9}}}}}});
+  }
+
+  // May prediction (Total only)
+  if (tabId === 'Total') {
+    const mayCtx = document.getElementById('may-pred');
+    if (mayCtx && !mayCtx._chart) {
+      mayCtx._chart = new Chart(mayCtx, {type:'line', data:{labels:MAY_DATES, datasets:[
+        {label:'Projected Revenue (tỷ VND)', data:MAY_PROJ,
+          borderColor:'#bc8cff', backgroundColor:'rgba(188,140,255,0.07)', fill:true, tension:0.3,
+          pointBackgroundColor: MAY_PROJ.map(v => v > 3 ? '#3fb950' : v > 1.8 ? '#e3b341' : '#bc8cff'),
+          pointRadius: MAY_PROJ.map(v => v > 3 ? 8 : v > 1.8 ? 6 : 3),
+          pointBorderColor:'#0d1117', pointBorderWidth:1},
+        {label:`Baseline ${BASE_LINE}B/ngày`, data:Array(MAY_DATES.length).fill(BASE_LINE),
+          borderColor:'#58a6ff', borderDash:[5,3], pointRadius:0, fill:false, borderWidth:1.5}
+      ]}, options:{responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{position:'top',labels:{boxWidth:10}},
+          tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y?.toFixed(3)}B`,
+            afterLabel:c=>{const i=c.dataIndex+1;return i===6?'⚡ REBOOT Class Thương':i===20?'🌟 Mythic Raul + Great Rift':'';}}}},
+        scales:{x:{grid:GRID}, y:{grid:GRID,ticks:{callback:v=>v+'B'}}}}});
+    }
+  }
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.style.background='';b.style.color='';});
+  document.getElementById('pane-'+id).classList.add('active');
+  const btn = document.getElementById('btn-'+id);
+  btn.classList.add('active');
+  btn.style.background = TABS_DATA[id].color;
+  btn.style.color = '#0d1117';
+  setTimeout(()=>makeCharts(id), 50);
+}
+
+// Init Total tab on load
+document.addEventListener('DOMContentLoaded', () => makeCharts('Total'));
+</script>
+<footer>L2M GameOps Analytics · Pilot v2.0 · 16/05/2026 · Per-country tabs · Processed by Claude AI</footer>
+</div>
+</body>
+</html>
