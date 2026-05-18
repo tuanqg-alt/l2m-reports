@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L2M Update Roadmap</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f0f1a; color: #e2e8f0; min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #1a0533 0%, #0d1b4a 100%); padding: 20px 32px; border-bottom: 1px solid #2d2d5e; }
+  .header h1 { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+  .header h1 span { color: #a78bfa; }
+  .header-meta { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+  .stats { display: flex; gap: 16px; margin-top: 12px; }
+  .stat { background: rgba(255,255,255,0.07); padding: 6px 14px; border-radius: 20px; font-size: 12px; }
+  .stat .num { font-weight: 700; color: #a78bfa; }
+  /* Tabs */
+  .tab-bar { background: #13132a; padding: 0 32px; border-bottom: 1px solid #1e1e3f; display: flex; gap: 4px; }
+  .tab-btn { padding: 12px 20px; font-size: 13px; font-weight: 600; cursor: pointer; background: transparent; border: none; color: #64748b; border-bottom: 3px solid transparent; transition: all 0.15s; }
+  .tab-btn:hover { color: #a78bfa; }
+  .tab-btn.active { color: #a78bfa; border-bottom-color: #a78bfa; }
+  .tab-btn.gap-tab:hover { color: #2dd4bf; }
+  .tab-btn.gap-tab.active { color: #2dd4bf; border-bottom-color: #2dd4bf; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  /* Filter */
+  .filter-bar { background: #13132a; padding: 14px 32px; border-bottom: 1px solid #1e1e3f; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .filter-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; }
+  .filter-btn { padding: 5px 12px; border-radius: 20px; border: 1.5px solid #2d2d5e; font-size: 12px; cursor: pointer; transition: all 0.15s; font-weight: 500; background: transparent; color: #94a3b8; }
+  .filter-btn:hover { opacity: 0.85; }
+  .filter-btn.active { color: #fff; border-color: transparent; }
+  .filter-btn.all.active { background: #374151; border-color: #374151; color: #e2e8f0; }
+  .search-box { margin-left: auto; padding: 5px 12px; border-radius: 20px; border: 1.5px solid #2d2d5e; background: #1e1e3f; color: #e2e8f0; font-size: 12px; width: 200px; outline: none; }
+  .search-box:focus { border-color: #7c3aed; }
+  /* Timeline */
+  .timeline-wrapper { overflow-x: auto; padding: 40px 32px; }
+  .timeline { display: flex; gap: 0; align-items: flex-start; min-width: max-content; position: relative; }
+  .timeline::before { content: ''; position: absolute; top: 72px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #4b21a8, #1e40af, #4b21a8); z-index: 0; }
+  .milestone { display: flex; flex-direction: column; align-items: center; width: 240px; flex-shrink: 0; position: relative; z-index: 1; }
+  .milestone.hidden { display: none; }
+  .milestone-dot { width: 16px; height: 16px; border-radius: 50%; background: #7c3aed; border: 3px solid #0f0f1a; box-shadow: 0 0 0 2px #7c3aed; margin-bottom: 16px; flex-shrink: 0; }
+  .milestone.planned .milestone-dot { background: #1e1e3f; border-color: #4b21a8; box-shadow: 0 0 0 2px #4b21a8; }
+  .milestone-card { width: 220px; background: #1a1a35; border-radius: 12px; border: 1.5px solid #2d2d5e; padding: 14px; transition: transform 0.15s, box-shadow 0.15s; }
+  .milestone-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,0.2); }
+  .milestone.planned .milestone-card { border-style: dashed; border-color: #4b21a8; background: #131328; }
+  .milestone-date { font-size: 11px; color: #64748b; font-weight: 600; margin-bottom: 4px; }
+  .milestone-title { font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 10px; line-height: 1.4; }
+  .milestone-title a { color: #e2e8f0; text-decoration: none; border-bottom: 1px dashed rgba(139,92,246,0.5); transition: color 0.15s, border-color 0.15s; }
+  .milestone-title a:hover { color: #a78bfa; border-bottom-color: #a78bfa; }
+  .planned-badge { display: inline-block; font-size: 9px; font-weight: 700; color: #a78bfa; background: rgba(124,58,237,0.15); border: 1px solid #4b21a8; border-radius: 4px; padding: 1px 6px; margin-bottom: 6px; letter-spacing: 0.5px; }
+  .cats { display: flex; flex-direction: column; gap: 4px; }
+  .cat-chip { border-radius: 6px; overflow: hidden; }
+  .cat-chip-header { display: flex; align-items: center; gap: 6px; padding: 5px 8px; cursor: pointer; font-size: 11px; font-weight: 600; border-radius: 6px; transition: opacity 0.15s; }
+  .cat-chip-header:hover { opacity: 0.85; }
+  .cat-chip-header .cat-icon { font-size: 12px; }
+  .cat-chip-header .cat-label { flex: 1; }
+  .cat-chip-header .cat-count { font-size: 10px; opacity: 0.8; background: rgba(0,0,0,0.2); padding: 1px 5px; border-radius: 10px; }
+  .cat-chip-header .expand-icon { font-size: 10px; opacity: 0.7; transition: transform 0.2s; }
+  .cat-chip-header.expanded .expand-icon { transform: rotate(180deg); }
+  .cat-items { display: none; padding: 4px 8px 6px 26px; }
+  .cat-items.open { display: block; }
+  .cat-item { font-size: 11px; color: #94a3b8; padding: 2px 0; line-height: 1.4; }
+  .cat-item::before { content: '•'; margin-right: 5px; opacity: 0.5; }
+  .empty-state { text-align: center; padding: 60px 32px; color: #4b5563; }
+  .empty-state h3 { font-size: 18px; margin-bottom: 8px; }
+  .milestone-connector { width: 20px; height: 2px; background: #2d2d5e; align-self: center; margin-top: -80px; flex-shrink: 0; position: relative; z-index: 0; }
+  .legend { display: flex; gap: 16px; padding: 12px 32px; background: #0d0d1f; border-top: 1px solid #1e1e3f; font-size: 11px; color: #64748b; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .legend-dot.released { background: #7c3aed; }
+  .legend-dot.planned { background: transparent; border: 2px dashed #4b21a8; }
+  .kr-badge { display: inline-block; font-size: 9px; font-weight: 700; color: #f59e0b; background: rgba(245,158,11,0.15); border: 1px solid #b45309; border-radius: 4px; padding: 1px 6px; margin-bottom: 4px; }
+
+  /* ============================================================
+     GAP ANALYSIS TAB
+     ============================================================ */
+  .gap-wrap { padding: 32px; max-width: 1100px; }
+  .gap-sec { margin-bottom: 40px; }
+  .gap-sec-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: #64748b; margin-bottom: 16px;
+    padding-bottom: 10px; border-bottom: 1px solid #1e1e3f;
+  }
+
+  /* Metric cards */
+  .gap-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .gap-metric {
+    background: #1a1a35; border: 1.5px solid #2d2d5e; border-radius: 12px; padding: 18px 20px;
+  }
+  .gap-metric-val { font-size: 24px; font-weight: 700; margin-bottom: 5px; line-height: 1; }
+  .gap-metric-label { font-size: 12px; color: #94a3b8; line-height: 1.4; }
+  .gap-metric-sub { font-size: 10px; color: #475569; margin-top: 5px; }
+
+  /* Timeline position bar */
+  .gap-tl-card {
+    background: #1a1a35; border: 1.5px solid #2d2d5e; border-radius: 12px; padding: 22px 28px;
+  }
+  .gap-tl-outer { position: relative; height: 56px; margin-bottom: 8px; }
+  .gap-tl-track {
+    position: absolute; top: 20px; left: 0; right: 0;
+    height: 16px; background: #0d0d1f; border-radius: 8px; border: 1px solid #2d2d5e;
+  }
+  .gap-tl-fill {
+    height: 100%; background: #7c3aed55; border-radius: 8px 0 0 8px;
+    border-right: 2px solid #7c3aed;
+  }
+  .gap-tl-marker {
+    position: absolute; top: 10px; width: 3px; height: 36px;
+    background: #f59e0b; border-radius: 2px; transform: translateX(-50%);
+    box-shadow: 0 0 8px #f59e0b66;
+  }
+  .gap-tl-mlabel {
+    position: absolute; top: -1px; transform: translateX(-50%);
+    font-size: 9px; font-weight: 700; color: #f59e0b;
+    white-space: nowrap; background: #0f0f1a; padding: 0 4px; border-radius: 3px;
+  }
+  .gap-tl-elabel {
+    position: absolute; top: 2px; right: 0;
+    font-size: 9px; color: #475569;
+  }
+  .gap-tl-labels { display: flex; justify-content: space-between; font-size: 10px; color: #475569; margin-top: 4px; }
+  .gap-tl-legend { display: flex; gap: 20px; margin-top: 14px; font-size: 11px; color: #64748b; }
+  .gap-tl-leg { display: flex; align-items: center; gap: 7px; }
+  .gap-tl-leg-swatch { width: 14px; height: 10px; border-radius: 3px; }
+
+  /* Category coverage list */
+  .gap-cat-list { display: flex; flex-direction: column; gap: 5px; }
+  .gap-cat-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 14px; background: #1a1a35;
+    border-radius: 8px; border: 1px solid #1e1e3f; transition: border-color 0.12s;
+  }
+  .gap-cat-row:hover { border-color: #2d2d5e; }
+  .gap-cat-icon { font-size: 14px; width: 22px; text-align: center; flex-shrink: 0; }
+  .gap-cat-name { font-size: 12px; color: #e2e8f0; width: 140px; flex-shrink: 0; }
+  .gap-cat-counts { font-size: 11px; width: 110px; flex-shrink: 0; text-align: right; color: #64748b; }
+  .gap-bar-wrap { flex: 1; height: 8px; background: #0d0d1f; border-radius: 4px; overflow: hidden; }
+  .gap-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .gap-pct { font-size: 11px; font-weight: 700; width: 38px; text-align: right; flex-shrink: 0; }
+  .gap-note { font-size: 11px; color: #475569; margin-top: 10px; font-style: italic; line-height: 1.5; }
+
+  /* Upcoming for VN */
+  .gap-upcoming-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .gap-upcoming-item {
+    background: #1a1a35; border: 1px solid #2d2d5e;
+    border-left: 3px solid #f59e0b; border-radius: 8px; padding: 11px 15px;
+  }
+  .gap-upcoming-date { font-size: 10px; color: #64748b; margin-bottom: 4px; }
+  .gap-upcoming-title { font-size: 12px; color: #e2e8f0; margin-bottom: 7px; line-height: 1.35; }
+  .gap-upcoming-cats { display: flex; gap: 4px; flex-wrap: wrap; }
+  .gap-upcoming-cat { font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+
+  /* Methodology note box */
+  .gap-method-box {
+    background: #13132a; border: 1px solid #1e1e3f; border-left: 3px solid #2dd4bf;
+    border-radius: 8px; padding: 12px 16px; margin-bottom: 20px;
+    font-size: 11px; color: #64748b; line-height: 1.6;
+  }
+  .gap-method-box b { color: #94a3b8; }
+
+  /* Expandable category rows */
+  .gap-cat-container { margin-bottom: 5px; }
+  .gap-cat-row { cursor: pointer; border-radius: 8px 8px 8px 8px; transition: border-color 0.12s, border-radius 0.1s; }
+  .gap-cat-row.open { border-radius: 8px 8px 0 0; border-color: #3d3d6e; }
+  .gap-cat-expand-icon {
+    font-size: 9px; color: #475569; margin-left: 2px;
+    transition: transform 0.2s; flex-shrink: 0;
+  }
+  .gap-cat-row.open .gap-cat-expand-icon { transform: rotate(180deg); color: #94a3b8; }
+  .gap-cat-detail {
+    display: none; background: #13132a;
+    border: 1px solid #3d3d6e; border-top: none;
+    border-radius: 0 0 8px 8px; padding: 14px 16px;
+  }
+  .gap-cat-detail.open { display: block; }
+  .gap-cat-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .gap-cat-col-title {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 8px; padding-bottom: 6px;
+    border-bottom: 1px solid #1e1e3f;
+  }
+  .gap-cat-item {
+    font-size: 11px; padding: 7px 10px; border-radius: 6px;
+    margin-bottom: 5px; line-height: 1.4;
+  }
+  .gap-cat-item.has {
+    background: rgba(45,212,191,0.07);
+    border-left: 2px solid #2dd4bf44;
+  }
+  .gap-cat-item.missing {
+    background: rgba(239,68,68,0.07);
+    border-left: 2px solid #ef444444;
+  }
+  .gap-cat-item-date { font-size: 10px; color: #475569; margin-bottom: 2px; }
+  .gap-cat-item-title { color: #cbd5e1; font-weight: 500; }
+  .gap-cat-item-content {
+    font-size: 10px; color: #64748b; margin-top: 4px;
+    line-height: 1.35; display: -webkit-box;
+    -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .gap-cat-empty { font-size: 11px; color: #475569; padding: 8px 0; font-style: italic; }
+  .gap-sub-list { list-style: none; margin-top: 5px; padding: 0; }
+  .gap-sub-item {
+    font-size: 10px; color: #64748b; padding: 3px 0 3px 10px;
+    border-left: 2px solid #2d2d5e; margin-bottom: 3px;
+    line-height: 1.4; position: relative;
+  }
+  .gap-sub-item::before { content: '›'; position: absolute; left: 2px; color: #475569; }
+  .gap-month-tag {
+    display: inline-block; font-size: 9px; font-weight: 700;
+    background: rgba(245,158,11,0.12); color: #f59e0b;
+    border: 1px solid rgba(180,83,9,0.5); border-radius: 3px;
+    padding: 0 4px; margin-left: 6px; vertical-align: middle;
+  }
+  /* Compare table */
+  .gap-compare-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .gap-compare-table th { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 8px 12px; text-align: left; border-bottom: 2px solid #1e1e3f; }
+  .gap-th-feature { color: #94a3b8; width: 50%; }
+  .gap-th-vn { color: #2dd4bf; width: 25%; border-left: 1px solid #1e1e3f; padding-left: 14px; }
+  .gap-th-kr { color: #f59e0b; width: 25%; border-left: 1px solid #1e1e3f; padding-left: 14px; }
+  .gap-pair-feature { padding: 10px 12px; vertical-align: top; font-size: 11px; color: #cbd5e1; line-height: 1.5; width: 50%; }
+  .gap-pair-row { border-bottom: 1px solid #1a1a35; transition: background 0.1s; }
+  .gap-pair-row:hover { background: rgba(255,255,255,0.025); }
+  .gap-pair-row.has-vn .gap-pair-vn { background: rgba(45,212,191,0.04); }
+  .gap-pair-vn, .gap-pair-kr { padding: 10px 12px; vertical-align: top; }
+  .gap-pair-kr { border-left: 1px solid #1e1e3f; }
+  .gap-pair-vn.empty { color: #2d2d5e; font-size: 22px; text-align: center; padding-top: 14px; }
+  .gap-pair-date { font-size: 10px; color: #475569; margin-bottom: 3px; }
+  .gap-pair-title { font-size: 11px; color: #cbd5e1; font-weight: 500; margin-bottom: 5px; line-height: 1.35; }
+  .gap-missing-badge { display: inline-block; font-size: 9px; font-weight: 700; background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.3); border-radius: 3px; padding: 0 5px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Lineage2M <span>Update Roadmap</span></h1>
+  <div class="header-meta">Cập nhật VN: 2026-05-16 · KR: 2026-05-11-May-NLM · filter: Eden/Elmoreden/Saiha</div>
+  <div class="stats">
+    <div class="stat"><span class="num">26</span> milestones (VN)</div>
+    <div class="stat"><span class="num">25</span> released</div>
+    <div class="stat"><span class="num">1</span> planned</div>
+    <div class="stat" style="background:rgba(245,158,11,0.12)"><span class="num" style="color:#f59e0b">85</span> milestones (KR)</div>
+    <div class="stat" style="background:rgba(45,212,191,0.10)"><span class="num" style="color:#2dd4bf">📊</span> Gap Analysis</div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="vn" onclick="switchTab('vn')">🇻🇳 VN &mdash; VNGGames</button>
+  <button class="tab-btn" data-tab="kr" onclick="switchTab('kr')">🇰🇷 KR &mdash; Eden/Elmoreden/Saiha</button>
+  <button class="tab-btn gap-tab" data-tab="gap" onclick="switchTab('gap')">📊 Gap Analysis</button>
+</div>
+
+<div class="filter-bar" id="filterBar">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn all active" onclick="setFilter('all', this)">Tất cả</button>
+  <input class="search-box" id="searchBox" placeholder="Tìm kiếm..." oninput="applyFilters()">
+</div>
+<div class="tab-panel active" id="panel-vn">
+  <div class="timeline-wrapper">
+    <div class="timeline" id="timeline-vn"></div>
+    <div class="empty-state" id="emptyState-vn" style="display:none"><h3>Không tìm thấy kết quả</h3></div>
+  </div>
+</div>
+
+<div class="tab-panel" id="panel-kr">
+  <div class="timeline-wrapper">
+    <div class="timeline" id="timeline-kr"></div>
+    <div class="empty-state" id="emptyState-kr" style="display:none"><h3>Không tìm thấy kết quả</h3></div>
+  </div>
+</div>
+
+<div class="tab-panel" id="panel-gap"></div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot released"></div><span>Released</span></div>
+  <div class="legend-item"><div class="legend-dot planned"></div><span>Planned</span></div>
+  <span style="margin-left:auto">Click vào category chip để xem chi tiết</span>
+</div>
+
+<script>
+
+const CAT_META = {"class": {"label": "Class / Nhân vật", "color": "#8B5CF6", "icon": "⚔️"}, "skill": {"label": "Kỹ năng", "color": "#06B6D4", "icon": "📖"}, "agathion": {"label": "Agathion", "color": "#EC4899", "icon": "🐉"}, "dungeon": {"label": "Dungeon / Phó bản", "color": "#F59E0B", "icon": "🏰"}, "siege": {"label": "Siege / Công thành", "color": "#EF4444", "icon": "🛡️"}, "item": {"label": "Item / Trang bị", "color": "#10B981", "icon": "💎"}, "mount": {"label": "Thú Cưỡi", "color": "#B45309", "icon": "🐎"}, "pet": {"label": "Pet", "color": "#9333EA", "icon": "🐾"}, "territory": {"label": "Thuộc địa", "color": "#0891B2", "icon": "🗺️"}, "weapon": {"label": "Vũ khí mới", "color": "#DC2626", "icon": "🗡️"}, "companion": {"label": "Tinh Hồn", "color": "#D946EF", "icon": "👻"}, "skin": {"label": "Ngoại Hình", "color": "#14B8A6", "icon": "🪞"}, "nhothon": {"label": "Nhốt Hồn", "color": "#7C3AED", "icon": "🔮"}, "khactinh": {"label": "Khắc Tinh Hồn", "color": "#5B21B6", "icon": "✨"}, "aster": {"label": "Aster", "color": "#CA8A04", "icon": "⭐"}, "balance": {"label": "Skill Balance", "color": "#475569", "icon": "⚖️"}, "system": {"label": "System / Hệ thống", "color": "#3B82F6", "icon": "⚙️"}, "event": {"label": "Event / Sự kiện", "color": "#F97316", "icon": "🎉"}, "bugfix": {"label": "Bug Fix", "color": "#6B7280", "icon": "🔧"}};
+const CAT_ORDER = ["class", "weapon", "skill", "agathion", "dungeon", "siege", "item", "mount", "pet", "territory", "skin", "nhothon", "khactinh", "aster", "balance", "system", "event", "bugfix"];
+
+const tabState = {
+  vn: { milestones: [{"id": "2025-06-04", "date": "2025-06-04", "title": "Cập nhật ra mắt ngày 04/06 — L2M VN Launch", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=683f706071725e289b649971", "patch_note": "Re-crawled 2026-05-08 via Mode A-NLM", "categories": {"class": ["Ra mắt Class Fancy lần đầu: Faris (Hoàn Mỹ)"], "agathion": ["Ra mắt Agathion Fancy lần đầu: Tauti (Hoàn Mỹ)"], "event": ["Phúc Lành Tân Thủ của Rồng Đất — gói 14 ngày đăng nhập (750 Kim Cương)", "Quà Hoàn Mỹ Cedric và Leah — gói Kim cương kèm thẻ quay Agathion/Class Hoàn Mỹ (11 lần)"]}}, {"id": "2025-06-11", "date": "2025-06-11", "title": "Ghi chú cập nhật Lineage2M ngày 11/6", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=6846f16f01cc633a78678219", "patch_note": "Re-crawled 2026-05-08 via Mode A-NLM", "categories": {"dungeon": ["Bãi săn mới: Đầm Lầy Máu (boss Tromba) & Hẻm Núi Thanor (boss Gahareth)", "Boss thế giới Vask xuất hiện tại Đầm Lầy Máu", "Hang Antharas mở tầng B4-B6 + Boss Quái Thú Rồng (tầng 6)", "Đột Kích Bang Hội mới: Quái Thú Rồng (cấp clan 9)", "Ra mắt Phó Bản Tổ Đội: Đền Phong Ấn và Căn Cứ Hải Tặc (4 người)"], "class": ["Ra mắt Class Fancy lần đầu: Eirena (Hoàn Mỹ)"], "agathion": ["Ra mắt Agathion lần đầu: Gordon"], "system": ["Ra mắt Hầm Mộ Giáo Đồ (Đơn) — chiến trường Thế Vận Hội solo, nhân vật cấp 50+", "Tăng giới hạn Phúc Lành Einhasad: từ 20,000 → 50,000 điểm", "Chiến Lệnh mới"]}}, {"id": "2025-06-25", "date": "2025-06-25", "title": "Ghi chú cập nhật Lineage2M ngày 25 tháng 6", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=6853ef903b77a814f0762946", "patch_note": "Re-crawled 2026-05-08 via Mode A-NLM", "categories": {"class": ["Ra mắt 2 Class Fancy lần đầu: Kakai và Bremnon (Hoàn Mỹ)"], "agathion": ["2 Agathion mới: Jack O'Lantern (Sử Thi), Tree Spirit (Quý Hiếm)"], "event": ["Chiến Lệnh Đêm Hạ Chí — hệ thống nhiệm vụ mùa, nhận thẻ quay Class/Agathion và vật phẩm cường hóa phụ kiện", "Phước Lành Đêm Hạ Chí — gói đăng nhập 7 ngày, nhận thẻ quay Class/Agathion nâng cao mỗi ngày"]}}, {"id": "2025-07-09", "date": "2025-07-09", "title": "Ghi chú cập nhật Lineage2M ngày 09 tháng 7", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=686bd3d581b8470117d0c199", "patch_note": "Re-crawled 2026-05-08 via Mode A-NLM", "categories": {"class": ["12 Class mới: 6 Sử Thi (Eric Ramsheart, Pamela, Kanan...) + 6 Quý Hiếm theo vũ khí"], "agathion": ["Agathion mới: Zariche (Huyền Thoại)"], "dungeon": ["Khu vực mới Oren: Làng Oren, Làng Thợ Săn, Đồng Cỏ Thằn Lằn...", "Bang Hội Rạn Nứt Truy Quét Boss mới"], "skill": ["12 Kỹ năng Sử Thi mới: 2 kỹ năng (chủ động + bị động) cho mỗi trong 6 loại vũ khí"], "item": ["Trang bị mới: Vòng Tay Uy Lực & Vòng Tay Hộ Vệ"], "system": ["Ra mắt Hệ Thống Điểm Hoạt Động Bang Hội"], "event": ["Sự kiện Chế Tạo Sách Lịch Sử Vương Quốc Aden"]}}, {"id": "2025-07-23", "date": "2025-07-23", "title": "Ghi chú cập nhật Lineage2M ngày 23 tháng 7", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=687f736c7877493f49c9932d", "patch_note": "Re-crawled 2026-05-08 via Mode A-NLM", "categories": {"class": ["Ra mắt Class Fancy lần đầu: Thor (Hoàn Mỹ)"], "agathion": ["Ra mắt Agathion Fancy lần đầu: Freya (Hoàn Mỹ)"], "system": ["Ra mắt hệ thống Đấu Linh Hồn (Spirit Inscription — khắc ấn Tinh Hồn, 10 giai đoạn cường hóa)"], "dungeon": ["Hầm Mộ Dị Giáo Đồ (Bang Hội) — Thế Vận Hội theo phe, bang hội cấp 5+ (Thứ Bảy & Chủ Nhật)"], "event": ["Chiến lệnh Bảo Hộ và Uy Lực — nhiệm vụ mới, phần thưởng rương Vòng Tay và thẻ Agathion hiếm", "Phúc lành Oren mỗi ngày — gói đăng nhập cung cấp Tinh dược tinh khiết và thẻ quay Class/Agathion cao cấp"]}}, {"id": "2025-08-06", "date": "2025-08-06", "title": "Ghi chú cập nhật Lineage2M ngày 06 tháng 8 — Ra mắt Liên Minh", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=689218a62eaa6265fad7f986", "patch_note": "Re-crawled 2026-05-08 via Mode A-NLM", "categories": {"class": ["6 Class Huyền Thoại mới (Regina, Scryde, Aria, Lionel Hunter, Veora, Solina)"], "skill": ["2 Kỹ năng Người Kế Thừa mới: Giảm Khống Chế II (ST), Giảm Khống Chế I (QH)"], "dungeon": ["Mở rộng Oren: Thung lũng Thợ Săn (Hunter's Valley) & Thung lũng Phép thuật (Enchanted Valley) + sự kiện boss Zariche", "Boss mới Timiniel tại Thung lũng Tiên (Đông) và Windy Hill", "Xâm Lược Server ra mắt — thi đấu liên server tranh Boss Dragon Beast & Carnifex"], "system": ["Ra mắt Hệ Thống Liên Minh (Alliance — liên kết tối đa 30 clan, quản lý quan hệ đối ngoại)", "Tính năng Chat An Toàn (nhóm chat đa clan — tối đa 50 clan cùng server)", "Cải tiến Tổ đội: tự động tạo khi mời, EXP chia theo đóng góp hoặc chia đều", "Ra mắt Đấu Trường Cá Nhân Mùa Mới (Hầm Mộ Kẻ Dị Giáo) — 06/08 đến 29/10/2025"], "item": ["Nguồn nhận Mực Pha Lê Mana (Huyền Thoại) mới", "Sách Lịch Sử Vương Quốc Aden — vật phẩm chế tạo kích hoạt bộ sưu tập PvP"]}}, {"id": "2025-08-20", "date": "2025-08-20", "title": "Ghi chú cập nhật ngày 20/8 Lineage2M", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=68a32876da2325590d9b0798", "patch_note": "Re-crawled 2026-05-08 via Mode A-NLM. Fixed: boss tại Tháp Ngà là Coroon (không phải Prine).", "categories": {"dungeon": ["Vùng đất mới Oren: Miệng Núi Lửa Tháp Ngà (yếu Ánh Sáng) & Biển Bào Tử (yếu Gió & Lửa)", "Boss Orfen tại Hang Ổ Orfen (mảnh công thức HT & ST)", "Boss Repiro tại Biển Bào Tử (mảnh công thức HT & ST)", "Đột Kích Bang Hội Huyền Thoại mới: Boss Orfen (clan lv 10)", "Phó Bản Tháp Ngà tầng 1 & 2 mở (cấp 55+, 7 giờ/tuần, boss Coroon tại tầng 2)"], "class": ["Ra mắt Class Fancy lần đầu: Eirena Hào Nhoáng"], "agathion": ["Ra mắt Agathion Fancy lần đầu: Medusa Hào Nhoáng"], "item": ["Giảm yêu cầu cấp Bang và cấp nhân vật để mua Mực Pha Lê Mana (Huyền Thoại) từ thương nhân"], "event": ["Phúc Lành Trước 100 Ngày — Class & Agathion (400 Kim Cương)"]}}, {"id": "2025-08-28", "date": "2025-08-28", "title": "Ghi chú cập nhật ngày 28/8 — Kỷ Niệm 100 Ngày", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=68aedcd8da2325590d9b095d", "patch_note": "Re-crawled 2026-05-08 via Mode A-NLM", "categories": {"event": ["Phúc lợi Mỗi Ngày Kỷ Niệm 100 Ngày — điểm danh 14 ngày miễn phí: vật phẩm tăng trưởng, tinh thể, huân chương, Thẻ Thử Thách Agathion Sử Thi"]}}, {"id": "2025-09-03", "date": "2025-09-03", "title": "Ghi Chú Cập Nhật Lineage2M Ngày 03/09 — Ra mắt vũ khí Thương", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=68b66a598a06f51e599e7e75", "patch_note": "Re-crawled 2026-05-01 via Mode D. Fixed: weapon skill count 3→24 (added 7 ST + 7 QH + 7 CC missed by read_page truncation).", "categories": {"skill": ["24 Kỹ năng vũ khí Thương mới: 3 HT (Ngọn Giáo Tuyệt Đối, Lôi Kích Cuồng Phong, Dặm Chân Động Đất) + 7 ST (Điên Cuồng, Hủy Diệt Sống Còn, Cú Đánh Vô Hạn, Tước Vũ Khí, Bước Chân Khổng Lồ, Tinh Thông Giáo, Tinh Thông Thương Dài Tuyệt Đỉnh) + 7 QH + 7 CC", "5 Kỹ năng Người Kế Thừa mới: 4 QH (Tấn Công Đúp I, Chặn Vũ Khí II, Thư Giãn III, Chặn Sát Thương I) + 1 CC (Thư Giãn II)"], "class": ["23 Class Thương mới: 1 HT (Daphne) + 5 ST (Shakdoon, Akan, Leona Blackbird, Allegra, Takuna) + 13 QH + 4 CC"], "dungeon": ["Phó Bản Thế Giới Khu Tranh Chấp Spine ra mắt"], "nhothon": ["Khai mở tính năng Nhốt Hồn (Tấn Công / Giáp / Chúc Phúc)"], "system": ["Mở Chế Độ An Toàn (kiểm soát AoE không ảnh hưởng đồng minh)"], "weapon": ["Ra mắt vũ khí Thương (Spear) — 23 class mới"]}}, {"id": "2025-09-24", "date": "2025-09-24", "title": "Ghi Chú Bản Cập Nhật Lineage2M ngày 24/09", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=68d2afc89d1d5c762e987f57", "patch_note": "Re-crawled 2026-05-08 via Mode A-NLM. Fixed: agathion count 3→12 (full list); dungeon bosses 1→5; added Hòn Đá Mana system; Einhasad cap 200.", "categories": {"agathion": ["12 Agathion mới (Cao Cấp đến Huyền Thoại): Lilith, Anakim, Timiniel, Pháp Sư Cáo, Istina, Tiat, Nephilim, Venom, Gatekeeper, Golem Guardian, Stakato, Harpy"], "skill": ["15 Sách Kỹ Năng Người Kế Thừa mới (bị động): Tăng Tốc Độ Đánh, Tăng Chính Xác PvP, Chặn Vũ Khí, Hồi phục từ bình máu, v.v."], "item": ["Ấn Ký Của Eva — trang bị ô Ấn Ký, tăng tốc độ/hồi phục dược phẩm + phòng ngự/kháng hiệu ứng khi cường hóa"], "dungeon": ["Máy chủ Thế Giới Tàn Tích Veora: phụ bản liên server cấp 55+, 5 khu vực tế đàn, boss hàng ngày (Shila, Moof, Normus, Ukanba, Selihorden)"], "system": ["Bản Đồ Thế Giới cải tiến: hiển thị thời gian xuất hiện/hạ gục Boss, dịch chuyển trực tiếp đến Boss", "Hệ thống Hòn Đá Mana: thu thập mảnh thuộc tính tại Tàn Tích Veora để chế tạo đá mana", "Nâng dung lượng tối đa Phước Lành Einhasad lên 200; bổ sung quyên góp hàng loạt cho Clan"], "balance": ["PVP Balance Care: tăng cường phòng ngự vũ khí và kháng sát thương PvP cho Kiếm, Song Kiếm, Thương, Đoản Đao, Cung, Pháp Cầu, Trượng", "Điều chỉnh Hệ thống Boss: trừ điểm đóng góp nhanh hơn với người chơi không hoạt động"]}}, {"id": "2025-10-15", "date": "2025-10-15", "title": "Ghi chú bản cập nhật Lineage2M ngày 15 tháng 10", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=68ee700250b33551073a3c5a", "categories": {"agathion": ["2 Agathion mới: Hắc Hổ (Sử Thi, EXP +20%, Phúc Lành +30%, kháng khống chế), Bạch Ngưu (Quý Hiếm, EXP +15%, Phúc Lành +22%)"], "class": ["Class Quý Hiếm mới: Lee Kei (Nhân Tộc/Nam)"], "dungeon": ["Khu vực cấp 55 mới: Đảo Pháo Đài & Lâu Đài Hoang Tàn", "Phó Bản Tổ Đội mới: Khu Vườn Cuối Cùng (độ khó Dễ/Thường, cấp 40+)"], "event": ["Mùa giải mới Hầm Ngục Dị Giáo ra mắt — đổi thưởng Bang hội & cá nhân"]}, "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Agathion: Hắc Hổ (EXP +20%, Phúc lành +30%, kháng khống chế); Bạch Ngưu (EXP +15%, Phúc lành +22%). Lee Kei flex class dùng mọi vũ khí, tốc đánh +65%, tốc cast +35%. HN Dị Giáo mùa giải mới ra mắt."}, {"id": "2025-10-29", "date": "2025-10-29", "title": "Ghi Chú Cập Nhật Lineage2M Ngày 29/10 — Ra mắt Aden & Thú Cưỡi", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=6900e1758dd5e85dd25451f5", "categories": {"skill": ["1 Kỹ năng mới: Cao Thủ Kiếm Hoàng Gia (HT, Kiếm Sĩ — Nội Tại)"], "dungeon": ["Khu vực mới Aden mở (nhiều vùng đất, boss, quest cấp 65+)"], "nhothon": ["24 Nhốt Hồn mới + Bộ Sưu Tập từ khu vực Aden"], "mount": ["Ra mắt Hệ Thống Thú Cưỡi (di chuyển + trang bị thú cưỡi)"], "system": ["Boss Xâm Lược Server chuyển sang lịch cố định"], "territory": ["Khu vực mới Aden mở: nhiều vùng đất, boss, quest cấp 65+"]}, "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Aden: lục địa mới cấp 65+, nhiều boss & quest. Thú Cưỡi: hệ thống mount mới với trang bị riêng. Boss Xâm Lược chuyển lịch cố định (không còn random). 24 Nhốt Hồn từ Aden."}, {"id": "2025-11-12", "date": "2025-11-12", "title": "Ghi Chú Cập Nhật Lineage2M Ngày 12/11", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=6912dd2920dade776847e874", "categories": {"dungeon": ["Bản đồ cấp 60 mới: Đảo Giao Tranh & Pháo Đài Bị Phá Hủy"], "agathion": ["Agathion mới: Thạch Slime (Sử Thi)"], "item": ["Khuyên Tai Rồng Đất Phước Lành & Rồng Lửa Phước Lành — vật phẩm ghép mới"], "system": ["Ra mắt Thương Hội Thế Giới (World Market — thay thế Thương Hội Máy Chủ)", "Tinh Hồn mới: Người Bảo Vệ (thêm vào hệ thống Tinh Hồn)"], "event": ["Chiến Lệnh Lễ Hội Mùa Thu"]}, "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Thương Hội Thế Giới (World Market) thay thế Thương Hội Server — giao dịch xuyên server. Thương Hội Server ngừng hoàn toàn từ 24/11. Tinh Hồn Người Bảo Vệ nhánh sinh tồn mới."}, {"id": "2025-11-26", "date": "2025-11-26", "title": "Ghi Chú Cập Nhật Lineage2M Ngày 26/11 — Tháp Ngạo Mạn", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=6925778ae2c9472886f581a5", "categories": {"dungeon": ["Ra mắt Phó Bản Thế Giới: Tháp Ngạo Mạn — Tầng 1 boss Ramdal (Thứ 7 19:00), Tầng 2 boss Mardil (CN 19:00), giới hạn 7h/tuần", "Hệ thống Tinh thể Kiêu Ngạo & Biểu tượng Tín Nhiệm — nâng chỉ số vĩnh viễn"], "class": ["8 Class Huyền Thoại mới (Bartz Ramsheart, Amadeo Cadmus, Printessa, Iris, Inolin, Marilion, Lucien...)"], "system": ["Giao dịch Server ngừng — hợp nhất vào Thương Hội Thế Giới"]}, "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Tháp Ngạo Mạn: 7h/tuần, Thứ 7-CN. Tầng 1 boss Ramdal (Thứ 7 19:00), Tầng 2 boss Mardil (CN 19:00) — biến mất sau 30 phút. Thu thập Tinh thể Kiêu Ngạo → đổi Biểu tượng Tín Nhiệm. 8 Class Huyền Thoại."}, {"id": "2025-12-17", "date": "2025-12-17", "title": "Ghi chú cập nhật ngày 17/12 — Ra mắt vũ khí Đại Kiếm", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=69417db79393505f6d4494d8", "categories": {"skill": ["29 Kỹ năng vũ khí Đại Kiếm mới: 5 HT (Cơn Thịnh Nộ Sức Mạnh, Điên Cuồng, Diệt Chủng...) + 8 ST + 9 QH + 7 CC"], "class": ["15 Class Đại Kiếm mới: 3 HT (Elgos, Janak...) + 7 ST (Loti, Agmun, Evan...) + 4 QH + 1 CC", "7 Class ST mới (vũ khí khác): Soma (Người Lùn/Nữ, Kiếm), Faber và 5 class ST khác"], "agathion": ["Agathion mới: Ông Già Tuyết (Sử Thi) — Giáng Sinh themed"], "dungeon": ["Tháp Ngà tầng 3 mở — Boss mới Samuel"], "item": ["Chế tạo Cỏ 4 Lá mới ra mắt"], "weapon": ["Ra mắt vũ khí Đại Kiếm (Greatsword) — 15 class mới"]}, "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Đại Kiếm: vũ khí thứ 10 — cơ chế choáng + sinh lực cường hóa. Tháp Ngà tầng 3: boss Samuel + quái ma thuật sa ngã. 29 skill Đại Kiếm, 15 Class Đại Kiếm, thêm Người Lùn Nữ (Soma, ST, Kiếm)."}, {"id": "2025-12-31", "date": "2025-12-31", "title": "Ghi chú cập nhật Lineage2M ngày 31/12 — Năm Mới", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=69539707eafb1654d5ca36c9", "categories": {"dungeon": ["Ra mắt Phó Bản Thế Giới: Necropolis — PvP sinh tồn toàn server, cấp 50+, CN hàng tuần 12:00, 3 vòng đấu loại trừ"]}, "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Necropolis: World PvP dungeon toàn server (cấp 50+, CN 12:00-12:25 sảnh, Vòng 1 bắt đầu 12:10). Thu thập Mảnh Bóng Tối/Tinh Thể Bóng Tối qua 3 vòng đấu loại trừ. Khuyến mãi Năm Mới 2026."}, {"id": "2026-01-14", "date": "2026-01-14", "title": "Ghi chú cập nhật Lineage2M ngày 14 tháng 1", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=696611696303363f7d53d47f", "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Added 3 dungeon names, Khắc Tinh Hồn Chinh Phục, Vòng Tay mechanics.", "categories": {"class": ["2 Class mới: Người Giữ Ngục Inferno (Sử Thi, Elf/Nữ) & Người Giữ Cổng Địa Ngục (Quý Hiếm, Nhân/Nam) — đa năng dùng mọi loại vũ khí"], "skill": ["1 Kỹ năng mới: Cuộc Sống Địa Ngục (dùng chung cho 2 Class mới)"], "dungeon": ["3 vùng đất mới cấp 65+ tại Aden: Nghĩa Trang Quốc Gia, Phong Ấn của Shillien, Vùng Đất Đồ Sát — 4 Boss khu vực mới"], "khactinh": ["Khắc Tinh Hồn - Chinh Phục: nhánh PvE mới (phòng thủ & sát thương săn quái) — hiệu ứng vĩnh viễn, không tốn Đạn tinh hồn"], "item": ["Vòng Tay Chúc Phúc: kết hợp 2 vòng cùng loại +3 để tạo Vòng Tay Uy Quyền / Gia Hộ (cảnh báo: mất Luyện kim khi kết hợp)"]}}, {"id": "2026-01-28", "date": "2026-01-28", "title": "Ghi chú cập nhật Lineage2M ngày 28 tháng 1", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=697879151327a24839a39266", "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Fixed: skill count 1→8 HT (all weapon types). Added boss names Kernom & Korim.", "categories": {"skill": ["8 Kỹ năng Huyền Thoại mới cho tất cả vũ khí chính (Legendary skill tier)"], "dungeon": ["Tháp Ngạo Mạn tầng 3 & 4 mở — Boss Sử Thi mới: Kernom & Korim (boss xuất hiện thứ 7 & CN 19:00)"], "item": ["Ra mắt Ngọc Bổ Trợ mới: Sức Mạnh, Linh Hoạt, Tri Thức — cường hóa +3 nhận thêm Giảm Sát Thương & hiệu ứng đặc biệt"], "system": ["Tháp Ngạo Mạn chuyển thành phó bản vĩnh viễn (Bùa dịch chuyển lên tầng không tốn vật phẩm)"]}}, {"id": "2026-02-11", "date": "2026-02-11", "title": "Ghi chú cập nhật Lineage2M ngày 11 tháng 2", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=698992f4ed415e6bfeb81b0a", "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Fixed: Muse Raido rarity Epic (không phải Sử Thi). Added Tinh Dược limit 15→20, cashback rate.", "categories": {"class": ["Class mới: Muse Raido (Epic — dùng linh hoạt tất cả loại vũ khí)"], "agathion": ["2 Agathion mới: Hải Ly (Sử Thi), Chim Ác Là (Quý Hiếm)"], "system": ["Ra mắt Hệ Thống Kim Cương Cửa Hàng (bán trang bị tại Căn cứ Bang hội; giới hạn tuần theo cấp bang)", "Ra mắt Hệ Thống Hoàn Lại Bang Hội (cashback tăng dần theo cấp bang, tối đa 5% ở cấp 14+)", "Tăng giới hạn sử dụng Tinh Dược từ 15 lên 20 lọ/nhân vật"]}}, {"id": "2026-02-25", "date": "2026-02-25", "title": "Ghi chú cập nhật Lineage2M ngày 25 tháng 2 — Hệ thống Aster", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=699d9564d1b2074c70a13808", "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Added dungeon timing (cấp 55+, thứ Hai 21:30), Đá Khuếch Đại mechanic, Dung Môi 30 lọ/ngày.", "categories": {"skill": ["8 Kỹ năng vũ khí Sử Thi mới: Sự Báo Thù, Động Đất, Tai Họa, Bom Độc, Liên Hoàn Tiễn, Cú Đánh Giật, Ánh Sáng Thánh, Ngọn Giáo Hoàn Hảo", "8 Kỹ năng Người Kế Thừa mới: 1 ST (Chặn Vũ Khí III) + 7 QH (Tái Nạp Tiêu Diệt I, Chặn Kỹ Năng I, Lưỡi Gươm Cải Tiến II, Mũi Tên Cải Tiến II, Phép Thuật Cải Tiến II, Sức Mạnh Kỹ Năng Phòng Thủ, Kháng Củng Cố)"], "agathion": ["8 Agathion mới: 2 HT (Akamanah — phá giáp & tăng ST mục tiêu, Tử Sĩ Vực Thẳm) + 3 ST (Hiệp Sĩ Tử Thần, Basila, Chén Thánh Apostle) + 2 QH (Nữ Hoàng Harpy, Breka) + 1 CC (Spatoi)"], "dungeon": ["Đảo Tỉnh Thức (Khe Nứt cross-server): hầm ngục ngẫu nhiên máy chủ, mở thứ Hai 21:30, yêu cầu cấp 55+ — Boss Thức Tỉnh thả Đá Khuếch Đại tăng chỉ số bang hội"], "aster": ["Ra mắt Hệ Thống Aster (Điểm Thức Tỉnh): giải phóng tiềm năng & kỹ năng đặc biệt nhân vật — tỷ lệ thức tỉnh kỹ năng đặc biệt 100%", "Dung Môi Nâng Cao: mua tại Thương nhân tạp hóa, giới hạn 30 lọ/ngày"]}}, {"id": "2026-03-11", "date": "2026-03-11", "title": "Ghi chú cập nhật Lineage2M ngày 11 tháng 3", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=69afc5874c596216649ee6f9", "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Added Boss Olkuth (clan lv10), Nhốt Hồn skill unlock names.", "categories": {"skill": ["1 Kỹ năng Người Kế Thừa mới: Bộ Đẩy I (Quý Hiếm) — kích hoạt qua Nhốt Hồn Độ Chính Xác"], "agathion": ["2 Agathion mới: Vệ Thần Khổng Lồ (Cao Cấp), Kẻ Truy Kích Khổng Lồ (Cao Cấp)"], "dungeon": ["2 lãnh thổ mới tại Aden: Vùng Đất Cuối Cùng & Điện Thần Tinh Linh (Boss thế giới Tinh Linh)", "Càn Quét Bang Hội mới: Boss Olkuth (yêu cầu bang hội cấp 10)"], "system": ["Giao diện Quản Lý Công Thành Chiến ra mắt — theo dõi lịch trình & tiền thưởng tích lũy (chuẩn bị Siege 25/03)"], "khactinh": ["Khắc Tinh Hồn - Độ Chính Xác: nhánh mới cải thiện accuracy PvE/PvP & hiệu ứng khống chế — kích hoạt Đôi Mắt Sắc Bén & Bộ Đẩy I"], "territory": ["2 lãnh thổ mới tại Aden: Vùng Đất Cuối Cùng & Điện Thần Tinh Linh (Boss thế giới Olkuth)"]}}, {"id": "2026-03-25", "date": "2026-03-25", "title": "Ghi chú cập nhật Lineage2M ngày 25 tháng 3 — Ra mắt Công Thành Chiến", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=69c2595edb9d1c034b9e112b", "patch_note": "Re-processed 2026-05-03 via Mode A-NLM. Fixed: skill count 1→5 (1ST+4QH). Added Khắc Tinh Hồn Đối Đầu, Skin count 30, siege mechanics.", "categories": {"siege": ["Ra mắt Công Thành Chiến lâu đài Dion & Giran — bang hội chiếm thành nhận quyền lợi thuế & Cửa Hàng Chiến Lợi Phẩm (Mực Pha Lê HT)", "Lính Đánh Thuê: tham gia công thành ẩn danh hỗ trợ liên minh (tự động hủy khi vào Hầm Ngục Thế Giới)", "Điều kiện tổ chức: tổng kim cương thuê tích lũy phải đạt mức tối thiểu trên máy chủ"], "skill": ["5 Kỹ năng Người Kế Thừa mới: 1 ST (Rào Cản Choáng II) + 4 QH"], "agathion": ["Agathion mới: Timiriran (Quý Hiếm)"], "skin": ["Ra mắt Hệ Thống Ngoại Hình (Skin): tùy chỉnh vẻ ngoài & chỉ số nhân vật độc lập", "30 loại Ngoại Hình mới & Skin Codex (cộng dồn chỉ số vĩnh viễn theo số lượng Skin thu thập)"], "khactinh": ["Khắc Tinh Hồn - Đối Đầu: nhánh PvP mới — tăng sát thương & độ chính xác khi chiến đấu với người chơi"]}}, {"id": "2026-04-08", "date": "2026-04-08", "title": "Ghi chú cập nhật Lineage2M ngày 08/04", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=69d4ea62c8e016460400f653", "categories": {"dungeon": ["Tháp Ngạo Mạn tầng 5 (boss Hallate, thứ 7 19:00) & tầng 6 (boss Bella, CN 19:00) mở"], "nhothon": ["Nhốt Hồn mới từ Tháp Ngạo Mạn tầng 5-6 (Thường đến Sử Thi)"], "khactinh": ["Khắc Tinh Hồn - Sinh Tồn: nhánh mới phát triển HP, giảm sát thương PvP, hồi phục"], "agathion": ["2 Agathion mới: Cửu Vĩ Hồ (Sử Thi), Thỏ Ngọc (Quý Hiếm)"], "event": ["Chiến Lệnh Gió Tháng Tư (free tier + premium 500 Kim Cương)"], "bugfix": ["Điều chỉnh hiệu ứng kỹ năng Bóng Tối & Rối Loạn; yêu cầu cấp quest Einhasad Aden"]}}, {"id": "2026-04-22", "date": "2026-04-22", "title": "Ghi chú cập nhật Lineage2M ngày 22 tháng 4 — Ra mắt vũ khí Nỏ", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=69e73cac6bea861b7fd19590", "categories": {"dungeon": ["Ra mắt Phó Bản Đấu Trường Đảo Cổ Đại (cross-server, cấp 70+, 5 khu vực, boss Gusto thứ 7)", "5 Linh Hồn mới từ Đảo Cổ Đại: Custor (HT), Anaxa Sáng Tạo (ST), 3 cấp thấp hơn"], "agathion": ["Agathion mới: Beast Farm (Quý Hiếm)"], "class": ["14 Class Nỏ mới: 3 HT (Momo, Shirin, Mũi Khoan Máy) + 5 ST (Trice, Bergis, Nicks, Hela...) + 4 QH + 2 CC"], "skill": ["28 Kỹ năng vũ khí Nỏ mới: 5 HT (Gương Tuyệt Đối, Proxima, Đòn TK Bị Nguyền...) + 9 ST + 7 QH + 7 CC", "2 Kỹ năng Người Kế Thừa mới: Tư Thế Phòng Thủ I (QH), Tư Thế Phòng Thủ II (ST)"], "system": ["Mua Đá Quý Ý Niệm qua Quản Lý Thành Tựu (25.000 Adena / 150 viên/ngày)", "Tăng giới hạn sử dụng Tinh Dược từ 20 lên 30"], "bugfix": ["Điều chỉnh lịch xuất hiện boss Tàn Tích Veora (Silla, Murf, Normus, Ukanba, Selihorden)"], "weapon": ["Ra mắt vũ khí Nỏ (Crossbow) — 14 class mới"]}}, {"id": "2026-05-06", "date": "2026-05-06", "title": "Ghi chú cập nhật Lineage2M ngày 06 tháng 05 — REBOOT Class Thương", "status": "released", "source_url": "https://lineage2m.vnggames.com/vi-vn/board/update/view?articleId=69f9d3262ca56442e29e867d", "categories": {"class": ["REBOOT Class Thương: Loại bỏ 2 chế độ Valiant/Vanguard, thêm tài nguyên độc quyền 'Lực Lượng Tia Chớp' nạp tự động theo chu kỳ", "Hiệu ứng Choáng cơ bản đổi thành 'Shock': gây sát thương định kỳ lên mục tiêu + kẻ địch xung quanh, khi hết hiệu lực kích hoạt vụ nổ diện rộng"], "skill": ["Tích Điện Tia Chớp (cải tiến): nạp Lực Lượng → tiêu hao toàn bộ để gây ST diện rộng + kích hoạt trạng thái Giải Phóng (buff chiến đấu)", "Cuồng Phong Xuyên Thấu: đổi hiệu ứng Gỉ Sét/Thương Tích → Chảy Máu (tối đa 3 cộng dồn, giảm Chặn/Kháng ST/Phòng Thủ)", "Lướt Sét (cải tiến, đổi tên từ 'Điên Cuồng'): Giải Phóng tăng khoảng di chuyển + sát thương + Tăng Khả Năng Tấn Công", "Hủy Diệt Sinh Mệnh: đổi hiệu ứng sang Chảy Máu, hệ số Kháng theo Cấp Độ", "Đòn đánh Vô hạn: tăng phạm vi kỹ năng, đổi sang Điện Giật thay Choáng, cường hóa Giải Phóng", "Bí mật cuối cùng: cộng thêm Kháng Hiệu Ứng Khống Chế", "Đòn Đánh Tia Chớp, Ngọn giáo chuẩn, Hồi phục phản nộ: cải tiến liên quan chế độ mới"], "item": ["Rebalance chỉ số vũ khí Class Thương: Halberd, Lansia, Gươm Tallum và các loại Spear khác được điều chỉnh stat (ST vũ khí, Độ chính xác, Chí mạng, Khống chế)"], "dungeon": ["Khu vực vào mới cho 'Đảo Giao Tranh' và 'Pháo Đài Bị Sụp Đổ' được thêm vào"], "system": ["Dung môi nâng cao: giờ có thể mua không giới hạn từ Thương nhân tạp hóa (trước đây giới hạn số lượng)"]}}, {"id": "2026-05-20", "date": "2026-05-20", "title": "Cập nhật Lineage2M ngày 20 tháng 5 — Class Mythic Raul & Great Rift Zepar's Hall", "status": "planned", "source_url": "", "patch_note": "Planned content — docx summary provided 2026-05-16. Will convert to 'released' after mainsite update goes live.", "categories": {"class": ["Class Mythic (Thần Thoại) đầu tiên trong game: Raul (Nhân loại/Nam) — dùng tất cả vũ khí, STR/DEX/INT +31, kỹ năng Lord's Blessing", "7 Class Hero (Anh Hùng) mới: Irene, Nadine, Tobald, Kastien, Grant, Telinaus, Gustin — mỗi class 2 kỹ năng chuyên hóa riêng", "Class Noble (Unique): Noble Pyro Templar, Noble Blade Muse, Noble Adventurer, Noble Storm Caller và nhiều class khác", "Class Veteran (Rare): Veteran Paladin, Veteran Blade Dancer, Veteran Abyss Walker và nhiều class khác"], "dungeon": ["Ra mắt Great Rift: Zepar's Hall — hầm ngục liên máy chủ (10 server ghép ngẫu nhiên hàng tuần), cấp 70+, 14h/tuần, hoạt động 20/05–04/06", "6 khu vực độ khó tăng dần; Boss Zepar xuất hiện duy nhất thứ Bảy 22:00 tại Fallen Angel's Cradle (Khu vực 6)", "Memory Ore system: thu thập khi săn bắn → đổi Pure Elixir / Dragon's Key Fragment / chế tạo Star Aether tại Bronze Key Merchant"], "system": ["Tái cấu trúc Boss thế giới → Rift Invader: Vask (12:00 hàng ngày, Weathered Hill) & Rayla (20:00, Altar of Condemnation) — vùng an toàn, không giới hạn cấp", "AFK auto-removal: tự động loại người chơi không thao tác 60 giây khỏi Catacomb of the Heretic (Cá nhân) & Spine Conflict Zone", "Cải thiện UI Codex & Clan Requests: cập nhật danh sách vật phẩm ngay sau khi đăng ký; cooldown gia nhập/chuyển tổ đội Clan"], "item": ["Pa'agrio's Seal (Ấn Ký Pa'agrio) — trang bị ô Seal mới; cường hóa +0→+8+: tăng Potion Recovery, Weapon Defense, Skill Damage Boost, Double Chance, Ignore Damage Resistance"], "balance": ["Tăng tỷ lệ rơi vật phẩm Legendary từ Boss; tăng drop Sealed Teleport Charm từ Boss tại Tháp Ngạo Mạn (Tower of Insolence)"]}}], activeFilter: 'all' },
+  kr: { milestones: [{"id": "kr-2024-08-21", "date": "2024-08-21", "title": "Ra mắt máy chủ Eden (Eden) — Value Preservation Server", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=66c5c8b063df2b540c93b703", "categories": {"system": ["Máy chủ đặc biệt Eden chính thức mở cửa lúc 20:00 ngày 21/08/2024 — định hướng bảo tồn giá trị (Value Preservation)", "Hạn chế khu vực: Oren, Aden, Innadril, Goddard chưa được áp dụng ban đầu", "Hạn chế hệ thống: Linh hồn (Soul Collection), Thục luyện độ (Mastery), Luyện kim thuật (Alchemy), Giác tỉnh (Awakening), Artifact hoàn toàn không xuất hiện giai đoạn đầu", "Hạn chế Class/Agathion: Chỉ 6 class cơ bản, không có Thần thoại (Mythic) cho class và agathion; không có Transcendence hay Promotion"], "event": ["Sự kiện Season Pass khai mở cùng server Eden", "Sự kiện Wyvern Bracelet: cường hóa đồ đang say → nhận Agathion Elder Wyvern (Harpie) xác suất cao"]}}, {"id": "kr-2024-08-28", "date": "2024-08-28", "title": "Cập nhật 28/08 (Eden/Elmoreden) — Sự kiện Boss lãnh địa", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=66ce2938c01f0a2eeddd6b3b", "categories": {"event": ["Sự kiện Tập hợp Boss lãnh địa: tỷ lệ xuất hiện Boss tại Gludio và Dion (Queen Ant, Core Susceptor) tăng 100% sau khi hết thời gian hồi sinh", "Sự kiện Huyết thệ cùng nhau phát triển: tăng số lần quyên góp lên 5 lần, nhân đôi phần thưởng kinh nghiệm và huân chương danh dự", "Khuyến mãi: bán Chìa khóa rực rỡ của Cedric và Chìa khóa Kim cương của Leah chứa thẻ triệu hồi 11 lần"], "system": ["Gia hạn thời gian kết thúc Thẻ tăng trưởng Eden đến ngày 19/09"]}}, {"id": "kr-2024-09-04", "date": "2024-09-04", "title": "Cập nhật 04/09 (Eden/Elmoreden) — Hầm ngục Antharas + Party Dungeon", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=66d763dacd3aa70994293b35", "categories": {"dungeon": ["Thêm tầng 4-6 của Hang động Antharas: Boss Dragon Beast xuất hiện tại tầng 6, phần thưởng công thức Thần thoại và kỹ năng Anh hùng", "Ra mắt Hầm ngục tổ đội (Party Dungeon) cho nhân vật từ cấp 40: 4 loại thay đổi theo thứ trong tuần, tối đa 4 người, tiêu diệt Boss", "Mở rộng sự kiện The First Raid - Antharas sang máy chủ Elmoaden: nhân vật cấp 50 chế tạo vé bằng Adena"], "agathion": ["Thêm Agathion Strider (Hiếm) và Hatchling (Cao cấp): chỉ nhận qua chế tạo từ nguyên liệu Hầm ngục tổ đội"]}}, {"id": "kr-2024-09-11", "date": "2024-09-11", "title": "Cập nhật 11/09 (Eden/Elmoreden) — Lễ hội làng Thỏ Ngọc", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=66e09e385d0cb2247413a633", "categories": {"event": ["Mở hầm ngục sự kiện Lễ hội làng Thỏ Ngọc: săn quái vật may mắn để nhận Túi hạnh phúc, đá sinh mệnh và cuộn cường hóa", "Sự kiện Double Time Thành lũy đổ nát: tăng thời gian hầm ngục hàng ngày từ 1 giờ lên 2 giờ", "Quà tặng mùa thu cho người chơi Eden/Elmoreden: gói hỗ trợ tăng trưởng và nguyên liệu đặc biệt"]}}, {"id": "kr-2024-09-19", "date": "2024-09-19", "title": "Cập nhật 19/09 (Eden/Elmoreden) — Ưu đãi hàng ngày miễn phí", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=66eb2a385d0cb2247413a7a2", "categories": {"event": ["Ra mắt chương trình Ưu đãi hàng ngày miễn phí: người chơi nhận quà hàng ngày không cần điều kiện mua", "Gói hỗ trợ tăng trưởng theo mốc thời gian cho server Eden mới"]}}, {"id": "kr-2024-09-25", "date": "2024-09-25", "title": "Cập nhật 25/09 (Eden/Elmoreden) — Làm lại Class Trượng (Staff Rework)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=66f1c1b8a6acf62e167e4de6", "categories": {"class": ["Làm lại Class Trượng (Staff): Flame Strike chuyển thành kỹ năng buff cho bản thân", "Điều chỉnh các kỹ năng cốt lõi của Trượng để cân bằng với các class khác trên server Eden", "Cải thiện flow kỹ năng và hiệu quả trong PvP/PvE cho Trượng"], "event": ["Sự kiện mùa thu: phần thưởng đặc biệt cho người chơi hoàn thành nhiệm vụ hàng ngày"]}}, {"id": "kr-2024-10-02", "date": "2024-10-02", "title": "Cập nhật 02/10 (Eden/Elmoreden) — Cân bằng Class Trượng tiếp theo", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=66fc4db8a6acf62e167e4f2f", "categories": {"class": ["Cân bằng Class Trượng (Staff): Flame Strike/Flare Strike thêm hiệu ứng sát thương diện rộng khi đánh trúng", "Tempest II cải tiến: biến thành kỹ năng diện rộng", "Điều chỉnh bổ sung để cân bằng trải nghiệm PvP Eden/Elmoreden"], "system": ["Cập nhật lịch trình (Schedule system) với các nhiệm vụ và phần thưởng mới theo tuần"]}}, {"id": "kr-2024-10-10", "date": "2024-10-10", "title": "Cập nhật 10/10 (Eden/Elmoreden) — Sự kiện Khoảnh khắc chiến đấu rạng rỡ", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=6706d9b85f45c91d84442216", "categories": {"event": ["Sự kiện Khoảnh khắc chiến đấu rạng rỡ: người chơi nhận hộp hỗ trợ chiến đấu qua thư lúc 12:00 và 18:00 hàng ngày", "Ưu đãi hàng ngày mới: Lời chúc của Hỏa Long và Địa Long (800 Kim cương/gói) — nguyên liệu tăng trưởng + hộp bông tai rồng trong 7 ngày", "Khuyến mãi: bán Chìa khóa Class mùa thu và Chìa khóa mùa thu của Hỏa Long — đổi Kim cương và thẻ bài Class cao cấp"], "system": ["Class Change cải tiến: lưu trạng thái thiết lập khi chuyển class, không cần chỉnh lại từ đầu nếu chưa hoàn tất"]}}, {"id": "kr-2024-10-16", "date": "2024-10-16", "title": "Cập nhật 16/10 (Eden/Elmoreden) — Sự kiện Huyết thệ Raid rạng rỡ", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=670ec2b808d221423fd5098e", "categories": {"event": ["Sự kiện Huyết thệ Raid rạng rỡ: giảm số Chìa khóa thứ nguyên cần để mở hầm ngục Raid cấp 6-9 xuống còn 1 chìa", "Sự kiện Hỗ trợ tăng trưởng Huyết thệ: tăng số lần quyên góp từ 3 lên 5, nhân đôi phần thưởng quyên góp", "Bổ sung sự kiện hầm ngục Double Time: nhân đôi số Hộp bí mật của Boss khi hoàn thành Party Dungeon"], "item": ["Bán các loại chìa khóa thám hiểm khu vực mới và gói lời chúc Class/Agathion mùa thu vàng"]}}, {"id": "kr-2024-10-23", "date": "2024-10-23", "title": "Cập nhật 23/10 (Eden/Elmoreden) — Hệ thống Khắc ấn Tu chí (Fighting Spirit)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=6717fd3814d1cb2c6ee46535", "categories": {"system": ["Thêm Khắc ấn tinh linh mới Tu chí (Fighting Spirit): cung cấp Chính xác, Sát thương vũ khí, Tỷ lệ choáng", "Mở rộng hệ thống khắc ấn tinh linh với thêm slot hoặc loại ấn mới"], "event": ["Sự kiện Halloween / mùa thu đặc biệt cho Eden và Elmoreden", "Phần thưởng theo mốc online hàng ngày cho người chơi mới server"]}}, {"id": "kr-2024-10-30", "date": "2024-10-30", "title": "Cập nhật 30/10 (Eden/Elmoreden) — Sự kiện Rèn luyện Kirk", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=672137b85f45c91d84442595", "categories": {"event": ["Sự kiện Rèn luyện Kirk (30/10–13/11): đột kích hàng ngày lúc 12:30 và 20:30, nhận Mảnh công thức chế tạo trang bị Rare/Epic và đá cường hóa", "X2 thời gian Đảo Quyết Chiến: thời gian dungeon hàng ngày tăng từ 1 giờ lên 2 giờ", "Season Pass Mùa của sự bảo tồn: nhiệm vụ tuần/tháng với phần thưởng premium mới"], "dungeon": ["Hang Antaras: chi phí dịch chuyển tức thời đến tầng 5 và 6 đổi từ Diamond sang Adena trong thời gian sự kiện"]}}, {"id": "kr-2024-11-06", "date": "2024-11-06", "title": "Cập nhật 06/11 (Eden/Elmoreden) — Hệ thống Chat Hữu nghị", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=672a72387f296c6f44835f67", "categories": {"system": ["Chat Hữu nghị: cho phép mời tối đa 50 bang hội trong cùng máy chủ vào nhóm chat chung", "Điều chỉnh Tranh đoạt Boss bang hội: giảm HP Core Susceptor chiều không gian, giảm số bang hội ghép đội từ 5 xuống 2-3", "Nâng cấp phần thưởng Sách ủy thác Rare tranh đoạt: tăng Phước lành Einhasad và mảnh công thức chế tạo"]}}, {"id": "kr-2024-11-13", "date": "2024-11-13", "title": "Cập nhật 13/11 (Eden/Elmoreden) — Mở rộng lãnh thổ Oren", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=6733acb814d1cb2c6ee468d0", "categories": {"dungeon": ["Mở rộng Oren: khai mở Thung lũng Fairy (Đông/Tây), Tiền đồn Pan Ruem và khu Timiniel với Boss khu vực cho phần thưởng vũ khí và sách kỹ năng cao cấp"], "event": ["Chuẩn bị đột kích Bang hội: giảm Chìa khóa chiều không gian xuống còn 1 chìa cho tất cả cấp độ đột kích bang hội (cấp 6-9)", "Sự kiện Bước nhảy bang hội: tăng 200% kinh nghiệm bang hội trong thời gian sự kiện"]}}, {"id": "kr-2024-11-20", "date": "2024-11-20", "title": "Cập nhật 20/11 (Eden/Elmoreden)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=673ce78003430462394f0eaf", "categories": {"system": ["Bản cập nhật định kỳ thứ 4 tháng 11/2024 — nội dung không tải được từ NLM (trang lỗi)"]}, "note": "NLM load failed — content placeholder only"}, {"id": "kr-2024-11-27", "date": "2024-11-27", "title": "Cập nhật 27/11 (Eden/Elmoreden) — Class Thương + Khu vực Oren mới (My Chronicle)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=674621b84360fb0e133d5fa9", "categories": {"class": ["Class Thương mới: Daphne và Longinus (Truyền thuyết), Regina và Scride (Class truyền thuyết cho các vũ khí khác)", "Kỹ năng vũ khí Thương mới từ cấp Cao cấp đến Truyền thuyết: Rolling Thunder (Truyền thuyết) và Frenzy (Anh hùng)"], "dungeon": ["Khu vực Oren mới: Miệng núi lửa tháp Ngà và Biển bào tử với Boss khu vực Orfen và Lepiro"], "system": ["My Chronicle: tính năng mới cho phép theo dõi lịch sử hoạt động và thành tích cá nhân"], "weapon": ["Ra mắt vũ khí Thương (Spear) — Class Daphne & Longinus"]}}, {"id": "kr-2024-12-04", "date": "2024-12-04", "title": "Cập nhật 04/12 (Eden/Elmoreden) — Crossover Lineage 2M × Journey of Monarch", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=674f5c38a7514240a3710c09", "categories": {"event": ["Sự kiện hợp tác Lineage 2M × Journey of Monarch: hoàn thành cột mốc trong JoM (cấp 5 quân chủ, xóa giai đoạn...) để nhận Coupon cho L2M", "Sự kiện Chuẩn bị chiến đấu mùa đông: gửi Rương chuẩn bị chiến đấu qua thư hàng ngày, xác suất nhận Sách cuộn của Shia"], "item": ["Nhẫn hành trình (Sự kiện): nhận từ Coupon JoM, cường hóa tối đa +8, thất bại không làm mất nhẫn hoặc giảm cấp cường hóa", "Season Pass Hành trình: nhiệm vụ và phần thưởng đặc biệt theo chủ đề crossover", "Sản phẩm mới: gói Chia khóa tháp Ngà (Class/Agathion)"]}}, {"id": "kr-2024-12-11", "date": "2024-12-11", "title": "Cập nhật 11/12 (Eden/Elmoreden) — Server Invasion + Kỹ năng Kế thừa Pierce Reduction", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=675896b8a7514240a3710db6", "categories": {"dungeon": ["Xâm chiếm máy chủ (Server Invasion): chiến đấu 1:1 giữa các máy chủ ngẫu nhiên, tranh giành Boss Invasion Dragon Beast và Carnifex — đổi mảnh xâm chiếm lấy vật phẩm tại NPC", "Sự kiện Papurion Back Attack: đột kích đặc biệt tại Đền Papurion cho nhân vật cấp 60+, chế tạo vật phẩm Quyền năng của kẻ thống trị (không khóa, giới hạn toàn thế giới)", "Đền đóng băng: dungeon sự kiện mới mở cửa"], "class": ["Kỹ năng Kế thừa Pierce Reduction I (Rare) và II (Epic): tăng chỉ số bỏ qua giảm sát thương"], "event": ["Season Pass Tháp Ngà: chuỗi nhiệm vụ mới với phần thưởng cuối là Thẻ chọn Class Rare của Tháp Ngà"]}}, {"id": "kr-2024-12-18", "date": "2024-12-18", "title": "Cập nhật 18/12 (Eden/Elmoreden) — Agathion Giáng sinh + Sự kiện mùa đông", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=6761d138a429a917f01d1014", "categories": {"agathion": ["Ông già mùa đông (Anh hùng): tăng chỉ số né tránh", "Mimic hộp quà (Anh hùng): tăng kháng sát thương vũ khí"], "event": ["Cây Giáng sinh: NPC ban phước lành tăng sát thương và phòng ngự trong 9 giờ", "Người tuyết Giáng sinh: Boss thế giới đổi ngoại hình — người gây sát thương cao nhất nhận thẻ Giáng sinh chia sẻ quà cho 1.000 người xung quanh", "Tổng tấn công Boss lãnh thổ: Nữ hoàng kiến, Core Susceptor và các Boss lãnh thổ đặc biệt"]}}, {"id": "kr-2024-12-26", "date": "2024-12-26", "title": "Cập nhật 26/12 (Eden/Elmoreden) — Dungeon Tổ đội độ khó Thường + Chào năm mới 2025", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=676c5d3827834c65a5c73165", "categories": {"dungeon": ["Dungeon tổ đội độ khó Thường (Normal) mới: dành cho nhân vật cấp 40+, bổ sung bên cạnh độ khó Dễ có sẵn", "X2 phần thưởng Dungeon tổ đội: nhân đôi rương phần thưởng từ Boss kéo dài đến 08/01/2025"], "event": ["Quà tặng mùa đông: gửi thư quà 2 lần/ngày với Thần dược kế thừa và Phước lành Einhasad", "Khuyến mãi chào năm mới: gói Daily & Key, Hộp quà Adieu 2024 (2.024 Adena cho nhân vật cấp 50+, đổi thẻ triệu hồi và Tinh thể)"]}}, {"id": "kr-2025-01-02", "date": "2025-01-02", "title": "Cập nhật 02/01 (Eden/Elmoreden)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=677597b8a7514240a371122c", "categories": {"dungeon": ["Xâm Lược Server (서버 침공) ra mắt lần đầu: boss Dragon Beast & Kanipex, 16h/ngày"], "system": ["Hệ thống Liên Minh (연합 시스템) ra mắt lần đầu", "Daily Care mới bắt đầu"], "event": ["Sự kiện Tập Kích Rắn Xanh (Cuộc Đột Kích Quân Đoàn Xà Lam): thu thập Bảo Ngọc Rắn Xanh → đổi quà (Jan 2–8)", "Season Pass mới mở: nhiệm vụ tuần/tháng, phần thưởng thường & premium (500 dia)"]}}, {"id": "kr-2025-01-08", "date": "2025-01-08", "title": "Cập nhật 08/01 (Eden/Elmoreden)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=677d80b8e34b8c4e6dc274ec", "categories": {"class": ["7 Class Anh Hùng mới: Soma, Faber, Titi, Adrin, Lien, Moina, Fortian (tất cả Dwarf/Nữ)"], "agathion": ["Agathion Unicorn Magnus (Kỳ lân Magnus) ra mắt: bán hạn định 11-lần xác suất cao & xác nhận 1 lần (Jan 8–22)"]}}, {"id": "kr-2025-01-15", "title": "Cập nhật 15/01 (Eden/Elmoreden)", "date": "2025-01-15", "articleId": "6786bb3827834c65a5c735a8", "source": "https://lineage2m.plaync.com/board/update/view?articleId=6786bb3827834c65a5c735a8", "crawled_at": "2026-05-06", "summary": "", "categories": {"system": ["Bộ Sưu Tập Sử Sách Sự Kiện (역사서 이벤트 컬렉션) làm mới: đăng ký Lịch Sử Vương Quốc Aden → nhận hiệu ứng stat (Độ chính xác/HP/Lực phòng thủ/Sát thương/PvP). Hiệu lực Jan 15 – Feb 12"], "event": ["Sự kiện Phòng Bí Mật Bremnon (브렘논의 시크릿 룸): sự kiện khám phá kho báu mới bắt đầu"]}}, {"id": "kr-2025-01-22", "date": "2025-01-22", "title": "Cập nhật 22/01 (Eden/Elmoreden)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=678ff5b8a429a917f01d1710", "categories": {"skill": ["5+ Kỹ năng Người Kế Thừa mới: Relax II, Increase Double I, Weapon Block II, Damage Block I..."], "class": ["1 Class Quý Hiếm mới: Ri Kaye (Ri Kay)"], "dungeon": ["Xâm Lược Server bắt đầu", "Nội dung Thế Giới 'Khu vực tranh chấp Spine' (스파인 분쟝지대) ra mắt"], "event": ["Sự kiện Tết Âm Lịch (Lunar New Year)", "Sự kiện Giờ Xâm Lược: Orfen"], "nhothon": ["Hệ thống Đồng Hành (집혼 시스템) thêm menu Tăng Trưởng (Tấn Công/Phòng Thủ/Ân Sủng)"]}}, {"id": "kr-2025-02-05", "date": "2025-02-05", "title": "Cập nhật 05/02 — Xe Ngựa Vàng sự kiện (Eden/Elmoreden)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67a26ab8eb403642a806838e", "categories": {"agathion": ["2 Agathion mới: Hắc Hổ Hổ Đen (Anh Hùng), Bò Trắng Trâu Trắng (Quý Hiếm)"], "dungeon": ["Đảo Giao Tranh (Đảo Giao Tranh) và Pháo Đài Sụp Đổ (Pháo Đài Bị Phá Hủy)"], "event": ["Xe Ngựa Vàng (Golden Wagon): xuất hiện tại Tuyến đường Thương mại Giran 19:50 hàng ngày, tiêu diệt boss Jean Gilsan để nhận Chứng nhận Xe ngựa Vàng đổi vật phẩm hiếm", "Quà Hỗ trợ tăng trưởng gửi qua thư lúc 12:00 và 18:00 hàng ngày (Ân sủng + Rương quà chiến đấu)"], "system": ["Golden Wagon Season Pass ra mắt — kích hoạt bằng 1.000.000 Adena, nhận thêm Ân sủng của Einhasad"], "bugfix": ["Sửa lỗi hiển thị sai thời gian choáng của kỹ năng Impact Shot"]}, "patch_note": "NLM M15 crawl 2026-05-06."}, {"id": "kr-2025-02-12", "date": "2025-02-12", "title": "Cập nhật 12/02 — Valentine & Agathion mới (Eden/Elmoreden)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67aba538ffd5d434ae3c258e", "categories": {"agathion": ["2 Agathion mới: Thần Tình Ái Cupid (Anh Hùng), Golem Sô-cô-la Choco Golem (Quý Hiếm)"], "event": ["Sự kiện Valentine 'Chocolate chở che tình yêu': NPC Thương nhân Valentine xuất hiện, dùng Socola Valentine để đổi Agathion Cupid/Choco Golem", "Sự kiện 'Quân đoàn Choco': Boss thế giới đổi hình thành Binh sĩ Choco, Zariche thành Quái vật Bánh Choco, rơi thêm vật phẩm sự kiện"], "system": ["Nâng giới hạn sử dụng thuốc Elixir tối đa lên 15 chai"], "item": ["Bổ sung thông tin bộ trang bị (Set info) cho vũ khí hệ Lửa của Paagrio và hệ Gió của Sayha"]}, "patch_note": "NLM M15 crawl 2026-05-06."}, {"id": "kr-2025-02-19", "date": "2025-02-19", "title": "Cập nhật 19/02 — Ra mắt vũ khí Đại Kiếm (Eden/Elmoreden)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67b4dfb8198d52602964ea0c", "categories": {"skill": ["26 Kỹ năng Đại kiếm (Đại Kiếm) mới: 3 Truyền Thuyết (Cơn Thịnh Nộ Sức Mạnh, Điên cuồng, Tàn phá) + 7 Anh Hùng + 9 Quý Hiếm + 7 Cao Cấp"], "class": ["14 Class Đại Kiếm mới: Elgos/Janak/Inferno Titan (Truyền Thuyết) + 7 Anh Hùng + 4 Quý Hiếm", "7 Class Truyền Thuyết mới: Bartz Ramsheart, Amadeo Cardmus, Printessa, Iris, Inorin, Marillion, Lucien"], "dungeon": ["Tàn Tích Của Veora (Tàn Tích Của Veora) ra mắt", "Hầm Mộ Của Kẻ Dị Giáo (Hầm Mộ Của Kẻ Dị Giáo) mùa mới"], "nhothon": ["Thánh Linh Khắc (정령각인) Bảo vệ (Bảo vệ) mới"], "system": ["Khắc ấn Tinh linh 'Hộ mệnh' (Protection): tăng phòng thủ, HP và kháng sát thương (xem nhothon)", "Bản đồ thế giới hiển thị thời gian xuất hiện Boss và cho phép dịch chuyển tức thời đến vị trí Boss"], "event": ["Enchant Parade Pass: cường hóa vé sự kiện lên +9 để chế tạo trang sức Anh hùng hoặc thẻ triệu hồi"], "weapon": ["Ra mắt vũ khí Đại Kiếm (Greatsword) — 14 class mới"]}, "patch_note": "NLM M15 crawl 2026-05-06."}, {"id": "kr-2025-02-26", "date": "2025-02-26", "title": "Cập nhật 26/02 — Party Dungeon Hard I + Balance Beora (Eden/Elmoreden)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67be1a38198d52602964ebb6", "categories": {"dungeon": ["Thêm độ khó Hard I (Khó I) cho Phụ bản tổ đội: Đền thờ bị phong ấn và Căn cứ hải tặc Kite (yêu cầu cấp 40+)"], "balance": ["Tăng HP Boss trong Di tích Beora: Sila, Mup, Normus, Ukanba và Selihoden"], "event": ["Vận may hôm nay: mua Túi phúc 2.025 Adena để nhận ngẫu nhiên thẻ bói toán (Class/Agathion/Hồn thạch)", "Nhân đôi phần thưởng Phụ bản tổ đội — x2 Rương bí mật Boss trong thời gian sự kiện"], "system": ["Gia hạn thời gian nhận thưởng Daily Care đến 12/03/2025"]}, "patch_note": "NLM M15 crawl 2026-05-06."}, {"id": "kr-2025-03-05", "date": "2025-03-05", "title": "Cập nhật 05/03 — Thánh địa Hyperion ra mắt (Eden/Elmoreden)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67c754b82585da1d53ee413d", "categories": {"dungeon": ["Master Dungeon 'Thánh địa Hyperion' (Thánh Địa Hyperion) ra mắt — chiếm đóng tế đàn để nhận buff PVE, toàn bộ server tham gia (trừ server mới)", "Boss Master 'Hypex' xuất hiện 23:00 hàng ngày — rơi trang bị Thần thoại và sách kỹ năng quý hiếm"], "siege": ["Công thành chiến Innadril (이나드릴 공성전) — lịch trình 09/03 cho nhóm Arena I và II"], "event": ["Sự kiện chào xuân: nhân đôi thời gian và phần thưởng tại Đảo Quyết Chiến (Đảo Giao Tranh)", "Spring Season Pass ra mắt — vật phẩm hỗ trợ tăng trưởng nhân vật"], "system": ["PurpleOn: tra cứu giá vật phẩm trực tiếp trên sàn giao dịch khi xem chi tiết vật phẩm"]}, "patch_note": "NLM M14 crawl 2026-05-06."}, {"id": "kr-2025-03-12", "date": "2025-03-12", "title": "Cập nhật 12/03 — INTERLUDE & Class Revival PART 1 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67d08f38198d52602964eeb2", "categories": {"skill": ["Class Revival PART 1: loại bỏ kỹ năng thức tỉnh (Awakening) của Kiếm khiên/Thương/Cung/Trượng, tích hợp vào kỹ năng cơ bản và bổ sung kỹ năng đặc hóa mới theo đẳng cấp Class", "20 Kỹ năng Đặc Hóa mới (Specialization): 5 mỗi loại vũ khí (Kiếm/Thương/Cung/Gậy)"], "class": ["2 Class mới: Inferno Keeper (Anh Hùng), Người giữ cổng địa ngục (Quý Hiếm)"], "agathion": ["Agathion Thần thoại Siêu việt mới 'Helios' — kỹ năng Helios Aura (tăng xuyên thấu miễn nhiễm) và Helios Grace (hồi HP diện rộng)"], "mount": ["Thú Cưỡi INTERLUDE ra mắt: Bellator, Fenrir, Callisto (Truyền thuyết), Skoll (Anh hùng)"], "dungeon": ["Arena Dungeon 'Đỉnh Tháp Ngạo Mạn đổ nát' (오만의 탑 폐허) mở — cấp 70+, 7 mức độ khó, Boss Baium xuất hiện tối thứ Bảy"], "territory": ["Thuộc địa Aden mở: Aden Castle, Narsel Lake, Aden Village, Thác Angel, Bình Nguyên Vinh Quang"], "item": ["Nâng cấp chỉ số trang bị Thần thoại (Giáp ma Antaras, Sự giải thoát của Papurion) và bổ sung hiệu ứng bộ (Set effect)", "Thêm trang bị Giáp vai (Shoulder Guard) mới cấp Hiếm", "Làm mới phần thưởng Thế giới: Đảo Thức Tỉnh, Chiến trường Tranh chấp Spine, Necropolis"], "system": ["Tăng giới hạn sở hữu Ân sủng của Einhasad lên 300.000"], "event": ["Gathering Arkstone: trao Đá Archstone (tối đa 3.000 viên) dựa trên lịch sử tổng hợp Class/Agathion từ launch đến 02/2025 — đổi thẻ chọn Class/Agathion/Artifact Huyền thoại", "INTERLUDE Coupon: chuỗi quà điểm danh cung cấp thẻ Coupon thử thách Class/Agathion/Artifact"], "bugfix": ["Sửa lỗi camera khi chiến đấu với boss Antaras", "Sửa lỗi hiển thị tên trong siege"]}, "patch_note": "NLM M14 crawl 2026-05-06. Enriched from INTERLUDE update."}, {"id": "kr-2025-03-12-2", "date": "2025-03-12", "title": "Server mới Saiha (Sayha) ra mắt", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67d169302585da1d53ee42a8", "categories": {"system": ["Sayha (Sayha) ra mắt — Giá Trị Hồi Quy (가치 회귀 월드): fresh start server, tiến trình riêng biệt từ Eden/Elmoreden"]}}, {"id": "kr-2025-03-19", "date": "2025-03-19", "title": "Cập nhật 19/03 — Xâm chiếm Server & Vườn nước của Eva (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67d9c9b88a67931889787e35", "categories": {"dungeon": ["Arena Dungeon 'Vườn nước của Eva' (에바의 수중 정원) mở — cấp 88/90, thứ Sáu đến Chủ nhật, Boss Triton", "Xâm chiếm Server (서버 침공): chiến đấu liên máy chủ 1:1 ngẫu nhiên — Boss Tyrant xuất hiện tại Cao nguyên Diệt vong, tranh giành bãi săn"], "agathion": ["Agathion Paladin mới: Radiant Paladin (Truyền thuyết) và Paladin (Anh hùng) — tập trung hồi phục và chống chịu"], "pet": ["Hội thú cưng bắt đầu mùa quyên góp mới: Buffalo, Unicorn, Bear"], "event": ["Pháo đài bị phá hủy: nhân đôi thời gian sử dụng và kinh nghiệm", "Nhân đôi phần thưởng Boss Thế giới", "Tiếp tế vật phẩm hàng ngày qua thư"], "bugfix": ["Đổi tên bộ sưu tập Inferno từ 'Set Tateossian' thành 'Set Inferno'"]}, "patch_note": "NLM M14 crawl 2026-05-06."}, {"id": "kr-2025-03-26", "date": "2025-03-26", "title": "Cập nhật 26/03 — Class Revival PART 2 & Clan Dungeon (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67e30438ffd5d434ae3c2da5", "categories": {"skill": ["Class Revival PART 2: loại bỏ kỹ năng thức tỉnh của Đại kiếm/Song kiếm/Đoản kiếm/Orb, tích hợp vào kỹ năng cơ bản và bổ sung kỹ năng đặc hóa mới", "20 Kỹ năng Đặc Hóa mới: 5 mỗi loại (Đại Kiếm/Song Đao/Đoản Kiếm/Orb)"], "agathion": ["12 Agathion mới: Lilith/Timiniel/Anakim (Truyền Thuyết), Tiat/Istina/Pháp Sư Hồ Ly/Nephilim/Nọc Độc (Anh Hùng), Gatekeeper/Golem Guardian/Staccato/Tempest (Quý Hiếm)"], "dungeon": ["World Dungeon Tháp Ngạo Mạn (Tháp Ngạo Mạn) tầng 1-2 mở — mỗi cuối tuần", "Clan Dungeon 'Đại huyết chiến - Đền thờ hành giả' (수련자의 신전) mở — dành cho liên minh huyết tộc hoạt động tích cực, 5 khu vực cấp 1-5, Boss Tristan"], "siege": ["Castle Strike Aden sự kiện 28/03 — phá cổng thành ngoài, tiêu diệt boss Avoluon; NPC Sieghardt xuất hiện 1 giờ sau để mua vật phẩm đặc biệt bằng Adena"], "class": ["Mở rộng giới hạn Class: Siêu việt (Siêu việt) tăng lên cấp 2, Thăng cấp (승급) tăng lên cấp 3 cho một số Class Truyền thuyết và Anh hùng tiêu biểu"], "item": ["Pháp bảo (Relic) mới: Pháp bảo Nhà tiên tri rạng ngời (Anh hùng) và Pháp bảo Hành giả (Hiếm)"], "system": ["Thành viên clan có thể thuê nhà ẩn dật (Agit) trong thành", "Cải thiện hiệu ứng hình ảnh kỹ năng"]}, "patch_note": "NLM M14 crawl 2026-05-06. Enriched from Class Revival PART 2 update."}, {"id": "kr-2025-04-02", "date": "2025-04-02", "title": "Cập nhật 02/04 — Khu Vườn Cuối Cùng + Biểu tượng Ngạo Mạn (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67ec3eb82585da1d53ee4604", "categories": {"dungeon": ["Party Dungeon mới 'Khu Vườn Cuối Cùng' (Khu Vườn Cuối Cùng) — cấp 40+, boss Hatura", "World Dungeon 'Di tích Beora' và 'Tháp Ngạo Mạn' mở cửa trở lại theo lịch trình"], "item": ["Trang bị cổ đại Elven (Giáp, Găng tay, Giáp Chân, Nón) ra mắt", "Cuộn phép 'Quan thông' (Cuộn đâm xuyên) — tăng sát thương, chính xác, xuyên đỡ"], "system": ["Bộ sưu tập 'Biểu tượng Ngạo Mạn' (오만의 상징) — chỉ số PVP và chính xác", "Hệ thống chế tạo Ma lực thạch (Đá Mana) từ nguyên liệu rơi tại Beora"], "event": ["Nhân đôi phần thưởng tại Spine Conflict Zone", "Sự kiện 'Quà tặng chúc phúc trưởng thành' — vật phẩm hỗ trợ hàng ngày qua thư cho máy chủ Reserve"]}}, {"id": "kr-2025-04-09", "date": "2025-04-09", "title": "Cập nhật 09/04 — Tháp Ngà tầng 3 + Khắc Linh Hồn Chinh Phục (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67f57de8c7bc7e7c7116b739", "categories": {"dungeon": ["Tháp Ngà tầng 3 (Tháp Ngà 3Tầng) mở — boss mới Samuel", "Boss Samuel rớt: Vòng cổ Đại Pháp Sư, Đai lưng Maphr, Áo choàng Aegis"], "item": ["Vòng cổ Đại Pháp Sư, Đai lưng Maphr, Áo choàng Aegis (drop từ Samuel)"], "system": ["Hệ thống 'Khắc Linh Hồn: Chinh Phục' (정령각인: Chinh phục) — chỉ số PVE chuyên biệt: phòng thủ, chính xác, giảm sát thương", "Cập nhật giao diện Quản lý Thành (Siege UI) — theo dõi lịch trình và thuế"]}}, {"id": "kr-2025-04-16", "date": "2025-04-16", "title": "Cập nhật 16/04 — Xâm Chiếm Server ra mắt (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=67feb3b862d5e86ffef6173c", "categories": {"dungeon": ["Hệ thống Xâm Chiếm Server (서버 침공) — ghép cặp 1:1 giữa các server, cấp 55+, 16 giờ/ngày", "Boss Xâm Chiếm mới: Orfen, Dragon Beast, Carnifex"], "item": ["Nhẫn Hành Trình II (여정의 반지 Ⅱ) qua sự kiện chéo", "Nguyên liệu mới: Mảnh Xâm Chiếm (Mảnh vỡ xâm lược), Dấu Vết Tai Ương (재앙의 흔적)", "Công thức chế tạo sách kỹ năng và vật phẩm từ nguyên liệu xâm chiếm"], "system": ["Hệ thống Matching Xâm Chiếm Server — nhân vật cấp 55+ tranh giành boss theo server"], "event": ["Phòng Bí Mật Bremnon (Bremnon's Secret Room)"]}}, {"id": "kr-2025-04-23", "date": "2025-04-23", "title": "Cập nhật 23/04 — Công Thành Dion/Giran + Soul Crystal + 3 khu vực Aden mới (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=6807ee38142e601421437e66", "categories": {"agathion": ["2 Agathion mới: Haechi (phẩm cấp Anh Hùng), Magpie (phẩm cấp Hiếm)"], "dungeon": ["3 khu vực săn mới tại Aden: Nghĩa Trang Quốc Gia (Nghĩa Trang Quốc Gia), Ấn Ký Shilien (Phong Ấn Của Shillien), Đất Tàn Sát (Vùng Đất Đồ Sát)", "4 Boss thế giới mới: Cabrio, Flint, Harp, Andras"], "system": ["29 loại Soul Crystal (Nhốt hồn) mới cùng bộ sưu tập tương ứng", "Mở chế tạo Cuộn Phép Kiên Trì (Cuộn Kiên nhẫn)"], "siege": ["Công Thành Chiến Dion và Giran chính thức bắt đầu (Eden, Elmoreden, Saiha) — mỗi 2 tuần, Chủ Nhật, phần thưởng Hộp Công Huân của Hoàng Đế"], "event": ["Tăng số lần quyên góp huyết mạch + nhân đôi phần thưởng kinh nghiệm/huân chương danh dự", "Giảm số lượng Chìa Khóa Chiều Không Gian cần thiết để mở Clan Raid"]}}, {"id": "kr-2025-05-07", "date": "2025-05-07", "title": "Cập nhật 07/05 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=681a633823395872e3210803", "categories": {"dungeon": ["Mở rộng cấp 60 cho Đảo Quyết Chiến (Đảo Giao Tranh)", "Mở rộng cấp 60 cho Pháo Đài Bị Phá Hủy (Pháo Đài Bị Phá Hủy)"], "system": ["Bộ sưu tập Sách lịch sử vương quốc Aden (아덴 왕국 역사서) — chỉ số phòng thủ và chính xác"], "event": ["Party Dungeon Double Time — tăng phần thưởng phó bản", "Chúc phúc tại Vùng tranh chấp Spine"]}}, {"id": "kr-2025-05-14", "date": "2025-05-14", "title": "Cập nhật 14/05 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=68239db8f98a570a2f8a9980", "categories": {"system": ["Làm mới Collection vật phẩm hạng Hiếm theo thời hạn (vũ khí, giáp trụ, trang sức)"], "balance": ["Catacombs of Heretics (Hầm Mộ Của Kẻ Dị Giáo) mùa giải mới — cá nhân + huyết mạch chiến"], "item": ["Soul Crystal cấp Anh hùng Pan Narrod (Pandryad)"], "event": ["Lễ kỷ niệm 2000 ngày ra mắt game L2M — phần thưởng tri ân đặc biệt"]}}, {"id": "kr-2025-05-21", "date": "2025-05-21", "title": "Cập nhật 21/05 — Ra mắt Xâm chiếm Server (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=682cd8381b931718627b5114", "categories": {"dungeon": ["Di tích Beora (Tàn Tích Của Veora) chuyển sang mở cửa thường trực (상시 입장)", "03 Boss xâm chiếm Server: Orfen, Dragon Beast, Carnifex"], "system": ["Xâm chiếm Server (서버 침공) — ghép server 1:1 tranh giành boss và bãi săn"], "item": ["Bộ sưu tập Biểu tượng Tháp Ngạo Mạn (오만의 상징) — chỉ số PVP", "Nguyên liệu xâm chiếm: Mảnh xâm chiếm, Dấu vết tai ương"]}}, {"id": "kr-2025-05-28", "date": "2025-05-28", "title": "Cập nhật 28/05 — Ra mắt vũ khí Magic Cannon (Súng Thần Công) (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=683612b8019b9846931df639", "categories": {"class": ["12 Class Magic Cannon mới (1 Truyền thuyết, 5 Anh hùng, 4 Hiếm, 1 Cao cấp, 1 Thường)"], "skill": ["31 kỹ năng mới cho Magic Cannon", "08 kỹ năng Truyền thuyết mới cho vũ khí hiện có (True Impact, Stigma, Immortal...)"], "skin": ["30 Class Skin mới ra mắt (Magic Cannon)"], "dungeon": ["Tháp Ngạo Mạn Tầng 3 mở (Boss Kernon)", "Tháp Ngạo Mạn Tầng 4 mở (Boss Tarim)"], "system": ["Class Skin — tách biệt ngoại hình và chỉ số chiến đấu", "Awakening (Thức tỉnh) — hệ thống nâng cấp chỉ số nhân vật", "World Exchange (Thương Hội thế giới) — mua bán vật phẩm liên server cùng World"], "item": ["Trang bị Rune mới: Rune Sức mạnh, Minh mẫn, Trí tuệ — gắn vào ô trang bị mới"], "weapon": ["Ra mắt vũ khí Magic Cannon (Súng Thần Công) — 12 class mới"]}}, {"id": "kr-2025-06-04", "date": "2025-06-04", "title": "Cập nhật 04/06/2025 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=683f4d388beb6f79b5d46f4e", "categories": {"system": ["Làm mới Bộ sưu tập Lịch sử Aden: sử dụng 'Sách lịch sử vương quốc Aden' được chế tạo từ 'Dương bản ma thuật' để kích hoạt chỉ số bổ trợ", "Thay đổi kênh phân phối: 'Dung dịch hòa tan cấp cao' chuyển từ cửa hàng tạp hóa sang cửa hàng Pandora trong trung tâm thương mại"], "event": ["Sự kiện cộng đồng: thời gian chúc phúc tại 'Spine Conflict Zone' và hoạt động tiêu diệt quái vật trong 'Catacombs of Heretics'"], "item": ["Bộ sưu tập chỉ số mới: Phòng thủ, Chính xác (Độ chính xác), Giảm sát thương PVP, Kháng sát thương đánh thường"]}, "patch_note": "NLM M11 re-crawl 2026-05-06. Loại update: Maintenance. Không có class/skill/agathion/dungeon mới."}, {"id": "kr-2025-06-11", "date": "2025-06-11", "title": "Cập nhật 11/06/2025 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=684887b81735e46caf5b215a", "categories": {"skin": ["01 Interlude Class Skin mới"], "dungeon": ["01 Hầm ngục thế giới mới: Necropolis (phó bản thi đấu liên server 3 vòng, cấp 50+, tên nhân vật ẩn danh ngẫu nhiên)", "03 Boss xâm chiếm Server mới: Orfen, Dragon Beast, Carnifex"], "system": ["Tính năng Xâm chiếm Server: ghép cặp 1:1 giữa các server, boss xâm chiếm xuất hiện tại server bị xâm nhập", "Điều chỉnh lịch trình: Tháp Ngạo Mạn → hầm ngục mở cửa thường trực; Spine tranh chấp → 12:00 thứ Bảy hàng tuần", "Trong thời gian bị xâm chiếm, một số NPC và hầm ngục tại server bị xâm nhập sẽ bị khóa"], "item": ["Vật phẩm tiêu hao riêng cho Necropolis (cuộn phép buff) và nguyên liệu xâm chiếm Server"]}, "patch_note": "NLM M11 re-crawl 2026-05-06. Loại update: Nội dung mới / Mở rộng tính năng có sẵn."}, {"id": "kr-2025-06-18", "date": "2025-06-18", "title": "Cập nhật 18/06/2025 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=6851c238714d4a0bde0b832c", "categories": {"event": ["Sự kiện tiêu diệt 'Followers of Antharas': săn bắn tại các khu vực chỉ định để nhận phần thưởng", "Cập nhật thời gian chúc phúc Necropolis: tăng lợi ích khi tham gia hầm ngục trong giai đoạn sự kiện"], "system": ["Loại bỏ 'Shop Diamond' (Kim Cương Khóa) cho các gói triệu hồi Class/Agathion giới hạn; người chơi không còn dùng Shop Diamond mua lượt quay giới hạn"]}, "patch_note": "NLM M11 re-crawl 2026-05-06. Loại update: Maintenance. Không có class/skill/agathion/dungeon mới."}, {"id": "kr-2025-06-25", "date": "2025-06-25", "title": "Cập nhật 25/06/2025 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=685afcb85714ba149370dc21", "categories": {"skill": ["09 Kỹ năng Anh hùng mới cho 9 loại vũ khí: Retribution, Scourge, Poisoning Bomb, Multi Shot, Gust Strike, Holy Light, Perfect Spear, Quake, Assemble"], "agathion": ["08 Agathion mới — Legendary: Akamanah, Abyss Death Knight; Hero: Death Knight, Basilla, Apostle Grail; Rare: Queen Harpy, Breka; Advanced: Spatoi"], "dungeon": ["01 Hầm ngục Rift mới 'Island of Awakening' (Đảo Thức Tỉnh): boss thức tỉnh (Awakened Laha, Queen Ant, Orfen...) xuất hiện đồng thời vào tối thứ Hai hàng tuần"], "system": ["Hệ thống 'Tự động chế luyện' (Auto-Refining): chọn trước thuộc tính, hệ thống tự động tiêu đá cho đến khi đạt yêu cầu; dừng nếu nhân vật tử vong hoặc thoát game", "Cân bằng chỉ số PVP (Balance Care): tăng né tránh, kháng kỹ năng và giảm sát thương trong bảng kỹ năng bị động", "Thêm tùy chọn phân bổ kinh nghiệm tổ đội theo 'Đóng góp cá nhân' thay vì chia đều"], "item": ["Tăng mức thưởng Huân chương danh dự cho Catacombs và World Boss"]}, "patch_note": "NLM M11 re-crawl 2026-05-06. Loại update: Nội dung mới / Mở rộng tính năng có sẵn."}, {"id": "kr-2025-07-02", "date": "2025-07-02", "title": "Cập nhật 02/07/2025 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=686437387bf9556362f6f3bf", "categories": {"system": ["Tính năng Xâm chiếm Server ra mắt: ghép cặp 1:1 giữa 2 server, yêu cầu cấp 55+", "Thay đổi giờ Boss Di tích Beora sang 19:00 T2-T5"], "dungeon": ["03 Boss Xâm chiếm mới: Orfen, Dragon Beast, Carnifex"], "item": ["Bộ sưu tập Lịch sử mới và Bộ sưu tập chỉ số mới: Phòng thủ, Chính xác, Giảm sát thương PVP"]}, "patch_note": "NLM M10 re-crawl 2026-05-06. Loại update: Nội dung mới / Mở rộng tính năng có sẵn."}, {"id": "kr-2025-07-09", "date": "2025-07-09", "title": "Cập nhật 09/07/2025 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=686d71b88e74d25cdb202ddc", "categories": {"skill": ["03 Sách kế thừa mới: Punishment, Salvation, Increase Constitution"], "agathion": ["02 Agathion mới: Gumiho (Cáo Chín Đuôi), Moon Rabbit (Thỏ Mặt Trăng)"], "dungeon": ["01 Vùng đất mới (Vùng Đất Cuối Cùng — Vùng Đất Cuối Cùng)", "02 Boss mới: Olcus khu vực & Olcus Clan Raid"], "system": ["Cải tiến hệ thống cống: nâng tỷ lệ thành công chế tạo Mực ma thuật (Truyền thuyết)", "Giới hạn Elixir tăng từ 15 lên 20 bình"], "item": ["11 loại linh hồn (Soul Crystal) mới"]}, "patch_note": "NLM M10 re-crawl 2026-05-06. Loại update: Nội dung mới / Mở rộng tính năng có sẵn."}, {"id": "kr-2025-07-16", "date": "2025-07-16", "title": "Cập nhật 16/07/2025 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=6876ac38d6983e2d1d39de21", "categories": {"event": ["Sự kiện World Boss: nhân đôi phần thưởng trong giai đoạn sự kiện", "Daily Care & Season Pass 'Chobok' mới bắt đầu"], "item": ["Gói vật phẩm hỗ trợ tăng trưởng: triệu hồi, đá cường hóa, nguyên liệu"], "system": ["Nhân vật mới gia nhập bang hội mới có thể nhận thưởng kích hoạt từ Premium Season Pass"]}, "patch_note": "NLM M10 re-crawl 2026-05-06. Loại update: Maintenance / Mở rộng tính năng có sẵn. Không có class/skill/agathion/dungeon mới."}, {"id": "kr-2025-07-23", "date": "2025-07-23", "title": "Cập nhật 23/07/2025 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=687fe6b80fc04e138bf09352", "categories": {"dungeon": ["Tháp Ngao Mạn tầng 5-6 mở: 02 Boss mới Halat (tầng 5) và Bella (tầng 6)", "Bùa Tháp Ngao Mạn 5-6 miễn nhiễm debuff tại tầng tương ứng"], "skill": ["12 Kỹ năng Kế thừa mới: 02 Anh hùng, 07 Hiểm, 03 Cao cấp"], "skin": ["02 Skin Class cấp Anh hùng mùa hè: Queen Aloha, Mr. Mahalo"], "system": ["Chế độ Hòa bình (Anti-PK): kỹ năng diện rộng không gây sát thương người chơi khác; tắt tại một số khu vực PVP đặc biệt", "Hệ thống tăng trưởng Linh hồn 'Chính xác'; 15 loại linh hồn mới", "Cải tiến Bản đồ: xem chi tiết địa hình và khu vực quái động (폭젠)"]}, "patch_note": "NLM M10 re-crawl 2026-05-06. Loại update: Nội dung mới / Mở rộng tính năng có sẵn."}, {"id": "kr-2025-07-30", "date": "2025-07-30", "title": "Cập nhật 30/07/2025 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=688921387a0f310112177abb", "categories": {"system": ["Làm mới Bộ sưu tập Lịch sử: hiệu ứng Phòng thủ, Sát thương, Kháng sát thương đánh thường cho bộ sưu tập Aden"], "event": ["Sự kiện Bang hội: Quyên góp bang hội, Clan Raid và Gậy thông (Pine Stick)"], "item": ["Vật phẩm sưu tầm 'Sách lịch sử vương quốc Aden (Khóa)'; hiệu ứng bộ sưu tập có thời hạn đến 27/08/2025"]}, "patch_note": "NLM M10 re-crawl 2026-05-06. Loại update: Maintenance / Mở rộng tính năng có sẵn. Không có class/skill/agathion/dungeon mới."}, {"id": "kr-2025-08-06", "date": "2025-08-06", "title": "Cập nhật 06/08 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=68925bb82f32643f78802cae", "categories": {"dungeon": ["Mở thêm khu vực cho Đảo Giao Tranh và Thành Trì Bị Phá Hủy", "Catacomb Dị Giáo mùa mới"], "system": ["Hệ thống Group Chat (그룹 채팅) ra mắt"], "item": ["Collection định kỳ vật phẩm hạng Hiếm có thời hạn để duy trì chỉ số bổ trợ"]}, "patch_note": "NLM M09 re-crawl 2026-05-06."}, {"id": "kr-2025-08-13", "date": "2025-08-13", "title": "Cập nhật 13/08 — Server Invasion ra mắt (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=689b963882c9cb2b96bd6525", "categories": {"siege": ["Server Invasion (서버 침공) ra mắt: chiến đấu liên server 1:1 tranh giành boss và khu vực săn bắn, yêu cầu cấp 55+, diễn ra 16h/ngày"], "dungeon": ["3 Boss Invasion mới: Invasion Orfen, Invasion Dragon Beast, Carnifex — xuất hiện tại các vùng đất chỉ định"], "item": ["Item nguyên liệu Invasion mới: Invasion Fragment, Trace of Catastrophe — đổi trang bị/kỹ năng tại NPC chuyên dụng", "Oracle Scroll mới"]}, "patch_note": "NLM M09 re-crawl 2026-05-06. Trong thời gian xâm chiếm một số phó bản và NPC bị hạn chế sử dụng."}, {"id": "kr-2025-08-20", "date": "2025-08-20", "title": "Cập nhật 20/08 — Kỷ Niệm 1 Năm + Ra mắt Nỏ Thần (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=68a4d0b89c618e0ed4493b77", "categories": {"skill": ["28 Kỹ năng Nỏ (Nỏ) mới: 5 Truyền Thuyết + 9 Anh Hùng + 7 Quý Hiếm + 7 Cao Cấp"], "class": ["13 Class Nỏ Thần mới: Raul (THẦN THOẠI — đẳng cấp cao nhất), Momo/Shirin/Mũi khoan Máy (Truyền Thuyết), 5 Anh Hùng, 4 Quý Hiếm"], "dungeon": ["Đảo Cổ Đại (Đảo Cổ Đại) ra mắt lần đầu"], "balance": ["PvP Balance Care lần 2"], "system": ["Thông thạo (Thông Thạo) ra mắt"], "event": ["Lễ Kỷ Niệm 1 Năm L2M KR"], "agathion": ["01 Agathion mới: Beast Farm (phẩm cấp Hiếm)"], "item": ["5 loại Soul Crystal mới", "Hệ thống Rune chỉ số (Sức mạnh, Linh hoạt, Tri thức)", "Trang bị mới Paagrio's Insignia — cường hóa + tinh luyện để tăng chỉ số phòng thủ"], "weapon": ["Ra mắt vũ khí Nỏ Thần (Sacred Crossbow) — 13 class mới, có Thần Thoại"]}, "patch_note": "NLM M09 re-crawl 2026-05-06."}, {"id": "kr-2025-08-27", "date": "2025-08-27", "title": "Cập nhật 27/08 — Collection Aden + Cải tiến Siege (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=68ae0b38864dc906b8d70180", "categories": {"event": ["Cập nhật thời gian chúc phúc tại Spine Conflict Zone và hoạt động tập hợp tại Necropolis"], "siege": ["Mở rộng phạm vi tương tác với ngai vàng trong Công thành chiến", "Sửa lỗi cổng dịch chuyển tại Tháp Ngạo Mạn"], "item": ["Vật phẩm sưu tầm 'Aden Kingdom History Book' — chế tạo từ Adena + Enchanted Parchment để kích hoạt Collection tăng chỉ số chiến đấu", "Collection định kỳ mùa mới"]}, "patch_note": "NLM M09 re-crawl 2026-05-06."}, {"id": "kr-2025-09-03", "date": "2025-09-03", "title": "Cập nhật 03/09 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=68b745b864ae4c06581c3248", "categories": {"skin": ["16 Class Skin mới (Thường→Truyền thuyết): Truyền thuyết 'Chủ nhân Đêm trăng' (Chúa Tể Đêm Trăng) — CON+7, sát thương vũ khí +8%, kỹ năng Crimson Frenzy (sát thương duy trì + giảm hồi máu mục tiêu)"], "dungeon": ["'Ẩn náu của Hoàng hôn' (Nơi Ẩn Nấp Lúc Hoàng Hôn, 2 người) ra mắt: Olympiad PvP đa máy chủ (trừ Siah), thi đấu thoát phó bản nhanh hơn đối thủ, boss 'Trader' cuối"], "system": ["Server Invasion (Xâm chiếm Máy chủ): điều chỉnh cơ chế", "Cải thiện hệ thống tự động đổi hiệu ứng Mastery + hiển thị kỹ năng bổ trợ Song kiếm", "Tăng thời gian tích lũy đóng góp khi chiến đấu với boss"], "item": ["Collection: Chủ nhân Hỗn loạn I/II/III (Rare có thời hạn) — tăng phòng thủ và kháng kỹ năng"]}, "title_kr": "[정기점검] 9/3(수) 리니지2M 업데이트 노트"}, {"id": "kr-2025-09-10", "date": "2025-09-10", "title": "Cập nhật 10/09 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=68c080384ccd7e3f325f4e42", "categories": {"dungeon": ["'Trại Ketra' (Ketra Camp) ra mắt: phó bản tổ đội thứ Sáu hàng tuần, 3 độ khó — tiêu diệt Đại tộc trưởng Ketra → rương bí mật + nguyên liệu trang bị Anh hùng"], "skill": ["4 kỹ năng kế thừa mới: 1 Truyền thuyết (+5% tốc độ đánh) + 3 Anh hùng (khuếch đại kỹ năng / giảm sát thương / tăng chính xác)"], "khactinh": ["Khắc ấn Tinh linh 'Quyết đấu' (Duel): tập trung PVP — sát thương PVP, chính xác PVP, tỷ lệ Double hit, khuếch đại sát thương vũ khí"], "event": ["Double time phó bản tổ đội", "Tiêu diệt dị giáo tại Catacomb"], "item": ["Collection Tháp Ngạo Mạn: dùng 'Biểu tượng Ngạo mạn' cường hóa — tăng chính xác, sát thương vũ khí, sát thương PVP"]}, "title_kr": "[정기점검] 9/10(수) 리니지2M 업데이트 노트"}, {"id": "kr-2025-09-24", "date": "2025-09-24", "title": "Cập nhật 24/09 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=68d2f538bc4b52133493c03b", "categories": {"agathion": ["8 Agathion mới (Cao cấp→Truyền thuyết): Core Susceptor và các hiệu ứng hỗ trợ mạnh mẽ"], "skill": ["Legendary Mastery ra mắt cho tất cả loại vũ khí (Kiếm khiên, Đại kiếm, Song kiếm, Cung,...): tăng mạnh chỉ số đặc trưng — Khuếch đại sát thương / Kháng choáng / Xuyên đỡ theo từng loại"], "dungeon": ["Arena 'Đảo Cổ đại' (Đảo Cổ Đại) ra mắt: nội dung mùa cấp 70+, săn mảnh công thức Truyền thuyết + đá cổ đại để đổi vật phẩm", "Clan Raid (Đột kích Huyết minh) cải thiện: giảm số lượng + chu kỳ quái, tăng EXP và Adena nhận được"], "skin": ["Class Skin Anh hùng: Crimson Magician + Midnight Rabbit — kỹ năng 'Magical Showtime' (EXP/chính xác/sát thương) hiệu lực đến 22/10"], "system": ["Khu vực mới tại Aden: Chiến trường xưa + Biên giới Aden; boss Thanatos (hồi sinh 24h) + Raha (hồi sinh 33h)", "Tùy chọn không tự động nhặt đồ tổ đội khi đóng góp chiến đấu thấp", "Tạm vô hiệu hóa hệ thống Slaughterer để thiết kế lại", "Điều chỉnh HP boss Custor tại máy chủ Siah"], "item": ["Shop: Journey's STEP UP, Weekly STEP UP tháng 10, Hộp Diamond bí mật ánh vàng, gói Skin Class ma thuật", "Collection 'Sách lịch sử vương quốc Aden': tăng Phòng thủ, Sát thương, Chính xác"]}, "title_kr": "[정기점검] 9/24(수) 리니지2M 업데이트 노트"}, {"id": "kr-2025-10-15", "date": "2025-10-15", "title": "Cập nhật 15/10 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=68eea4b86b713d7e84457f8b", "categories": {"agathion": ["Magic Book (Huyền thoại): +20% EXP, -30% ân sủng, +1800 trọng lượng, +5 sát thương, kỹ năng Gust Storm", "Mimic (Hiếm): +15% EXP, -22% ân sủng, +2 sát thương, +2 chính xác kỹ năng"], "skill": ["Kỹ năng kế thừa Incapability (Truyền thuyết): +5% kháng sát thương kỹ năng, +5 phòng thủ kỹ năng — chế tạo từ Mảnh vỡ xâm lược / Dấu vết tai họa"], "dungeon": ["Temple of Dawn (Đền thờ bình minh) ra mắt: mở 22:00–08:00, 1 tiếng/ngày, chọn độ khó cấp 40/50/55/60", "Twilight Hideout (2 người): điều chỉnh điểm nạp thanh boss khi diệt tinh anh + HP quái vật"], "balance": ["Pauline (Pauline) awakening system: 12 giai đoạn — tăng chí mạng, sát thương, chính xác, xuyên phá chặn, kháng hiệu ứng; kích hoạt năng lực đặc biệt ở mốc 10/20/30"], "system": ["World Boss: tăng Thánh vật ân sủng + Huy chương danh dự", "Catacomb (cá nhân/bang hội): tăng Huy chương danh dự, Quyết tinh thể, Bột Elixir, hộp thắng/thua/hòa", "Necropolis: nâng phần thưởng vòng 3 theo hạng sống sót (hạng 1–2000)", "Tranh đoạt Boss: Tinh túy thứ nguyên 1 → 2 cái/lần", "Collection: Chaos Overlord I/II/III + Call of Chaos — giảm sát thương, kháng kỹ năng, tăng ân sủng"], "event": ["Catacomb Double Time (15/10–29/10)", "Glorious Battlefield (15/10–29/10)", "Party Dungeon Double Time (15/10–29/10)", "Hộp hỗ trợ mùa thu", "Top Successor event"], "bugfix": ["Sửa lỗi không nhận thành tựu khi đạt 75% cấp độ 77 và 78"]}, "title_kr": "[정기점검] 10/15(수) 리니지2M 업데이트 노트"}, {"id": "kr-2025-10-29", "date": "2025-10-29", "title": "Cập nhật 29/10 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69011e68691c4332fb18d8ca", "categories": {"agathion": ["Halloween Scarecrow (Huyền thoại): +3% kháng sát thương kỹ năng, +3 giảm sát thương, tăng EXP và chí mạng", "Halloween Spider (Hiếm): +2 phòng thủ PVE, +5 giảm sát thương đòn đánh thường"], "dungeon": ["Twilight Hideout (4 người) ra mắt: Olympiad dành cho toàn bộ thế giới Reserve, mở thứ Năm hàng tuần — thu thập Đá thoát hiểm, tẩu thoát qua Gương hồi quy", "Hall of Zepar (Truyền đường của Zephyr) ra mắt: cấp 70+, ghép 15 server ngẫu nhiên/cụm — Boss Zepar xuất hiện 22:00 thứ Bảy, phần thưởng trang bị Truyền thuyết"], "mount": ["7 thú cưỡi mới: Talos + Carus (Truyền thuyết), Gley + Gratia + Smilodon (Huyền thoại), Royal Trilkan + Royal Roarex (Hiếm) — kỹ năng tăng kháng hiệu ứng, giảm sát thương, chính xác kỹ năng"], "system": ["Thống nhất thị trường thế giới: dừng thị trường máy chủ, tất cả giao dịch → World Market; phí giao dịch đổi sang Adena (1,000% giá bán)", "Soul Crystal Amplification (집혼 증폭): dùng điểm Soul Crystal kích hoạt sát thương chí mạng, khuếch đại sát thương vũ khí, xuyên phá chặn, kỹ năng thức tỉnh mới", "Elixir: tăng giới hạn tối đa từ 20 → 25 lọ", "Sayha tích hợp vào phạm vi ghép trận Olympiad của máy chủ Reserve"], "balance": ["Catacomb: kết thúc mùa cũ, bắt đầu mùa mới (đến 21/01/2026) — thay đổi cách tính điểm hạng khi thắng / ghép trận thất bại"], "event": ["INTERLUDE Coupon: quà tặng Daily Care đặc biệt", "Sự kiện Halloween: lễ hội + hộp quà Halloween", "Raul's Legend Challenge: Thử thách huyền thoại của Raul", "Valor Season Pass: nhiệm vụ săn bắn, cường hóa, chế tạo — phần thưởng cao cấp"], "item": ["Collection: Chaos Overlord + Battlefield Guardian I/II/Overlord I — tăng phòng thủ, chính xác, sát thương", "Cửa hàng Mileage của Cedric: đổi Dấu tích Mileage lấy Class/Agathion Huyền thoại, Soul Crystal anh hùng, nguyên liệu chế tạo Truyền thuyết"]}, "title_kr": "[정기점검] 10/29(수) 리니지2M 업데이트 노트"}, {"id": "kr-2025-11-05", "date": "2025-11-05", "title": "Cập nhật 05/11 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=690a543842694b2bd150e62c", "categories": {"system": ["Chấm dứt sàn giao dịch server — vật phẩm → kho bang hội, tiền thanh toán gửi thư đến 2030", "Collection Tháp Ngạo Mạn — Biểu tượng Ngạo mạn cường hóa để đăng ký chỉ số tạm thời (Chính xác, Sát thương PVP)"], "skin": ["Rương Class Skin chào đông của Lea — thẻ thử thách Class Skin Anh hùng"], "mount": ["Daily Care Phước lành thú cưỡi của Dũng mãnh — thẻ thú cưỡi cấp cao, bảo đảm Hiếm"], "class": ["Daily Care Phước lành Class của Dũng mãnh — thẻ nhận Class rực rỡ, thử thách Anh hùng"], "event": ["Đảo Giác tỉnh Phước lành (5/11 – 12/11)", "World Boss Double Time (5/11 – 19/11)"]}, "patch_note": "Enriched 2026-05-05 M06-NLM"}, {"id": "kr-2025-11-12", "date": "2025-11-12", "title": "Cập nhật 12/11 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69138eb834e7dd2024fd4ee8", "categories": {"dungeon": ["Phó bản Vết nứt Pháo đài Maluk — cấp 70+, cross-server, 3 khu vực: Ranh giới Vết nứt/Luyện ngục/Tế đàn Tham vọng", "Đại phó bản Vết nứt Sảnh đường Zephir — theo mùa, 15 server, cấp 70+, 14h/tuần"], "agathion": ["Gareth (Anh hùng), Kaim Vanul (Hiếm), Ký sinh Ác linh (Cao cấp) — chế tạo từ Đá linh hồn Vết nứt tại Maluk"], "item": ["Trang bị Maluk mới: Vòng cổ, Nhẫn, Đai, Hóa thạch vết nứt", "Công thức Pure Elixir từ bột Elixir tại Maluk", "Collection Chúa tể hỗn độn (Hiếm thời hạn)"], "skin": ["Thẻ nhận Class Skin cấp cao — Black Purple Day + thử thách tháng 11"], "event": ["Đảo Quyết chiến Phước lành", "Phó bản Tổ đội Double Time", "Tiếp tế chinh phạt"], "bugfix": ["Sửa lỗi đếm số tiêu diệt Sảnh đường Zephir trong nhiệm vụ ủy thác"]}, "patch_note": "Enriched 2026-05-05 M06-NLM (replaced dungeon/agathion, added item/skin/event/bugfix)"}, {"id": "kr-2025-11-19", "date": "2025-11-19", "title": "Cập nhật 19/11 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=691cc93834e7dd2024fd5058", "categories": {"skin": ["Daily Care Phước lành Class Skin của Niềm tin — Hiếm/Cấp cao"], "agathion": ["Daily Care Phước lành Agathion của Niềm tin — thử thách Anh hùng"], "system": ["Season Pass của Niềm tin — tổng hợp Class/Agathion, cường hóa trang bị", "Collection Sách lịch sử vương quốc Aden — Giấy da thấm đẫm ma lực"], "item": ["Gói quà kỷ niệm tiền sự kiện Valakas — thẻ Class/Agathion/thú cưỡi/nguyên liệu", "Gói Phước lành người chơi quay lại (28 ngày inactive) — Class/Agathion Anh hùng"], "event": ["Thành trì bị tàn phá Phước lành (19/11 – 26/11)", "Boss Truyền thuyết xuất hiện 100%"]}, "patch_note": "Enriched 2026-05-05 M06-NLM (replaced event, added skin/agathion/system/item)"}, {"id": "kr-2025-11-26", "date": "2025-11-26", "title": "Cập nhật 26/11 — Kỷ Niệm 6 Năm + Class Chainsword (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=692603b8d60365665a2fda89", "categories": {"class": ["Class mới Chainsword (Ma kiếm) — Bloody Force, tăng Choáng/kháng trạng thái/sát thương kỹ năng", "Class Truyền thuyết mới: Mordred, Kalia; Anh hùng: Koop, Rootless"], "skill": ["Kỹ năng Chainsword: Vampiric Shield, Bloody Slash III, Bloody Steel", "Inheritor Skills mới Truyền thuyết/Anh hùng: Quick Spell, High Potion III"], "dungeon": ["Arena Dungeon Đảo Cổ đại (Ancient Island) — cấp 70+, cross-server, Boss Kustor thứ Bảy", "World Boss Basque/Laila → phó bản riêng, xuất hiện 12h và 20h hàng ngày", "Đền thờ Hừng đông — 20:00 đến 08:00 sáng hôm sau"], "territory": ["Lãnh địa Aden: 4 bãi săn mới — Đầm lầy hỏa hoạn, Ngọn lửa vĩnh cửu, Dấu tích hỏa long, Tổ hỏa long (Boss Phoenix)"], "agathion": ["10 Agathion mới: Antharas (Thần thoại), Black Lily (Truyền thuyết), Talakin/Behemoth (Anh hùng)"], "skin": ["Class Skin Truyền thuyết: Thánh mẫu đồng cỏ, Nữ hoàng tiên, Chúa tế bất diệt", "Collection Skin — tăng Phòng ngự/Giảm sát thương diện rộng"], "item": ["Hệ thống Hợp thành siêu việt vũ khí — Đá hợp thành từ phân giải/cường hóa thất bại T/AH", "Hợp nhất cuộn giấy cường hóa trang sức (Bông tai rồng, Áo thun Einhasad...) → một loại", "Linh hồn kẻ trộm mèo tại thương nhân Bang hội Raid"], "nhothon": ["Linh hồn Boss Phoenix vào hệ thống Nhỏ Thon cấp Truyền thuyết + bộ sưu tập liên quan"], "khactinh": ["Cuộn giấy Giác tỉnh cổ đại tại Đảo Cổ đại — STR/INT/DEX + sát thương PVP"], "system": ["Sàn giao dịch tối đa 30 → 50 vật phẩm", "Kinh nghiệm tăng tại Aden/World/Arena/Vết nứt", "Membership kỷ niệm 6 năm — mua gói đạo cụ đặc biệt hàng tuần"], "event": ["Chuỗi kỷ niệm 6 năm: Coupon INTERLUDE, Xe ngựa vàng, Kẹo ngọt, Kim cương, Quà chúc mừng, Đền thờ Undine"], "weapon": ["Ra mắt vũ khí Chainsword (Ma kiếm) — Bloody Force mechanic"]}, "patch_note": "Enriched 2026-05-05 M06-NLM (BLAZING FATE: VALAKAS — major patch)"}, {"id": "kr-2025-12-03", "date": "2025-12-03", "title": "Cập nhật 03/12 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=692f3e38c04551024877d96e", "categories": {"dungeon": ["Đảo Cổ Đại (Ancient Island) Arena — tuần 2, Boss Kustor xuất hiện 22h thứ Bảy, cross-server"], "item": ["Đổi Quặng Niệm tại Guild Đồng: Phiến đá Rune, Thuốc tăng trưởng cổ đại, Elixir tinh khiết", "Công thức chế tạo Rune Sức mạnh/Khéo léo/Tri thức từ Phiến đá Rune", "Collection Đá ảo ảnh cổ đại + Mảnh ma lực cổ đại (Tỷ lệ Double, Kháng sát thương)", "Giấy cuộn thức tỉnh cổ đại (STR/INT/DEX, kháng sát thương PVP)"], "system": ["Boss world Bask và Laila cải thiện hiển thị kích thước và HP", "Rương giấy cuộn cường hóa trang bị trả phí → Giấy cuộn trang sức đặc biệt tỏa sáng"], "event": ["Tuần lễ tiêu diệt kẻ xâm lược vết nứt", "Giờ săn bắn tại Đền bình minh"], "bugfix": ["Sửa lỗi không hiển thị bộ sưu tập sử dụng nguyên liệu Biểu tượng của tháp"]}, "patch_note": "Enriched 2026-05-05 M05-NLM"}, {"id": "kr-2025-12-10", "date": "2025-12-10", "title": "Cập nhật 10/12 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=693878b8b1799f2df7967681", "categories": {"agathion": ["Enkura (Anh hùng) — mở bán gói triệu hồi tăng tỷ lệ"], "class": ["Rootris (Anh hùng) — mở bán gói triệu hồi tăng tỷ lệ"], "item": ["Collections bậc Hiếm mới: Chaos Overlord I/II/III và Call of Chaos (Xuyên kháng, Kháng sát thương, Kháng kỹ năng)"], "system": ["Vé bảo hộ Einhasad chúc phúc — Ân hồng cấp 3 (700% EXP, 200% Adena) 14 ngày", "Guardian's Season Pass — nhiệm vụ tổng hợp Class/Agathion, cường hóa trang bị"], "event": ["Chuỗi sự kiện Đoàn kết: Quyên góp huyết minh, Clan Raid, Gậy thông huyết minh, nhân đôi Party Dungeon"], "bugfix": ["Loại bỏ công thức đổi Rương giấy cuộn cường hóa trang bị trả phí → Giấy cuộn trang sức đặc biệt tỏa sáng"]}, "patch_note": "Enriched 2026-05-05 M05-NLM"}, {"id": "kr-2025-12-17", "date": "2025-12-17", "title": "Cập nhật 17/12 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=6941b3385c692b658cdcab1a", "categories": {"skill": ["Kỹ năng Kế thừa (Inheritor Skills) mới bậc Huyền thoại/Anh hùng: Immunity, Winning Mentality, Increase Stun II, Evasion II, Double Resist II"], "agathion": ["Vòng hoa Giáng sinh (Anh hùng)", "Bánh quy Giáng sinh (Hiếm)"], "dungeon": ["Sảnh đường Zephari (Hall of Zephari) — cấp 70+, Boss Zephari 22h thứ Bảy", "Hang ổ của Nữ hoàng (Queen's Hideout) — vết nứt huyết minh xếp hạng 1-30 tranh đấu"], "mount": ["Merideer (Hiếm)"], "territory": ["Huyết minh tối đa cấp 21 — buff EXP/HP/MP/Phòng ngự/Chính xác/Sát thương"], "skin": ["Red-Nosed Masker (Anh hùng)", "Mrs. Claus (Anh hùng)", "Snow Bell (Hiếm)"], "nhothon": ["Myrmex (Truyền thuyết), Malphas (Anh hùng), Tisiphone (Anh hùng) — 3 Nhỏ Thon mới", "Menu Trưởng thành Sinh tồn và Trạng thái bất thường", "Cấp trưởng thành Nhỏ Thon 15 → 20"], "item": ["Collection sự kiện Sách lịch sử vương quốc Aden"], "system": ["Tăng Elixir tối đa sử dụng 25 → 30"], "event": ["Winter Festival: Quảng trường cây thông, Quà tặng Giáng sinh, Season Pass đặc biệt"]}, "patch_note": "Enriched 2026-05-05 M05-NLM (replaced companion→nhothon, added skill/mount/territory/skin)"}, {"id": "kr-2025-12-24", "date": "2025-12-24", "title": "Cập nhật 24/12 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=694aedb8e725c26a35a0f218", "categories": {"agathion": ["Talakin (Anh hùng) — mở bán gói triệu hồi tăng tỷ lệ"], "class": ["Sieghart Ein (Anh hùng) — mở bán gói triệu hồi tăng tỷ lệ"], "item": ["Collections bậc Hiếm thời hạn: Chaos Overlord, Vệ binh chiến trường I, Thống trị chiến trường I"], "system": ["Craft 100 Giấy cuộn cường hóa trang sức đặc biệt tỏa sáng cùng lúc", "Nhận trực tiếp giấy cuộn từ Rương giấy cuộn cường hóa trang bị trả phí"], "event": ["Rương tiếp tế cuối năm", "Giờ chúc phúc tại Spine", "Sự kiện Necropolis"], "bugfix": ["Sửa lỗi thú cưỡi/pet biến mất khi rời dungeon sự kiện Quảng trường cây thông"]}, "patch_note": "Enriched 2026-05-05 M05-NLM (added agathion/class/item/system/bugfix)"}, {"id": "kr-2025-12-31", "date": "2025-12-31", "title": "Cập nhật 31/12 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=695428380d49f34fb487f572", "categories": {"agathion": ["Santa Doguri (Ông già noel Doguri, Anh hùng) — bộ chỉ số: Sát thương đỏ, Tỷ lệ Double/Triple", "Thief Raccoon (Gấu Mèo Ăn Trộm, Hiếm) — bộ chỉ số: Chính xác, Sát thương PVE, Kháng trạng thái"], "item": ["Collection sự kiện Tháp Ngạo Mạn sử dụng Biểu tượng của tháp"], "system": ["Membership chào mừng năm mới 2026 — buff 21 ngày, vật phẩm độc quyền, điểm danh hàng ngày", "Daily Blessing năm Ngựa đỏ", "Gói Kim cương bí mật/tỏa sáng"], "mount": ["Rương thú cưỡi đặc biệt thần thánh"], "event": ["Sự kiện vận may năm mới", "Túi bánh kẹo của Doguri", "Tiêu diệt Catacomb kẻ dị giáo", "Gói kỷ niệm Hero Yeopo cấp 81"]}, "patch_note": "Enriched 2026-05-05 M05-NLM (added item/system/mount/event, fixed agathion names)"}, {"id": "kr-2026-01-07", "date": "2026-01-07", "title": "Cập nhật 07/01 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=695d62b821c56765881ffe3a", "categories": {"agathion": ["1 Agathion Quý Hiếm mới: Yeti (Yeti, +15% XP, +22% grace, water dmg +3, max HP +150)"], "system": ["Alliance HQ (Căn cứ Tổ Hợp) ra mắt — arena/duel zone + shop (agathion conversion token). Alliance Growth system lv1-10+ (buff: adena+/weight/HP/MP/double%; mở shop theo cấp)"], "dungeon": ["Đảo Cổ Đại (Ancient Island) Arena mở cửa — cấp 70+, PvP xuyên server, Boss Kustor xuất hiện tối thứ Bảy"]}, "patch_note": "NLM M04 enrich 2026-05-05: thêm dungeon Đảo Cổ Đại"}, {"id": "kr-2026-01-14", "date": "2026-01-14", "title": "Cập nhật 14/01 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69669d385831f44a30907602", "categories": {"dungeon": ["Hang Antharas (Hang Antharas) B1-B6 renew: thêm Conquest Zone (지배구역) B4-B5, boss Dragon Beast điều chỉnh, drop mới (Draconic Bow, Astrape...)", "Tháp Cruma (Tháp Cruma) T1-T6 renew: thêm high-density zones T4-T6, boss Contaminated Cruma điều chỉnh, drop mới"], "system": ["Khắc Ấn Tinh Linh 'Ân sủng' (Phước lành) mới — tăng hồi phục Ân sủng, Kháng Double, Chặn vũ khí", "Giới hạn Ân sủng Einhasad tăng lên 200.000"]}, "patch_note": "NLM M04 enrich 2026-05-05: sửa cat item→system cho Ân sủng enchant, thêm giới hạn Einhasad"}, {"id": "kr-2026-01-21", "date": "2026-01-21", "title": "Cập nhật 21/01 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=696fd7b8cec2b02dca915f54", "categories": {"system": ["Dragon Traces/Dragon Nest (Dấu vết của Rồng Lửa/Hang Rồng Lửa) tách thành 2 độ khó riêng biệt + giảm độ khó tổng thể", "Magic Ink Legend (마력이 깃든 잉크 전설) recipe đổi sang 100% success rate, điều chỉnh nguyên liệu", "Công thức đổi Đá nạp thời gian giữa Đảo Cổ Đại và Điện thờ Zepar"], "event": ["Mùa giải mới cho Catacomb cá nhân và Huyết minh"]}, "patch_note": "NLM M04 enrich 2026-05-05: thêm đổi Đá nạp thời gian + mùa giải mới"}, {"id": "kr-2026-01-28", "date": "2026-01-28", "title": "Cập nhật 28/01 — Cải tổ Công Thành + Clan Dungeon (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69791238ba0dc1026f956b1d", "categories": {"dungeon": ["Clan Rift Kho Vũ Khí Cuối Cùng (Kho vũ khí cuối cùng) ra mắt — Clan vs Clan", "Clan Rift Lư Hương Diệt Vong (사멸의 향로) ra mắt — Clan vs Clan", "Điện thờ Zepar (Zepar's Hall) mở cửa — cấp 70, 6 khu vực, Boss Zepar xuất hiện thứ Bảy"], "system": ["Thay đổi quy tắc Công Thành: chỉ diễn ra khi thuế Dion/Giran ≥ 50.000 kim cương", "Hệ thống Nhiệm Vụ Bang Hội (혈맹 의뢰 시스템) ra mắt — daily/weekly clan quests", "Bang Hội Tăng Trưởng Tấn Công (혈맹 성장 공격) mới"]}, "patch_note": "NLM M04 enrich 2026-05-05: siege→system (trước 25/3), thêm Điện thờ Zepar dungeon"}, {"id": "kr-2026-02-04", "date": "2026-02-04", "title": "Cập nhật 04/02 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69824cb8ea339d3c0734ecd7", "categories": {"item": ["Sigil Diệt Vong (Khiên Diệt Vong) Anh Hùng mới: đa mi +2/Độ chính xác +3/triple +3%/막기 +7% — drop từ Belao (Tháp T6), Custor (Đảo Cổ Đại), Zephyr (Đại Khe Nứt)"]}, "patch_note": "Re-crawled 2026-05-02 batch1, improved item detail + boss drop sources"}, {"id": "kr-2026-02-11", "date": "2026-02-11", "title": "Cập nhật 11/02/2026 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=698b8738374b7a5125031e64", "categories": {"class": ["2 Class mới: Kim K (Anh Hùng, Người/Nữ) + Liberty Raido (Quý Hiếm, Người lùn/Nam)"], "skin": ["Skin Valentine: King's Butler + Queen's Maid (Anh Hùng, Người/Nữ)"], "dungeon": ["Isle of Despair & Destroyed Castle thêm cấp khó 78; Boss Thức Tỉnh xuất hiện Aden World từ Gludio→Oren"], "item": ["Advanced Censer of Corruption: tiêu diệt Boss Thức Tỉnh → Soul Essence → Soul Jar → triệu hồi boss Evilnail"], "system": ["Elixir nạp tối đa tăng 30→35; Mercenary không thể giải tán 10 phút trước công thành", "Bộ sưu tập Lịch sử vương quốc Aden: Kamon/Amadeo/Byron — tăng phòng ngự, chính xác, giảm sát thương PVP"]}, "patch_note": "NLM M03 enrich 2026-05-04. Thêm: item Censer, system Elixir+Mercenary, collection Aden History. Fix tên skin: Queen's Maid."}, {"id": "kr-2026-02-19", "date": "2026-02-19", "title": "Cập nhật 19/02/2026 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=699632dccc6e643a3c229606", "categories": {"system": ["Giác Ngộ Tersi (Tersi) ra mắt: hệ thống buff vũ khí 3 giai đoạn (10/20/30 hiệu ứng kích hoạt) → Né tránh tuyệt đối / Miễn nhiễm sát thương / Chống choáng"], "skill": ["2 Kỹ năng Người Kế Thừa mới: Absolute Accuracy III (Truyền thuyết) + II (Anh Hùng) — xuyên thủng né tránh của đối thủ"], "dungeon": ["Nightmare Harnak Labyrinth: liên server, cấp 70+, 14h/tuần, 5 hồi sinh/ngày; Boss Harnak 22:00 thứ Bảy tại Mộ Vua Khổng Lồ — thưởng vũ khí truyền thuyết"], "item": ["Trang bị Harnak mới: Vòng cổ Mê cung, Nhẫn Trăng tròn, Thắt lưng Harnak (phòng thủ + trọng lượng + kháng choáng)"], "balance": ["Darkness: tách hiệu ứng chặn tầm nhìn khỏi giảm chỉ số; Confuse: chịu ảnh hưởng kháng trạng thái bất thường"]}, "patch_note": "NLM M03 enrich 2026-05-04. Thêm: item Harnak gear, balance Darkness/Confuse. Update system Tersi detail."}, {"id": "kr-2026-02-25", "date": "2026-02-25", "title": "Cập nhật 25/02/2026 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=699dfc38234eb546ea480757", "categories": {"mount": ["6 Thú Cưỡi mới: Bellator/Fenrir/Callisto (Truyền thuyết), Skoll (Anh Hùng), Royal Haulkan/Royal Vulcan (Quý Hiếm)"], "dungeon": ["Ancient Island Arena: liên server, cấp 70+, 5 khu vực; Boss Kustor 22:00 thứ Sáu; thưởng Shards of Memory → Rune Sức mạnh/Khéo léo/Trí tuệ"], "system": ["Nhiệm vụ Huyết Tộc: chi phí làm mới đổi từ Kim cương → Adena (giảm gánh nặng P2W)", "Bộ sưu tập Tower of Insolence: đăng ký Chính xác / Sát thương PVP / Kháng sát thương vũ khí qua cường hóa Symbol of the Tower"]}, "patch_note": "NLM M03 enrich 2026-05-04. Thêm: dungeon Ancient Island, system quest cost + collection ToI. Fix mount: 6 thú (Squall→Skoll + thêm Royal Vulcan)."}, {"id": "kr-2026-03-04", "date": "2026-03-04", "title": "Cập nhật 04/03 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69a736b88d0c610bbe0db315", "categories": {"dungeon": ["Hang Orfen (Boss Rift) — Vực thẳm Huy hiệu mới dành cho Huyết hội tranh Boss", "Boss Dimensional Orfen xuất hiện ngẫu nhiên vào 21:00 Thứ Ba và Thứ Năm", "Drop: Forgotten Blade / Vaisyl Chainsword / Basalt Cannon"], "system": ["Bổ sung bản đồ giới hạn cấp 70 cho Đền thờ Bình minh (Temple of Dawn)", "Thêm 'Hồ sơ Công thành' trong menu Quản lý Thành — theo dõi lịch sử và trạng thái công thành", "Cập nhật bộ sưu tập (collection) vật phẩm cấp Rare có thời hạn"], "bugfix": ["Sửa lỗi chỉ số thú cưỡi Callisto"], "event": ["Sự kiện bộ sưu tập mới kèm theo bản cập nhật"]}, "patch_note": "04/03/2026 — Hang Orfen Boss Rift, Temple of Dawn lv70 map, Hồ sơ Công thành", "highlight": "Dungeon Hang Orfen (Boss Rift) ra mắt — Huyết hội tranh Boss Dimensional Orfen 21:00 Thứ Ba/Năm", "nlm_crawled": "2026-05-04-M02-NLM"}, {"id": "kr-2026-03-11", "date": "2026-03-11", "title": "Cập nhật 11/03 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69b0713855f9741f2cd9b46b", "categories": {"dungeon": ["Đảo Cổ đại (Ancient Island) Arena Dungeon ra mắt — cross-server, đến ngày 25/03", "5 khu vực độ khó tăng dần: Nam (Poisonous Swamp), Đông, Tây, Bắc và Trung tâm (Phòng điều khiển Kustor)", "Khu Phòng điều khiển Kustor: debuff không thể dùng Giấy cuộn Hồi thành", "Boss Kustor xuất hiện vào 22:00 Thứ Bảy hàng tuần"], "item": ["Vật phẩm mới: Giấy cuộn Thức tỉnh Cổ đại — hiệu số cộng thêm mạnh hơn giấy cuộn thông thường"], "system": ["Điều chỉnh hệ thống Điểm đóng góp: tích lũy sẽ giảm chậm hơn so với trước"], "event": ["Làm mới bộ sưu tập sự kiện Sách lịch sử"]}, "patch_note": "11/03/2026 — Đảo Cổ đại Arena Dungeon ra mắt, Giấy cuộn Thức tỉnh Cổ đại, điều chỉnh Điểm đóng góp", "highlight": "Arena Dungeon Đảo Cổ đại — 5 khu vực cross-server, Boss Kustor 22:00 Thứ Bảy", "nlm_crawled": "2026-05-04-M02-NLM"}, {"id": "kr-2026-03-18", "date": "2026-03-18", "title": "Cập nhật 18/03 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69b9abb8091d780badf85eab", "categories": {"dungeon": ["Đảo Cổ đại Arena Dungeon tuần 2 tiếp tục (18/03 ~ 25/03)"], "item": ["Bổ sung công thức chế tạo Giấy triệu hồi Linh hồn (Orcus) trong phần Công thành chiến", "Cập nhật bộ sưu tập vật phẩm cấp Rare có thời hạn (Chaos Ruler)"], "event": ["Khởi động các sự kiện tiền truyện chuẩn bị cho bản cập nhật lớn 'Eternal Bond' vào tuần sau (25/03)"], "system": ["Chuẩn bị ra mắt Class Thần thoại và hệ thống Pet vào 25/03"]}, "patch_note": "18/03/2026 — Đảo Cổ đại tuần 2, Giấy triệu hồi Linh hồn Orcus, pre-event Eternal Bond", "highlight": "Pre-event Eternal Bond — chuẩn bị cho Class Thần thoại Elhuina + hệ thống Pet ra mắt 25/03", "nlm_crawled": "2026-05-04-M02-NLM"}, {"id": "kr-2026-03-25", "date": "2026-03-25", "title": "Cập nhật 25/03 — ĐÀO VIÊN KẾT NGHĨA + Pet System (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69c2e638232a171f20adaf17", "categories": {"class": ["Class Thần Thoại (Mythic) mới: Elhuina", "4 Class Tam Quốc Chí: Quan Vũ, Điêu Thuyền, Gia Cát Lượng, Lữ Bố (tất cả cấp Anh Hùng)", "Các Class Noble/Veteran mới"], "skill": ["Reboot Class Thương (Spear): cơ chế Lightning Force mới thay thế Musang/Tiền Phong", "Kỹ năng Spear mới: Lightning Charge, Lightning Dash, Overcharge", "Kỹ năng Mythic mới: Deception Curtain, Anthem of Light"], "agathion": ["Glaki (Anh Hùng — kháng CC + stun)", "Aruru (Cao Cấp — giảm wind damage)"], "dungeon": ["Tòa Tháp Ngạo Mạn (Tower of Insolence) tầng 7 mở cùng Boss Shuriel"], "pet": ["Hệ thống Thú cưỡi (Pet) ra mắt — tiêu tốn Stamina khi chiến đấu", "Pet mới: Wolf, Buffalo, Hawk, Strider, Fox, Kookaburra, Tiger, Bear, Unicorn", "Cần chế tạo 'Tinh chất sức mạnh' từ phân giải trang bị Rare trở lên để nạp Stamina"], "mount": ["Mount mới: Xích Thố (Red Hare — cấp Anh Hùng)"], "system": ["Thăng cấp Class (Class Promotion): dùng thẻ class dư để nâng lên cấp Anh Hùng", "Liên kết Class (Class Link): class Legend/Mythic liên kết với class đã thăng để nhận buff + đổi ngoại hình", "Tổ đội Huyết hội (Clan Party): tối đa 56 người (14 tổ đội)", "Tăng giới hạn Elixir từ 35 lên 40 bình", "Auto-kick Catacombs: tự động mời ra sau 60 giây không hoạt động", "Class Spear dựa vào trạng thái 'Phóng điện' (Discharge) để cường hóa kỹ năng"], "siege": ["Thuế Aden Castle (아덴성 세금 징수) bắt đầu thu"]}, "patch_note": "25/03/2026 — Eternal Bond update: Elhuina Mythic, Tam Quốc Chí 4 class, Pet system, Spear Reboot, Tower of Insolence tầng 7", "highlight": "Patch lớn Eternal Bond — Class Mythic Elhuina, 4 class Tam Quốc Chí, hệ thống Pet ra mắt, Reboot Spear, tầng 7 Tháp Ngạo Mạn", "nlm_crawled": "2026-05-04-M02-NLM"}, {"id": "kr-2026-04-01", "date": "2026-04-01", "title": "Cập nhật 01/04/2026 (Eden/Elmoreden/Saiha)", "status": "released", "source": "kr", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69cc20b8232a171f20adb03d", "categories": {"dungeon": ["Arena Dungeon 'Hall of Zepar' (Truyền đường của Zephyr) ra mắt — cấp 70+, 14 tiếng/tuần, ghép 15 server ngẫu nhiên/cụm (2 cụm), reset thứ Tư và Chủ Nhật 5:00am", "Cửa hàng Zepar: đổi vật phẩm bằng 'Sát niệm nguyên thạch' (Đá quý ý niệm) tại Thương nhân Hội Đồng Bronze Guild", "Boss Zepar xuất hiện 1 lần/tuần lúc 22:00 thứ Bảy tại khu vực 6 (Crib of Fallen Angel)"], "system": ["Loại bỏ tính năng tự động trục xuất người chơi treo máy (잠수 유저) trong Catacombs Clan Battle", "Nhiệm vụ Einhasad tại vùng Aden: cấp tối thiểu mới = 50"], "item": ["Cập nhật Collection: làm mới bộ sưu tập vật phẩm theo chu kỳ"], "bugfix": ["Điều chỉnh Boss Orfen trong Boss Battle: bộ phận càng (집게발) dễ bị phá hủy hơn"]}, "patch_note": "NLM M01 re-crawl 2026-05-04. Thêm mới: không có class/skill/agathion mới."}, {"id": "kr-2026-04-08", "date": "2026-04-08", "title": "Muse Raido · Imperial Mastery · Innadril Territory", "status": "released", "source": "KR", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69d55b389567e900edd3a040", "categories": {"class": ["Muse Raido (Hero-ST)"], "agathion": ["Mup agathion (Hero)"], "skill": ["Imperial Mastery Legend/Hero — 11 weapon types"], "territory": ["Innadril territory — Boss Naias + Modeus"], "balance": ["Spear balance adjustment"]}, "patch_note": "Hero-ST Muse Raido ra mắt. Agathion Mup (Hero). Skill Imperial Mastery mở rộng cho 11 loại vũ khí (Legend/Hero). Territory Innadril mở với boss Naias và Modeus. Cân bằng hệ Spear.", "highlight": "Muse Raido Hero-ST + Imperial Mastery 11 weapon types + Innadril Territory", "nlm_crawled": "2026-05-11"}, {"id": "kr-2026-04-15", "date": "2026-04-15", "title": "Aden World Siege Launch", "status": "released", "source": "KR", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69de95b8c5e99f492c5255f0", "categories": {"siege": ["Aden World Siege — lần đầu 19/4 CN 20:00, 2 tuần/lần, 10 server/world, clan lv5+, player lv45+"]}, "patch_note": "Ra mắt Aden World Siege — siege lớn nhất game. Lần đầu tổ chức ngày 19/4 (Chủ nhật) 20:00. Lịch 2 tuần/lần. Quy mô 10 server/world. Điều kiện: clan lv5+, nhân vật lv45+.", "highlight": "Aden World Siege — first siege 19/4, every 2 weeks, 10 servers/world", "nlm_crawled": "2026-05-11"}, {"id": "kr-2026-04-22", "date": "2026-04-22", "title": "Gukki Spirit Engraving · Đảo Ác Ma · Agathion Gosindo", "status": "released", "source": "KR", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69e7d0385716f56bbe7eb875", "categories": {"agathion": ["Vệ Thần Khổng Lồ (Gosindo Guardian, Cao Cấp)", "Kẻ Truy Kích Khổng Lồ (Gosindo Tracker, Cao Cấp)"], "system": ["Chiếm lĩnh (Gukki) spirit engraving — 10 levels", "Skill Care — 8 types"], "dungeon": ["Đảo Ác Ma (Devil's Island) Arena Dungeon week 1 + Boss Zaken"]}, "patch_note": "Agathion Gosindo Thủ hộ + Gosindo Truy tích (Cao Cấp). Hệ thống khắc tinh thần Gukki (극기) 10 cấp độ. Skill Care 8 loại. Dungeon mới Đảo Ác Ma (악마섬) tuần 1 với boss Zaken.", "highlight": "극기 Gukki spirit engraving (10 lvl) + Đảo Ác Ma Arena + Boss Zaken", "nlm_crawled": "2026-05-11"}, {"id": "kr-2026-04-29", "date": "2026-04-29", "title": "Siege Tax Rules · Beora Mileage · Đảo Ác Ma Tuần 2", "status": "released", "source": "KR", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69f10ab85716f56bbe7eb9b1", "categories": {"siege": ["Siege tax threshold: Dion/Giran 30K, Aden 200K"], "system": ["Beora Mileage Token system"], "dungeon": ["Đảo Ác Ma week 2"], "bugfix": ["Vampiric Shield bugfix"]}, "patch_note": "Thay đổi quy tắc ngưỡng thuế siege: Dion/Giran 30K, Aden 200K. Hệ thống Beora Mileage Token mới. Dungeon Đảo Ác Ma tuần 2. Sửa lỗi Vampiric Shield.", "highlight": "Siege tax threshold overhaul + Beora Mileage Token + Đảo Ác Ma week 2", "nlm_crawled": "2026-05-11"}, {"id": "kr-2026-05-06", "date": "2026-05-06", "title": "School Skins · Ivory Tower 3F · Magic Clock Agathion", "status": "released", "source": "KR", "source_url": "https://lineage2m.plaync.com/board/update/view?articleId=69fa45385716f56bbe7ebac8", "categories": {"skin": ["Học Sinh Chuyển Trường của Cơn Gió Wild Rush (Hero)", "Cô Gái Sân Trường High-teen Tension (Hero)"], "dungeon": ["Ivory Tower 3F renewal + Boss Samuel"], "agathion": ["Magic Clock agathion (Rare, XP+15%)"]}, "patch_note": "2 skin học đường Hero: 질풍의 전학생 Wild Rush + 교정의 소녀 High-teen Tension. Ivory Tower tầng 3 làm mới với boss Samuel. Agathion Magic Clock (Rare) buff XP+15%.", "highlight": "School Skins Hero × 2 + Ivory Tower 3F renewal + Magic Clock agathion XP+15%", "nlm_crawled": "2026-05-11"}], activeFilter: 'all' }
+};
+const HAS_KR = true;
+let activeTab = 'vn';
+let gapRendered = false;
+
+// ── Tab switching ─────────────────────────────────────────────
+function switchTab(tabId) {
+  activeTab = tabId;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tabId));
+  const filterBar = document.getElementById('filterBar');
+  if (tabId === 'gap') {
+    filterBar.style.display = 'none';
+    if (!gapRendered) { renderGapPanel(); gapRendered = true; }
+  } else {
+    filterBar.style.display = '';
+    rebuildFilterBar(tabId);
+    applyFilters();
+  }
+}
+
+function rebuildFilterBar(tabId) {
+  const milestones = tabState[tabId].milestones;
+  const filterBar = document.getElementById('filterBar');
+  Array.from(filterBar.querySelectorAll('.filter-btn:not(.all)')).forEach(b => b.remove());
+  const searchBox = document.getElementById('searchBox');
+  CAT_ORDER.forEach(cat => {
+    const usedInAny = milestones.some(m => m.categories && m.categories[cat] && m.categories[cat].length > 0);
+    if (!usedInAny) return;
+    const meta = CAT_META[cat];
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.cat = cat;
+    btn.textContent = meta.icon + ' ' + meta.label;
+    btn.onclick = () => setFilter(cat, btn);
+    filterBar.insertBefore(btn, searchBox);
+  });
+  const allBtn = filterBar.querySelector('.filter-btn.all');
+  allBtn.classList.add('active');
+  allBtn.style.color = '#e2e8f0';
+  tabState[tabId].activeFilter = 'all';
+}
+
+function setFilter(cat, btn) {
+  tabState[activeTab].activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.remove('active');
+    b.style.background = '';
+    b.style.color = '#94a3b8';
+  });
+  btn.classList.add('active');
+  if (cat !== 'all') {
+    btn.style.background = CAT_META[cat].color;
+    btn.style.color = '#fff';
+  } else {
+    btn.style.color = '#e2e8f0';
+  }
+  applyFilters();
+}
+
+function applyFilters() {
+  const activeFilter = tabState[activeTab].activeFilter;
+  const milestones = tabState[activeTab].milestones;
+  const query = document.getElementById('searchBox').value.toLowerCase().trim();
+  const timelineId = 'timeline-' + activeTab;
+  let anyVisible = false;
+  document.querySelectorAll('#' + timelineId + ' .milestone').forEach(el => {
+    const msId = el.dataset.id;
+    const ms = milestones.find(m => m.id === msId);
+    if (!ms) { el.classList.add('hidden'); return; }
+    let show = true;
+    if (activeFilter !== 'all') {
+      show = !!(ms.categories && ms.categories[activeFilter] && ms.categories[activeFilter].length > 0);
+    }
+    if (show && query) {
+      const searchText = (ms.title + ' ' + JSON.stringify(ms.categories)).toLowerCase();
+      show = searchText.includes(query);
+    }
+    el.classList.toggle('hidden', !show);
+    if (show) anyVisible = true;
+    el.querySelectorAll('.cat-chip[data-cat]').forEach(chip => {
+      chip.style.display = (activeFilter === 'all' || chip.dataset.cat === activeFilter) ? '' : 'none';
+    });
+  });
+  const tl = document.getElementById(timelineId);
+  if (tl) {
+    const children = Array.from(tl.children);
+    children.forEach((child, i) => {
+      if (child.classList.contains('milestone-connector')) {
+        const prev = children[i - 1];
+        const next = children[i + 1];
+        child.style.display = ((!prev || prev.classList.contains('hidden')) ||
+                               (!next || next.classList.contains('hidden'))) ? 'none' : '';
+      }
+    });
+  }
+  const emptyEl = document.getElementById('emptyState-' + activeTab);
+  if (emptyEl) emptyEl.style.display = anyVisible ? 'none' : 'block';
+}
+
+function toggleCat(header) {
+  header.classList.toggle('expanded');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+function formatDate(d) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) {
+    const [y,m,day] = d.split('-');
+    return parseInt(day) + '/' + parseInt(m) + '/' + y;
+  }
+  if (/^\d{4}-\d{2}$/.test(d)) {
+    const [y,m] = d.split('-');
+    return 'Tháng ' + parseInt(m) + '/' + y;
+  }
+  if (/^\d{4}-Q\d$/.test(d)) return 'Q' + d[6] + '/' + d.slice(0,4);
+  return d;
+}
+
+function renderTimeline(tabId, milestones) {
+  const timeline = document.getElementById('timeline-' + tabId);
+  if (!timeline) return;
+  milestones.forEach((ms, idx) => {
+    if (idx > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'milestone-connector';
+      timeline.appendChild(conn);
+    }
+    const el = document.createElement('div');
+    el.className = 'milestone' + (ms.status === 'planned' ? ' planned' : '');
+    el.dataset.id = ms.id;
+    const cats = ms.categories || {};
+    const catKeys = CAT_ORDER.filter(k => cats[k] && Array.isArray(cats[k]) && cats[k].length > 0);
+    let catsHtml = '';
+    catKeys.forEach(cat => {
+      const meta = CAT_META[cat] || {label: cat, color: '#666', icon: '•'};
+      const items = cats[cat];
+      const itemsHtml = items.map(i => '<div class="cat-item">' + i + '</div>').join('');
+      catsHtml += '<div class="cat-chip" data-cat="' + cat + '">'
+        + '<div class="cat-chip-header" onclick="toggleCat(this)"'
+        + ' style="background:' + meta.color + '22;color:' + meta.color + ';">'
+        + '<span class="cat-icon">' + meta.icon + '</span>'
+        + '<span class="cat-label">' + meta.label + '</span>'
+        + '<span class="cat-count">' + items.length + '</span>'
+        + '<span class="expand-icon">▼</span>'
+        + '</div>'
+        + '<div class="cat-items">' + itemsHtml + '</div>'
+        + '</div>';
+    });
+    const dateDisplay = formatDate(ms.date);
+    const plannedBadge = ms.status === 'planned' ? '<div class="planned-badge">PLANNED</div>' : '';
+    el.innerHTML = '<div class="milestone-dot"></div>'
+      + '<div class="milestone-card">'
+      + '<div class="milestone-date">' + dateDisplay + '</div>'
+      + plannedBadge
+      + '<div class="milestone-title">'
+      + (ms.source_url ? '<a href="' + ms.source_url + '" target="_blank">' + ms.title + '</a>' : ms.title)
+      + '</div>'
+      + '<div class="cats">' + catsHtml + '</div>'
+      + '</div>';
+    timeline.appendChild(el);
+  });
+}
+
+
+// ══════════════════════════════════════════════════════════════
+//  GAP ANALYSIS ENGINE
+// ══════════════════════════════════════════════════════════════
+
+const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function fmtMonthYear(d) {
+  if (!d) return 'N/A';
+  const p = d.split('-');
+  return MONTHS_SHORT[parseInt(p[1]) - 1] + ' ' + p[0];
+}
+
+function fmtDateLong(d) {
+  if (!d) return '';
+  const p = d.split('-');
+  const day = p[2] ? parseInt(p[2]) + ' ' : '';
+  return day + MONTHS_SHORT[parseInt(p[1]) - 1] + ' ' + p[0];
+}
+
+function pctColor(p) {
+  if (p >= 70) return '#2dd4bf';
+  if (p >= 40) return '#a78bfa';
+  if (p >= 20) return '#f59e0b';
+  return '#f87171';
+}
+
+function computeGap() {
+  const vnReleased = tabState.vn.milestones.filter(m => m.status === 'released');
+  const krSorted   = [...tabState.kr.milestones].sort((a, b) => a.date < b.date ? -1 : 1);
+  const vnCount    = vnReleased.length;
+
+  // ── 1. Milestone-count equivalence ──────────────────────────
+  //   VN has N released patches → KR's Nth patch = equivalent point
+  const equivIdx  = Math.min(vnCount - 1, krSorted.length - 1);
+  const equivMs   = krSorted[equivIdx];
+  const equivDate = equivMs ? equivMs.date : null;
+
+  // ── 2. Time lag ─────────────────────────────────────────────
+  let lagMonths = 0;
+  if (equivDate) {
+    const diff = new Date() - new Date(equivDate);
+    lagMonths = Math.round(diff / (1000 * 60 * 60 * 24 * 30.44));
+  }
+
+  // ── 3. Per-category coverage (patch-based, consistent with expanded view) ──────
+  const catCov = {};
+  CAT_ORDER.forEach(cat => {
+    const krN = krSorted.filter(m => m.categories && m.categories[cat] && m.categories[cat].length > 0).length;
+    const vnN = vnReleased.filter(m => m.categories && m.categories[cat] && m.categories[cat].length > 0).length;
+    if (krN > 0) catCov[cat] = { kr: krN, vn: vnN, pct: Math.min(100, Math.round(vnN / krN * 100)) };
+  });
+
+  // ── 4. Overall coverage % ────────────────────────────────────
+  const vals       = Object.values(catCov);
+  const overallPct = vals.length ? Math.round(vals.reduce((s, c) => s + c.pct, 0) / vals.length) : 0;
+
+  // ── 5. Timeline bar position (date-based) ───────────────────
+  const krStart   = krSorted.length > 0 ? krSorted[0].date : '2024-08-21';
+  const krEnd     = krSorted.length > 0 ? krSorted[krSorted.length - 1].date : '2026-05-06';
+  const totalDays = (new Date(krEnd) - new Date(krStart)) / 86400000;
+  const equivDays = equivDate ? (new Date(equivDate) - new Date(krStart)) / 86400000 : 0;
+  const barPct    = totalDays > 0 ? Math.max(2, Math.round(equivDays / totalDays * 100)) : 0;
+
+  // ── 6. Upcoming for VN (next 10 KR patches after equiv) ─────
+  const upcoming  = krSorted.slice(vnCount, vnCount + 10);
+
+  return { vnCount, krTotal: krSorted.length, krSorted, equivMs, equivDate,
+           lagMonths, catCov, overallPct, upcoming, krStart, krEnd, barPct };
+}
+
+// ── Feature-level (item) comparison helpers ──────────────────
+const VN_LAUNCH = tabState.vn.milestones.length > 0 ? [...tabState.vn.milestones].sort((a,b)=>a.date<b.date?-1:1)[0].date : '2025-06-04';
+const KR_LAUNCH = tabState.kr.milestones.length > 0 ? [...tabState.kr.milestones].sort((a,b)=>a.date<b.date?-1:1)[0].date : '2024-08-21';
+
+function tPlusN(date, launch) {
+  if (!date || !launch) return null;
+  return Math.round((new Date(date) - new Date(launch)) / (1000*60*60*24*30.44));
+}
+
+function kwExtract(text) {
+  // Extract meaningful words (4+ chars) + normalize numbers (300.000 → 300000)
+  const s = String(text).toLowerCase();
+  const words = s.match(/[a-zÀ-ɏḀ-ỿ]{4,}/g) || [];
+  const nums  = (s.match(/\d[\d.]*\d|\d{2,}/g) || []).map(n => n.replace(/\./g,'')).filter(n => n.length >= 2);
+  return words.concat(nums);
+}
+
+// Fuzzy word match: handles transliteration variants like Beora↔Veora, Raido↔Laido etc.
+// Two words of similar length sharing a 4+ char suffix = likely the same name with
+// a different initial consonant (b/v, g/k, r/l are common KR transliteration variants).
+function wordFuzzyMatch(needle, haystack) {
+  if (haystack.includes(needle)) return true;
+  if (needle.length < 5) return false;
+  return haystack.some(tw => {
+    if (Math.abs(tw.length - needle.length) > 2 || tw.length < 5) return false;
+    const maxN = Math.min(tw.length, needle.length) - 1;
+    for (let n = 4; n <= maxN; n++) {
+      if (needle.slice(-n) === tw.slice(-n)) return true;
+    }
+    return false;
+  });
+}
+
+// "week N / tuann N / tiep tuc" continuation detector — ASCII-safe patterns
+const CONT_RE = new RegExp(
+  ['tu[aâầ]n\s*[2-9]',
+   'week\s*[2-9]','part\s*[2-9]','season\s*[2-9]',
+   'ti[eếê]p\s*t[uụ]c'].join('|'), 'i');
+const CONT_STRIP = new RegExp(
+  ['tu[aâầ]n\s*\d+','week\s*\d+',
+   'part\s*\d+','season\s*\d+',
+   'ti[eếê]p\s*t[uụ]c',
+   '\d+\/\d+\s*[~–-]\s*\d+\/\d+'].join('|'), 'gi');
+
+function dedupeKrItems(items) {
+  // Step 0: exact-text dedup.
+  const seenExact = new Set();
+  const afterExact = items.filter(item => {
+    const key = String(item.text).toLowerCase().trim();
+    if (seenExact.has(key)) return false;
+    seenExact.add(key);
+    return true;
+  });
+  // Step 1: fuzzy dedup >80% overlap + >=3 shared keywords.
+  // Step 2: continuation dedup — "week N / tuann N" entries, core kw overlap >=2.
+  const kept = [], keptKwSets = [];
+  afterExact.forEach(item => {
+    const kw = new Set(kwExtract(item.text));
+    if (kw.size >= 3) {
+      const isDupeFuzzy = keptKwSets.some(kk => {
+        if (kk.size < 3) return false;
+        let overlap = 0;
+        kw.forEach(w => { if (kk.has(w)) overlap++; });
+        return (overlap / Math.max(kw.size, kk.size)) > 0.80 && overlap >= 3;
+      });
+      if (isDupeFuzzy) return;
+    }
+    if (CONT_RE.test(item.text)) {
+      CONT_RE.lastIndex = 0;
+      const coreKw = new Set(kwExtract(String(item.text).replace(CONT_STRIP, ' ')));
+      if (coreKw.size >= 2) {
+        const isDupeCont = keptKwSets.some(kk => {
+          let ov = 0; coreKw.forEach(w => { if (kk.has(w)) ov++; }); return ov >= 2;
+        });
+        if (isDupeCont) return;
+      }
+    }
+    kept.push(item); keptKwSets.push(kw);
+  });
+  return kept;
+}
+
+function buildItemPairs(allVnMs, allKrMs, cat) {
+  // Flatten individual content items from all patches
+  const vnRaw = [];
+  allVnMs.forEach(ms => {
+    (ms.categories[cat] || []).forEach(text => vnRaw.push({text: String(text), date: ms.date}));
+  });
+  // Deduplicate VN items (same feature appearing in multiple patches → keep earliest)
+  const vnFlat = dedupeKrItems(vnRaw);
+  const krRaw = [];
+  allKrMs.forEach(ms => {
+    (ms.categories[cat] || []).forEach(text => krRaw.push({text: String(text), date: ms.date}));
+  });
+  // Deduplicate near-identical KR items (same feature in multiple patches → keep earliest)
+  const krFlat = dedupeKrItems(krRaw);
+  // Pre-compute keyword arrays for VN items (performance)
+  const vnKwCache = vnFlat.map(item => kwExtract(item.text));
+  // Match each KR item to best VN item via fuzzy keyword overlap (>= 2 keywords match)
+  const usedVn = new Set();
+  const pairs = krFlat.map(krItem => {
+    const kw = kwExtract(krItem.text);
+    let best = null, bestScore = 0;
+    vnKwCache.forEach((vnKw, i) => {
+      if (usedVn.has(i)) return;
+      const score = kw.filter(w => wordFuzzyMatch(w, vnKw)).length;
+      if (score > bestScore) { bestScore = score; best = i; }
+    });
+    const vnMatch = (bestScore >= 2 && best !== null) ? vnFlat[best] : null;
+    if (vnMatch !== null) usedVn.add(best);
+    return { krItem, vnItem: vnMatch };
+  });
+  // Unmatched VN items (VN-only content)
+  vnFlat.forEach((vnItem, i) => {
+    if (!usedVn.has(i)) pairs.push({ krItem: null, vnItem });
+  });
+  return pairs;
+}
+
+function catCellHtml(m, cat, baseDate) {
+  if (!m) return '<div class="gap-pair-vn empty">—</div>';
+  const items = (m.categories[cat] || []);
+  let monthTag = '';
+  if (baseDate && m.date) {
+    const months = Math.round((new Date(m.date) - new Date(baseDate)) / (1000*60*60*24*30.44));
+    if (months >= 0) monthTag = ' <span class="gap-month-tag">T+' + months + '</span>';
+  }
+  const subItems = items.map(s =>
+    '<li class="gap-sub-item">' + String(s).slice(0, 200) + '</li>'
+  ).join('');
+  return '<div class="gap-pair-date">' + fmtDateLong(m.date) + monthTag + '</div>'
+    + '<div class="gap-pair-title">' + m.title + '</div>'
+    + (subItems ? '<ul class="gap-sub-list">' + subItems + '</ul>' : '');
+}
+
+function renderGapPanel() {
+  const panel = document.getElementById('panel-gap');
+  if (!panel) return;
+  const g = computeGap();
+
+  // Metric cards
+  const metricsHtml =
+    '<div class="gap-metrics">'
+    + metric(fmtMonthYear(g.equivDate), '#f59e0b',
+             'VN hiện tương đương KR',
+             'Milestone #' + g.vnCount + ' / ' + g.krTotal + ' (theo số patch)')
+    + metric(g.lagMonths + ' tháng', '#f87171',
+             'Time lag tính đến hôm nay',
+             'Từ ' + fmtMonthYear(g.equivDate) + ' → nay')
+    + metric(g.overallPct + '%', '#2dd4bf',
+             'Content coverage trung bình',
+             'Tính trên ' + Object.keys(g.catCov).length + ' categories')
+    + metric(g.krTotal - g.vnCount, '#a78bfa',
+             'KR patches VN chưa có',
+             g.vnCount + ' VN vs ' + g.krTotal + ' KR')
+    + '</div>';
+
+  // Timeline bar
+  const tlHtml =
+    '<div class="gap-tl-card">'
+    + '<div class="gap-tl-outer">'
+    +   '<div class="gap-tl-track">'
+    +     '<div class="gap-tl-fill" style="width:' + g.barPct + '%"></div>'
+    +   '</div>'
+    +   '<div class="gap-tl-marker" style="left:' + g.barPct + '%">'
+    +     '<span class="gap-tl-mlabel">VN ≈ ' + fmtMonthYear(g.equivDate) + '</span>'
+    +   '</div>'
+    +   '<span class="gap-tl-elabel">Hôm nay (KR)</span>'
+    + '</div>'
+    + '<div class="gap-tl-labels">'
+    +   '<span>' + fmtMonthYear(g.krStart) + ' — KR Eden ra mắt</span>'
+    +   '<span>' + fmtMonthYear(g.krEnd) + '</span>'
+    + '</div>'
+    + '<div class="gap-tl-legend">'
+    +   '<div class="gap-tl-leg"><div class="gap-tl-leg-swatch" style="background:#7c3aed55;border:1px solid #7c3aed66"></div>'
+    +   '<span>Vùng VN đã có tương đương</span></div>'
+    +   '<div class="gap-tl-leg"><div class="gap-tl-leg-swatch" style="background:#0d0d1f;border:1px solid #2d2d5e"></div>'
+    +   '<span>VN chưa có (' + (g.krTotal - g.vnCount) + ' patches còn lại)</span></div>'
+    +   '<div class="gap-tl-leg"><div class="gap-tl-leg-swatch" style="background:#f59e0b;width:4px;border-radius:2px"></div>'
+    +   '<span>Điểm tương đương VN</span></div>'
+    + '</div>'
+    + '</div>';
+
+  // Category coverage (sorted worst first)
+  const catRows = CAT_ORDER
+    .filter(cat => g.catCov[cat])
+    .sort((a, b) => g.catCov[a].pct - g.catCov[b].pct);
+
+  // Pre-compute per-category detail with pair matching
+  const beyondVn = new Set(g.krSorted.slice(g.vnCount).map(m => m.date));
+
+  const catDetail = {};
+  CAT_ORDER.forEach(cat => {
+    const allVnMs = tabState.vn.milestones.filter(m => m.status === 'released' && m.categories && m.categories[cat]);
+    const allKrMs = g.krSorted.filter(m => m.categories && m.categories[cat]);
+    const pairs   = buildItemPairs(allVnMs, allKrMs, cat);
+    const vnItemCount = allVnMs.reduce((s, m) => s + (m.categories[cat] || []).length, 0);
+    const krItemCount = allKrMs.reduce((s, m) => s + (m.categories[cat] || []).length, 0);
+    catDetail[cat] = {
+      pairs,
+      vnCount:      vnItemCount,
+      krCount:      krItemCount,
+      missingCount: pairs.filter(p => !p.vnItem && p.krItem).length
+    };
+  });
+
+  const catHtml = catRows.map(cat => {
+    const c      = g.catCov[cat];
+    const meta   = CAT_META[cat] || { label: cat, color: '#666', icon: '•' };
+    const col    = pctColor(c.pct);
+    const detail = catDetail[cat] || { pairs: [], vnCount: 0, krCount: 0, missingCount: 0 };
+
+    const rowHtml =
+      '<div class="gap-cat-row" id="gap-cat-row-' + cat + '" data-cat="' + cat + '" onclick="toggleCatDetail(this.dataset.cat)">'
+      + '<span class="gap-cat-icon">' + meta.icon + '</span>'
+      + '<span class="gap-cat-name">' + meta.label + '</span>'
+      + '<span class="gap-cat-counts">VN <b style="color:#e2e8f0">' + c.vn
+      +   '</b> / KR <b style="color:#f59e0b">' + c.kr + '</b></span>'
+      + '<div class="gap-bar-wrap"><div class="gap-bar-fill" style="width:' + c.pct + '%;background:' + col + '"></div></div>'
+      + '<span class="gap-pct" style="color:' + col + '">' + c.pct + '%</span>'
+      + '<span class="gap-cat-expand-icon">▼</span>'
+      + '</div>';
+
+    // Base dates for T+N month offset (defined per-category loop)
+    const vnBase = (tabState.vn.milestones.find(m => m.status === 'released') || {}).date || null;
+    const krBase = g.krStart;
+
+    // Build compare table rows — 3 columns: feature | VN date (T+N) | KR date (T+N)
+    const tableRows = detail.pairs.map(p => {
+      const { krItem, vnItem } = p;
+      const featureText = String((krItem || vnItem).text).slice(0, 200);
+      let vnCell;
+      if (vnItem) {
+        const t = tPlusN(vnItem.date, VN_LAUNCH);
+        vnCell = '<td class="gap-pair-vn">'
+          + '<div class="gap-pair-date">' + fmtDateLong(vnItem.date)
+          + (t !== null ? ' <span class="gap-month-tag">T+' + t + '</span>' : '')
+          + '</div></td>';
+      } else {
+        vnCell = '<td class="gap-pair-vn" style="text-align:center;vertical-align:middle;color:#2d2d5e;font-size:16px;">—</td>';
+      }
+      let krCell;
+      if (krItem) {
+        const t = tPlusN(krItem.date, KR_LAUNCH);
+        const missBadge = !vnItem ? '<div class="gap-missing-badge">❌ VN chưa có</div>' : '';
+        krCell = '<td class="gap-pair-kr">' + missBadge
+          + '<div class="gap-pair-date">' + fmtDateLong(krItem.date)
+          + (t !== null ? ' <span class="gap-month-tag">T+' + t + '</span>' : '')
+          + '</div></td>';
+      } else {
+        krCell = '<td class="gap-pair-kr"><span style="font-size:10px;color:#475569;font-style:italic;">VN only</span></td>';
+      }
+      return '<tr class="gap-pair-row">'
+        + '<td class="gap-pair-feature">' + featureText + '</td>'
+        + vnCell + krCell + '</tr>';
+    }).join('');
+
+    const tableHtml = detail.pairs.length
+      ? '<table class="gap-compare-table">'
+        + '<thead><tr>'
+        + '<th class="gap-th-feature">Tính năng / Nội dung (' + detail.krCount + ' KR items)</th>'
+        + '<th class="gap-th-vn">VN nhận (T+N từ ra mắt VN) &mdash; ' + detail.vnCount + ' items</th>'
+        + '<th class="gap-th-kr">KR nhận (T+N từ ra mắt Eden) &mdash; ' + detail.missingCount + ' VN chưa có</th>'
+        + '</tr></thead>'
+        + '<tbody>' + tableRows + '</tbody>'
+        + '</table>'
+      : '<div class="gap-cat-empty">Không có dữ liệu.</div>';
+
+    const detailHtml =
+      '<div class="gap-cat-detail" id="gap-cat-detail-' + cat + '">'
+      + tableHtml
+      + '</div>';
+
+    return '<div class="gap-cat-container">' + rowHtml + detailHtml + '</div>';
+  }).join('');
+
+  // Upcoming for VN
+  const upHtml = g.upcoming.map(ms => {
+    const cats   = Object.keys(ms.categories || {}).filter(k => ms.categories[k] && ms.categories[k].length > 0);
+    const badges = cats.slice(0, 4).map(cat => {
+      const meta = CAT_META[cat] || { label: cat, color: '#666', icon: '•' };
+      return '<span class="gap-upcoming-cat" style="background:' + meta.color + '22;color:' + meta.color + '">'
+        + meta.icon + ' ' + meta.label + '</span>';
+    }).join('');
+    return '<div class="gap-upcoming-item">'
+      + '<div class="gap-upcoming-date">KR — ' + fmtDateLong(ms.date) + '</div>'
+      + '<div class="gap-upcoming-title">' + ms.title + '</div>'
+      + '<div class="gap-upcoming-cats">' + badges + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Assemble
+  panel.innerHTML =
+    '<div class="gap-wrap">'
+    + '<div class="gap-method-box"><b>Phương pháp:</b> '
+    + '"Tương đương" = VN có ' + g.vnCount + ' patch released → KR patch thứ ' + g.vnCount
+    + ' (sort theo ngày) là điểm tham chiếu. '
+    + 'Coverage = số lần xuất hiện của category trong VN ÷ trong KR. '
+    + 'Time lag = khoảng cách từ điểm tương đương đến hôm nay.</div>'
+
+    + '<div class="gap-sec"><div class="gap-sec-title">Tổng quan so sánh</div>'
+    + metricsHtml + '</div>'
+
+    + '<div class="gap-sec"><div class="gap-sec-title">Vị trí VN trên timeline KR (tính theo ngày)</div>'
+    + tlHtml + '</div>'
+
+    + '<div class="gap-sec"><div class="gap-sec-title">Coverage theo category — từ thiếu nhất đến đầy đủ nhất</div>'
+    + '<div class="gap-cat-list">' + catHtml + '</div>'
+    + '<p class="gap-note">Màu: 🔴 &lt;20% &middot; 🟡 20–39% &middot; 🟣 40–69% &middot; 🞦 ≥70%</p></div>'
+
+    + '<div class="gap-sec"><div class="gap-sec-title">Nội dung KR ngay sau vị trí tương đương — dự báo sắp tới cho VN</div>'
+    + '<div class="gap-upcoming-grid">' + upHtml + '</div>'
+    + '<p class="gap-note">Dựa trên ' + g.upcoming.length + ' KR patches tiếp theo sau patch #' + g.vnCount
+    + '. Căn cứ để dự báo nội dung VN sẽ nhận trong thời gian tới.</p></div>'
+    + '</div>';
+}
+
+
+function toggleCatDetail(cat) {
+  const row    = document.getElementById('gap-cat-row-' + cat);
+  const detail = document.getElementById('gap-cat-detail-' + cat);
+  if (!row || !detail) return;
+  const isOpen = row.classList.toggle('open');
+  detail.classList.toggle('open', isOpen);
+}
+function metric(val, color, label, sub) {
+  return '<div class="gap-metric">'
+    + '<div class="gap-metric-val" style="color:' + color + '">' + val + '</div>'
+    + '<div class="gap-metric-label">' + label + '</div>'
+    + '<div class="gap-metric-sub">' + sub + '</div>'
+    + '</div>';
+}
+
+// ── Init ─────────────────────────────────────────────────────
+renderTimeline('vn', tabState.vn.milestones);
+if (HAS_KR) renderTimeline('kr', tabState.kr.milestones);
+rebuildFilterBar('vn');
+
+
+</script>
+</body>
+</html>
