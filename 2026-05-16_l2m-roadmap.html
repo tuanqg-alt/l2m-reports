@@ -228,6 +228,53 @@
   .gap-pair-date { font-size: 10px; color: #475569; margin-bottom: 3px; }
   .gap-pair-title { font-size: 11px; color: #cbd5e1; font-weight: 500; margin-bottom: 5px; line-height: 1.35; }
   .gap-missing-badge { display: inline-block; font-size: 9px; font-weight: 700; background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.3); border-radius: 3px; padding: 0 5px; margin-bottom: 4px; }
+
+/* === MOBILE RESPONSIVE PATCH (auto-generated) === */
+@media (max-width:768px){
+  .gap-metrics{
+    grid-template-columns:repeat(2,1fr)!important;
+    gap:8px!important;
+  }
+
+  /* Table scroll */
+  .table-wrap,.tbl-wrap,.table-container{overflow-x:auto!important;}
+  table{min-width:500px;}
+
+  /* Font scale */
+  body{font-size:13px!important;}
+  h1{font-size:16px!important;}
+  h2{font-size:14px!important;}
+
+  /* Padding reduce */
+  .header,.hdr{padding:10px 14px!important;}
+  .page,.container,.content{padding:10px 12px!important;}
+  .section,.card{padding:10px 12px!important;}
+  .nav,.filter-bar,.tab-bar,.month-tabs{padding:0 10px!important;}
+
+  /* Nav/tabs scroll */
+  .nav,.tab-bar,.tab-nav,.month-tabs{overflow-x:auto;white-space:nowrap;flex-wrap:nowrap!important;}
+
+  /* Charts */
+  canvas{max-width:100%!important;height:auto!important;}
+
+  /* Sticky header */
+  .header,.hdr{position:sticky;top:0;z-index:100;}
+
+  /* Flex wrap */
+  .header-right,.header-left~div{flex-wrap:wrap!important;}
+}
+@media (max-width:480px){
+  .gap-metrics{
+    grid-template-columns:1fr!important;
+  }
+
+  body{font-size:12px!important;}
+  .header,.hdr{padding:8px 10px!important;}
+  .page,.container,.content{padding:8px!important;}
+  h1{font-size:15px!important;}
+  .lang-toggle,.lang-btn{font-size:11px!important;}
+  .mtab,.tab-btn{padding:4px 10px!important;font-size:11px!important;}
+}
 </style>
 </head>
 <body>
@@ -858,6 +905,20 @@ if (HAS_KR) renderTimeline('kr', tabState.kr.milestones);
 rebuildFilterBar('vn');
 
 
+</script>
+
+<script>
+(function(){
+  document.querySelectorAll('table').forEach(function(t){
+    var p=t.parentElement;
+    if(p && !p.classList.contains('table-wrap') && p.style.overflowX!=='auto'){
+      var w=document.createElement('div');
+      w.style.cssText='overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;';
+      p.insertBefore(w,t);
+      w.appendChild(t);
+    }
+  });
+})();
 </script>
 </body>
 </html>

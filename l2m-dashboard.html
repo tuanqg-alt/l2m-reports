@@ -328,6 +328,53 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 [data-lang="en"] .lang-vn{display:none!important}
 [data-lang="vi"] .lang-en{display:none!important}
 /* Footer */
+
+/* === MOBILE RESPONSIVE PATCH (auto-generated) === */
+@media (max-width:768px){
+  .all-region-grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    gap:8px!important;
+  }
+
+  /* Table scroll */
+  .table-wrap,.tbl-wrap,.table-container{overflow-x:auto!important;}
+  table{min-width:500px;}
+
+  /* Font scale */
+  body{font-size:13px!important;}
+  h1{font-size:16px!important;}
+  h2{font-size:14px!important;}
+
+  /* Padding reduce */
+  .header,.hdr{padding:10px 14px!important;}
+  .page,.container,.content{padding:10px 12px!important;}
+  .section,.card{padding:10px 12px!important;}
+  .nav,.filter-bar,.tab-bar,.month-tabs{padding:0 10px!important;}
+
+  /* Nav/tabs scroll */
+  .nav,.tab-bar,.tab-nav,.month-tabs{overflow-x:auto;white-space:nowrap;flex-wrap:nowrap!important;}
+
+  /* Charts */
+  canvas{max-width:100%!important;height:auto!important;}
+
+  /* Sticky header */
+  .header,.hdr{position:sticky;top:0;z-index:100;}
+
+  /* Flex wrap */
+  .header-right,.header-left~div{flex-wrap:wrap!important;}
+}
+@media (max-width:480px){
+  .all-region-grid{
+    grid-template-columns:1fr!important;
+  }
+
+  body{font-size:12px!important;}
+  .header,.hdr{padding:8px 10px!important;}
+  .page,.container,.content{padding:8px!important;}
+  h1{font-size:15px!important;}
+  .lang-toggle,.lang-btn{font-size:11px!important;}
+  .mtab,.tab-btn{padding:4px 10px!important;font-size:11px!important;}
+}
 </style></head><body><header class="hdr"><div class="hdr-inner"><div class="hdr-game-badge"><div class="hdr-game-dot"></div>Lineage2M</div><div class="hdr-title"><span class="lang-vn">Facebook Community Intel</span><span class="lang-en">Facebook Community Intel</span></div><div class="hdr-spacer"></div><span class="hdr-ts">2026-05-19 03:02</span><button class="lang-btn" onclick="toggleLang()">EN</button></div></header><nav class="month-nav"><button class="month-pill active" data-month="2026-05" onclick="switchMonth('2026-05')"><span class="lang-vn">Tháng 5 2026</span><span class="lang-en">May 2026</span></button><button class="month-pill " data-month="2026-04" onclick="switchMonth('2026-04')"><span class="lang-vn">Tháng 4 2026</span><span class="lang-en">Apr 2026</span></button></nav><div class="month-panel active" id="mp-2026-05"><nav class="week-nav"><span class="week-nav-label lang-vn">Tuần</span><span class="week-nav-label lang-en">Week</span><button class="week-pill  " data-week="W19_2026-05-04_to_2026-05-10" onclick="switchWeek('2026-05','W19_2026-05-04_to_2026-05-10')"  title="2026-05-04 → 2026-05-10">W19 · 04–10</button><button class="week-pill active " data-week="W20_2026-05-11_to_2026-05-17" onclick="switchWeek('2026-05','W20_2026-05-11_to_2026-05-17')"  title="2026-05-11 → 2026-05-17">W20 · 11–17</button><button class="week-pill  no-data" data-week="W21_2026-05-18_to_2026-05-24"  disabled title="2026-05-18 → 2026-05-24">W21 · 18–24</button><button class="week-pill  no-data" data-week="W22_2026-05-25_to_2026-05-31"  disabled title="2026-05-25 → 2026-05-31">W22 · 25–31</button></nav><div class="week-panel " id="wp-2026-05-W19_2026-05-04_to_2026-05-10"><div class="week-meta"><span class="week-meta-chip"><strong>W19</strong></span><span class="week-meta-dot">·</span><span class="week-meta-chip">Scan 2026-05-10</span><span class="week-meta-dot">·</span><span class="week-meta-chip"><strong>480</strong> <span class="lang-vn">bài</span><span class="lang-en">posts</span></span><span class="week-meta-dot">·</span><span class="week-meta-chip"><strong>1</strong> scans</span></div><div class="market-tabs"><button class="market-tab mt-vn active" data-market="VN" onclick="switchMarket('2026-05','W19_2026-05-04_to_2026-05-10','VN')">🇻🇳 <span class="lang-vn">Việt Nam</span><span class="lang-en">Việt Nam</span><span class="market-tab-count">90</span></button><button class="market-tab mt-th " data-market="TH" onclick="switchMarket('2026-05','W19_2026-05-04_to_2026-05-10','TH')">🇹🇭 <span class="lang-vn">Thailand</span><span class="lang-en">Thailand</span><span class="market-tab-count">211</span></button><button class="market-tab mt-id " data-market="ID" onclick="switchMarket('2026-05','W19_2026-05-04_to_2026-05-10','ID')">🇮🇩 <span class="lang-vn">Indonesia</span><span class="lang-en">Indonesia</span><span class="market-tab-count">113</span></button><button class="market-tab mt-all " data-market="ALL" onclick="switchMarket('2026-05','W19_2026-05-04_to_2026-05-10','ALL')">🌐 <span class="lang-vn">All</span><span class="lang-en">All</span><span class="market-tab-count">480</span></button></div><div class="market-panel active content" data-market="VN"><div class="sum-chips"><span class="sum-chip"><span class="sum-chip-val">90</span><span class="sum-chip-lbl"><span class="lang-vn">bài</span><span class="lang-en">posts</span></span></span><span class="sum-chip"><span class="sum-chip-val">6</span><span class="sum-chip-sub">/ 6</span><span class="sum-chip-lbl"><span class="lang-vn">group</span><span class="lang-en">groups</span></span></span><span class="sum-chip"><span class="sum-chip-val">56</span><span class="sum-chip-sub">62%</span><span class="sum-chip-lbl"><span class="lang-vn">trade</span><span class="lang-en">trade</span></span></span><span class="sum-chip sum-chip-alert" title="Bug: 0 · Phản hồi / Feedback: 5"><span class="sum-chip-val">5</span><span class="sum-chip-lbl"><span class="lang-vn">🐞 bug+FB</span><span class="lang-en">🐞 bug+FB</span></span></span><span class="sum-chip"><span class="sum-chip-val">0</span><span class="sum-chip-lbl"><span class="lang-vn">official</span><span class="lang-en">official</span></span></span></div><div class="insights-box"><div class="ins-title">💡 <span class="lang-vn">Insight tuần</span><span class="lang-en">Weekly insights</span></div><ul class="ins-list"><li class="ins-item"><span class="ins-num">1</span><div><span class="lang-vn">🔥 Bài viral nhất [🇻🇳 VN] — 90 tương tác: &quot;**PHẢN HỒI VỀ VIỆC TỐ CÁO ĐÁNH CẮP BOT GAME LINEAGE2M**  **I. MỞ ĐẦU**  Hôm nay …&quot;</span><span class="lang-en">🔥 Top post [🇻🇳 VN] — 90 interactions: &quot;**PHẢN HỒI VỀ VIỆC TỐ CÁO ĐÁNH CẮP BOT GAME LINEAGE2M**  **I. MỞ ĐẦU**  Hôm nay …&quot;</span></div></li><li class="ins-item"><span class="ins-num">2</span><div><span class="lang-vn">📦 Mua/bán: 56/90 bài (62%) — VN active nhất (90 bài)</span><span class="lang-en">📦 Trade: 56/90 posts (62%) — VN most active (90 posts)</span></div></li><li class="ins-item"><span class="ins-num">3</span><div><span class="lang-vn">⚠️ Bug: 0 bài · Phản hồi: 5 bài — cần theo dõi sentiment</span><span class="lang-en">⚠️ Bug: 0 posts · Feedback: 5 posts — monitor sentiment</span></div></li><li class="ins-item"><span class="ins-num">4</span><div><span class="lang-vn">🏆 Group sôi động nhất: Lineage2M Việt Nam: Mua Bán - Giao Lưu (37 bài trong tuần)</span><span class="lang-en">🏆 Most active group: Lineage2M Việt Nam: Mua Bán - Giao Lưu (37 posts this week)</span></div></li></ul></div><div class="section"><div class="section-head"><span class="sec-title">📋 <span class="lang-vn">Bài đăng theo mục đích</span><span class="lang-en">Posts by intent</span></span><span class="sec-desc"><span class="lang-vn">Click để mở/đóng · số bài = tổng thực tế</span><span class="lang-en">Click to expand · count = actual total</span></span></div><div class="intent-stack"><details class="intent-section intent-red" open><summary class="intent-head"><span class="intent-icon">🐞</span><span class="intent-title"><span class="lang-vn">Bug &amp; Phản hồi</span><span class="lang-en">Bug &amp; Feedback</span></span><span class="intent-desc"><span class="lang-vn">Cần check / phản hồi sentiment</span><span class="lang-en">Needs action / sentiment check</span></span><span class="intent-count">5</span><span class="intent-arrow">▾</span></summary><div class="intent-body"><div class="hot-grid"><article class="hot-card" data-heat="hot"><div class="hc-head"><div class="hc-flag-group"><span style="font-size:13px">🇻🇳</span><span class="hc-group-name" title="Lineage2M VNG Viet Nam">Lineage2M VNG Viet Nam</span></div><span class="hc-heat hot">🔥🔥 Hot · 26</span></div><div class="hc-author-row"><span class="hc-author">Yen Viet Ngo</span><span class="hc-dot">·</span><span class="hc-time">05/05 04:14</span></div><div class="hc-body"><div class="hc-badges"><span class="hc-type type-feedback"><span class="lang-vn">📢 Phản hồi</span><span class="lang-en">📢 Feedback</span></span></div><div class="hc-text" id="hct-405172" onclick="this.classList.toggle('expanded')">🛡️ SETUP HỆ THỐNG TIME BOSS CHUYÊN NGHIỆP CHO LINEAGE 2M 🛡️
 
 Mình nhận Setup hệ thống Time Boss cho Game Lineage 2M sử dụng Bot Discord (phiên bản v4.5.0 mới nhất) với đầy đủ các tính năng :

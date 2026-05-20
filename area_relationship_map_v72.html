@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta charset="UTF-8">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -83,6 +84,46 @@
 
   /* Hub highlight */
   .hub-glow { box-shadow: 0 0 0 3px #fcd34d55; }
+
+/* === MOBILE RESPONSIVE PATCH (auto-generated) === */
+@media (max-width:768px){
+
+  /* Table scroll */
+  .table-wrap,.tbl-wrap,.table-container{overflow-x:auto!important;}
+  table{min-width:500px;}
+
+  /* Font scale */
+  body{font-size:13px!important;}
+  h1{font-size:16px!important;}
+  h2{font-size:14px!important;}
+
+  /* Padding reduce */
+  .header,.hdr{padding:10px 14px!important;}
+  .page,.container,.content{padding:10px 12px!important;}
+  .section,.card{padding:10px 12px!important;}
+  .nav,.filter-bar,.tab-bar,.month-tabs{padding:0 10px!important;}
+
+  /* Nav/tabs scroll */
+  .nav,.tab-bar,.tab-nav,.month-tabs{overflow-x:auto;white-space:nowrap;flex-wrap:nowrap!important;}
+
+  /* Charts */
+  canvas{max-width:100%!important;height:auto!important;}
+
+  /* Sticky header */
+  .header,.hdr{position:sticky;top:0;z-index:100;}
+
+  /* Flex wrap */
+  .header-right,.header-left~div{flex-wrap:wrap!important;}
+}
+@media (max-width:480px){
+
+  body{font-size:12px!important;}
+  .header,.hdr{padding:8px 10px!important;}
+  .page,.container,.content{padding:8px!important;}
+  h1{font-size:15px!important;}
+  .lang-toggle,.lang-btn{font-size:11px!important;}
+  .mtab,.tab-btn{padding:4px 10px!important;font-size:11px!important;}
+}
 </style>
 </head>
 <body>
