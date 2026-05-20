@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L2M SEA — Lag Pattern 3-Milestone Report</title>
+<style>
+  :root {
+    --c1: #3b82f6; --c2: #f59e0b; --c3: #ef4444;
+    --bg: #0f172a; --card: #1e293b; --border: #334155;
+    --text: #e2e8f0; --muted: #94a3b8; --gold: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 24px; }
+
+  /* ── LANG TOGGLE ── */
+  .lang-bar { display: flex; justify-content: flex-end; margin-bottom: 18px; }
+  .lang-btn { background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+    padding: 5px 4px; display: flex; gap: 4px; }
+  .lang-btn button { border: none; border-radius: 16px; padding: 4px 14px; font-size: 0.8rem;
+    font-weight: 700; cursor: pointer; transition: all 0.2s; background: transparent; color: var(--muted); }
+  .lang-btn button.active { background: var(--c1); color: #fff; }
+
+  h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; position: relative; overflow: hidden; }
+  .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .kpi-card.p1::before { background: var(--c1); }
+  .kpi-card.p2::before { background: var(--c2); }
+  .kpi-card.p3::before { background: var(--c3); }
+  .kpi-period { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .kpi-card.p1 .kpi-period { color: var(--c1); }
+  .kpi-card.p2 .kpi-period { color: var(--c2); }
+  .kpi-card.p3 .kpi-period { color: var(--c3); }
+  .kpi-event { font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; line-height: 1.4; }
+  .kpi-main { font-size: 2.4rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .kpi-card.p1 .kpi-main { color: var(--c1); }
+  .kpi-card.p2 .kpi-main { color: var(--c2); }
+  .kpi-card.p3 .kpi-main { color: var(--c3); }
+  .kpi-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 14px; }
+  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .kpi-stat { background: rgba(255,255,255,0.04); border-radius: 6px; padding: 8px 10px; }
+  .kpi-stat-val { font-size: 1.15rem; font-weight: 700; }
+  .kpi-stat-lbl { font-size: 0.7rem; color: var(--muted); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; margin-top: 10px; }
+  .badge.up { background: rgba(239,68,68,0.2); color: #fca5a5; }
+  .badge.neutral { background: rgba(148,163,184,0.15); color: var(--muted); }
+
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  .section-title { font-size: 0.9rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+  .rate-compare { display: flex; flex-direction: column; gap: 12px; }
+  .rate-row { display: flex; align-items: center; gap: 12px; }
+  .rate-label { width: 180px; font-size: 0.82rem; color: var(--text); flex-shrink: 0; }
+  .rate-bar-outer { flex: 1; height: 28px; background: rgba(255,255,255,0.05); border-radius: 6px; overflow: hidden; }
+  .rate-bar-inner { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 8px; font-size: 0.8rem; font-weight: 700; white-space: nowrap; transition: width 0.6s ease; }
+  .rate-val { width: 80px; text-align: right; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; }
+
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .bar-label { width: 60px; font-size: 0.75rem; color: var(--muted); flex-shrink: 0; }
+  .bar-outer { flex: 1; height: 18px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
+  .bar-inner { height: 100%; border-radius: 4px; min-width: 2px; }
+  .bar-val { width: 36px; text-align: right; font-size: 0.75rem; color: var(--text); flex-shrink: 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  th { background: rgba(255,255,255,0.07); padding: 8px 10px; text-align: left; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .ts { color: var(--muted); font-family: monospace; white-space: nowrap; }
+  .sample { color: var(--muted); font-size: 0.75rem; }
+  td strong { color: var(--gold); }
+
+  .alert { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; }
+  .alert-title { color: #f87171; font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
+  .alert-body { font-size: 0.82rem; color: #fca5a5; line-height: 1.6; }
+
+  .detail-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .detail-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .detail-col.p1 .detail-label { color: var(--c1); }
+  .detail-col.p2 .detail-label { color: var(--c2); }
+  .detail-col.p3 .detail-label { color: var(--c3); }
+
+  .obs-block { font-size: 0.85rem; line-height: 1.9; color: var(--text); }
+  .obs-block p + p { margin-top: 14px; }
+
+  .foot { text-align: center; color: var(--muted); font-size: 0.72rem; margin-top: 28px; }
+
+  @media (max-width: 900px) {
+    .kpi-row, .detail-grid { grid-template-columns: 1fr; }
+    .rate-label { width: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LANG TOGGLE -->
+<div class="lang-bar">
+  <div class="lang-btn">
+    <button id="btn-vi" class="active" onclick="setLang('vi')">🇻🇳 VI</button>
+    <button id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+  </div>
+</div>
+
+<h1>🔴 L2M SEA — Lag Complaint Pattern</h1>
+<p class="subtitle">
+  <span class="t" data-vi="So sánh 3 Milestone: GCP Baseline → Di chuyển IDC → Update 20/5"
+                  data-en="3-Milestone Comparison: GCP Baseline → IDC Migration → Update May 20"></span>
+  &nbsp;|&nbsp;Generated 2026-05-20 08:49 ICT
+</p>
+
+<!-- ALERT -->
+<div class="alert">
+  <div class="alert-title">
+    <span class="t"
+      data-vi="⚠️ SIGNAL: Lag tăng đột biến sau Update 20/5"
+      data-en="⚠️ SIGNAL: Lag Surge After Update May 20"></span>
+  </div>
+  <div class="alert-body">
+    <span class="t"
+      data-vi="Trong 7.75 giờ sau khi bảo trì kết thúc (08:00–15:45 ICT), ghi nhận <strong>416 lag complaints từ 245 unique players</strong> — tương đương tốc độ <strong>~1,300 msgs/ngày</strong> (+2,650% so với baseline GCP).<br>Đặc biệt: cluster khổng lồ lúc <strong>15:02 ICT</strong> với 281 msgs từ 176 players trong &lt;5 phút — dấu hiệu lag event toàn server."
+      data-en="In the 7.75 hours after maintenance ended (08:00–15:45 ICT), <strong>416 lag complaints from 245 unique players</strong> were recorded — equivalent to a rate of <strong>~1,300 msgs/day</strong> (+2,650% vs GCP baseline).<br>Notably: a massive cluster at <strong>15:02 ICT</strong> with 281 msgs from 176 players within &lt;5 minutes — a sign of a server-wide lag event."></span>
+  </div>
+</div>
+
+<!-- KPI CARDS -->
+<div class="kpi-row">
+  <div class="kpi-card p1">
+    <div class="kpi-period">
+      <span class="t" data-vi="① Trước 13/5 — GCP" data-en="① Before May 13 — GCP"></span>
+    </div>
+    <div class="kpi-event">
+      <span class="t" data-vi="Game server trên GCP (baseline)" data-en="Game server on GCP (baseline)"></span>
+    </div>
+    <div class="kpi-main">284</div>
+    <div class="kpi-label">
+      <span class="t" data-vi="lag messages / 6 ngày" data-en="lag messages / 6 days"></span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">47.3</div>
+        <div class="kpi-stat-lbl"><span class="t" data-vi="msgs/ngày" data-en="msgs/day"></span></div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">197</div>
+        <div class="kpi-stat-lbl">unique players</div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">45</div>
+        <div class="kpi-stat-lbl"><span class="t" data-vi="multi-user clusters" data-en="multi-user clusters"></span></div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">189</div>
+        <div class="kpi-stat-lbl">total clusters</div>
+      </div>
+    </div>
+    <span class="badge neutral">BASELINE</span>
+  </div>
+
+  <div class="kpi-card p2">
+    <div class="kpi-period">
+      <span class="t" data-vi="② Sau 13/5 — IDC" data-en="② After May 13 — IDC"></span>
+    </div>
+    <div class="kpi-event">
+      <span class="t" data-vi="Sau khi migrate GCP → IDC" data-en="After GCP → IDC migration"></span>
+    </div>
+    <div class="kpi-main">1,089</div>
+    <div class="kpi-label">
+      <span class="t" data-vi="lag messages / 7 ngày" data-en="lag messages / 7 days"></span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-stat">
+        <div class="kpi-stat-val" style="color:var(--c2)">155.6</div>
+        <div class="kpi-stat-lbl"><span class="t" data-vi="msgs/ngày" data-en="msgs/day"></span></div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">498</div>
+        <div class="kpi-stat-lbl">unique players</div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">205</div>
+        <div class="kpi-stat-lbl"><span class="t" data-vi="multi-user clusters" data-en="multi-user clusters"></span></div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">408</div>
+        <div class="kpi-stat-lbl">total clusters</div>
+      </div>
+    </div>
+    <span class="badge up">+229% vs baseline</span>
+  </div>
+
+  <div class="kpi-card p3">
+    <div class="kpi-period">
+      <span class="t" data-vi="③ Sau Update 20/5" data-en="③ After Update May 20"></span>
+    </div>
+    <div class="kpi-event">
+      <span class="t" data-vi="Bảo trì kết thúc 08:00 ICT — scan 7.75h" data-en="Maintenance ended 08:00 ICT — 7.75h scan"></span>
+    </div>
+    <div class="kpi-main">416</div>
+    <div class="kpi-label">
+      <span class="t" data-vi="lag messages / 7.75 giờ" data-en="lag messages / 7.75 hours"></span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-stat">
+        <div class="kpi-stat-val" style="color:var(--c3)">1288</div>
+        <div class="kpi-stat-lbl"><span class="t" data-vi="msgs/ngày (rate)" data-en="msgs/day (rate)"></span></div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">245</div>
+        <div class="kpi-stat-lbl">unique players</div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">13</div>
+        <div class="kpi-stat-lbl"><span class="t" data-vi="multi-user clusters" data-en="multi-user clusters"></span></div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-stat-val">21</div>
+        <div class="kpi-stat-lbl">total clusters</div>
+      </div>
+    </div>
+    <span class="badge up">+2622% vs baseline</span>
+  </div>
+</div>
+
+<!-- RATE COMPARISON -->
+<div class="section">
+  <div class="section-title">
+    📊 <span class="t"
+      data-vi="Tốc độ Lag Complaint (msgs/ngày — normalized)"
+      data-en="Lag Complaint Rate (msgs/day — normalized)"></span>
+  </div>
+  <div class="rate-compare">
+    <div class="rate-row">
+      <div class="rate-label">① GCP Baseline</div>
+      <div class="rate-bar-outer"><div class="rate-bar-inner" style="width:3.7%;background:var(--c1)">47.3 msgs/day</div></div>
+      <div class="rate-val" style="color:var(--c1)">47.3</div>
+    </div>
+    <div class="rate-row">
+      <div class="rate-label">② Post IDC Migration</div>
+      <div class="rate-bar-outer"><div class="rate-bar-inner" style="width:12.1%;background:var(--c2)">155.6 msgs/day</div></div>
+      <div class="rate-val" style="color:var(--c2)">155.6</div>
+    </div>
+    <div class="rate-row">
+      <div class="rate-label">
+        <span class="t" data-vi="③ Post Update 20/5" data-en="③ Post Update May 20"></span>
+      </div>
+      <div class="rate-bar-outer"><div class="rate-bar-inner" style="width:100%;background:var(--c3)">1288 msgs/day</div></div>
+      <div class="rate-val" style="color:var(--c3)">1288</div>
+    </div>
+  </div>
+  <p style="margin-top:14px;font-size:0.75rem;color:var(--muted)">
+    <span class="t"
+      data-vi="⚠️ Period ③ chỉ có 7.75h data — rate được extrapolate. Cluster 15:02 ICT chiếm 281/416 msgs (67.5%) — có thể là event lag riêng biệt."
+      data-en="⚠️ Period ③ has only 7.75h of data — rate is extrapolated. The 15:02 ICT cluster accounts for 281/416 msgs (67.5%) — may be an isolated lag event."></span>
+  </p>
+</div>
+
+<!-- DAILY BREAKDOWN -->
+<div class="section">
+  <div class="section-title">
+    📅 <span class="t" data-vi="Daily Breakdown &amp; Top Clusters" data-en="Daily Breakdown &amp; Top Clusters"></span>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-col p1">
+      <div class="detail-label">① GCP May 7–12</div>
+      <div class="bar-row"><span class="bar-label">05-07</span><div class="bar-outer"><div class="bar-inner" style="width:64%;background:var(--c1)"></div></div><span class="bar-val">54</span></div>
+      <div class="bar-row"><span class="bar-label">05-08</span><div class="bar-outer"><div class="bar-inner" style="width:38%;background:var(--c1)"></div></div><span class="bar-val">32</span></div>
+      <div class="bar-row"><span class="bar-label">05-09</span><div class="bar-outer"><div class="bar-inner" style="width:100%;background:var(--c1)"></div></div><span class="bar-val">84</span></div>
+      <div class="bar-row"><span class="bar-label">05-10</span><div class="bar-outer"><div class="bar-inner" style="width:54%;background:var(--c1)"></div></div><span class="bar-val">45</span></div>
+      <div class="bar-row"><span class="bar-label">05-11</span><div class="bar-outer"><div class="bar-inner" style="width:39%;background:var(--c1)"></div></div><span class="bar-val">33</span></div>
+      <div class="bar-row"><span class="bar-label">05-12</span><div class="bar-outer"><div class="bar-inner" style="width:43%;background:var(--c1)"></div></div><span class="bar-val">36</span></div>
+    </div>
+    <div class="detail-col p2">
+      <div class="detail-label">② IDC May 13–19</div>
+      <div class="bar-row"><span class="bar-label">05-13</span><div class="bar-outer"><div class="bar-inner" style="width:59%;background:var(--c2)"></div></div><span class="bar-val">140</span></div>
+      <div class="bar-row"><span class="bar-label">05-14</span><div class="bar-outer"><div class="bar-inner" style="width:62%;background:var(--c2)"></div></div><span class="bar-val">146</span></div>
+      <div class="bar-row"><span class="bar-label">05-15</span><div class="bar-outer"><div class="bar-inner" style="width:100%;background:var(--c2)"></div></div><span class="bar-val">236</span></div>
+      <div class="bar-row"><span class="bar-label">05-16</span><div class="bar-outer"><div class="bar-inner" style="width:72%;background:var(--c2)"></div></div><span class="bar-val">169</span></div>
+      <div class="bar-row"><span class="bar-label">05-17</span><div class="bar-outer"><div class="bar-inner" style="width:56%;background:var(--c2)"></div></div><span class="bar-val">133</span></div>
+      <div class="bar-row"><span class="bar-label">05-18</span><div class="bar-outer"><div class="bar-inner" style="width:65%;background:var(--c2)"></div></div><span class="bar-val">153</span></div>
+      <div class="bar-row"><span class="bar-label">05-19</span><div class="bar-outer"><div class="bar-inner" style="width:47%;background:var(--c2)"></div></div><span class="bar-val">112</span></div>
+    </div>
+    <div class="detail-col p3">
+      <div class="detail-label">
+        <span class="t" data-vi="③ Update 20/5 (theo giờ)" data-en="③ Update May 20 (per hour)"></span>
+      </div>
+      <div class="bar-row"><span class="bar-label">08:00</span><div class="bar-outer"><div class="bar-inner" style="width:3%;background:var(--c3)"></div></div><span class="bar-val">9</span></div>
+      <div class="bar-row"><span class="bar-label">09:00</span><div class="bar-outer"><div class="bar-inner" style="width:1%;background:var(--c3)"></div></div><span class="bar-val">4</span></div>
+      <div class="bar-row"><span class="bar-label">10:00</span><div class="bar-outer"><div class="bar-inner" style="width:1%;background:var(--c3)"></div></div><span class="bar-val">4</span></div>
+      <div class="bar-row"><span class="bar-label">11:00</span><div class="bar-outer"><div class="bar-inner" style="width:4%;background:var(--c3)"></div></div><span class="bar-val">12</span></div>
+      <div class="bar-row"><span class="bar-label">12:00</span><div class="bar-outer"><div class="bar-inner" style="width:22%;background:var(--c3)"></div></div><span class="bar-val">61</span></div>
+      <div class="bar-row"><span class="bar-label">13:00</span><div class="bar-outer"><div class="bar-inner" style="width:16%;background:var(--c3)"></div></div><span class="bar-val">45</span></div>
+      <div class="bar-row"><span class="bar-label">15:00</span><div class="bar-outer"><div class="bar-inner" style="width:100%;background:var(--c3)"></div></div><span class="bar-val">281</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOP CLUSTERS P3 -->
+<div class="section">
+  <div class="section-title" style="color:#f87171">
+    🔴 <span class="t"
+      data-vi="Top Clusters — Period ③ Sau Update 20/5"
+      data-en="Top Clusters — Period ③ Post-Update May 20"></span>
+  </div>
+  <table>
+    <thead><tr>
+      <th>#</th>
+      <th>Time (ICT)</th>
+      <th>Msgs</th>
+      <th>Users</th>
+      <th><span class="t" data-vi="Tin nhắn mẫu" data-en="Sample messages"></span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>#1</td><td class="ts">2026-05-20 15:02:23.768</td><td><strong>281</strong></td><td>176</td><td class="sample"><em>"ae co bi lag ko"</em> | <em>"masih aja lag"</em></td></tr>
+      <tr><td>#2</td><td class="ts">2026-05-20 12:23:11.774</td><td><strong>40</strong></td><td>30</td><td class="sample"><em>"game lag vcl luon"</em> | <em>"do you feel lag?"</em></td></tr>
+      <tr><td>#3</td><td class="ts">2026-05-20 13:40:47.995</td><td><strong>19</strong></td><td>16</td><td class="sample"><em>"laggg"</em> | <em>"aah lag giler"</em></td></tr>
+      <tr><td>#4</td><td class="ts">2026-05-20 13:02:08.771</td><td><strong>18</strong></td><td>12</td><td class="sample"><em>"hahahah after updated lagging again hahhaha"</em> | <em>"lagging again pre??"</em></td></tr>
+      <tr><td>#5</td><td class="ts">2026-05-20 11:56:24.291</td><td><strong>17</strong></td><td>14</td><td class="sample"><em>"trash game so lag"</em> | <em>"lag"</em></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TOP CLUSTERS P2 -->
+<div class="section">
+  <div class="section-title" style="color:var(--c2)">
+    🟡 <span class="t"
+      data-vi="Top Clusters — Period ② Post-IDC (May 13–18)"
+      data-en="Top Clusters — Period ② Post-IDC (May 13–18)"></span>
+  </div>
+  <table>
+    <thead><tr>
+      <th>#</th><th>Time (ICT)</th><th>Msgs</th><th>Users</th>
+      <th><span class="t" data-vi="Tin nhắn mẫu" data-en="Sample messages"></span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>#1</td><td class="ts">2026-05-13 22:03:53.771</td><td><strong>16</strong></td><td>13</td><td class="sample"></td></tr>
+      <tr><td>#2</td><td class="ts">2026-05-15 22:11:34.217</td><td><strong>15</strong></td><td>15</td><td class="sample"></td></tr>
+      <tr><td>#3</td><td class="ts">2026-05-15 22:23:44.998</td><td><strong>15</strong></td><td>13</td><td class="sample"></td></tr>
+      <tr><td>#4</td><td class="ts">2026-05-15 21:27:29.772</td><td><strong>13</strong></td><td>11</td><td class="sample"></td></tr>
+      <tr><td>#5</td><td class="ts">2026-05-15 22:01:14.772</td><td><strong>13</strong></td><td>11</td><td class="sample"></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TOP CLUSTERS P1 -->
+<div class="section">
+  <div class="section-title" style="color:var(--c1)">
+    🔵 <span class="t"
+      data-vi="Top Clusters — Period ① GCP Baseline (May 7–12)"
+      data-en="Top Clusters — Period ① GCP Baseline (May 7–12)"></span>
+  </div>
+  <table>
+    <thead><tr>
+      <th>#</th><th>Time (ICT)</th><th>Msgs</th><th>Users</th>
+      <th><span class="t" data-vi="Tin nhắn mẫu" data-en="Sample messages"></span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>#1</td><td class="ts">2026-05-09 21:53:59.994</td><td><strong>13</strong></td><td>11</td><td class="sample"></td></tr>
+      <tr><td>#2</td><td class="ts">2026-05-09 22:15:27.290</td><td><strong>8</strong></td><td>6</td><td class="sample"></td></tr>
+      <tr><td>#3</td><td class="ts">2026-05-09 21:59:14.994</td><td><strong>7</strong></td><td>7</td><td class="sample"></td></tr>
+      <tr><td>#4</td><td class="ts">2026-05-09 21:47:29.769</td><td><strong>5</strong></td><td>5</td><td class="sample"></td></tr>
+      <tr><td>#5</td><td class="ts">2026-05-07 19:26:18.288</td><td><strong>4</strong></td><td>3</td><td class="sample"></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- KEY OBSERVATIONS -->
+<div class="section">
+  <div class="section-title">
+    💡 <span class="t" data-vi="Nhận định" data-en="Key Observations"></span>
+  </div>
+  <div class="obs-block">
+    <!-- VI block -->
+    <div class="obs-vi">
+      <p><strong style="color:var(--c2)">① → ②  GCP → IDC Migration (+229%):</strong>
+      Lag complaints tăng từ 47.3 → 155.6 msgs/ngày ngay sau khi migrate server về IDC ngày 13/5.
+      Peak vào May 15 (236 msgs) — sau migration 2 ngày. Số lượng multi-user cluster tăng 45 → 205 cho thấy lag mang tính toàn server, không phải lag cá nhân.</p>
+      <p><strong style="color:var(--c3)">② → ③  IDC + Update 20/5 (thêm +735% so với P2):</strong>
+      Chỉ trong 7.75h sau bảo trì sáng 20/5, đã có 416 complaints từ 245 players — gấp 4.7x tốc độ của Period 2.
+      Cluster đột biến lúc <strong style="color:#f87171">15:02 ICT (281 msgs / 176 users)</strong> = lag event rõ ràng,
+      có thể liên quan đến tác vụ server sau maintenance window (re-index, world boss spawn, peak login v.v.).</p>
+      <p><strong style="color:var(--muted)">⚠️ Cần theo dõi:</strong>
+      Nếu cluster 15:02 là one-off event (vd: server restart spike), trend thực của P3 sẽ thấp hơn nhiều (~50 msgs trong 7h trước 15:00).
+      Khuyến nghị: chạy lại scan sau 21:00 ICT hôm nay để có full-day picture.</p>
+    </div>
+    <!-- EN block (hidden by default) -->
+    <div class="obs-en" style="display:none">
+      <p><strong style="color:var(--c2)">① → ②  GCP → IDC Migration (+229%):</strong>
+      Lag complaints jumped from 47.3 → 155.6 msgs/day immediately after the server migrated to IDC on May 13.
+      Peak on May 15 (236 msgs) — two days post-migration. Multi-user clusters rose from 45 → 205, indicating server-wide lag rather than individual client issues.</p>
+      <p><strong style="color:var(--c3)">② → ③  IDC + Update May 20 (additional +735% vs P2):</strong>
+      In just 7.75h after the May 20 maintenance window closed, 416 complaints from 245 players were recorded — 4.7× the rate of Period 2.
+      The spike cluster at <strong style="color:#f87171">15:02 ICT (281 msgs / 176 users)</strong> is a clear lag event,
+      likely triggered by post-maintenance server tasks (re-indexing, world boss spawn, peak login rush, etc.).</p>
+      <p><strong style="color:var(--muted)">⚠️ Watch point:</strong>
+      If the 15:02 cluster is a one-off event (e.g. server restart spike), the true P3 trend would be significantly lower (~50 msgs in the 7h before 15:00).
+      Recommendation: re-run the scan after 21:00 ICT today to get a full-day picture.</p>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  L2M SEA — Lag Pattern Scan | NCV Games | Purple Chat Logview | Generated 2026-05-20 08:49 ICT
+</div>
+
+<script>
+function setLang(lang) {
+  // Toggle inline .t spans
+  document.querySelectorAll('.t').forEach(function(el) {
+    var val = el.dataset[lang];
+    if (val !== undefined) el.innerHTML = val;
+  });
+  // Toggle obs blocks
+  document.querySelector('.obs-vi').style.display = (lang === 'vi') ? '' : 'none';
+  document.querySelector('.obs-en').style.display = (lang === 'en') ? '' : 'none';
+  // Update buttons
+  document.getElementById('btn-vi').className = (lang === 'vi') ? 'active' : '';
+  document.getElementById('btn-en').className = (lang === 'en') ? 'active' : '';
+  // Persist preference
+  try { localStorage.setItem('lang', lang); } catch(e) {}
+}
+// Init on load
+(function() {
+  var saved;
+  try { saved = localStorage.getItem('lang'); } catch(e) {}
+  setLang(saved || 'vi');
+})();
+</script>
+</body>
+</html>
