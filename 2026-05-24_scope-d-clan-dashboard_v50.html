@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scope D — VIP Clan Intel Dashboard</title>
+  <style>
+:root {
+  --bg: #0f1419;
+  --bg-2: #1a1f29;
+  --bg-3: #232a36;
+  --bg-4: #2c3340;
+  --fg: #e6e8eb;
+  --fg-dim: #9aa3ad;
+  --fg-mute: #6b7280;
+  --accent: #a78bfa;       /* Purple (matches L2M brand) */
+  --accent-2: #c4b5fd;
+  --accent-soft: rgba(167,139,250,0.15);
+  --green: #34d399;
+  --amber: #fbbf24;
+  --red: #ef4444;
+  --cyan: #22d3ee;
+  --border: rgba(255,255,255,0.08);
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+/* Header */
+.dash-header {
+  background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+.dash-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dash-header .subtitle { color: var(--fg-dim); font-size: 13px; margin-bottom: 16px; }
+.header-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+.header-stat {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 8px;
+  min-width: 120px;
+}
+.header-stat .label { color: var(--fg-mute); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+.header-stat .value { color: var(--fg); font-size: 18px; font-weight: 600; margin-top: 2px; }
+
+/* Nav rows */
+.nav-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.nav-row .nav-label {
+  color: var(--fg-mute);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-right: 4px;
+  min-width: 64px;
+}
+.pill {
+  background: var(--bg-4);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.pill:hover { background: var(--bg-3); border-color: var(--accent); }
+.pill.active {
+  background: var(--accent);
+  color: #1a1f29;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.pill.placeholder {
+  background: transparent;
+  color: var(--fg-mute);
+  border: 1px dashed var(--border);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.pill.placeholder:hover { background: transparent; border-color: var(--border); }
+
+/* Highlight box */
+.highlight-box {
+  background: linear-gradient(180deg, rgba(167,139,250,0.08), rgba(167,139,250,0.02));
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: 12px;
+  padding: 22px 26px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+.highlight-box h2 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: var(--accent);
+}
+.highlight-box .week-range { color: var(--fg-dim); font-size: 13px; margin-bottom: 18px; }
+
+.week-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.week-stat {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+.week-stat .label { color: var(--fg-mute); font-size: 11px; }
+.week-stat .value { color: var(--fg); font-size: 16px; font-weight: 600; }
+.week-stat.alert { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.08); }
+.week-stat.warn  { border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.08); }
+
+.highlight-list { display: flex; flex-direction: column; gap: 10px; }
+.highlight-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  background: var(--bg-3);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+}
+.highlight-item.flag_alert { border-left-color: var(--red); }
+.highlight-item.data_quality { border-left-color: var(--amber); }
+.highlight-item.union_activity { border-left-color: var(--cyan); }
+.highlight-item.topic_density { border-left-color: var(--green); }
+.highlight-rank {
+  background: var(--bg-4);
+  color: var(--fg-dim);
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600;
+  flex-shrink: 0;
+}
+.highlight-content .title { font-weight: 600; color: var(--fg); margin-bottom: 3px; }
+.highlight-content .evidence { color: var(--fg-dim); font-size: 12px; }
+.highlight-content .clans { color: var(--fg-mute); font-size: 11px; margin-top: 4px; }
+
+.data-gap-notice {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: rgba(251,191,36,0.08);
+  border: 1px solid rgba(251,191,36,0.3);
+  border-radius: 8px;
+  color: var(--amber);
+  font-size: 12px;
+}
+
+/* Clan cards section */
+.section-title {
+  font-size: 16px;
+  color: var(--fg);
+  margin: 28px 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title .count {
+  background: var(--bg-3);
+  color: var(--fg-dim);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.clan-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.clan-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+.clan-card.hidden { display: none; }
+.clan-card:hover { border-color: rgba(167,139,250,0.4); }
+
+.clan-card-head {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: linear-gradient(90deg, var(--bg-3), var(--bg-2));
+  border-bottom: 1px solid var(--border);
+}
+.clan-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--fg);
+}
+.clan-badge {
+  background: var(--bg-4);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.clan-badge.hottest { background: rgba(239,68,68,0.18); color: #fca5a5; }
+.clan-badge.active  { background: rgba(251,191,36,0.18); color: #fcd34d; }
+.clan-badge.moderate{ background: rgba(34,211,238,0.15); color: #67e8f9; }
+.clan-badge.quiet   { background: var(--bg-4); color: var(--fg-mute); }
+.clan-meta {
+  display: flex;
+  gap: 14px;
+  color: var(--fg-dim);
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+.clan-meta strong { color: var(--fg); font-weight: 600; }
+
+.clan-card-body { padding: 14px 18px; }
+.clan-summary {
+  background: var(--bg-3);
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--fg);
+}
+.clan-summary .label {
+  color: var(--accent);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.daily-block {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-3);
+  margin-bottom: 8px;
+}
+.daily-block summary {
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  user-select: none;
+  list-style: none;
+}
+.daily-block summary::-webkit-details-marker { display: none; }
+.daily-block summary::before {
+  content: "▸";
+  color: var(--fg-mute);
+  transition: transform 0.15s ease;
+  font-size: 10px;
+}
+.daily-block[open] summary::before { transform: rotate(90deg); }
+.daily-block summary:hover { background: var(--bg-4); }
+.daily-block .date-label { font-weight: 600; color: var(--fg); }
+.daily-block .date-stat { color: var(--fg-mute); font-size: 12px; margin-left: auto; }
+.daily-block .body { padding: 12px 18px 16px 18px; }
+
+.discussion-card {
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+.discussion-card .disc-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+.disc-time { color: var(--fg-mute); }
+.disc-participants { color: var(--fg-dim); }
+.disc-msgs { color: var(--accent-2); font-weight: 600; }
+.cat-chip {
+  background: var(--bg-2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  border: 1px solid var(--border);
+}
+.flag-chip {
+  background: rgba(239,68,68,0.15);
+  color: #fca5a5;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  border: 1px solid rgba(239,68,68,0.3);
+}
+.disc-sample {
+  color: var(--fg-dim);
+  font-size: 12px;
+  margin-top: 6px;
+  padding-left: 10px;
+  border-left: 2px solid var(--border);
+}
+.disc-sample .msg-actor { color: var(--accent-2); font-weight: 600; }
+.disc-sample .msg-vip { color: var(--amber); font-size: 10px; margin-left: 4px; }
+
+.no-data { color: var(--fg-mute); font-style: italic; padding: 12px; text-align: center; }
+
+/* Per-clan timeline */
+.timeline-strip {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.timeline-week {
+  flex: 1;
+  min-width: 110px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.timeline-week.empty { opacity: 0.4; border-style: dashed; }
+.timeline-week.active { border-color: var(--accent); background: var(--accent-soft); }
+.timeline-week .wlabel { color: var(--fg-mute); font-size: 11px; }
+.timeline-week .count  { color: var(--fg); font-size: 16px; font-weight: 700; margin: 2px 0; }
+.timeline-week .sub    { color: var(--fg-dim); font-size: 10px; }
+
+/* Footer */
+.dash-footer {
+  margin-top: 32px;
+  padding: 16px;
+  text-align: center;
+  color: var(--fg-mute);
+  font-size: 11px;
+  border-top: 1px solid var(--border);
+}
+
+/* Empty state */
+.empty-week {
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--bg-2);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  color: var(--fg-dim);
+}
+.empty-week h3 { color: var(--fg); margin: 0 0 6px 0; font-size: 16px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container { padding: 14px; }
+  .dash-header { padding: 18px; }
+  .dash-header h1 { font-size: 20px; }
+  .nav-row { padding: 10px 12px; gap: 8px; }
+  .pill { padding: 5px 10px; font-size: 12px; }
+  .clan-card-head { padding: 12px; gap: 8px; }
+  .clan-name { font-size: 14px; }
+  .clan-meta { font-size: 11px; gap: 8px; }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="dash-header">
+      <h1>🏰 Scope D — VIP Clan Intel Dashboard</h1>
+      <div class="subtitle">Time-axis cumulative view · Purple Chat Log scans · Lineage2M SEA</div>
+      <div class="header-stats">
+        <div class="header-stat"><div class="label">Total clans</div><div class="value">10</div></div>
+        <div class="header-stat"><div class="label">Total msgs</div><div class="value">4,954</div></div>
+        <div class="header-stat"><div class="label">Discussions</div><div class="value">129</div></div>
+        <div class="header-stat"><div class="label">Scans ingested</div><div class="value">1</div></div>
+        <div class="header-stat"><div class="label">Date range</div><div class="value" style="font-size:13px">2026-05-22 → 2026-05-22</div></div>
+        <div class="header-stat"><div class="label">Weeks covered</div><div class="value">1</div></div>
+      </div>
+    </header>
+
+    <div class="nav-row">
+      <span class="nav-label">Tháng</span>
+      <button class="pill active" data-month="2026-05" >Tháng 5 2026</button>
+    </div>
+
+    <div class="nav-row">
+      <span class="nav-label">Tuần</span>
+      <div class="week-pill-group" data-month="2026-05" ><button class="pill active" data-week="2026-W21" >2026-W21</button></div>
+      
+    </div>
+
+    <div class="nav-row">
+      <span class="nav-label">Clan</span>
+      <button class="pill active" data-clan="__all__" >All Clans</button><button class="pill" data-clan="BaratheOn" >BaratheOn</button><button class="pill" data-clan="DAZE" >DAZE</button><button class="pill" data-clan="ELITE" >ELITE</button><button class="pill" data-clan="Lumiere" >Lumiere</button><button class="pill" data-clan="MYSTlC" >MYSTlC</button><button class="pill" data-clan="Myth" >Myth</button><button class="pill" data-clan="OSYS" >OSYS</button><button class="pill" data-clan="POKEMON" >POKEMON</button><button class="pill" data-clan="VoltZ" >VoltZ</button><button class="pill" data-clan="WuxiaGaming" >WuxiaGaming</button>
+    </div>
+
+    <div id="week-content">
+      <section class="week-section" data-week="2026-W21" >
+  <div class="highlight-box">
+    <h2>📊 Highlight Summary — 2026-W21</h2>
+    <div class="week-range">2026-05-18 → 2026-05-24 · ISO Week</div>
+    <div class="week-stats-grid">
+      <div class="week-stat"><div class="label">Total msgs</div><div class="value">4,954</div></div>
+      <div class="week-stat"><div class="label">Discussions</div><div class="value">129</div></div>
+      <div class="week-stat"><div class="label">Active clans</div><div class="value">10 / 10</div></div>
+      <div class="week-stat"><div class="label">Active unions</div><div class="value">3</div></div>
+      <div class="week-stat alert"><div class="label">Coverage</div><div class="value">14.3%</div></div>
+      <div class="week-stat"><div class="label">Days scanned</div><div class="value">1 / 7</div></div>
+    </div>
+    <div class="highlight-list">
+      <div class="highlight-item activity_pattern">
+  <div class="highlight-rank">1</div>
+  <div class="highlight-content">
+    <div class="title">Lumiere dẫn đầu volume tuần này</div>
+    <div class="evidence">1,740 msgs (35.1% toàn bộ) · 40 actors active · 13 discussions</div>
+    <div class="clans">Clans: Lumiere</div>
+  </div>
+</div><div class="highlight-item topic_density">
+  <div class="highlight-rank">2</div>
+  <div class="highlight-content">
+    <div class="title">Topic &#x27;siege&#x27; dominant cross-clan</div>
+    <div class="evidence">196 mentions từ 10/10 clans active</div>
+    <div class="clans">Clans: BaratheOn, DAZE, ELITE, Lumiere, MYSTlC</div>
+  </div>
+</div><div class="highlight-item flag_alert">
+  <div class="highlight-rank">3</div>
+  <div class="highlight-content">
+    <div class="title">💢 conflict_signal detected (5 hits)</div>
+    <div class="evidence">5 flagged msgs từ 4 clans · severity=medium</div>
+    <div class="clans">Clans: DAZE, Lumiere, MYSTlC, VoltZ</div>
+  </div>
+</div><div class="highlight-item union_activity">
+  <div class="highlight-rank">4</div>
+  <div class="highlight-content">
+    <div class="title">Union distribution: 3 unions active</div>
+    <div class="evidence">Independent (3,980) · Venom (662) · GARUDA (203)</div>
+    <div class="clans">Clans: BaratheOn, DAZE, ELITE, Lumiere, MYSTlC, Myth + 4 more</div>
+  </div>
+</div><div class="highlight-item data_quality">
+  <div class="highlight-rank">5</div>
+  <div class="highlight-content">
+    <div class="title">⚠️ Data gap — chỉ 14.3% tuần được scan</div>
+    <div class="evidence">Missing scans: 2026-05-18, 2026-05-19, 2026-05-20, 2026-05-21, 2026-05-23, 2026-05-24</div>
+    
+  </div>
+</div>
+    </div>
+    <div class="data-gap-notice">⚠️ <strong>Data gap:</strong> Chưa scan 6 ngày → 2026-05-18 (Mon), 2026-05-19 (Tue), 2026-05-20 (Wed), 2026-05-21 (Thu), 2026-05-23 (Sat), 2026-05-24 (Sun)</div>
+  </div>
+
+  <h3 class="section-title">🏰 Per-Clan Cards <span class="count">10</span></h3>
+  <div class="clan-grid">
+    <article class="clan-card" data-clan="Lumiere">
+  <div class="clan-card-head">
+    <div class="clan-name">Lumiere</div>
+    <span class="clan-badge hottest">🔥 hottest</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>Independent</strong></span>
+      <span>🖥️ ?</span>
+      <span>💬 <strong>1,740</strong> msgs</span>
+      <span>💭 <strong>13</strong> disc</span>
+      <span>👤 <strong>40</strong> actors</span>
+      <span>🎯 Siege</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">1,740 msgs · 13 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>Lumiere dẫn đầu toàn server với 1,754 tin nhắn từ 40 thành viên — ngày chiến đấu căng thẳng với clan đối địch Edlin. Session dài nhất [15:29-18:27] kéo dài 3 giờ với 539 tin nhắn, nội dung xoay quanh việc Edlin farming LastGround dưới sự bảo vệ của nhau và phản ứng truy đuổi của Lumiere. Lag được nhắc nhiều lần gây khó chịu trong chiến đấu. Buổi sáng cũng có Siege dày đặc 321 tin nhắn. Clan cực kỳ chiến đấu và tổ chức cao, là clan theo dõi ưu tiên nhất tuần này.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">00:00–02:38</span>
+    <span class="disc-msgs">213 msgs</span>
+    <span class="disc-participants">Jinji, Tuhan, Cyrax, iGamz, 甜的 +16</span>
+    <span class="cat-chip">💰 Economy</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Jinji</span><span class="msg-vip">[T4 VIP T4]</span>: wkwkwk</div><div><span class="msg-actor">Jinji</span><span class="msg-vip">[T4 VIP T4]</span>: NAGA</div><div><span class="msg-actor">Tuhan</span>: KELAS</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">03:45–05:05</span>
+    <span class="disc-msgs">52 msgs</span>
+    <span class="disc-participants">DongFangWudi, XingChengYang, TaNz, CF, LeMi +2</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">DongFangWudi</span><span class="msg-vip">[T2 Whale F]</span>: fom 1 jg ada keknya</div><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: go front and right</div><div><span class="msg-actor">DongFangWudi</span><span class="msg-vip">[T2 Whale F]</span>: .</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">06:52–07:25</span>
+    <span class="disc-msgs">57 msgs</span>
+    <span class="disc-participants">XingChengYang, DongFangWudi, LastOrder, HkRanger, LeMi</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: boss ada orang ?</div><div><span class="msg-actor">DongFangWudi</span><span class="msg-vip">[T2 Whale F]</span>: c</div><div><span class="msg-actor">DongFangWudi</span><span class="msg-vip">[T2 Whale F]</span>: b</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">07:51–08:49</span>
+    <span class="disc-msgs">42 msgs</span>
+    <span class="disc-participants">黒死牟, XingChengYang, coLolin3, TaNz, LastOrder +4</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">黒死牟</span><span class="msg-vip">[T4 VIP T4]</span>: any 1 want kill destra and bakpao?</div><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: wait</div><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: ada om sweet ?</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">09:21–09:53</span>
+    <span class="disc-msgs">58 msgs</span>
+    <span class="disc-participants">WAR99, DongFangWudi, Moxxy, AstagfiruIIlah, TaNz +2</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">WAR99</span><span class="msg-vip">[T4 VIP T4]</span>: cemed mid 2 ppl teon 3 and kalos</div><div><span class="msg-actor">WAR99</span><span class="msg-vip">[T4 VIP T4]</span>: cemed mid babg</div><div><span class="msg-actor">DongFangWudi</span><span class="msg-vip">[T2 Whale F]</span>: sini yu</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">10:55–11:08</span>
+    <span class="disc-msgs">5 msgs</span>
+    <span class="disc-participants">AstagfiruIIlah, Saeron</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">AstagfiruIIlah</span><span class="msg-vip">[T2 Whale F]</span>: pada kemana</div><div><span class="msg-actor">AstagfiruIIlah</span><span class="msg-vip">[T2 Whale F]</span>: toi 1 nal pojok atas kanan</div><div><span class="msg-actor">AstagfiruIIlah</span><span class="msg-vip">[T2 Whale F]</span>: gw di ruang pertama lu di pojok yang kecil</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">11:24–14:21</span>
+    <span class="disc-msgs">321 msgs</span>
+    <span class="disc-participants">XingChengYang, AstagfiruIIlah, TaNz, Eris, Tuhan +14</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    <span class="flag-chip">💢 Conflict</span>
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: panggilan</div><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: untuk sweeping</div><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: boss</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">14:35–14:39</span>
+    <span class="disc-msgs">15 msgs</span>
+    <span class="disc-participants">iGamz, 黒死牟, Dandi, AstagfiruIIlah</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">iGamz</span><span class="msg-vip">[T2 Whale F]</span>: -1 farm zephar</div><div><span class="msg-actor">iGamz</span><span class="msg-vip">[T2 Whale F]</span>: ada yang mau ?</div><div><span class="msg-actor">黒死牟</span><span class="msg-vip">[T4 VIP T4]</span>: me</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">15:13–15:14</span>
+    <span class="disc-msgs">9 msgs</span>
+    <span class="disc-participants">DongFangWudi, TaNz, Saeron</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">DongFangWudi</span><span class="msg-vip">[T2 Whale F]</span>: .</div><div><span class="msg-actor">DongFangWudi</span><span class="msg-vip">[T2 Whale F]</span>: sweeping field ga ges</div><div><span class="msg-actor">DongFangWudi</span><span class="msg-vip">[T2 Whale F]</span>: banyak nih</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">15:29–18:27</span>
+    <span class="disc-msgs">539 msgs</span>
+    <span class="disc-participants">XingChengYang, LastOrder, Jinji, Dandi, DongFangWudi +15</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    <span class="flag-chip">💢 Conflict</span>
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: pada kmna jir</div><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: tanz ?</div><div><span class="msg-actor">XingChengYang</span><span class="msg-vip">[T2 Whale F]</span>: anying edlin farm di lastground</div></div>
+</div><div class="no-data" style="text-align:left">… +3 discussions ẩn (mở report ngày để xem hết)</div>
+  </div>
+</details>
+  </div>
+</article><article class="clan-card" data-clan="ELITE">
+  <div class="clan-card-head">
+    <div class="clan-name">ELITE</div>
+    <span class="clan-badge active">🔥 active</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>Independent</strong></span>
+      <span>🖥️ ?</span>
+      <span>💬 <strong>818</strong> msgs</span>
+      <span>💭 <strong>15</strong> disc</span>
+      <span>👤 <strong>36</strong> actors</span>
+      <span>🎯 Event/Boss</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">818 msgs · 15 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>ELITE là clan hoạt động đêm khuya với đỉnh điểm khổng lồ [02:17-03:50] lên tới 355 tin nhắn — boss rush đồng loạt nhiều boss cùng lúc kết hợp Siege. Trong ngày nổi bật vấn đề lag nặng được nhắc đi nhắc lại nhiều lần, ảnh hưởng đến trải nghiệm boss fight. Cuộc trò chuyện buổi tối bàn nhiều về kinh tế — drop item, mua bán, một số tin nhắn gợi ý trading account. Clan duy trì 36 thành viên tích cực suốt ngày, tâm trạng năng động nhưng lag là điểm cần theo dõi.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">00:14–00:44</span>
+    <span class="disc-msgs">13 msgs</span>
+    <span class="disc-participants">mapledust, Shikaku, MaLiMaLa, ANATTA, xNOTE +2</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">mapledust</span>: 2f so many &gt;.&lt;</div><div><span class="msg-actor">mapledust</span>: 1 oclock</div><div><span class="msg-actor">Shikaku</span><span class="msg-vip">[T2 Whale F]</span>: haff</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">01:01–01:24</span>
+    <span class="disc-msgs">24 msgs</span>
+    <span class="disc-participants">MaLiMaLa, อ่าาาาส์, LEARNMORE, gAronz, หอกทะลวงซิงเกิ้ลมัม +3</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">MaLiMaLa</span>: 01:06 เบฮีมอธ - Behemoth</div><div><span class="msg-actor">MaLiMaLa</span>: ดินแดนสุดท้าย</div><div><span class="msg-actor">MaLiMaLa</span>: ศัตรูกำลังไป</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">02:17–03:50</span>
+    <span class="disc-msgs">355 msgs</span>
+    <span class="disc-participants">MaLiMaLa, LEARNMORE, หอกทะลวงซิงเกิ้ลมัม, LoI2DGaraIs, gAronz +1</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">MaLiMaLa</span>: 02:22 เอนคูรา - Enkura</div><div><span class="msg-actor">MaLiMaLa</span>: บอสรัวๆ หลายตัวเวลาเดียวกัน</div><div><span class="msg-actor">MaLiMaLa</span>: selu&gt;breka&gt;tem&gt;basila&gt;felis</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">04:19–05:09</span>
+    <span class="disc-msgs">58 msgs</span>
+    <span class="disc-participants">MaLiMaLa, หอกทะลวงซิงเกิ้ลมัม, Rovena, LoI2DGaraIs, gAronz +3</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">MaLiMaLa</span>: 04:24 ฮิซิโลเม - Hisilrome</div><div><span class="msg-actor">หอกทะลวงซิงเกิ้ลมัม</span><span class="msg-vip">[T4 VIP T4]</span>: ถ้าฮิซิเกิด</div><div><span class="msg-actor">Rovena</span><span class="msg-vip">[T1 Whale G]</span>: dont hit until 4.40</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">05:29–05:31</span>
+    <span class="disc-msgs">11 msgs</span>
+    <span class="disc-participants">gAronz</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">gAronz</span><span class="msg-vip">[T2 Whale F]</span>: คนที่สั่งอะไม่ใช่ ผช</div><div><span class="msg-actor">gAronz</span><span class="msg-vip">[T2 Whale F]</span>: บอกเลย</div><div><span class="msg-actor">gAronz</span><span class="msg-vip">[T2 Whale F]</span>: ถูด</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">05:46–05:57</span>
+    <span class="disc-msgs">18 msgs</span>
+    <span class="disc-participants">gAronz, AppleJuice, NonameZz</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">gAronz</span><span class="msg-vip">[T2 Whale F]</span>: ยังไม่ 30 เราคุยจะรู้เรื่องไหมนิดรีมมมมม</div><div><span class="msg-actor">gAronz</span><span class="msg-vip">[T2 Whale F]</span>: 55555555</div><div><span class="msg-actor">gAronz</span><span class="msg-vip">[T2 Whale F]</span>: หมายถึงโฟน</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">06:26–06:27</span>
+    <span class="disc-msgs">6 msgs</span>
+    <span class="disc-participants">gAronz, เสิดเดินสุด</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">gAronz</span><span class="msg-vip">[T2 Whale F]</span>: ตั้งกี่นาที</div><div><span class="msg-actor">gAronz</span><span class="msg-vip">[T2 Whale F]</span>: ตัวนี้เกิดอีกทีตอนไหน</div><div><span class="msg-actor">เสิดเดินสุด</span>: หลัง 30</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">12:03–13:07</span>
+    <span class="disc-msgs">79 msgs</span>
+    <span class="disc-participants">LoI2DGaraIs, เก่งเดินสุด, ก่อนจะอมดมดูก่อน, Maximum, NonameZz +8</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">LoI2DGaraIs</span><span class="msg-vip">[T4 VIP T4]</span>: เบฮี เรา</div><div><span class="msg-actor">LoI2DGaraIs</span><span class="msg-vip">[T4 VIP T4]</span>: เฟลิสมัน</div><div><span class="msg-actor">LoI2DGaraIs</span><span class="msg-vip">[T4 VIP T4]</span>: อีก1นาที</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">13:35–14:30</span>
+    <span class="disc-msgs">22 msgs</span>
+    <span class="disc-participants">LEARNMORE, sNASA, Maximum, MaLiMaLa, IHIHI +2</span>
+    <span class="cat-chip">📊 Class/Meta</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">LEARNMORE</span><span class="msg-vip">[T2 Whale F]</span>: โซน1 แดงว่าง1</div><div><span class="msg-actor">LEARNMORE</span><span class="msg-vip">[T2 Whale F]</span>: ตี้ต่าน ชมละ เปอ</div><div><span class="msg-actor">LEARNMORE</span><span class="msg-vip">[T2 Whale F]</span>: ต่านเอิท ต้มมาม่าอยุ่ ต่องการพระ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">15:01–15:10</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">mapledust, MaLiMaLa</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">mapledust</span>: 55</div><div><span class="msg-actor">MaLiMaLa</span>: 15:09 ทิมิเนล - Timiniel</div><div><span class="msg-actor">MaLiMaLa</span>: 15:09 ทิมิเนล - Timiniel</div></div>
+</div><div class="no-data" style="text-align:left">… +5 discussions ẩn (mở report ngày để xem hết)</div>
+  </div>
+</details>
+  </div>
+</article><article class="clan-card" data-clan="MYSTlC">
+  <div class="clan-card-head">
+    <div class="clan-name">MYSTlC</div>
+    <span class="clan-badge active">🔥 active</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>Venom</strong></span>
+      <span>🖥️ Teon 04</span>
+      <span>💬 <strong>662</strong> msgs</span>
+      <span>💭 <strong>13</strong> disc</span>
+      <span>👤 <strong>41</strong> actors</span>
+      <span>🎯 Event/Boss</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">662 msgs · 13 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>MYSTlC có ngày hoạt động mạnh với 667 tin nhắn từ 41 thành viên, trải đều từ nửa đêm đến đêm khuya. Buổi sáng [08:01-09:50] là session sôi động nhất với boss train liên tục và Siege coordination. Clan duy trì hệ thống buff clan hall nghiêm túc, thành viên được nhắc nhở lấy buff định kỳ. Có hoạt động free-farm LastGround với nhóm T4 và phòng thủ vùng an toàn. Tâm trạng clan tích cực, không có drama hay tín hiệu bất thường.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">00:00–00:57</span>
+    <span class="disc-msgs">61 msgs</span>
+    <span class="disc-participants">Quicksilverz, Lylla, ADAMWARLOCK, STARL0RD, lRONMAN +2</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Quicksilverz</span><span class="msg-vip">[T1 Whale G]</span>: เปน สาวก ท่าน1 วัน</div><div><span class="msg-actor">Quicksilverz</span><span class="msg-vip">[T1 Whale G]</span>: 3-4 รอบวันนี้</div><div><span class="msg-actor">Lylla</span><span class="msg-vip">[T2 Whale F]</span>: เบนซจะตุยแล้ว</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">01:37–01:52</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">Lylla, MODOK, ADAMWARLOCK</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Lylla</span><span class="msg-vip">[T2 Whale F]</span>: พี่ชูลงกี่โมง</div><div><span class="msg-actor">MODOK</span><span class="msg-vip">[T1 Whale G]</span>: ตี้ zapar ว่าง1 ใครมาโดดตี้มาได้ครับ</div><div><span class="msg-actor">ADAMWARLOCK</span><span class="msg-vip">[T1 Whale G]</span>: 2.22 หรอคับ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">08:01–09:50</span>
+    <span class="disc-msgs">181 msgs</span>
+    <span class="disc-participants">L0KI, ProfessorX, AncientOne, Kronoz, CaptainAmerica +18</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">L0KI</span><span class="msg-vip">[T1 Whale G]</span>: 777</div><div><span class="msg-actor">L0KI</span><span class="msg-vip">[T1 Whale G]</span>: go kill them all</div><div><span class="msg-actor">ProfessorX</span><span class="msg-vip">[T1 Whale G]</span>: arajo ชื่อที่คุ้นเคย</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">10:13–10:59</span>
+    <span class="disc-msgs">63 msgs</span>
+    <span class="disc-participants">Baymax, ScarletW, RhinoX, L0KI, xxTHANOSxx +9</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Baymax</span><span class="msg-vip">[T1 Whale G]</span>: ไปไหน</div><div><span class="msg-actor">ScarletW</span><span class="msg-vip">[T1 Whale G]</span>: 10.20 รวม t4 ครับ</div><div><span class="msg-actor">RhinoX</span><span class="msg-vip">[T2 Whale F]</span>: ตัวไหนก่อนครับ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">11:20–12:53</span>
+    <span class="disc-msgs">90 msgs</span>
+    <span class="disc-participants">MartineX, ScarletW, xEgo, Lylla, TH3VOID +14</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    <span class="flag-chip">💢 Conflict</span>
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">MartineX</span><span class="msg-vip">[T1 Whale G]</span>: tsss b3 นี้ไม่ฆ่าหรอพี่</div><div><span class="msg-actor">ScarletW</span><span class="msg-vip">[T1 Whale G]</span>: Safe คนนี้จ้า</div><div><span class="msg-actor">MartineX</span><span class="msg-vip">[T1 Whale G]</span>: 55ไม่นุ้ผมใส่แม่งไม่ยั้งเลย</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">13:59–14:34</span>
+    <span class="disc-msgs">45 msgs</span>
+    <span class="disc-participants">ProfessorX, Hawk3ye, DrStrang3, CaptainAmerica, lRONMAN +6</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">ProfessorX</span><span class="msg-vip">[T1 Whale G]</span>: toi 4 invaded</div><div><span class="msg-actor">Hawk3ye</span><span class="msg-vip">[T2 Whale F]</span>: cabir ฟามจุดพี่เคนจิเก่า</div><div><span class="msg-actor">ProfessorX</span><span class="msg-vip">[T1 Whale G]</span>: เจอไหน</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">14:58–15:28</span>
+    <span class="disc-msgs">11 msgs</span>
+    <span class="disc-participants">CaptainAmerica, Hawk3ye, ProfessorX, lRONMAN</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">CaptainAmerica</span><span class="msg-vip">[T1 Whale G]</span>: บอสรอบ 15.00</div><div><span class="msg-actor">Hawk3ye</span><span class="msg-vip">[T2 Whale F]</span>: ตัวหลักมันน่าจะอยู่ TOI กันหมด ฝั่งนี้ก็ไม่ออน</div><div><span class="msg-actor">CaptainAmerica</span><span class="msg-vip">[T1 Whale G]</span>: ผมมาฝั่งเขาแระ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">16:13–17:15</span>
+    <span class="disc-msgs">55 msgs</span>
+    <span class="disc-participants">lRONMAN, Goose, MODOK, CaptainAmerica, TH3VOID +7</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">lRONMAN</span><span class="msg-vip">[T2 Whale F]</span>: 777</div><div><span class="msg-actor">lRONMAN</span><span class="msg-vip">[T2 Whale F]</span>: 777</div><div><span class="msg-actor">Goose</span><span class="msg-vip">[T4 VIP T4]</span>: 777</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">17:55–17:55</span>
+    <span class="disc-msgs">3 msgs</span>
+    <span class="disc-participants">W0LVERINE</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">W0LVERINE</span><span class="msg-vip">[T1 Whale G]</span>: .</div><div><span class="msg-actor">W0LVERINE</span><span class="msg-vip">[T1 Whale G]</span>: ...</div><div><span class="msg-actor">W0LVERINE</span><span class="msg-vip">[T1 Whale G]</span>: แมสๆๆ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">18:27–18:30</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">MODOK</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">MODOK</span><span class="msg-vip">[T1 Whale G]</span>: 666</div><div><span class="msg-actor">MODOK</span><span class="msg-vip">[T1 Whale G]</span>: mirror</div><div><span class="msg-actor">MODOK</span><span class="msg-vip">[T1 Whale G]</span>: 777</div></div>
+</div><div class="no-data" style="text-align:left">… +3 discussions ẩn (mở report ngày để xem hết)</div>
+  </div>
+</details>
+  </div>
+</article><article class="clan-card" data-clan="Myth">
+  <div class="clan-card-head">
+    <div class="clan-name">Myth</div>
+    <span class="clan-badge active">🔥 active</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>Independent</strong></span>
+      <span>🖥️ Bartz 05</span>
+      <span>💬 <strong>423</strong> msgs</span>
+      <span>💭 <strong>11</strong> disc</span>
+      <span>👤 <strong>29</strong> actors</span>
+      <span>🎯 Team/Party</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">423 msgs · 11 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>Myth có ngày khá tốt với 435 tin nhắn từ 29 thành viên, clan mix Trung-Anh. Session sáng [07:18-09:01] với 217 tin nhắn là session lớn nhất — boss, kinh tế và party organization. Điểm đáng lo là session buổi trưa bị flag CHURN_RISK với nhiều phàn nàn lag nặng làm skill không ra, ảnh hưởng chiến đấu rõ rệt. Buổi trưa tập trung tổ chức party team với nhiều tín hiệu team_party. Tâm trạng ổn nhưng vấn đề lag cần được theo dõi vì clan chủ yếu chơi mobile.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">06:27–06:29</span>
+    <span class="disc-msgs">3 msgs</span>
+    <span class="disc-participants">Jonnie, SuperMario</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Jonnie</span>: 老魂牛</div><div><span class="msg-actor">SuperMario</span><span class="msg-vip">[T3 VIP T3]</span>: 没组队抢不过</div><div><span class="msg-actor">Jonnie</span>: 是啊</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">07:18–09:01</span>
+    <span class="disc-msgs">217 msgs</span>
+    <span class="disc-participants">08TheBeSt, TimS, BunBEE, DonaldTrump, Gya +10</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">08TheBeSt</span>: 孤儿不打吗？</div><div><span class="msg-actor">08TheBeSt</span>: 要开入侵了哦</div><div><span class="msg-actor">TimS</span><span class="msg-vip">[T1 Whale G]</span>: 打吗</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">10:25–10:31</span>
+    <span class="disc-msgs">13 msgs</span>
+    <span class="disc-participants">岁岁知, LumiNaTrace, Gya, 08TheBeSt, LeeCC</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">岁岁知</span>: 有没有安全感</div><div><span class="msg-actor">LumiNaTrace</span><span class="msg-vip">[T1 Whale G]</span>: 很有</div><div><span class="msg-actor">岁岁知</span>: 我都不懂 打个boss</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">11:23–11:31</span>
+    <span class="disc-msgs">16 msgs</span>
+    <span class="disc-participants">火柴盒, MessyMooshy</span>
+    <span class="cat-chip">🐞 Bug/FB</span>
+    <span class="flag-chip">⚠️ Churn Risk</span>
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">火柴盒</span><span class="msg-vip">[T2 Whale F]</span>: jas why u here</div><div><span class="msg-actor">火柴盒</span><span class="msg-vip">[T2 Whale F]</span>: I lag till my skill not coming out zzz</div><div><span class="msg-actor">MessyMooshy</span><span class="msg-vip">[T2 Whale F]</span>: I see air hitting me. bottom right show ur name</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">11:59–12:41</span>
+    <span class="disc-msgs">83 msgs</span>
+    <span class="disc-participants">LemonTea, HALILINTAR, Jonnie, 08TheBeSt, DonaldTrump +11</span>
+    <span class="cat-chip">🤝 Team/Party</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">LemonTea</span><span class="msg-vip">[T3 VIP T3]</span>: no more server WB</div><div><span class="msg-actor">LemonTea</span><span class="msg-vip">[T3 VIP T3]</span>: go to the map</div><div><span class="msg-actor">LemonTea</span><span class="msg-vip">[T3 VIP T3]</span>: wait event awhile</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">15:45–15:47</span>
+    <span class="disc-msgs">10 msgs</span>
+    <span class="disc-participants">火柴盒, MessyMooshy, Zelodris, DRxStrange</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">火柴盒</span><span class="msg-vip">[T2 Whale F]</span>: i offline 2hr nb forgot</div><div><span class="msg-actor">MessyMooshy</span><span class="msg-vip">[T2 Whale F]</span>: how ah</div><div><span class="msg-actor">MessyMooshy</span><span class="msg-vip">[T2 Whale F]</span>: so dinner ownself settle? lol</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">16:21–16:59</span>
+    <span class="disc-msgs">23 msgs</span>
+    <span class="disc-participants">N99, aMmo, LeeCC, RaveZ, Gya +2</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">N99</span><span class="msg-vip">[T2 Whale F]</span>: LOL</div><div><span class="msg-actor">aMmo</span><span class="msg-vip">[T3 VIP T3]</span>: why 99?</div><div><span class="msg-actor">N99</span><span class="msg-vip">[T2 Whale F]</span>: He was beside me and picked up the ring.</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">19:59–20:01</span>
+    <span class="disc-msgs">8 msgs</span>
+    <span class="disc-participants">LemonTea</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">LemonTea</span><span class="msg-vip">[T3 VIP T3]</span>: 123</div><div><span class="msg-actor">LemonTea</span><span class="msg-vip">[T3 VIP T3]</span>: 321</div><div><span class="msg-actor">LemonTea</span><span class="msg-vip">[T3 VIP T3]</span>: toi3f RR</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">20:35–20:42</span>
+    <span class="disc-msgs">21 msgs</span>
+    <span class="disc-participants">Jonnie, TimS, LumiNaTrace, BunBEE, 08TheBeSt</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Jonnie</span>: boss</div><div><span class="msg-actor">TimS</span><span class="msg-vip">[T1 Whale G]</span>: 紫了</div><div><span class="msg-actor">TimS</span><span class="msg-vip">[T1 Whale G]</span>: trust meeeee</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">21:07–21:09</span>
+    <span class="disc-msgs">10 msgs</span>
+    <span class="disc-participants">08TheBeSt, Gya</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">08TheBeSt</span>: 对到五个紫坐骑</div><div><span class="msg-actor">08TheBeSt</span>: 前面被压着打，后面居然赢了</div><div><span class="msg-actor">08TheBeSt</span>: 哈哈</div></div>
+</div><div class="no-data" style="text-align:left">… +1 discussions ẩn (mở report ngày để xem hết)</div>
+  </div>
+</details>
+  </div>
+</article><article class="clan-card" data-clan="POKEMON">
+  <div class="clan-card-head">
+    <div class="clan-name">POKEMON</div>
+    <span class="clan-badge active">🔥 active</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>Independent</strong></span>
+      <span>🖥️ Teon 01</span>
+      <span>💬 <strong>406</strong> msgs</span>
+      <span>💭 <strong>15</strong> disc</span>
+      <span>👤 <strong>26</strong> actors</span>
+      <span>🎯 Siege</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">406 msgs · 15 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>POKEMON có ngày hoạt động khá với 417 tin nhắn từ 29 thành viên, clan Indonesia-English. Session sáng [09:15-10:24] với 176 tin nhắn là session lớn nhất — bàn sâu về class meta, Siege strategy và party composition. Có phàn nàn về game sau update gây ra lag và bug mới. Cả ngày tập trung tổ chức party farming và arena. Hoạt động trading buổi chiều nhẹ. Tâm trạng clan chuyên nghiệp, tổ chức tốt.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">00:02–00:03</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">MrMime, Rayquaza</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">MrMime</span><span class="msg-vip">[T2 Whale F]</span>: chill cimid</div><div><span class="msg-actor">Rayquaza</span><span class="msg-vip">[T2 Whale F]</span>: nnti</div><div><span class="msg-actor">MrMime</span><span class="msg-vip">[T2 Whale F]</span>: pin2 uda kgn berattttttt</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">01:30–01:30</span>
+    <span class="disc-msgs">3 msgs</span>
+    <span class="disc-participants">LUXRAY, MeowScrada</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">LUXRAY</span><span class="msg-vip">[T2 Whale F]</span>: gw ttp dbnh nop</div><div><span class="msg-actor">LUXRAY</span><span class="msg-vip">[T2 Whale F]</span>: bukan astagfirulah tp</div><div><span class="msg-actor">MeowScrada</span><span class="msg-vip">[T2 Whale F]</span>: sama</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">04:25–04:26</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">MeowScrada, Marowak, Ruum, ENTEI</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">MeowScrada</span><span class="msg-vip">[T2 Whale F]</span>: mereka kayak nya ke core</div><div><span class="msg-actor">Marowak</span><span class="msg-vip">[T1 Whale G]</span>: bikin pt 2 mid</div><div><span class="msg-actor">Ruum</span><span class="msg-vip">[T1 Whale G]</span>: guys come pt2</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">04:49–04:49</span>
+    <span class="disc-msgs">3 msgs</span>
+    <span class="disc-participants">SnorlaxEx</span>
+    <span class="cat-chip">🐞 Bug/FB</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">SnorlaxEx</span><span class="msg-vip">[T3 VIP T3]</span>: waktu itu bisa kita complain bg</div><div><span class="msg-actor">SnorlaxEx</span><span class="msg-vip">[T3 VIP T3]</span>: yang bug abuse di B6</div><div><span class="msg-actor">SnorlaxEx</span><span class="msg-vip">[T3 VIP T3]</span>: bisa tele</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">09:15–10:24</span>
+    <span class="disc-msgs">176 msgs</span>
+    <span class="disc-participants">TOXTRICITY, eXTrue, Cobalion, Lugia, Sylveon +6</span>
+    <span class="cat-chip">📊 Class/Meta</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">TOXTRICITY</span><span class="msg-vip">[T2 Whale F]</span>: wkaowkoa</div><div><span class="msg-actor">TOXTRICITY</span><span class="msg-vip">[T2 Whale F]</span>: rauuul</div><div><span class="msg-actor">TOXTRICITY</span><span class="msg-vip">[T2 Whale F]</span>: xdestroyuer</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">11:55–12:37</span>
+    <span class="disc-msgs">18 msgs</span>
+    <span class="disc-participants">MrMime, Marowak, Lugia, Solgaleo, Ruum +3</span>
+    <span class="cat-chip">🤝 Team/Party</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">MrMime</span><span class="msg-vip">[T2 Whale F]</span>: zyrex di spot ragdoll</div><div><span class="msg-actor">MrMime</span><span class="msg-vip">[T2 Whale F]</span>: iut orang punya wkwk</div><div><span class="msg-actor">MrMime</span><span class="msg-vip">[T2 Whale F]</span>: gw sbnrnya punya</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">12:53–13:09</span>
+    <span class="disc-msgs">10 msgs</span>
+    <span class="disc-participants">Cobalion, LuXien, Marowak</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Cobalion</span><span class="msg-vip">[T2 Whale F]</span>: Farang B</div><div><span class="msg-actor">Cobalion</span><span class="msg-vip">[T2 Whale F]</span>: tehy 1 pt</div><div><span class="msg-actor">Cobalion</span><span class="msg-vip">[T2 Whale F]</span>: going</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">13:49–15:16</span>
+    <span class="disc-msgs">68 msgs</span>
+    <span class="disc-participants">RAICHU, LUXRAY, TOXTRICITY, DARKRAI, MrMime +5</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">RAICHU</span><span class="msg-vip">[T1 Whale G]</span>: arena rame kah?</div><div><span class="msg-actor">RAICHU</span><span class="msg-vip">[T1 Whale G]</span>: di mana</div><div><span class="msg-actor">LUXRAY</span><span class="msg-vip">[T2 Whale F]</span>: 4f rr smua teon 1</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">15:59–16:39</span>
+    <span class="disc-msgs">18 msgs</span>
+    <span class="disc-participants">TOXTRICITY, eXTrue, DARKRAI, Rayquaza, Zoroark +1</span>
+    <span class="cat-chip">💰 Economy</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">TOXTRICITY</span><span class="msg-vip">[T2 Whale F]</span>: beliin pon</div><div><span class="msg-actor">eXTrue</span>: jual nya 1-1 aja gi</div><div><span class="msg-actor">eXTrue</span>: 7 kbnyakan</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">17:02–17:15</span>
+    <span class="disc-msgs">5 msgs</span>
+    <span class="disc-participants">DARKRAI, Umbreon, Mewtwo</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">DARKRAI</span><span class="msg-vip">[T1 Whale G]</span>: kemana aja</div><div><span class="msg-actor">DARKRAI</span><span class="msg-vip">[T1 Whale G]</span>: medusa sebelah udah?</div><div><span class="msg-actor">Umbreon</span><span class="msg-vip">[T2 Whale F]</span>: bkin milestone challenge dong kol</div></div>
+</div><div class="no-data" style="text-align:left">… +5 discussions ẩn (mở report ngày để xem hết)</div>
+  </div>
+</details>
+  </div>
+</article><article class="clan-card" data-clan="DAZE">
+  <div class="clan-card-head">
+    <div class="clan-name">DAZE</div>
+    <span class="clan-badge moderate">⚡ moderate</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>Independent</strong></span>
+      <span>🖥️ ?</span>
+      <span>💬 <strong>344</strong> msgs</span>
+      <span>💭 <strong>18</strong> disc</span>
+      <span>👤 <strong>30</strong> actors</span>
+      <span>🎯 Event/Boss</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">344 msgs · 18 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>DAZE có ngày hoạt động khá sôi nổi với 363 tin nhắn từ 30 thành viên, đỉnh điểm là session tối dài 1.5 giờ [20:56-22:40] bàn về Siege, boss và quản lý clan. Đáng chú ý có thông báo một thành viên rút 3 sub-account ra khỏi clan, có thể liên quan đến tái cơ cấu roster. Buổi sáng và trưa tập trung farming dungeon mới và boss coordination. Tâm trạng chung ổn định, không có dấu hiệu churn đáng lo.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">00:22–00:29</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">YaGu, TiTY</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">YaGu</span><span class="msg-vip">[T3 VIP T3]</span>: 00.22- 00.26 ฟริน ซามูเอล ฮาร์ป</div><div><span class="msg-actor">YaGu</span><span class="msg-vip">[T3 VIP T3]</span>: 00.22- 00.26 ฟริน ซามูเอล ฮาร์ป</div><div><span class="msg-actor">TiTY</span><span class="msg-vip">[T1 Whale G]</span>: 555พูดไม่ได่แล้วครับ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">02:01–02:02</span>
+    <span class="disc-msgs">6 msgs</span>
+    <span class="disc-participants">oEXCLUSIVEo, 17PM</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    <span class="flag-chip">💢 Conflict</span>
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">oEXCLUSIVEo</span><span class="msg-vip">[T4 VIP T4]</span>: pvl</div><div><span class="msg-actor">oEXCLUSIVEo</span><span class="msg-vip">[T4 VIP T4]</span>: บอส</div><div><span class="msg-actor">17PM</span><span class="msg-vip">[T2 Whale F]</span>: นา</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">02:21–02:24</span>
+    <span class="disc-msgs">3 msgs</span>
+    <span class="disc-participants">17PM, XiaoQieo</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">17PM</span><span class="msg-vip">[T2 Whale F]</span>: บอส</div><div><span class="msg-actor">17PM</span><span class="msg-vip">[T2 Whale F]</span>: 8ตัว</div><div><span class="msg-actor">XiaoQieo</span><span class="msg-vip">[T2 Whale F]</span>: แกเรธ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">03:00–03:07</span>
+    <span class="disc-msgs">6 msgs</span>
+    <span class="disc-participants">PizzaCompany, XiaoQieo</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">PizzaCompany</span><span class="msg-vip">[T2 Whale F]</span>: ตัวพ่อเข้ามาแล้วน่ะ</div><div><span class="msg-actor">PizzaCompany</span><span class="msg-vip">[T2 Whale F]</span>: ระวังด้วย</div><div><span class="msg-actor">PizzaCompany</span><span class="msg-vip">[T2 Whale F]</span>: ขอชาบัน</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">04:12–04:16</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">17PM, YaGu</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">17PM</span><span class="msg-vip">[T2 Whale F]</span>: อีก 10 นาที ลูปบอส</div><div><span class="msg-actor">17PM</span><span class="msg-vip">[T2 Whale F]</span>: อีก 10 นาที ลูปบอส</div><div><span class="msg-actor">YaGu</span><span class="msg-vip">[T3 VIP T3]</span>: ++++</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">04:34–04:46</span>
+    <span class="disc-msgs">12 msgs</span>
+    <span class="disc-participants">AiiliiaRahiiliiG, หีคุณหนูกับจู๋49</span>
+    <span class="cat-chip">📊 Class/Meta</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">AiiliiaRahiiliiG</span><span class="msg-vip">[T3 VIP T3]</span>: DB</div><div><span class="msg-actor">หีคุณหนูกับจู๋49</span><span class="msg-vip">[T4 VIP T4]</span>: 5 พอล พร้อมจบบบ</div><div><span class="msg-actor">หีคุณหนูกับจู๋49</span><span class="msg-vip">[T4 VIP T4]</span>: ทุกอย่างนานขึ้นหมด ยกเว้นบอดเมจ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">06:09–06:36</span>
+    <span class="disc-msgs">25 msgs</span>
+    <span class="disc-participants">หีคุณหนูกับจู๋49, Maymaymay, 17PM, XiaoQieo, Elcadia</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">หีคุณหนูกับจู๋49</span><span class="msg-vip">[T4 VIP T4]</span>: ลงมาปุ้ป สุสานบนเลย</div><div><span class="msg-actor">หีคุณหนูกับจู๋49</span><span class="msg-vip">[T4 VIP T4]</span>: เกาะด้วยครับพี่</div><div><span class="msg-actor">Maymaymay</span><span class="msg-vip">[T2 Whale F]</span>: 9 นาทีนะ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">07:02–07:08</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">Maymaymay, 17PM, Tarawadee</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Maymaymay</span><span class="msg-vip">[T2 Whale F]</span>: ซาก้า ทาลาคิน ทิมิทิส</div><div><span class="msg-actor">17PM</span><span class="msg-vip">[T2 Whale F]</span>: มาทิมิ ก่อน</div><div><span class="msg-actor">Maymaymay</span><span class="msg-vip">[T2 Whale F]</span>: เนลๆ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">08:38–08:41</span>
+    <span class="disc-msgs">13 msgs</span>
+    <span class="disc-participants">Gungnir, TDED99</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Gungnir</span><span class="msg-vip">[T2 Whale F]</span>: ซาหวาดดีค้าบ</div><div><span class="msg-actor">Gungnir</span><span class="msg-vip">[T2 Whale F]</span>: ใช่ค้าบๆ</div><div><span class="msg-actor">Gungnir</span><span class="msg-vip">[T2 Whale F]</span>: หน้าฝนช่วงนี้</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">09:25–09:25</span>
+    <span class="disc-msgs">5 msgs</span>
+    <span class="disc-participants">Gungnir</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Gungnir</span><span class="msg-vip">[T2 Whale F]</span>: จุด 111</div><div><span class="msg-actor">Gungnir</span><span class="msg-vip">[T2 Whale F]</span>: 1</div><div><span class="msg-actor">Gungnir</span><span class="msg-vip">[T2 Whale F]</span>: 1</div></div>
+</div><div class="no-data" style="text-align:left">… +8 discussions ẩn (mở report ngày để xem hết)</div>
+  </div>
+</details>
+  </div>
+</article><article class="clan-card" data-clan="VoltZ">
+  <div class="clan-card-head">
+    <div class="clan-name">VoltZ</div>
+    <span class="clan-badge moderate">⚡ moderate</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>GARUDA</strong></span>
+      <span>🖥️ Teon 02</span>
+      <span>💬 <strong>203</strong> msgs</span>
+      <span>💭 <strong>16</strong> disc</span>
+      <span>👤 <strong>12</strong> actors</span>
+      <span>🎯 Event/Boss</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">203 msgs · 16 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>VoltZ là clan nhỏ với 218 tin nhắn từ 12 thành viên nhưng khá tích cực. Boss hunt và Siege là hoạt động chính, kết hợp class meta discussion. Nổi bật có phàn nàn về game sau update càng ngày càng lag (&#x27;makin ccd&#x27;). Buổi tối có session farming với thất vọng gacha nhưng được bù đắp bởi drop tốt. Tâm trạng nhẹ nhàng, clan casual nhưng duy trì hoạt động đều đặn, server hiện tại thiên về hòa bình.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">00:24–00:42</span>
+    <span class="disc-msgs">16 msgs</span>
+    <span class="disc-participants">TanyaDegurechaff, Onimusha, XyeNa, REAL, Belzac</span>
+    <span class="cat-chip">📊 Class/Meta</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">TanyaDegurechaff</span>: Fliy. Half up</div><div><span class="msg-actor">Onimusha</span>: xyen masuk pt prince</div><div><span class="msg-actor">XyeNa</span>: pull</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">02:22–02:25</span>
+    <span class="disc-msgs">6 msgs</span>
+    <span class="disc-participants">TanyaDegurechaff, REAL</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">TanyaDegurechaff</span>: Gaharet selu up</div><div><span class="msg-actor">TanyaDegurechaff</span>: Hallo</div><div><span class="msg-actor">REAL</span>: gaharet dl</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">06:42–06:52</span>
+    <span class="disc-msgs">6 msgs</span>
+    <span class="disc-participants">tatangtua, XyeNa, Belzac</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">tatangtua</span>: apa cuk</div><div><span class="msg-actor">XyeNa</span>: slh trget</div><div><span class="msg-actor">tatangtua</span>: kayanya mau bantuin olkuth</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">08:00–08:06</span>
+    <span class="disc-msgs">30 msgs</span>
+    <span class="disc-participants">TanyaDegurechaff, SnorlaX, tatangtua, HolderIHSG</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">TanyaDegurechaff</span>: Ketemu barz 6</div><div><span class="msg-actor">TanyaDegurechaff</span>: Libur lagi kah?</div><div><span class="msg-actor">SnorlaX</span><span class="msg-vip">[T2 Whale F]</span>: bukane ktemu ally ya.</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">08:26–08:38</span>
+    <span class="disc-msgs">7 msgs</span>
+    <span class="disc-participants">REAL, Prince, SnorlaX, TanyaDegurechaff</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">REAL</span>: bisa bossing or not</div><div><span class="msg-actor">Prince</span>: wah kurang tau gw baru loginn</div><div><span class="msg-actor">REAL</span>: wkkw gw jg abis ketiduran soalnya sad</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">10:28–10:35</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">HolderIHSG, TanyaDegurechaff</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">HolderIHSG</span>: andras?</div><div><span class="msg-actor">HolderIHSG</span>: timer kacau</div><div><span class="msg-actor">TanyaDegurechaff</span>: Coron trs qa</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">12:18–13:11</span>
+    <span class="disc-msgs">49 msgs</span>
+    <span class="disc-participants">SnorlaX, Prince, HolderIHSG, TanyaDegurechaff, budiSpeed +2</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">SnorlaX</span><span class="msg-vip">[T2 Whale F]</span>: nih klo mnta buku biru di clan blh.? buat quest</div><div><span class="msg-actor">SnorlaX</span><span class="msg-vip">[T2 Whale F]</span>: mksh</div><div><span class="msg-actor">Prince</span>: aman</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">13:30–13:40</span>
+    <span class="disc-msgs">5 msgs</span>
+    <span class="disc-participants">TanyaDegurechaff, SnorlaX</span>
+    <span class="cat-chip">💰 Economy</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">TanyaDegurechaff</span>: hahah</div><div><span class="msg-actor">TanyaDegurechaff</span>: soikaz di tempat td lg</div><div><span class="msg-actor">SnorlaX</span><span class="msg-vip">[T2 Whale F]</span>: otw</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">15:19–15:20</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">HolderIHSG, StevenLwancihao</span>
+    <span class="cat-chip">📊 Class/Meta</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">HolderIHSG</span>: timinya</div><div><span class="msg-actor">StevenLwancihao</span>: no komen</div><div><span class="msg-actor">HolderIHSG</span>: pagi tak update timi</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">16:40–16:59</span>
+    <span class="disc-msgs">9 msgs</span>
+    <span class="disc-participants">Onimusha, HolderIHSG, TanyaDegurechaff</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Onimusha</span>: QA</div><div><span class="msg-actor">HolderIHSG</span>: cabriop</div><div><span class="msg-actor">HolderIHSG</span>: ada yg pt</div></div>
+</div><div class="no-data" style="text-align:left">… +6 discussions ẩn (mở report ngày để xem hết)</div>
+  </div>
+</details>
+  </div>
+</article><article class="clan-card" data-clan="OSYS">
+  <div class="clan-card-head">
+    <div class="clan-name">OSYS</div>
+    <span class="clan-badge moderate">⚡ moderate</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>Independent</strong></span>
+      <span>🖥️ ?</span>
+      <span>💬 <strong>190</strong> msgs</span>
+      <span>💭 <strong>11</strong> disc</span>
+      <span>👤 <strong>24</strong> actors</span>
+      <span>🎯 Siege</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">190 msgs · 11 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>OSYS có ngày hoạt động vừa phải với 202 tin nhắn từ 24 thành viên. Chủ đề chính buổi sáng là phàn nàn về thiếu boss trong server và thảo luận cách tổ chức lực lượng để cạnh tranh boss. Buổi tối có Siege nhỏ với dungeon lửa, thành viên phối hợp farm dungeon mới. Bầu không khí clan thân thiết, vui vẻ với nhiều câu chuyện bên lề. Không có tín hiệu tiêu cực đáng lo ngại.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">01:09–01:09</span>
+    <span class="disc-msgs">3 msgs</span>
+    <span class="disc-participants">xSUMMERx, CyberPunk24</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">xSUMMERx</span><span class="msg-vip">[T2 Whale F]</span>: พี่บาส</div><div><span class="msg-actor">CyberPunk24</span><span class="msg-vip">[T1 Whale G]</span>: ห่ะ</div><div><span class="msg-actor">xSUMMERx</span><span class="msg-vip">[T2 Whale F]</span>: ตอบไลน์หน่อยพี่</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">01:47–01:55</span>
+    <span class="disc-msgs">25 msgs</span>
+    <span class="disc-participants">Cupid, GarfieldD, Dario, CyberPunk24</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Cupid</span><span class="msg-vip">[T4 VIP T4]</span>: ขอบคุณพี่แดนค่ะ</div><div><span class="msg-actor">GarfieldD</span>: เฮงๆครับเสี่ย</div><div><span class="msg-actor">Dario</span><span class="msg-vip">[T3 VIP T3]</span>: คืนนี้มีโครงการ ส่งน้องเข้านอน ไหม</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">03:46–03:48</span>
+    <span class="disc-msgs">14 msgs</span>
+    <span class="disc-participants">xSUMMERx, LAIKO</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">xSUMMERx</span><span class="msg-vip">[T2 Whale F]</span>: yu ja</div><div><span class="msg-actor">LAIKO</span><span class="msg-vip">[T4 VIP T4]</span>: นอนดึกจังโค้ช</div><div><span class="msg-actor">xSUMMERx</span><span class="msg-vip">[T2 Whale F]</span>: วันจันไปแข่งนะ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">09:59–10:02</span>
+    <span class="disc-msgs">3 msgs</span>
+    <span class="disc-participants">Dario, GarfieldD</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Dario</span><span class="msg-vip">[T3 VIP T3]</span>: ชะแว๊บ อยู่ดินแดนสุดท้าย</div><div><span class="msg-actor">Dario</span><span class="msg-vip">[T3 VIP T3]</span>: ห้องขวา</div><div><span class="msg-actor">GarfieldD</span>: 10โมงกับเที่ยงบอสเกิดเยอะเน้อ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">10:18–10:47</span>
+    <span class="disc-msgs">62 msgs</span>
+    <span class="disc-participants">GarfieldD, Dario, SylphSavage, ExcaIibul2, Felona +6</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">GarfieldD</span>: มันใครยุมั้ย</div><div><span class="msg-actor">GarfieldD</span>: มีใครยุมั้ย</div><div><span class="msg-actor">Dario</span><span class="msg-vip">[T3 VIP T3]</span>: 0/</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">12:17–13:02</span>
+    <span class="disc-msgs">28 msgs</span>
+    <span class="disc-participants">YEETMAM, LAIKO, ExcaIibul2, ooInFiNiTyoo, Jurio +3</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">YEETMAM</span><span class="msg-vip">[T4 VIP T4]</span>: เพลงโคตรมัน</div><div><span class="msg-actor">YEETMAM</span><span class="msg-vip">[T4 VIP T4]</span>: มอนแม่งส้นตีนมาก</div><div><span class="msg-actor">LAIKO</span><span class="msg-vip">[T4 VIP T4]</span>: ฝั่งไหนพ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">15:45–15:46</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">Kruel3, l3igFootz</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Kruel3</span><span class="msg-vip">[T4 VIP T4]</span>: ตาย2ครั้งติด</div><div><span class="msg-actor">l3igFootz</span><span class="msg-vip">[T3 VIP T3]</span>: มันล่าครับ</div><div><span class="msg-actor">Kruel3</span><span class="msg-vip">[T4 VIP T4]</span>: นั้นสิ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">17:43–17:45</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">Cupid</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Cupid</span><span class="msg-vip">[T4 VIP T4]</span>: ขอคนช่วยดีันไฟ 1</div><div><span class="msg-actor">Cupid</span><span class="msg-vip">[T4 VIP T4]</span>: เข้าตี้เลยๆๆ</div><div><span class="msg-actor">Cupid</span><span class="msg-vip">[T4 VIP T4]</span>: ตัวม่วงด้วยยยยยยยยย</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">20:44–20:55</span>
+    <span class="disc-msgs">11 msgs</span>
+    <span class="disc-participants">ท่ๅนประธๅนเนเทโร่, AKer, GarfieldD, JustYou, HUFz +1</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">ท่ๅนประธๅนเนเทโร่</span><span class="msg-vip">[T4 VIP T4]</span>: เปลี่ยนแมพ</div><div><span class="msg-actor">ท่ๅนประธๅนเนเทโร่</span><span class="msg-vip">[T4 VIP T4]</span>: ลองดู</div><div><span class="msg-actor">AKer</span><span class="msg-vip">[T1 Whale G]</span>: ตัวแดงมักจะไปออก ไอดีเด็ก</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">21:44–22:15</span>
+    <span class="disc-msgs">32 msgs</span>
+    <span class="disc-participants">Cupid, AKer, ท่ๅนประธๅนเนเทโร่, xSUMMERx, oCKo +4</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Cupid</span><span class="msg-vip">[T4 VIP T4]</span>: บุญรอดเข้าตี้ไหมคะ</div><div><span class="msg-actor">AKer</span><span class="msg-vip">[T1 Whale G]</span>: ลงดาบขวาหน่อย</div><div><span class="msg-actor">Cupid</span><span class="msg-vip">[T4 VIP T4]</span>: ดันใหม่ว่าง 1</div></div>
+</div><div class="no-data" style="text-align:left">… +1 discussions ẩn (mở report ngày để xem hết)</div>
+  </div>
+</details>
+  </div>
+</article><article class="clan-card" data-clan="BaratheOn">
+  <div class="clan-card-head">
+    <div class="clan-name">BaratheOn</div>
+    <span class="clan-badge moderate">⚡ moderate</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>ZENITH</strong></span>
+      <span>🖥️ Teon 03</span>
+      <span>💬 <strong>109</strong> msgs</span>
+      <span>💭 <strong>10</strong> disc</span>
+      <span>👤 <strong>22</strong> actors</span>
+      <span>🎯 Siege</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">109 msgs · 10 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>Clan BaratheOn có ngày hoạt động vừa phải với 123 tin nhắn từ 26 thành viên, chủ yếu tập trung vào buổi tối. Chủ đề chính xoay quanh boss hunt và Siege, với một cuộc trao đổi về item kinh tế (hỏi mua gobzi sister). Thành viên mix Thái-Indonesia, không có tín hiệu drama hay RMT đáng lo ngại. Tâm trạng clan nhẹ nhàng, tương tác casual là chính.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">00:05–00:25</span>
+    <span class="disc-msgs">5 msgs</span>
+    <span class="disc-participants">Snorlax, Taz, xLittleB3, RomaneeConti</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Snorlax</span><span class="msg-vip">[T2 Whale F]</span>: มาวะ</div><div><span class="msg-actor">Snorlax</span><span class="msg-vip">[T2 Whale F]</span>: Taz</div><div><span class="msg-actor">Taz</span><span class="msg-vip">[T4 VIP T4]</span>: มาพีั่้</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">11:26–11:28</span>
+    <span class="disc-msgs">8 msgs</span>
+    <span class="disc-participants">Utropia</span>
+    <span class="cat-chip">📊 Class/Meta</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Utropia</span><span class="msg-vip">[T4 VIP T4]</span>: ผมครบล่ะ 70กล่อง</div><div><span class="msg-actor">Utropia</span><span class="msg-vip">[T4 VIP T4]</span>: 1</div><div><span class="msg-actor">Utropia</span><span class="msg-vip">[T4 VIP T4]</span>: ผมมีล฿กแก้วไง</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">12:22–12:40</span>
+    <span class="disc-msgs">11 msgs</span>
+    <span class="disc-participants">Dreamfyre, xLittleB3, เอวพริ้ว, MoonStarX, Balerion</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Dreamfyre</span>: เอาแน่</div><div><span class="msg-actor">xLittleB3</span><span class="msg-vip">[T2 Whale F]</span>: กระทบไหล่เปาๆๆ ละ</div><div><span class="msg-actor">xLittleB3</span><span class="msg-vip">[T2 Whale F]</span>: แต่มันเอา ตีนสกิดมา</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">14:53–15:06</span>
+    <span class="disc-msgs">3 msgs</span>
+    <span class="disc-participants">Nymeria, เอวพริ้ว</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Nymeria</span>: กินได้ใช่ไหมครับ</div><div><span class="msg-actor">เอวพริ้ว</span><span class="msg-vip">[T2 Whale F]</span>: แต่คทามันเพิ่มธาตุ หักลบพอดี</div><div><span class="msg-actor">เอวพริ้ว</span><span class="msg-vip">[T2 Whale F]</span>: ผมเก็บไม่ได้</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">15:23–15:41</span>
+    <span class="disc-msgs">5 msgs</span>
+    <span class="disc-participants">Procyon, เอวพริ้ว</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Procyon</span>: goblok clive</div><div><span class="msg-actor">เอวพริ้ว</span><span class="msg-vip">[T2 Whale F]</span>: ต้องใส่สาหร่ายครับ</div><div><span class="msg-actor">เอวพริ้ว</span><span class="msg-vip">[T2 Whale F]</span>: กลบกลิ่นได้</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">18:08–18:09</span>
+    <span class="disc-msgs">13 msgs</span>
+    <span class="disc-participants">RaMooD, Genzai</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">RaMooD</span><span class="msg-vip">[T4 VIP T4]</span>: อันนั้นตัวเด็กผม</div><div><span class="msg-actor">RaMooD</span><span class="msg-vip">[T4 VIP T4]</span>: 5555</div><div><span class="msg-actor">RaMooD</span><span class="msg-vip">[T4 VIP T4]</span>: จารแตมป</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">19:08–19:25</span>
+    <span class="disc-msgs">24 msgs</span>
+    <span class="disc-participants">xGILG4MESHZ, K2Cronos, Utropia, xLittleB3, PERZIA</span>
+    <span class="cat-chip">🎁 Event/Boss</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">xGILG4MESHZ</span><span class="msg-vip">[T1 Whale G]</span>: K2Cronos It&#x27;s good to see you!</div><div><span class="msg-actor">K2Cronos</span><span class="msg-vip">[T1 Whale G]</span>: ว่า</div><div><span class="msg-actor">Utropia</span><span class="msg-vip">[T4 VIP T4]</span>: ผมเฝ้าปากทางเองๆ</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">20:15–20:45</span>
+    <span class="disc-msgs">6 msgs</span>
+    <span class="disc-participants">Nymeria, Rhaegal, ValarMorghulis, NTRexpert</span>
+    <span class="cat-chip">🗡️ Hunt/Farm</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Nymeria</span>: ลงเขียวฮาปมาข้างล่าง</div><div><span class="msg-actor">Nymeria</span>: มี1</div><div><span class="msg-actor">Nymeria</span>: จิมทืบSHEDไหม</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">22:10–22:13</span>
+    <span class="disc-msgs">30 msgs</span>
+    <span class="disc-participants">xGILG4MESHZ, เอวพริ้ว, MoonStarX, Procyon, Syraxx +1</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">xGILG4MESHZ</span><span class="msg-vip">[T1 Whale G]</span>: daddy</div><div><span class="msg-actor">เอวพริ้ว</span><span class="msg-vip">[T2 Whale F]</span>: ใช่ umbra ป่ะ</div><div><span class="msg-actor">เอวพริ้ว</span><span class="msg-vip">[T2 Whale F]</span>: elfadia</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">22:42–22:42</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">HaNZ0x</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">HaNZ0x</span><span class="msg-vip">[T1 Whale G]</span>: ขอโทษครับได้ยินไม่ชัด</div><div><span class="msg-actor">HaNZ0x</span><span class="msg-vip">[T1 Whale G]</span>: อะไรคาบริโอ้ๆ</div><div><span class="msg-actor">HaNZ0x</span><span class="msg-vip">[T1 Whale G]</span>: เลยลงมา</div></div>
+</div>
+  </div>
+</details>
+  </div>
+</article><article class="clan-card" data-clan="WuxiaGaming">
+  <div class="clan-card-head">
+    <div class="clan-name">WuxiaGaming</div>
+    <span class="clan-badge quiet">💤 quiet</span>
+    <div class="clan-meta">
+      <span>🛡️ <strong>Independent</strong></span>
+      <span>🖥️ ?</span>
+      <span>💬 <strong>59</strong> msgs</span>
+      <span>💭 <strong>7</strong> disc</span>
+      <span>👤 <strong>14</strong> actors</span>
+      <span>🎯 Class/Meta</span>
+    </div>
+  </div>
+  <div class="clan-card-body">
+    <details class="daily-block">
+  <summary>
+    <span class="date-label">2026-05-22 (Fri)</span>
+    <span class="date-stat">59 msgs · 7 discussions</span>
+  </summary>
+  <div class="body">
+    <div class="clan-summary"><div class="label">🤖 Daily Summary</div>WuxiaGaming có ngày hoạt động nhẹ nhất với 70 tin nhắn từ 21 thành viên, là clan Vietnamese duy nhất trong top 10. Nội dung chủ yếu là điều phối Veora lửa vào buổi tối và nhắc nhở nhau nhận buff thành trì. Có trao đổi mua bán vũ khí cung tầm trung giữa thành viên. Một vài tin nhắn về lag nhẹ. Tâm trạng thân thiết, tương tác casual giữa thành viên quen nhau. Mức độ hoạt động thấp hơn các clan khác nhưng kết nối cộng đồng vẫn tốt.</div>
+    <div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">00:03–00:05</span>
+    <span class="disc-msgs">12 msgs</span>
+    <span class="disc-participants">Adachi8x, isGold</span>
+    <span class="cat-chip">🐞 Bug/FB</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">Adachi8x</span><span class="msg-vip">[T1 Whale G]</span>: nó đc gì thế</div><div><span class="msg-actor">Adachi8x</span><span class="msg-vip">[T1 Whale G]</span>: m à gào vậy</div><div><span class="msg-actor">isGold</span><span class="msg-vip">[T2 Whale F]</span>: nó ghép dc mực a</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">08:07–08:12</span>
+    <span class="disc-msgs">6 msgs</span>
+    <span class="disc-participants">DoomBringer, iMaSa</span>
+    <span class="cat-chip">📊 Class/Meta</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">DoomBringer</span><span class="msg-vip">[T3 VIP T3]</span>: vung dat cuoi cung nhieu ne</div><div><span class="msg-actor">DoomBringer</span><span class="msg-vip">[T3 VIP T3]</span>: :)) imasa</div><div><span class="msg-actor">DoomBringer</span><span class="msg-vip">[T3 VIP T3]</span>: co 1 thang moi len :))</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">15:04–15:04</span>
+    <span class="disc-msgs">3 msgs</span>
+    <span class="disc-participants">iFakezVink</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">iFakezVink</span><span class="msg-vip">[T2 Whale F]</span>: Nay địch có quét ko mấy a</div><div><span class="msg-actor">iFakezVink</span><span class="msg-vip">[T2 Whale F]</span>: E ko onl máy đc nhiều nên toàn treo exp với đền cho nhẹ lòng</div><div><span class="msg-actor">iFakezVink</span><span class="msg-vip">[T2 Whale F]</span>: Chút tham gia mấy boss lớn</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">18:08–18:40</span>
+    <span class="disc-msgs">9 msgs</span>
+    <span class="disc-participants">iFakezVink, CB, Stodge, isGold, iFakezSS</span>
+    <span class="cat-chip">📊 Class/Meta</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">iFakezVink</span><span class="msg-vip">[T2 Whale F]</span>: A e có vk cung nào cần bán ko ạ</div><div><span class="msg-actor">CB</span><span class="msg-vip">[T1 Whale G]</span>: a co cung nay</div><div><span class="msg-actor">CB</span><span class="msg-vip">[T1 Whale G]</span>: e mua ko</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">20:59–21:04</span>
+    <span class="disc-msgs">15 msgs</span>
+    <span class="disc-participants">DitKing, EyeStorm, Takeru, TheAir</span>
+    <span class="cat-chip">⚔️ Siege</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">DitKing</span><span class="msg-vip">[T3 VIP T3]</span>: có ai treo tầng 1 zepar ko mn</div><div><span class="msg-actor">EyeStorm</span><span class="msg-vip">[T3 VIP T3]</span>: đợi e 15p</div><div><span class="msg-actor">EyeStorm</span><span class="msg-vip">[T3 VIP T3]</span>: e về tới nhà xong móc họng r e lên treo vs a</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">22:02–22:17</span>
+    <span class="disc-msgs">10 msgs</span>
+    <span class="disc-participants">EyeStorm, iFakezVinkTu, CM, Takeru</span>
+    <span class="cat-chip">📊 Class/Meta</span>
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">EyeStorm</span><span class="msg-vip">[T3 VIP T3]</span>: van lag dung lko mn</div><div><span class="msg-actor">iFakezVinkTu</span><span class="msg-vip">[T2 Whale F]</span>: het roi</div><div><span class="msg-actor">EyeStorm</span><span class="msg-vip">[T3 VIP T3]</span>: hay do mang 4g cua t</div></div>
+</div><div class="discussion-card">
+  <div class="disc-head">
+    <span class="disc-time">22:33–22:39</span>
+    <span class="disc-msgs">4 msgs</span>
+    <span class="disc-participants">iFakezSS</span>
+    
+    
+  </div>
+  <div class="disc-sample"><div><span class="msg-actor">iFakezSS</span><span class="msg-vip">[T1 Whale G]</span>: 22:32 - Hysilome</div><div><span class="msg-actor">iFakezSS</span><span class="msg-vip">[T1 Whale G]</span>: 22:35 - Mutated Cruma 💯</div><div><span class="msg-actor">iFakezSS</span><span class="msg-vip">[T1 Whale G]</span>: nhim xanh la</div></div>
+</div>
+  </div>
+</details>
+  </div>
+</article>
+  </div>
+</section>
+    </div>
+
+    <div id="timeline-content">
+      <section class="per-clan-timeline" data-clan="BaratheOn" hidden>
+  <h3 class="section-title">📅 BaratheOn — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">109</div><div class="sub">10 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section><section class="per-clan-timeline" data-clan="DAZE" hidden>
+  <h3 class="section-title">📅 DAZE — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">344</div><div class="sub">18 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section><section class="per-clan-timeline" data-clan="ELITE" hidden>
+  <h3 class="section-title">📅 ELITE — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">818</div><div class="sub">15 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section><section class="per-clan-timeline" data-clan="Lumiere" hidden>
+  <h3 class="section-title">📅 Lumiere — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">1,740</div><div class="sub">13 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section><section class="per-clan-timeline" data-clan="MYSTlC" hidden>
+  <h3 class="section-title">📅 MYSTlC — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">662</div><div class="sub">13 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section><section class="per-clan-timeline" data-clan="Myth" hidden>
+  <h3 class="section-title">📅 Myth — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">423</div><div class="sub">11 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section><section class="per-clan-timeline" data-clan="OSYS" hidden>
+  <h3 class="section-title">📅 OSYS — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">190</div><div class="sub">11 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section><section class="per-clan-timeline" data-clan="POKEMON" hidden>
+  <h3 class="section-title">📅 POKEMON — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">406</div><div class="sub">15 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section><section class="per-clan-timeline" data-clan="VoltZ" hidden>
+  <h3 class="section-title">📅 VoltZ — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">203</div><div class="sub">16 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section><section class="per-clan-timeline" data-clan="WuxiaGaming" hidden>
+  <h3 class="section-title">📅 WuxiaGaming — Evolution timeline qua các tuần</h3>
+  <div class="timeline-strip"><div class="timeline-week active"><div class="wlabel">2026-W21</div><div class="count">59</div><div class="sub">7 disc</div><div class="sub">2026-05-18</div></div></div>
+  <div class="no-data">Để xem detail từng tuần, chọn week pill rồi quay lại clan filter.</div>
+</section>
+    </div>
+
+    <footer class="dash-footer">
+      Generated: 2026-05-24T15:00:11+00:00 · Pipeline narrative-first-v4.0-clan ·
+      Generator: rule-based-v1 (Claude Haiku upgrade pending)
+    </footer>
+  </div>
+
+  <script>
+    // ── State ──
+    let state = { month: '2026-05', week: '2026-W21', clan: '__all__' };
+
+    function $$(sel) { return Array.from(document.querySelectorAll(sel)); }
+
+    function setActive(group, key, attr) {
+      $$(group).forEach(p => {
+        p.classList.toggle('active', p.dataset[attr] === key);
+      });
+    }
+
+    function showWeekSection(week) {
+      $$('.week-section').forEach(s => {
+        s.toggleAttribute('hidden', s.dataset.week !== week);
+      });
+    }
+
+    function showWeekPillsForMonth(month) {
+      $$('.week-pill-group').forEach(g => {
+        g.toggleAttribute('hidden', g.dataset.month !== month);
+      });
+    }
+
+    function applyClanFilter(clan) {
+      const showAll = clan === '__all__';
+      $$('.clan-card').forEach(c => {
+        c.classList.toggle('hidden', !showAll && c.dataset.clan !== clan);
+      });
+      $$('.per-clan-timeline').forEach(t => {
+        t.toggleAttribute('hidden', showAll || t.dataset.clan !== clan);
+      });
+      // Hide week-section main wrapper highlight box if single clan? Keep for context.
+    }
+
+    function pickFirstActiveWeekForMonth(month) {
+      const grp = document.querySelector(`.week-pill-group[data-month="${month}"]`);
+      if (!grp) return null;
+      const firstActiveWeek = grp.querySelector('.pill:not(.placeholder)');
+      return firstActiveWeek ? firstActiveWeek.dataset.week : null;
+    }
+
+    // ── Event handlers ──
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('button.pill:not(.placeholder)');
+      if (!target) return;
+
+      if (target.dataset.month) {
+        const m = target.dataset.month;
+        state.month = m;
+        setActive('button[data-month]', m, 'month');
+        showWeekPillsForMonth(m);
+        // Pick first active week of new month
+        const newWeek = pickFirstActiveWeekForMonth(m);
+        if (newWeek) {
+          state.week = newWeek;
+          setActive('button[data-week]', newWeek, 'week');
+          showWeekSection(newWeek);
+        }
+      } else if (target.dataset.week) {
+        const w = target.dataset.week;
+        state.week = w;
+        setActive('button[data-week]', w, 'week');
+        showWeekSection(w);
+      } else if (target.dataset.clan) {
+        const c = target.dataset.clan;
+        state.clan = c;
+        setActive('button[data-clan]', c, 'clan');
+        applyClanFilter(c);
+      }
+    });
+  </script>
+</body>
+</html>
