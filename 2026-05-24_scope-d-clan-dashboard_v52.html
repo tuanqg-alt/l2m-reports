@@ -2553,44 +2553,4 @@ body {
       const activeClan = section.querySelector('.clan-select')?.value || '__all__';
       const search = (section.querySelector('.whale-search')?.value || '').toLowerCase().trim();
       const rows = section.querySelectorAll('.whale-row');
-      let visible = 0;
-      rows.forEach(r => {
-        const tierMatch = activeTier === '__all__' || r.dataset.tier === activeTier;
-        const marketMatch = activeMarket === '__all__' || r.dataset.market === activeMarket;
-        const clanMatch = activeClan === '__all__' || r.dataset.clan === activeClan;
-        const searchMatch = !search || (r.dataset.char || '').includes(search);
-        const show = tierMatch && marketMatch && clanMatch && searchMatch;
-        r.classList.toggle('hidden-row', !show);
-        if (show) visible++;
-      });
-      const countSpan = section.querySelector('.section-title .count');
-      if (countSpan) {
-        const orig = countSpan.dataset.orig || countSpan.textContent;
-        countSpan.dataset.orig = orig;
-        const isFiltered = activeTier !== '__all__' || activeMarket !== '__all__' || activeClan !== '__all__' || search;
-        countSpan.textContent = isFiltered ? (visible + ' hiển thị / ' + orig) : orig;
-      }
-    }
-
-    document.addEventListener('click', (e) => {
-      const th = e.target.closest('.whale-table th[data-sort]');
-      if (!th) return;
-      const table = th.closest('.whale-table');
-      const tbody = table.querySelector('tbody');
-      const idx = Array.from(th.parentElement.children).indexOf(th);
-      const dir = th.classList.contains('sort-asc') ? -1 : 1;
-      table.querySelectorAll('th').forEach(x => x.classList.remove('sort-asc','sort-desc'));
-      th.classList.add(dir === 1 ? 'sort-asc' : 'sort-desc');
-      const rows = Array.from(tbody.querySelectorAll('tr'));
-      rows.sort((a, b) => {
-        const av = a.children[idx].dataset.val || a.children[idx].textContent.trim();
-        const bv = b.children[idx].dataset.val || b.children[idx].textContent.trim();
-        const an = parseFloat(av.replace(/[,.]/g, '')); const bn = parseFloat(bv.replace(/[,.]/g, ''));
-        if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dir;
-        return av.localeCompare(bv) * dir;
-      });
-      rows.forEach(r => tbody.appendChild(r));
-    });
-  </script>
-</body>
-</html>
+      

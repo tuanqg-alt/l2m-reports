@@ -640,16 +640,4 @@ function switchCountry(c){
   document.querySelectorAll('.cbtn').forEach(b=>{
     b.classList.toggle('cactive', b.dataset.c===c);
     if(b.dataset.c===c){b.style.background=col; b.style.color='#0d1117'; b.style.border='1px solid '+col;}
-    else{b.style.background=''; b.style.color=''; b.style.border='';}
-  });
-  renderView(curMonth, curCountry);
-}
-
-window.onload=()=>{
-  switchMonth('Apr');
-  switchCountry('Total');
-};
-
-</script>
-</body>
-</html>
+    else{b.style.background=''; b.style.color=''; b.style.borde
