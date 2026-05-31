@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Union Narrative Intel — 2026-05-22</title>
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; font-size: 14px; }
+body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+       background: #0f1117; color: #e1e4e8; line-height: 1.55; }
+
+/* ── Header ── */
+.page-header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+               border-bottom: 2px solid #7c3aed; padding: 20px 24px 16px; }
+.page-header h1 { margin: 0 0 6px; font-size: 1.5rem; color: #c4b5fd; }
+.page-header .meta { color: #8b929a; font-size: 0.85rem; }
+.page-header .stats-row { display: flex; gap: 20px; margin-top: 12px; flex-wrap: wrap; }
+.stat-badge { background: #1e2533; border: 1px solid #2d3748; border-radius: 8px;
+              padding: 6px 14px; font-size: 0.82rem; color: #a3b3c2; }
+.stat-badge strong { color: #e1e4e8; font-size: 1rem; }
+
+/* ── Filter bar ── */
+.filter-bar { padding: 12px 24px; background: #12151c; border-bottom: 1px solid #2d3748;
+              display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.filter-bar label { font-size: 0.85rem; color: #8b929a; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.filter-bar input[type=checkbox] { width: 16px; height: 16px; cursor: pointer; }
+
+/* ── Main content ── */
+.main { padding: 20px 24px; max-width: 1400px; margin: 0 auto; }
+
+/* ── Clan card ── */
+.clan-card { background: #161b27; border: 1px solid #2d3748; border-radius: 12px;
+             margin-bottom: 28px; overflow: hidden; }
+.clan-card-header { background: #1a2035; padding: 16px 20px; border-bottom: 1px solid #2d3748;
+                    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.clan-name { font-size: 1.15rem; font-weight: 700; color: #c4b5fd; }
+.clan-stats { display: flex; gap: 12px; color: #6b7280; font-size: 0.82rem; }
+.clan-stats span { color: #9ca3af; }
+.clan-stats strong { color: #e1e4e8; }
+
+/* ── Hero summary ── */
+.hero-summary { padding: 16px 20px; background: #1a2035; border-bottom: 1px solid #2d3748; }
+.hero-summary .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;
+                        color: #7c3aed; font-weight: 600; margin-bottom: 8px; }
+.hero-summary p { margin: 0; color: #cbd5e0; font-size: 0.92rem; line-height: 1.65; font-style: italic; }
+.hero-summary .no-summary { color: #4b5563; font-size: 0.85rem; }
+
+/* ── Discussion tab strip ── */
+.disc-tabs { display: flex; overflow-x: auto; gap: 0; border-bottom: 1px solid #2d3748;
+             background: #12151c; padding: 0 12px; scrollbar-width: thin;
+             scrollbar-color: #374151 transparent; }
+.disc-tab { flex-shrink: 0; padding: 10px 16px; cursor: pointer; font-size: 0.82rem;
+            color: #6b7280; border-bottom: 2px solid transparent; white-space: nowrap;
+            transition: color 0.15s, border-color 0.15s; min-width: 44px; min-height: 44px;
+            display: flex; align-items: center; }
+.disc-tab:hover { color: #c4b5fd; }
+.disc-tab.active { color: #c4b5fd; border-bottom-color: #7c3aed; font-weight: 600; }
+.disc-tab .tab-flags { margin-left: 4px; font-size: 0.75rem; }
+
+/* ── Discussion bodies ── */
+.disc-body-wrap { display: none; padding: 16px 20px; }
+.disc-body-wrap.active { display: block; }
+.disc-meta { display: flex; gap: 16px; font-size: 0.8rem; color: #6b7280; margin-bottom: 12px; flex-wrap: wrap; }
+.disc-meta span { color: #9ca3af; }
+.disc-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+
+/* ── Message list ── */
+.msg-list { display: flex; flex-direction: column; gap: 6px; }
+.msg-row { display: flex; gap: 10px; align-items: flex-start; padding: 6px 10px;
+           border-radius: 6px; transition: background 0.1s; }
+.msg-row:hover { background: #1e2533; }
+.msg-row.has-tags { background: #1a2035; }
+.msg-row.untagged { opacity: 0.72; }
+.msg-row.hidden { display: none !important; }
+.msg-time { flex-shrink: 0; font-size: 0.75rem; color: #4b5563; width: 50px; padding-top: 2px; }
+.msg-actor { flex-shrink: 0; font-size: 0.8rem; color: #60a5fa; font-weight: 600;
+             min-width: 80px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.msg-actor.vip-t1 { color: #fbbf24; }
+.msg-actor.vip-t2 { color: #f59e0b; }
+.msg-actor.vip-t3 { color: #a78bfa; }
+.msg-text { flex: 1; font-size: 0.88rem; color: #cbd5e0; word-break: break-word; }
+.msg-text-vi { font-size: 0.8rem; color: #6b7280; margin-top: 2px; }
+.msg-tags { flex-shrink: 0; display: flex; gap: 4px; flex-wrap: wrap; }
+
+/* ── Chips ── */
+.chip { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px;
+        font-size: 0.72rem; font-weight: 500; white-space: nowrap; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .main { padding: 12px; }
+  .page-header { padding: 14px 12px 12px; }
+  .page-header h1 { font-size: 1.2rem; }
+  .clan-card-header { padding: 12px; }
+  .hero-summary { padding: 12px; }
+  .disc-body-wrap { padding: 12px; }
+  .msg-actor { min-width: 60px; max-width: 80px; font-size: 0.75rem; }
+  .msg-text { font-size: 0.82rem; }
+  .disc-tab { padding: 8px 10px; font-size: 0.76rem; }
+}
+@media (max-width: 480px) {
+  .stats-row { gap: 8px; }
+  .msg-time { display: none; }
+  .msg-actor { min-width: 50px; }
+}
+</style>
+
+<!-- NCV-DESIGN-SYSTEM-INJECTED -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../_framework/ncv-design-system.css">
+<link rel="stylesheet" href="../../_framework/ncv-design-system_override.css">
+</head>
+<body>
+
+<div class="page-header">
+  <h1>🏛️ Union Narrative Intel — 2026-05-22</h1>
+  <div class="meta">Generated 2026-05-22 09:16 ICT · Pipeline v4.1 Narrative-First · 1 unions</div>
+  <div class="stats-row">
+    <div class="stat-badge"><strong>58</strong> total msgs</div>
+    <div class="stat-badge"><strong>4</strong> discussions</div>
+    <div class="stat-badge"><strong>1</strong> active clans</div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <label>
+    <input type="checkbox" id="filterTagged" onchange="applyFilter()">
+    <span>Chỉ hiện tin nhắn có tag</span>
+  </label>
+  <label>
+    <input type="checkbox" id="filterTrans" onchange="applyFilter()">
+    <span>Hiện bản dịch (text_vi)</span>
+  </label>
+</div>
+
+<div class="main">
+<div class="clan-card">
+    
+    <div class="clan-card-header">
+      <div class="clan-name">🏛️ GARUDA</div>
+      <div class="clan-stats">
+        <span>💬 <strong>58</strong> msgs</span>
+        <span>👤 <strong>20</strong> actors</span>
+        <span>📑 <strong>4</strong> discussions</span>
+        <span>🏷️ <strong>27.8%</strong> tagged · room_info:None</span>
+      </div>
+    </div>
+    
+    <div class="hero-summary">
+      <div class="label">🤖 AI Daily Summary</div>
+      <p class="no-summary">— Chưa có AI summary (chạy summarize_clan_daily.py hoặc set ANTHROPIC_API_KEY) —</p>
+    </div>
+    <div class="disc-tabs"><div class="disc-tab disc-tab-51842" id="disc-tab-51842-0" onclick="switchTab(51842,0)">07:55<span class="tab-flags"></span></div>
+<div class="disc-tab disc-tab-51842" id="disc-tab-51842-1" onclick="switchTab(51842,1)">09:37<span class="tab-flags"></span></div>
+<div class="disc-tab disc-tab-51842" id="disc-tab-51842-2" onclick="switchTab(51842,2)">11:04<span class="tab-flags"></span></div>
+<div class="disc-tab disc-tab-51842" id="disc-tab-51842-3" onclick="switchTab(51842,3)">11:33<span class="tab-flags"></span></div>
+</div>
+    <div class="disc-body-wrap disc-body-51842" id="disc-body-51842-0">
+  <div class="disc-meta">
+    <span>📅 2026-05-22</span>
+    <span>🕒 07:55 → 08:05 (10 min)</span>
+    <span>💬 31 msgs</span>
+    <span>👤 11 participants</span>
+  </div>
+  <div class="disc-chips"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss ×6</span><span class="chip chip-siege" style="background:#e74c3c22;color:#e74c3c;border:1px solid #e74c3c55">⚔️ Siege ×2</span><span class="chip chip-clan_mgmt" style="background:#3498db22;color:#3498db;border:1px solid #3498db55">👥 Clan Mgmt ×1</span><span class="chip chip-hunt_farm" style="background:#27ae6022;color:#27ae60;border:1px solid #27ae6055">🗡️ Hunt/Farm ×1</span></div>
+  <div class="msg-list">
+<div class="msg-row has-tags">
+  <div class="msg-time">07:55</div>
+  <div class="msg-actor" title="CloudStrife">CloudStrife</div>
+  <div class="msg-text">
+    veo fire có thằng phá ae ơi
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-clan_mgmt" style="background:#3498db22;color:#3498db;border:1px solid #3498db55">👥 Clan Mgmt</span></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">08:01</div>
+  <div class="msg-actor" title="ThaiTu">ThaiTu</div>
+  <div class="msg-text">
+    k3 dang thua bosss
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss</span></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">08:01</div>
+  <div class="msg-actor" title="ThaiTu">ThaiTu</div>
+  <div class="msg-text">
+    hay an boss rhe
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss</span></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">08:01</div>
+  <div class="msg-actor" title="Pibe">Pibe</div>
+  <div class="msg-text">
+    dg ăn boss
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss</span></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">08:01</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    ăn boss
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss</span></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">08:02</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    tụi nó trốn trên TOI hết rồi
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss</span></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">08:02</div>
+  <div class="msg-actor" title="Pibe">Pibe</div>
+  <div class="msg-text">
+    qua giờ ae chia ca đi săn tụi nó
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-hunt_farm" style="background:#27ae6022;color:#27ae60;border:1px solid #27ae6055">🗡️ Hunt/Farm</span></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:02</div>
+  <div class="msg-actor" title="QuinD">QuinD</div>
+  <div class="msg-text">
+    may ong win bon no ha =)))
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:02</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    uhm
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:02</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    nó có 8 thằng
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:02</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    sao ăn đc bọn t =))
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:03</div>
+  <div class="msg-actor" title="THC">THC</div>
+  <div class="msg-text">
+    Hi K10
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:03</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    top nó còn ko lại tụi t
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:03</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    chỉ đc cắn lén là nhanh
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:03</div>
+  <div class="msg-actor" title="HaaH">HaaH</div>
+  <div class="msg-text">
+    bon SOK yeu xiu ma
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="MageElf">MageElf</div>
+  <div class="msg-text">
+    nghe ao the
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="MageElf">MageElf</div>
+  <div class="msg-text">
+    chung no chiem het cac vi tri top cao hon ma
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="MageElf">MageElf</div>
+  <div class="msg-text">
+    bon day lai yeu the a
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="THC">THC</div>
+  <div class="msg-text">
+    moring jame
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    tụi nó pve
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="JerryStars">JerryStars</div>
+  <div class="msg-text">
+    chung no di hoi dong`
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="JerryStars">JerryStars</div>
+  <div class="msg-text">
+    4-6 dua
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="CHANELs">CHANELs</div>
+  <div class="msg-text">
+    lv cao thoi
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="JerryStars">JerryStars</div>
+  <div class="msg-text">
+    dam' thi nhot' thoi
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">08:04</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    còn bọn t chơi pvp từ hồi đầu đến giờ
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-siege" style="background:#e74c3c22;color:#e74c3c;border:1px solid #e74c3c55">⚔️ Siege</span></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">08:05</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    chưa bao giờ ngừng đánh nhau
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-siege" style="background:#e74c3c22;color:#e74c3c;border:1px solid #e74c3c55">⚔️ Siege</span></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:05</div>
+  <div class="msg-actor" title="Clone123">Clone123</div>
+  <div class="msg-text">
+    =)))
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:05</div>
+  <div class="msg-actor" title="Zach">Zach</div>
+  <div class="msg-text">
+    i help find them hahah
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">08:05</div>
+  <div class="msg-actor" title="Zach">Zach</div>
+  <div class="msg-text">
+    they fuc our TOI xD
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss</span></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:05</div>
+  <div class="msg-actor" title="Zach">Zach</div>
+  <div class="msg-text">
+    so i get revenge
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">08:05</div>
+  <div class="msg-actor" title="CloudStrife">CloudStrife</div>
+  <div class="msg-text">
+    thank bro
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+
+  </div>
+</div>
+<div class="disc-body-wrap disc-body-51842" id="disc-body-51842-1">
+  <div class="disc-meta">
+    <span>📅 2026-05-22</span>
+    <span>🕒 09:37 → 09:53 (15 min)</span>
+    <span>💬 15 msgs</span>
+    <span>👤 3 participants</span>
+  </div>
+  <div class="disc-chips"><span class="chip chip-hunt_farm" style="background:#27ae6022;color:#27ae60;border:1px solid #27ae6055">🗡️ Hunt/Farm ×1</span><span class="chip chip-clan_mgmt" style="background:#3498db22;color:#3498db;border:1px solid #3498db55">👥 Clan Mgmt ×1</span><span class="chip chip-siege" style="background:#e74c3c22;color:#e74c3c;border:1px solid #e74c3c55">⚔️ Siege ×1</span></div>
+  <div class="msg-list">
+<div class="msg-row has-tags">
+  <div class="msg-time">09:37</div>
+  <div class="msg-actor" title="Radagon">Radagon</div>
+  <div class="msg-text">
+    care k3 hunting in toi3
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-hunt_farm" style="background:#27ae6022;color:#27ae60;border:1px solid #27ae6055">🗡️ Hunt/Farm</span></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:49</div>
+  <div class="msg-actor" title="xRaichu">xRaichu</div>
+  <div class="msg-text">
+    matnaiii
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:49</div>
+  <div class="msg-actor" title="xRaichu">xRaichu</div>
+  <div class="msg-text">
+    dimana kamu
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:50</div>
+  <div class="msg-actor" title="MatNai">MatNai</div>
+  <div class="msg-text">
+    go home :v
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:51</div>
+  <div class="msg-actor" title="xRaichu">xRaichu</div>
+  <div class="msg-text">
+    fak u
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:51</div>
+  <div class="msg-actor" title="xRaichu">xRaichu</div>
+  <div class="msg-text">
+    u left me wkkwkwk
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:51</div>
+  <div class="msg-actor" title="MatNai">MatNai</div>
+  <div class="msg-text">
+    I was ambushed :((
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">09:52</div>
+  <div class="msg-actor" title="xRaichu">xRaichu</div>
+  <div class="msg-text">
+    come fire
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-clan_mgmt" style="background:#3498db22;color:#3498db;border:1px solid #3498db55">👥 Clan Mgmt</span></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:52</div>
+  <div class="msg-actor" title="MatNai">MatNai</div>
+  <div class="msg-text">
+    go
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">09:52</div>
+  <div class="msg-actor" title="xRaichu">xRaichu</div>
+  <div class="msg-text">
+    he tele
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-siege" style="background:#e74c3c22;color:#e74c3c;border:1px solid #e74c3c55">⚔️ Siege</span></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:52</div>
+  <div class="msg-actor" title="xRaichu">xRaichu</div>
+  <div class="msg-text">
+    dunno where
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:53</div>
+  <div class="msg-actor" title="MatNai">MatNai</div>
+  <div class="msg-text">
+    always be on guard
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:53</div>
+  <div class="msg-actor" title="xRaichu">xRaichu</div>
+  <div class="msg-text">
+    yea
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:53</div>
+  <div class="msg-actor" title="xRaichu">xRaichu</div>
+  <div class="msg-text">
+    dont afk
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">09:53</div>
+  <div class="msg-actor" title="MatNai">MatNai</div>
+  <div class="msg-text">
+    OK
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+
+  </div>
+</div>
+<div class="disc-body-wrap disc-body-51842" id="disc-body-51842-2">
+  <div class="disc-meta">
+    <span>📅 2026-05-22</span>
+    <span>🕒 11:04 → 11:06 (1 min)</span>
+    <span>💬 4 msgs</span>
+    <span>👤 2 participants</span>
+  </div>
+  <div class="disc-chips"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss ×1</span></div>
+  <div class="msg-list">
+<div class="msg-row untagged">
+  <div class="msg-time">11:04</div>
+  <div class="msg-actor" title="NyxSOmila">NyxSOmila</div>
+  <div class="msg-text">
+    k3  room k4
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">11:05</div>
+  <div class="msg-actor" title="NyxSOmila">NyxSOmila</div>
+  <div class="msg-text">
+    1906
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">11:05</div>
+  <div class="msg-actor" title="NyxSOmila">NyxSOmila</div>
+  <div class="msg-text">
+    toi 3
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss</span></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">11:06</div>
+  <div class="msg-actor" title="Tojii">Tojii</div>
+  <div class="msg-text">
+    ok
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+
+  </div>
+</div>
+<div class="disc-body-wrap disc-body-51842" id="disc-body-51842-3">
+  <div class="disc-meta">
+    <span>📅 2026-05-22</span>
+    <span>🕒 11:33 → 11:33 (0 min)</span>
+    <span>💬 4 msgs</span>
+    <span>👤 1 participants</span>
+  </div>
+  <div class="disc-chips"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss ×1</span></div>
+  <div class="msg-list">
+<div class="msg-row untagged">
+  <div class="msg-time">11:33</div>
+  <div class="msg-actor" title="TrieuNe">TrieuNe</div>
+  <div class="msg-text">
+    anh eric
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">11:33</div>
+  <div class="msg-actor" title="TrieuNe">TrieuNe</div>
+  <div class="msg-text">
+    hổng ấy hồi á
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row untagged">
+  <div class="msg-time">11:33</div>
+  <div class="msg-actor" title="TrieuNe">TrieuNe</div>
+  <div class="msg-text">
+    cho tụi e xin dơ con DB
+    
+  </div>
+  <div class="msg-tags"></div>
+</div>
+<div class="msg-row has-tags">
+  <div class="msg-time">11:33</div>
+  <div class="msg-actor" title="TrieuNe">TrieuNe</div>
+  <div class="msg-text">
+    tối tụi e phụ orfen như slave
+    
+  </div>
+  <div class="msg-tags"><span class="chip chip-event_boss" style="background:#f39c1222;color:#f39c12;border:1px solid #f39c1255">🎁 Event/Boss</span></div>
+</div>
+
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+function switchTab(clanIdx, discIdx) {
+  // Hide all bodies for this clan
+  document.querySelectorAll(`.disc-body-${clanIdx}`).forEach(el => el.classList.remove('active'));
+  document.querySelectorAll(`.disc-tab-${clanIdx}`).forEach(el => el.classList.remove('active'));
+  // Show selected
+  const body = document.getElementById(`disc-body-${clanIdx}-${discIdx}`);
+  const tab  = document.getElementById(`disc-tab-${clanIdx}-${discIdx}`);
+  if (body) body.classList.add('active');
+  if (tab)  tab.classList.add('active');
+}
+
+function applyFilter() {
+  const onlyTagged = document.getElementById('filterTagged').checked;
+  const showTrans  = document.getElementById('filterTrans').checked;
+  document.querySelectorAll('.msg-row').forEach(row => {
+    const hasTag = row.classList.contains('has-tags');
+    if (onlyTagged && !hasTag) {
+      row.classList.add('hidden');
+    } else {
+      row.classList.remove('hidden');
+    }
+  });
+  document.querySelectorAll('.msg-text-vi').forEach(el => {
+    el.style.display = showTrans ? 'block' : 'none';
+  });
+}
+
+// Init: show first tab for each clan, hide trans
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.disc-tabs').forEach(tabStrip => {
+    const first = tabStrip.querySelector('.disc-tab');
+    if (first) first.click();
+  });
+  document.querySelectorAll('.msg-text-vi').forEach(el => { el.style.display = 'none'; });
+});
+</script>
+</body>
+</html>

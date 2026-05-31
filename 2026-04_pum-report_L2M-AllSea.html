@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L2M PUM Report — All SEA — April 2026</title>
+<style>
+:root {
+  --bg: #0a0e1a; --card: #111827; --card2: #1a2235;
+  --gold: #c9a84c; --gold-dim: #8a6f2e;
+  --text: #e2e8f0; --muted: #94a3b8; --border: #1f2d47;
+  --pos: #4ade80; --neg: #f87171; --warn: #fbbf24; --neu: #60a5fa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.6; }
+.en { display: none; } .vn { display: inline; }
+body.lang-en .en { display: inline; } body.lang-en .vn { display: none; }
+body.lang-en .en-block { display: block; } body.lang-en .vn-block { display: none; }
+.en-block { display: none; } .vn-block { display: block; }
+
+/* HEADER */
+.header { background: linear-gradient(135deg, #0f1729 0%, #1a2640 50%, #0f1729 100%); border-bottom: 2px solid var(--gold); padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.header-left h1 { font-size: 20px; color: var(--gold); letter-spacing: 2px; font-weight: 700; }
+.header-left p { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.lang-toggle { display: flex; gap: 8px; }
+.lang-btn { background: transparent; border: 1px solid var(--gold-dim); color: var(--muted); padding: 6px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; transition: all .2s; }
+.lang-btn.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 700; }
+
+/* NAV */
+.nav { background: #0d1220; border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; }
+.nav a { color: var(--muted); text-decoration: none; padding: 12px 20px; font-size: 13px; border-bottom: 2px solid transparent; white-space: nowrap; transition: all .2s; }
+.nav a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* LAYOUT */
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+.section { margin-bottom: 48px; }
+.section-title { font-size: 18px; color: var(--gold); font-weight: 700; letter-spacing: 1px; border-left: 4px solid var(--gold); padding-left: 14px; margin-bottom: 20px; }
+.section-sub { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+
+/* EXEC SUMMARY */
+.exec-card { background: var(--card2); border: 1px solid var(--gold-dim); border-radius: 8px; padding: 20px 24px; margin-bottom: 32px; }
+.exec-title { font-size: 13px; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.exec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.exec-item { background: var(--card); border-radius: 6px; padding: 12px 16px; border-left: 3px solid var(--gold); }
+.exec-item .badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 4px; }
+.badge-pos { background: rgba(74,222,128,.15); color: var(--pos); }
+.badge-neg { background: rgba(248,113,113,.15); color: var(--neg); }
+.badge-warn { background: rgba(251,191,36,.15); color: var(--warn); }
+.exec-item p { font-size: 13px; color: var(--text); }
+
+/* KPI CARDS */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.kpi { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; position: relative; overflow: hidden; }
+.kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.kpi.pos::before { background: var(--pos); }
+.kpi.neg::before { background: var(--neg); }
+.kpi-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.kpi-value { font-size: 26px; font-weight: 700; color: var(--gold); margin: 4px 0; }
+.kpi-mom { font-size: 12px; font-weight: 600; }
+.kpi-mom.pos { color: var(--pos); } .kpi-mom.neg { color: var(--neg); }
+.kpi-detail { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* TABLE */
+.tbl-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; }
+th { background: #0d1a2d; color: var(--gold); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; padding: 12px 14px; text-align: left; font-weight: 600; }
+td { padding: 10px 14px; border-top: 1px solid var(--border); color: var(--text); font-size: 13px; }
+tr:hover td { background: rgba(201,168,76,.04); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.pos-text { color: var(--pos); font-weight: 600; }
+.neg-text { color: var(--neg); font-weight: 600; }
+.warn-text { color: var(--warn); font-weight: 600; }
+
+/* VIP SEGMENTS */
+.seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.seg-chart { display: flex; flex-direction: column; gap: 10px; }
+.seg-bar { display: flex; align-items: center; gap: 10px; }
+.seg-bar-label { font-size: 12px; color: var(--muted); width: 200px; flex-shrink: 0; }
+.seg-bar-track { flex: 1; background: var(--border); border-radius: 4px; height: 18px; overflow: hidden; }
+.seg-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 700; color: #fff; }
+.seg-bar-count { font-size: 12px; color: var(--muted); width: 80px; text-align: right; }
+.mkt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+.mkt-card { background: var(--card2); border: 1px solid var(--border); border-radius: 6px; padding: 12px; text-align: center; }
+.mkt-flag { font-size: 22px; }
+.mkt-name { font-size: 11px; color: var(--muted); }
+.mkt-pct { font-size: 18px; font-weight: 700; color: var(--gold); }
+.mkt-count { font-size: 11px; color: var(--muted); }
+
+/* SOCIAL */
+.social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+.social-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+.social-card h3 { font-size: 14px; color: var(--gold); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.social-card ul { list-style: none; }
+.social-card ul li { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--muted); padding-left: 14px; position: relative; }
+.social-card ul li::before { content: '›'; position: absolute; left: 0; color: var(--gold); }
+.social-card ul li:last-child { border-bottom: none; }
+.mkt-mood { display: flex; flex-direction: column; gap: 6px; }
+.mkt-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; }
+.mkt-tag { font-weight: 700; width: 50px; flex-shrink: 0; color: var(--gold); }
+.escalate-card { background: rgba(248,113,113,.07); border: 1px solid rgba(248,113,113,.3); border-radius: 8px; padding: 16px 20px; margin-top: 16px; }
+.escalate-card h4 { color: var(--neg); font-size: 13px; margin-bottom: 10px; }
+.escalate-card ul li { color: var(--text); }
+
+/* NEXT MONTH */
+.plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.plan-drop { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.plan-date { background: var(--gold); color: #000; font-weight: 700; font-size: 14px; padding: 12px 18px; }
+.plan-items { padding: 16px 18px; }
+.plan-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.plan-item:last-child { border-bottom: none; }
+.plan-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+
+/* FOOTER */
+.footer { text-align: center; padding: 24px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 48px; }
+.tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600; background: var(--card2); border: 1px solid var(--border); color: var(--muted); margin: 2px; }
+
+/* ASSESS PARAGRAPH */
+.assess { background: var(--card2); border-left: 3px solid var(--gold-dim); border-radius: 0 6px 6px 0; padding: 12px 16px; margin: 14px 0 22px; font-size: 13px; color: var(--text); line-height: 1.75; }
+.assess strong { color: var(--gold); }
+.assess .neg-text { color: var(--neg); }
+.assess .pos-text { color: var(--pos); }
+
+/* ATTENTION CARD (replaces escalate) */
+.attention-card { background: rgba(251,191,36,.06); border: 1px solid rgba(251,191,36,.35); border-radius: 8px; padding: 16px 20px; }
+.attention-card h4 { color: var(--warn); font-size: 13px; margin-bottom: 10px; }
+.attention-card ul li { color: var(--text); }
+.attention-note { font-size: 12px; color: var(--muted); margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(251,191,36,.25); }
+
+/* CONTENT ROADMAP TIMELINE */
+.rdm-wrap { padding-left: 28px; position: relative; }
+.rdm-wrap::before { content:''; position:absolute; left:8px; top:10px; bottom:10px; width:2px; background:linear-gradient(to bottom,var(--gold),var(--border)); border-radius:2px; }
+.rdm-ms { position:relative; margin-bottom:28px; }
+.rdm-ms:last-child { margin-bottom:0; }
+.rdm-dot { position:absolute; left:-24px; top:5px; width:14px; height:14px; border-radius:50%; border:2px solid; }
+.rdm-dot.rl { background:#4ade80; border-color:#4ade80; box-shadow:0 0 8px rgba(74,222,128,.5); }
+.rdm-dot.op { background:var(--card); border-color:var(--gold); }
+.rdm-hdr { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.rdm-date { font-size:14px; font-weight:700; color:var(--text); }
+.rdm-badge { font-size:11px; font-weight:700; padding:2px 10px; border-radius:10px; letter-spacing:.5px; }
+.rdm-badge.rl { background:rgba(74,222,128,.15); color:#4ade80; border:1px solid rgba(74,222,128,.3); }
+.rdm-badge.op { background:rgba(201,168,76,.12); color:var(--gold); border:1px solid rgba(201,168,76,.3); }
+.rdm-items { display:flex; flex-direction:column; gap:5px; }
+.rdm-row { display:flex; align-items:flex-start; gap:8px; font-size:13px; background:var(--card); border-radius:6px; padding:8px 12px; border-left:3px solid; }
+.rdm-row.rl { border-left-color:#4ade80; color:var(--text); }
+.rdm-row.op { border-left-color:var(--gold-dim); color:var(--muted); }
+.rdm-cat { font-size:10px; font-weight:700; padding:1px 6px; border-radius:3px; background:var(--card2); color:var(--muted); flex-shrink:0; margin-top:3px; white-space:nowrap; }
+
+/* HORIZONTAL ROADMAP */
+.rdm-h-wrap { position: relative; margin: 8px 0 4px; overflow-x: auto; }
+.rdm-h-line { position: absolute; top: 22px; left: 0; right: 0; height: 2px; background: var(--border); z-index: 0; }
+.rdm-h-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; position: relative; z-index: 1; min-width: 720px; }
+.rdm-h-col { display: flex; flex-direction: column; }
+.rdm-h-head { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding-bottom: 12px; }
+.rdm-h-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); background: var(--bg); margin-bottom: 4px; }
+.rdm-h-dot.rl { background: #4ade80; border-color: #4ade80; }
+.rdm-h-dot.op { background: var(--bg); border-color: #fbbf24; box-shadow: 0 0 0 3px rgba(251,191,36,.2); }
+.rdm-h-dot.tbd { background: var(--bg); border-color: var(--muted); }
+.rdm-h-date { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .03em; }
+.rdm-h-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; letter-spacing: .04em; }
+.rdm-h-badge.rl { background: rgba(74,222,128,.15); color: #4ade80; border: 1px solid rgba(74,222,128,.3); }
+.rdm-h-badge.op { background: rgba(251,191,36,.12); color: #fbbf24; border: 1px solid rgba(251,191,36,.3); }
+.rdm-h-badge.tbd { background: rgba(100,100,100,.1); color: var(--muted); border: 1px solid var(--border); }
+.rdm-h-body { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; flex: 1; }
+.rdm-h-body.rl { border-color: rgba(74,222,128,.2); }
+.rdm-h-body.op { border-color: rgba(251,191,36,.2); }
+.rdm-h-body.tbd { border-color: var(--border); opacity: .75; }
+.rdm-h-item { font-size: 12px; color: var(--text); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.04); display: flex; flex-direction: column; gap: 2px; }
+.rdm-h-item:last-child { border-bottom: none; }
+.rdm-h-item .rdm-cat { font-size: 9px; font-weight: 700; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+.rdm-h-item.tbd-note { font-size: 12px; color: var(--muted); line-height: 1.7; }
+/* KPI SUMMARY CARDS */
+.kpi-sum-card { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.kpi-sum-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+.kpi-sum-val { font-size: 18px; font-weight: 700; color: var(--text); }
+.kpi-sum-sub { font-size: 11px; margin-top: 3px; }
+
+/* NEXT STEPS */
+.ns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0 20px; }
+@media (max-width: 700px) { .ns-grid { grid-template-columns: 1fr; } }
+.ns-card { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.ns-card.urgent { border-color: rgba(248,113,113,.35); background: rgba(248,113,113,.04); }
+.ns-card.t5 { border-color: rgba(251,191,36,.3); background: rgba(251,191,36,.03); }
+.ns-card.monitor { border-color: rgba(96,165,250,.25); background: rgba(96,165,250,.03); }
+.ns-tag { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 8px; }
+.ns-tag.urgent { background: rgba(248,113,113,.15); color: #f87171; }
+.ns-tag.t5 { background: rgba(251,191,36,.12); color: #fbbf24; }
+.ns-tag.monitor { background: rgba(96,165,250,.12); color: #60a5fa; }
+.ns-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.ns-body { font-size: 12px; color: var(--muted); line-height: 1.65; }
+.ns-body strong { color: var(--text); }
+.ns-owner { font-size: 11px; color: var(--muted); margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,.05); }
+.ns-owner span { color: var(--gold); font-weight: 600; }
+
+/* WEBSHOP TABLE COMPACT */
+.ws-summary { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:16px 0; }
+.ws-kpi { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; }
+.ws-kpi-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+.ws-kpi-val { font-size:17px; font-weight:700; color:var(--text); margin:2px 0; }
+.ws-kpi-mom { font-size:11px; }
+/* REFUND */
+.refund-banner { background:rgba(248,113,113,.06); border:1px solid rgba(248,113,113,.25); border-radius:8px; padding:16px 20px; display:flex; gap:24px; flex-wrap:wrap; align-items:center; margin:16px 0; }
+.refund-stat { text-align:center; }
+.refund-stat-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+.refund-stat-val { font-size:20px; font-weight:700; margin-top:2px; }
+.refund-note { flex:1; min-width:200px; font-size:12px; color:var(--muted); line-height:1.7; }
+</style>
+
+<!-- NCV-DESIGN-SYSTEM-INJECTED -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../_framework/ncv-design-system.css">
+<link rel="stylesheet" href="../../_framework/ncv-design-system_override.css">
+</head>
+<body class="lang-vn">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>⚔ LINEAGE 2M — PUM REPORT</h1>
+    <p>
+      <span class="vn">Báo Cáo Tháng 4/2026 | VN Market | Generated: 2026-05-08</span>
+      <span class="en">Monthly Publisher Report — April 2026 | VN Market | Generated: 2026-05-08</span>
+    </p>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-vn" onclick="setLang('vn')">🇻🇳 VN</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="#exec"><span class="vn">📌 Tóm Tắt</span><span class="en">📌 Summary</span></a>
+  <a href="#s1"><span class="vn">1. Tài Chính</span><span class="en">1. Financial</span></a>
+  <a href="#s2"><span class="vn">2. Vận Hành</span><span class="en">2. Operations</span></a>
+  <a href="#s3"><span class="vn">3. Cộng Đồng</span><span class="en">3. Social</span></a>
+  <a href="#s4"><span class="vn">4. Next Steps</span><span class="en">4. Next Steps</span></a>
+  <a href="#s5"><span class="vn">5. Content Roadmap</span><span class="en">5. Content Roadmap</span></a>
+  <a href="#s6"><span class="vn">6. KPI Forecast</span><span class="en">6. KPI Forecast</span></a>
+</div>
+
+<div class="container">
+
+<!-- EXECUTIVE SUMMARY -->
+<div id="exec" class="exec-card">
+  <div class="exec-title">
+    <span class="vn">📌 Tóm Tắt Điều Hành — Tháng 4/2026</span>
+    <span class="en">📌 Executive Summary — April 2026</span>
+  </div>
+  <div class="exec-grid">
+    <div class="exec-item">
+      <div class="badge badge-pos">✅ HIGHLIGHT</div>
+      <p class="vn">Doanh thu $1,800,071 USD (SEA) — tăng <strong>+5.6% MoM</strong>. Y2026 Forecast $16,562,231 — vượt KPI năm <strong>+5.0%</strong>. Tháng tài chính tốt nhất 2026 tính đến nay.</p>
+      <p class="en">Revenue $1,800,071 USD (SEA) — up <strong>+5.6% MoM</strong>. Y2026 Forecast $16,562,231 — beating annual KPI by <strong>+5.0%</strong>. Best financial month in 2026 to date.</p>
+    </div>
+    <div class="exec-item">
+      <div class="badge badge-pos">📈 COMMUNITY</div>
+      <p class="vn">Crossbow class ra mắt và All Class Change announcement tạo hype mạnh nhất tháng tại VN/TH — old users quay lại, new users quan tâm.</p>
+      <p class="en">Crossbow class launch and All Class Change announcement drove peak community hype in VN/TH — returning users and new player interest observed.</p>
+    </div>
+    <div class="exec-item">
+      <div class="badge badge-warn">⚠️ RISK</div>
+      <p class="vn">27.2% VIP players có dấu hiệu <strong>Churned</strong> (553/2,036 players). Thêm 13% là Sleeping Whale — tổng 40.2% VIP cần re-engagement.</p>
+      <p class="en"><strong>27.2% of VIP players churned</strong> (553/2,036). Additional 13% are Sleeping Whales — 40.2% total VIPs need re-engagement action.</p>
+    </div>
+    <div class="exec-item">
+      <div class="badge badge-neg">🔴 ESCALATE</div>
+      <p class="vn">PH market: community đang chủ động discourage new users (bot, giá cao, không có server mới). Purple ON security vulnerability chưa patch (VN/TH).</p>
+      <p class="en">PH market: community actively discouraging new players (bots, high cost, no new server). Purple ON security session bug unpatched (VN/TH).</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: FINANCIAL -->
+<div id="s1" class="section">
+  <div class="section-title">
+    <span class="vn">1. Tổng Quan Tài Chính</span>
+    <span class="en">1. Financial Overview</span>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi pos">
+      <div class="kpi-label"><span class="vn">Doanh Thu (USD)</span><span class="en">Gross Revenue (USD)</span></div>
+      <div class="kpi-value">$1,800,071</div>
+      <div class="kpi-mom pos">▲ +5.6% MoM</div>
+      <div class="kpi-detail"><span class="vn">Y2026 FC: $16,562,231 | +5.0% vs KPI</span><span class="en">Y2026 FC: $16,562,231 | +5.0% vs KPI</span></div>
+    </div>
+    <div class="kpi neg">
+      <div class="kpi-label"><span class="vn">Lượt Cài Đặt</span><span class="en">Installs</span></div>
+      <div class="kpi-value">9,076</div>
+      <div class="kpi-mom neg">▼ -1.5% MoM</div>
+      <div class="kpi-detail">Mar: 9,218</div>
+    </div>
+    <div class="kpi pos">
+      <div class="kpi-label"><span class="vn">Người Dùng Mới (NRU)</span><span class="en">New Registered Users</span></div>
+      <div class="kpi-value">2,558</div>
+      <div class="kpi-mom pos">▲ +8.9% MoM</div>
+      <div class="kpi-detail">Mar: 2,348</div>
+    </div>
+    <div class="kpi neg">
+      <div class="kpi-label"><span class="vn">Người Dùng HĐ (A30)</span><span class="en">Active Users (A30)</span></div>
+      <div class="kpi-value">44,584</div>
+      <div class="kpi-mom neg">▼ -10.2% MoM</div>
+      <div class="kpi-detail">Mar: 49,655</div>
+    </div>
+    <div class="kpi pos">
+      <div class="kpi-label">ARPPU (USD)</div>
+      <div class="kpi-value">$2,615</div>
+      <div class="kpi-mom pos">▲ +24.1% MoM</div>
+      <div class="kpi-detail">Mar: $2,108</div>
+    </div>
+    <div class="kpi neg">
+      <div class="kpi-label"><span class="vn">Người Dùng Trả Phí</span><span class="en">Paying Users</span></div>
+      <div class="kpi-value">4,502</div>
+      <div class="kpi-mom neg">▼ -16.4% MoM</div>
+      <div class="kpi-detail">Mar: 5,382</div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th><span class="vn">Chỉ Số</span><span class="en">Metric</span></th>
+        <th class="num"><span class="vn">Thực Tế T4</span><span class="en">Apr Actual</span></th>
+        <th class="num"><span class="vn">Thực Tế T3</span><span class="en">Mar Actual</span></th>
+        <th class="num">MoM %</th>
+        <th class="num">Y2026 KPI</th>
+        <th class="num">Y2026 Forecast</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="vn">Doanh Thu (USD)</span><span class="en">Gross Revenue (USD)</span></td><td class="num">$1,800,071</td><td class="num">$1,704,520</td><td class="num pos-text">▲ +5.6%</td><td class="num">$15,773,608</td><td class="num pos-text">$16,562,231 ▲ +5.0%</td></tr>
+        <tr><td><span class="vn">Lượt Cài Đặt</span><span class="en">Installs</span></td><td class="num">9,076</td><td class="num">9,218</td><td class="num neg-text">▼ -1.5%</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td><span class="vn">Người Dùng Mới (NRU)</span><span class="en">New Registered Users</span></td><td class="num">2,558</td><td class="num">2,348</td><td class="num pos-text">▲ +8.9%</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td><span class="vn">Người Dùng HĐ (A30)</span><span class="en">Active Users A30</span></td><td class="num">44,584</td><td class="num">49,655</td><td class="num neg-text">▼ -10.2%</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>ARPPU (USD)</td><td class="num">$2,615</td><td class="num">$2,108</td><td class="num pos-text">▲ +24.1%</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td><span class="vn">Người Dùng Trả Phí</span><span class="en">Paying Users</span></td><td class="num">4,502</td><td class="num">5,382</td><td class="num neg-text">▼ -16.4%</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td><span class="vn">Tỷ Lệ Giữ Chân (RR30)</span><span class="en">30-Day Retention (RR30)</span></td><td class="num">~100%</td><td class="num">89.2%</td><td class="num pos-text">▲ +10.8pp</td><td class="num">—</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:10px; font-size:12px; color:var(--muted)">
+    <span class="vn">Nguồn: April Actual + Forecast.xlsx — Sheet All (SEA) | Y2026 KPI & Y2026 Forecast là pre-computed trong file</span>
+    <span class="en">Source: April Actual + Forecast.xlsx — Sheet All (SEA) | Y2026 KPI & Y2026 Forecast are pre-computed in file</span>
+  </p>
+  <div style="background:rgba(248,113,113,.06); border:1px solid rgba(248,113,113,.2); border-radius:8px; padding:12px 16px; margin-bottom:16px; display:flex; gap:20px; flex-wrap:wrap; align-items:center;">
+    <div style="font-size:12px; color:var(--muted);">
+      <span class="vn">⚠️ <strong style="color:#f87171;">Refund T4:</strong> −$88,512 (4.92% gross revenue) — concentrated Apr 1–5. Xem chi tiết mục 2.4.</span>
+      <span class="en">⚠️ <strong style="color:#f87171;">Apr Refund:</strong> −$88,512 (4.92% of gross revenue) — concentrated Apr 1–5. See section 2.4 for details.</span>
+    </div>
+    <div style="display:flex; gap:16px; flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;"><span class="vn">Gross Revenue</span><span class="en">Gross Revenue</span></div>
+        <div style="font-size:14px; font-weight:700; color:var(--text);">$1,800,071</div>
+      </div>
+      <div style="font-size:18px; color:var(--muted); line-height:1.8;">−</div>
+      <div style="text-align:center;">
+        <div style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;">Refund</div>
+        <div style="font-size:14px; font-weight:700; color:#f87171;">$88,512</div>
+      </div>
+      <div style="font-size:18px; color:var(--muted); line-height:1.8;">=</div>
+      <div style="text-align:center;">
+        <div style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;"><span class="vn">Net Revenue</span><span class="en">Net Revenue</span></div>
+        <div style="font-size:14px; font-weight:700; color:#fbbf24;">$1,711,559</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="assess">
+    <span class="vn">
+      <strong>Đánh giá tổng quan:</strong> Tháng 4 là tháng tài chính mạnh nhất 2026 tính đến nay — doanh thu $1,800,071 vượt KPI năm, đưa Y2026 Forecast lên <strong class="pos-text">+5.0% vs KPI</strong>.
+      Điểm nổi bật là <strong>ARPPU tăng mạnh +24.1%</strong> ($2,615), cho thấy high-spenders đang chi tiêu nhiều hơn đáng kể, bù đắp cho số Paying Users giảm <span class="neg-text">-16.4%</span>.
+      Tuy nhiên, <strong class="neg-text">A30 giảm -10.2%</strong> là tín hiệu cần theo dõi — active base đang thu hẹp dù doanh thu vẫn tốt, đây là rủi ro tập trung cần diversify.
+      <strong class="pos-text">NRU +8.9%</strong> là điểm sáng về acquisition.
+    </span>
+    <span class="en">
+      <strong>Assessment:</strong> April was the strongest financial month in 2026 to date — revenue of $1,800,071 pushed Y2026 Forecast to <strong class="pos-text">+5.0% vs KPI</strong>.
+      Standout: <strong>ARPPU up +24.1%</strong> ($2,615), indicating high-spenders are spending significantly more, offsetting the <span class="neg-text">-16.4% drop</span> in Paying Users.
+      However, <strong class="neg-text">A30 down -10.2%</strong> warrants attention — the active base is shrinking while revenue holds, a concentration risk that needs diversification.
+      <strong class="pos-text">NRU +8.9%</strong> is a positive acquisition signal.
+    </span>
+  </div>
+</div>
+
+<!-- SECTION 2: OPERATIONS -->
+<div id="s2" class="section">
+  <div class="section-title">
+    <span class="vn">2. Báo Cáo Vận Hành</span>
+    <span class="en">2. Operation Report</span>
+  </div>
+
+  <!-- 2.1 VIP Analysis -->
+  <h3 style="color:var(--gold); font-size:15px; margin-bottom:14px;">
+    <span class="vn">2.1 Phân Tích VIP — Tháng 4/2026</span>
+    <span class="en">2.1 VIP Status Analysis — April 2026</span>
+  </h3>
+  <p style="color:var(--muted); font-size:13px; margin-bottom:16px;">
+    <span class="vn">Tổng số VIP players được theo dõi: <strong style="color:var(--text)">2,036</strong></span>
+    <span class="en">Total VIP players tracked: <strong style="color:var(--text)">2,036</strong></span>
+  </p>
+
+  <div class="seg-grid">
+    <div>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:10px;"><span class="vn">Phân Khúc Hành Vi</span><span class="en">Behavior Segments</span></p>
+      <div class="seg-chart">
+        <div class="seg-bar">
+          <div class="seg-bar-label"><span class="vn">Bình thường (Normal)</span><span class="en">Normal</span></div>
+          <div class="seg-bar-track"><div class="seg-bar-fill" style="width:51.9%; background:#4ade80;">51.9%</div></div>
+          <div class="seg-bar-count">1,057</div>
+        </div>
+        <div class="seg-bar">
+          <div class="seg-bar-label"><span class="vn">Rời bỏ (Churned) ⚠️</span><span class="en">Churned ⚠️</span></div>
+          <div class="seg-bar-track"><div class="seg-bar-fill" style="width:27.2%; background:#f87171;">27.2%</div></div>
+          <div class="seg-bar-count">553</div>
+        </div>
+        <div class="seg-bar">
+          <div class="seg-bar-label"><span class="vn">Không hoạt động (Sleeping)</span><span class="en">Sleeping Whale</span></div>
+          <div class="seg-bar-track"><div class="seg-bar-fill" style="width:13.0%; background:#fbbf24;">13.0%</div></div>
+          <div class="seg-bar-count">264</div>
+        </div>
+        <div class="seg-bar">
+          <div class="seg-bar-label"><span class="vn">Đổi chủ - Không HĐ</span><span class="en">Change Inactive Owner</span></div>
+          <div class="seg-bar-track"><div class="seg-bar-fill" style="width:6.9%; background:#60a5fa;">6.9%</div></div>
+          <div class="seg-bar-count">141</div>
+        </div>
+        <div class="seg-bar">
+          <div class="seg-bar-label"><span class="vn">Đổi chủ - Đang HĐ</span><span class="en">Change Active Owner</span></div>
+          <div class="seg-bar-track"><div class="seg-bar-fill" style="width:1.0%; background:#a78bfa; min-width:30px;">1.0%</div></div>
+          <div class="seg-bar-count">21</div>
+        </div>
+      </div>
+      <p style="font-size:12px; color:var(--neg); margin-top:12px;">
+        <span class="vn">⚠️ 40.2% VIP cần re-engagement (Churned + Sleeping Whale)</span>
+        <span class="en">⚠️ 40.2% VIPs need re-engagement (Churned + Sleeping Whale)</span>
+      </p>
+    </div>
+    <div>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:10px;"><span class="vn">Phân Bổ Theo Thị Trường</span><span class="en">Market Distribution</span></p>
+      <div class="mkt-grid">
+        <div class="mkt-card"><div class="mkt-flag">🇹🇭</div><div class="mkt-name">TH</div><div class="mkt-pct">35.8%</div><div class="mkt-count">729</div></div>
+        <div class="mkt-card"><div class="mkt-flag">🇻🇳</div><div class="mkt-name">VN</div><div class="mkt-pct">16.3%</div><div class="mkt-count">332</div></div>
+        <div class="mkt-card"><div class="mkt-flag">🇮🇩</div><div class="mkt-name">ID</div><div class="mkt-pct">15.3%</div><div class="mkt-count">312</div></div>
+        <div class="mkt-card"><div class="mkt-flag">🇸🇬</div><div class="mkt-name">SG</div><div class="mkt-pct">13.6%</div><div class="mkt-count">276</div></div>
+        <div class="mkt-card"><div class="mkt-flag">🌐</div><div class="mkt-name">Other</div><div class="mkt-pct">11.5%</div><div class="mkt-count">235</div></div>
+        <div class="mkt-card"><div class="mkt-flag">🇵🇭</div><div class="mkt-name">PH</div><div class="mkt-pct">4.1%</div><div class="mkt-count">83</div></div>
+        <div class="mkt-card"><div class="mkt-flag">🇲🇾</div><div class="mkt-name">MY</div><div class="mkt-pct">3.4%</div><div class="mkt-count">69</div></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Tier Revenue Analysis -->
+  <h4 style="color:var(--muted); font-size:13px; font-weight:600; margin:24px 0 12px; text-transform:uppercase; letter-spacing:.04em;">
+    <span class="vn">📊 Phân Tích Doanh Thu Theo Tier — Tháng 4/2026</span>
+    <span class="en">📊 Revenue by Spending Tier — April 2026</span>
+  </h4>
+  <div class="tbl-wrap" style="margin-bottom:8px;">
+    <table>
+      <thead><tr>
+        <th>Tier</th>
+        <th class="num"><span class="vn">Lifetime Spend</span><span class="en">Lifetime Spend</span></th>
+        <th class="num"><span class="vn">Users</span><span class="en">Users</span></th>
+        <th class="num"><span class="vn">Doanh Thu T4 (VND)</span><span class="en">Apr Rev (VND)</span></th>
+        <th class="num"><span class="vn">% Revenue</span><span class="en">% Revenue</span></th>
+        <th class="num"><span class="vn">MoM</span><span class="en">MoM</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>G</strong></td><td>&gt; $20,000</td><td class="num">278</td><td class="num pos-text">28,172,918,895</td><td class="num pos-text"><strong>59.9%</strong></td><td class="num muted-text">−1.1%</td></tr>
+        <tr><td><strong>F</strong></td><td>$4,000–20,000</td><td class="num">730</td><td class="num">11,151,169,691</td><td class="num"><strong>23.7%</strong></td><td class="num muted-text">−1.1%</td></tr>
+        <tr><td><strong>E</strong></td><td>$2,000–4,000</td><td class="num">548</td><td class="num">3,655,273,862</td><td class="num">7.8%</td><td class="num pos-text">+0.6%</td></tr>
+        <tr><td><strong>D</strong></td><td>$400–2,000</td><td class="num">2,070</td><td class="num">3,114,929,666</td><td class="num">6.6%</td><td class="num muted-text">−3.2%</td></tr>
+        <tr><td>C</td><td>$200–400</td><td class="num">1,141</td><td class="num">445,639,051</td><td class="num">0.9%</td><td class="num muted-text">−4.2%</td></tr>
+        <tr><td>B</td><td>$40–200</td><td class="num">3,172</td><td class="num">399,064,337</td><td class="num">0.8%</td><td class="num muted-text">−8.6%</td></tr>
+        <tr><td>A</td><td>$0–40</td><td class="num">41,755</td><td class="num">109,504,840</td><td class="num">0.2%</td><td class="num muted-text">−14.1%</td></tr>
+        <tr style="border-top:1px solid var(--border); font-weight:600;">
+          <td colspan="2"><span class="vn">Tổng cộng</span><span class="en">Total</span></td>
+          <td class="num">49,694</td>
+          <td class="num pos-text">47,048,500,340</td>
+          <td class="num">100%</td>
+          <td class="num pos-text">+3.0%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px; color:var(--muted); margin-bottom:20px;">
+    <span class="vn">Nguồn: VIP Active Monthly.csv + VIP Charge Monthly.csv | 1 USD ≈ 25,450 VND | MoM = Apr vs Mar 2026</span>
+    <span class="en">Source: VIP Active Monthly.csv + VIP Charge Monthly.csv | 1 USD ≈ 25,450 VND | MoM = Apr vs Mar 2026</span>
+  </p>
+
+
+  <div class="assess">
+    <span class="vn">
+      <strong>Đánh giá:</strong> Revenue tháng 4 đạt <strong class="pos-text">VND 47.0B (+3.0% MoM)</strong> — cao nhất trong 2026 tính đến nay.
+      Cấu trúc revenue cực kỳ top-heavy: <strong>1,008 users tier G+F (2.0% base)</strong> đóng góp <strong class="pos-text">83.6% doanh thu</strong>.
+      Tier G+F giữ ổn định (−1.1% MoM) trong khi tier thấp (A: −14.1%, B: −8.6%) tiếp tục co lại theo xu hướng game mature — tín hiệu bình thường.
+      <br><br>
+      Mặt khác, <strong class="neg-text">40.2% VIP (817/2,036)</strong> đang ở trạng thái rủi ro: 27.2% đã Churned hoàn toàn, 13% là Sleeping Whale.
+      Đáng chú ý: <strong>181/264 Sleeping Whales không có L30D</strong> — lifetime spend trung bình ~$10,953, top case là <strong>EIdrith (Leona 03, $457,609)</strong>.
+      3 trong 5 Sleeping Whale lớn nhất đều từ <strong>Leona 03</strong> — gợi ý cluster guild/friend group đã quit cùng lúc, nên ưu tiên outreach theo server này trong tháng 5.
+      162 users "Đổi chủ" (21 active + 141 inactive) cần tiếp tục monitoring để phát hiện tài khoản marketplace.
+    </span>
+    <span class="en">
+      <strong>Assessment:</strong> April revenue reached <strong class="pos-text">VND 47.0B (+3.0% MoM)</strong> — highest month in 2026 so far.
+      Revenue is highly concentrated: <strong>1,008 G+F tier users (2.0% of base)</strong> contribute <strong class="pos-text">83.6% of all revenue</strong>.
+      G+F users held stable (−1.1% MoM) while lower tiers (A: −14.1%, B: −8.6%) continue to shrink as the game matures — expected behavior.
+      <br><br>
+      On the risk side, <strong class="neg-text">40.2% of VIPs (817/2,036)</strong> are at risk: 27.2% fully churned, 13% sleeping.
+      Notably, <strong>181/264 Sleeping Whales have zero L30D activity</strong> — avg lifetime spend ~$10,953, top case <strong>EIdrith (Leona 03, $457,609 lifetime)</strong>.
+      Three of the top 5 Sleeping Whales are from <strong>Leona 03</strong> — likely a guild/friend cluster that quit together; server-targeted re-engagement in May is recommended.
+      162 "Change Owner" accounts (21 active, 141 inactive) warrant continued monitoring for marketplace/trading activity.
+    </span>
+  </div>
+  <p style="font-size:12px; color:var(--muted); margin-top:8px; margin-bottom:28px;">
+    <span class="vn">Nguồn: Behavior Alerts.csv · User segment distribution.csv · VIP Active Monthly.csv · VIP Charge Monthly.csv | Top Active Spender: SEPHIROTHH (TH, $829K) · vibipi (ID, $821K) · Bran (VN, $503K)</span>
+    <span class="en">Source: Behavior Alerts.csv · User segment distribution.csv · VIP Active Monthly.csv · VIP Charge Monthly.csv | Top Active: SEPHIROTHH (TH, $829K) · vibipi (ID, $821K) · Bran (VN, $503K)</span>
+  </p>
+
+  <!-- 2c Guilds -->
+  <h3 style="color:var(--gold); font-size:15px; margin-bottom:14px;">
+    <span class="vn">2.2 Top Guilds — Tháng 4/2026</span>
+    <span class="en">2.2 Top Guilds — April 2026</span>
+  </h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>#</th>
+        <th><span class="vn">Clan</span><span class="en">Guild</span></th>
+        <th>Union</th>
+        <th>Server</th>
+        <th class="num"><span class="vn">Thành Viên</span><span class="en">Members</span></th>
+        <th class="num"><span class="vn">Doanh Thu L30D (VND)</span><span class="en">Last 30D Rev (VND)</span></th>
+        <th class="num"><span class="vn">Tổng (VND)</span><span class="en">All-Time (VND)</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>DOGE</strong></td><td>GARUDA</td><td>Kain 07</td><td class="num">50</td><td class="num pos-text">6,187,009,751</td><td class="num">102,212,437,552</td></tr>
+        <tr><td>2</td><td><strong>Mystic</strong></td><td>Venom</td><td>Kain 08</td><td class="num">48</td><td class="num">2,185,509,400</td><td class="num">57,170,847,101</td></tr>
+        <tr><td>3</td><td><strong>ELITE</strong></td><td>BEHURN</td><td>Leona 04</td><td class="num">50</td><td class="num">2,020,552,306</td><td class="num">24,136,992,826</td></tr>
+        <tr><td>4</td><td><strong>WuxiaGaming</strong></td><td>ST0RMBL00D</td><td>Teon 09</td><td class="num">49</td><td class="num">1,582,256,772</td><td class="num">22,857,644,226</td></tr>
+        <tr><td>5</td><td><strong>OSYS</strong></td><td>—</td><td>Teon 06</td><td class="num">46</td><td class="num">1,590,131,908</td><td class="num">22,669,143,634</td></tr>
+        <tr><td>6</td><td>Lumiere</td><td>—</td><td>Teon 02</td><td class="num">50</td><td class="num">1,863,322,503</td><td class="num">20,025,983,016</td></tr>
+        <tr><td>7</td><td>DAZE</td><td>BEYOND</td><td>Leona 01</td><td class="num">49</td><td class="num">769,953,989</td><td class="num">19,557,451,470</td></tr>
+        <tr><td>8</td><td>HellFire</td><td>MiddleAgeArmy</td><td>Kain 05</td><td class="num">40</td><td class="num">722,332,414</td><td class="num">18,143,530,864</td></tr>
+        <tr><td>9</td><td>传说中</td><td>—</td><td>Kain 02</td><td class="num">41</td><td class="num">806,573,617</td><td class="num">17,930,168,061</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px; color:var(--muted); margin-top:8px;">
+    <span class="vn">Nguồn: Guild Info.csv — 6,303 clans tracked | DOGE (Kain 07) dẫn đầu cách biệt với doanh thu L30D gấp 2.8x so với #2</span>
+    <span class="en">Source: Guild Info.csv — 6,303 clans tracked | DOGE (Kain 07) leads by a significant margin — L30D revenue 2.8x ahead of #2</span>
+  </p>
+
+  <div class="assess">
+    <span class="vn">
+      <strong>Đánh giá:</strong> <strong>DOGE (Kain 07)</strong> tiếp tục dẫn đầu tuyệt đối với L30D gấp 2.8x #2 và all-time vượt 100 tỷ VND — cách biệt gần gấp đôi guild #2.
+      Top 5 tập trung trên Kain và Teon, phản ánh 2 server có PvP ecosystem active nhất.
+      Đáng chú ý: <strong>WuxiaGaming (#4)</strong> là clan content creator nhưng duy trì spending cao — là anchor quan trọng cho community strategy.
+      Guild #5 OSYS và #6 Lumiere có doanh thu L30D khá đồng đều (~1.6–1.9B), cho thấy một nhóm mid-tier spending ổn định phía sau DOGE.
+    </span>
+    <span class="en">
+      <strong>Assessment:</strong> <strong>DOGE (Kain 07)</strong> maintains dominant leadership — L30D 2.8x ahead of #2 and all-time revenue exceeding 100B VND, nearly double #2.
+      Top 5 are concentrated on Kain and Teon servers, the most active PvP ecosystems.
+      Notable: <strong>WuxiaGaming (#4)</strong> is a content-creator clan that maintains high spending — a strong anchor for community strategy.
+      Guilds #5–#6 show stable mid-tier spending (~1.6–1.9B L30D), indicating a healthy second-tier spending cluster behind DOGE.
+    </span>
+  </div>
+
+  <!-- 2.3 Webshop Operation -->
+  <h3 style="color:var(--gold); font-size:15px; margin-bottom:14px;">
+    <span class="vn">2.3 Webshop Operation — T3 vs T4/2026</span>
+    <span class="en">2.3 Webshop Operation — Mar vs Apr 2026</span>
+  </h3>
+
+  <div class="ws-summary">
+    <div class="ws-kpi">
+      <div class="ws-kpi-label"><span class="vn">Tổng Revenue</span><span class="en">Total Revenue</span></div>
+      <div class="ws-kpi-val">$1,863,480</div>
+      <div class="ws-kpi-mom pos-text">+5.7% vs Mar</div>
+    </div>
+    <div class="ws-kpi">
+      <div class="ws-kpi-label">Paying Users (PU)</div>
+      <div class="ws-kpi-val neg-text">4,498</div>
+      <div class="ws-kpi-mom neg-text">−17.2% vs Mar</div>
+    </div>
+    <div class="ws-kpi">
+      <div class="ws-kpi-label">ARPU / PU</div>
+      <div class="ws-kpi-val pos-text">$414</div>
+      <div class="ws-kpi-mom pos-text">+27.6% vs Mar</div>
+    </div>
+    <div class="ws-kpi">
+      <div class="ws-kpi-label">Transactions</div>
+      <div class="ws-kpi-val">255,932</div>
+      <div class="ws-kpi-mom neg-text">−5.5% vs Mar</div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap" style="margin-bottom:8px;">
+    <table>
+      <thead><tr>
+        <th>#</th>
+        <th><span class="vn">Gói</span><span class="en">Package</span></th>
+        <th class="num">Rev Apr</th>
+        <th class="num">% Total</th>
+        <th class="num">PU</th>
+        <th class="num">MoM Rev</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Daily Blessing Packages 2</td>                               <td class="num pos-text">$327,476</td><td class="num">17.6%</td><td class="num">660</td><td class="num pos-text">+3.2%</td></tr>
+        <tr style="background:rgba(251,191,36,.06)"><td>2</td><td>20000 Diamonds Web <span style="font-size:10px;color:var(--warn)">◆</span></td><td class="num warn-text">$265,899</td><td class="num">14.3%</td><td class="num">53</td><td class="num pos-text">+20.8%</td></tr>
+        <tr><td>3</td><td>New Fancy Card Package</td>                                  <td class="num pos-text">$125,756</td><td class="num">6.7%</td><td class="num">502</td><td class="num pos-text">+1.6%</td></tr>
+        <tr><td>4</td><td>Skin Blessing Package</td>                                   <td class="num pos-text">$74,935</td><td class="num">4.0%</td><td class="num">349</td><td class="num pos-text">+36.1%</td></tr>
+        <tr><td>5</td><td>Bracelet of Influence Chest Blessing</td>                    <td class="num pos-text">$68,807</td><td class="num">3.7%</td><td class="num">151</td><td class="num pos-text">+25.7%</td></tr>
+        <tr><td>6</td><td>Daily Blessing Package 3</td>                                <td class="num">$68,149</td><td class="num">3.7%</td><td class="num">462</td><td class="num neg-text">−8.2%</td></tr>
+        <tr><td>7</td><td>Bracelet of Holy Protection Blessing</td>                    <td class="num pos-text">$58,566</td><td class="num">3.1%</td><td class="num">96</td><td class="num pos-text">+16.9%</td></tr>
+        <tr style="background:rgba(251,191,36,.06)"><td>8</td><td>4000 Diamonds IAP SA GG <span style="font-size:10px;color:var(--warn)">◆</span></td><td class="num warn-text">$56,224</td><td class="num">3.0%</td><td class="num">26</td><td class="num muted-text">NEW</td></tr>
+        <tr style="background:rgba(251,191,36,.06)"><td>9</td><td>4000 Diamonds Web <span style="font-size:10px;color:var(--warn)">◆</span></td>      <td class="num warn-text">$51,947</td><td class="num">2.8%</td><td class="num">58</td><td class="num neg-text">−33.6%</td></tr>
+        <tr><td>10</td><td>Epic Class Chance Card Package 1</td>                       <td class="num pos-text">$50,772</td><td class="num">2.7%</td><td class="num">284</td><td class="num pos-text">+6.1%</td></tr>
+        <tr style="color:var(--muted); font-size:11px;"><td colspan="6">
+          <span class="vn">+ các gói còn lại — tổng ~141 SKUs active | ◆ Diamond packages: $458,254 tổng (24.6% gross) — phần lớn transaction đến từ refund fraud tháng 4 (xem 2.4)</span>
+          <span class="en">+ remaining packages — ~141 SKUs active | ◆ Diamond packages: $458,254 total (24.6% of gross) — large portion of transactions linked to Apr refund fraud (see 2.4)</span>
+        </td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="assess">
+    <span class="vn">
+      <strong>Đánh giá:</strong> Tổng revenue T4 đạt <strong>$1.863M (+5.7% MoM)</strong>, trong đó <strong>Diamond packages chiếm $458,254 (24.6%)</strong> — đây là nhóm gói liên quan đến refund fraud tháng 4 (xem chi tiết mục 2.4). Phần webshop thuần (non-Diamond) đạt ~$1.405M, về cơ bản flat so với T3.
+      PU giảm −17.2% nhưng ARPU tăng +27.6% ($325→$414) — tập PU còn lại đang chi tiêu nhiều hơn.
+      <strong>Skin Blessing Package</strong> là điểm sáng nổi bật: +36.1% MoM, PU tăng từ 248→349 — gói skin đang được đón nhận tốt.
+      <strong>Bracelet packages</strong> (Influence + Holy Protection) tăng đều +16–26% theo nhu cầu endgame gear.
+      Điểm cần theo dõi: Daily Blessing Pkg 3 giảm −8.2%, New Weekly Pkg 1 giảm −11.6% — cần monitor để phân biệt rotation tự nhiên với engagement fatigue.
+    </span>
+    <span class="en">
+      <strong>Assessment:</strong> Total Apr revenue reached <strong>$1.863M (+5.7% MoM)</strong>, of which <strong>Diamond packages account for $458,254 (24.6%)</strong> — this group is linked to the Apr refund fraud incident (see section 2.4). Core webshop (non-Diamond) was ~$1.405M, essentially flat vs Mar.
+      PU down −17.2% but ARPU up +27.6% ($325→$414) — remaining PUs are spending more per head.
+      <strong>Skin Blessing Package</strong> is the standout: +36.1% MoM, PU growing 248→349 — new skin gaining strong traction.
+      <strong>Bracelet packages</strong> (Influence + Holy Protection) up +16–26% driven by endgame gear demand.
+      Watch: Daily Blessing Pkg 3 −8.2%, New Weekly Pkg 1 −11.6% — monitor to distinguish natural rotation from engagement fatigue.
+    </span>
+  </div>
+  <p style="font-size:12px; color:var(--muted); margin-top:8px; margin-bottom:24px;">
+    <span class="vn">Nguồn: March.csv + Apirl.csv (Webshop Sales) | Revenue USD | VAT-excluded | ◆ = Diamond packages (ghi nhận trong data, một phần lớn liên quan refund)</span>
+    <span class="en">Source: March.csv + Apirl.csv (Webshop Sales) | Revenue USD | VAT-excluded | ◆ = Diamond packages (included in data; large portion linked to refund transactions)</span>
+  </p>
+
+    <!-- 2.4 Refund — April Exception -->
+  <h3 style="color:var(--gold); font-size:15px; margin-bottom:14px;">
+    <span class="vn">2.4 Refund — Ngoại Lệ Tháng 4/2026</span>
+    <span class="en">2.4 Refund — April 2026 Exception</span>
+  </h3>
+
+  <div class="refund-banner">
+    <div class="refund-stat">
+      <div class="refund-stat-label"><span class="vn">Sales T4 (USD)</span><span class="en">Apr Sales (USD)</span></div>
+      <div class="refund-stat-val" style="color:var(--text);">$1,800,071</div>
+    </div>
+    <div class="refund-stat">
+      <div class="refund-stat-label"><span class="vn">Refund Amount</span><span class="en">Refund Amount</span></div>
+      <div class="refund-stat-val neg-text">$88,512</div>
+      <div style="font-size:10px;color:var(--muted);">KRW 122,785,674</div>
+    </div>
+    <div class="refund-stat">
+      <div class="refund-stat-label">Refund Ratio</div>
+      <div class="refund-stat-val neg-text">4.92%</div>
+    </div>
+    <div class="refund-note">
+      <span class="vn">
+        Refund tập trung hoàn toàn trong <strong>Apr 1–5</strong> (xem biểu đồ từ Report Center), sau đó về 0 trong suốt phần còn lại của tháng.
+        <br>Ngay khi phát hiện, team đã phối hợp với Dev <strong>remove toàn bộ các gói bị refund khỏi IAP AOS</strong> — ngăn chặn phát sinh thêm.
+        <br>Đây được xác định là <strong>ngoại lệ của tháng 4</strong>, không phản ánh xu hướng dài hạn.
+      </span>
+      <span class="en">
+        Refunds were entirely concentrated in <strong>Apr 1–5</strong> (per Report Center chart), dropping to 0 for the remainder of the month.
+        <br>Upon detection, the team coordinated with Dev to <strong>immediately remove all affected packages from AOS IAP</strong> — preventing further refunds.
+        <br>This is confirmed as an <strong>April-specific exception</strong> and does not reflect a long-term trend.
+      </span>
+    </div>
+  </div>
+  <p style="font-size:12px; color:var(--muted); margin-top:4px; margin-bottom:8px;">
+    <span class="vn">Nguồn: Report Center (Refund Summary) · Apr 1–30, 2026 · KRW quy đổi theo tỷ giá Hana Bank cuối T3/2026 (1 USD ≈ 1,387 KRW) · VAT-excluded</span>
+    <span class="en">Source: Report Center (Refund Summary) · Apr 1–30, 2026 · KRW converted at Hana Bank rate end of Mar 2026 (1 USD ≈ 1,387 KRW) · VAT-excluded</span>
+  </p>
+
+</div>
+
+<!-- SECTION 3: SOCIAL -->
+<div id="s3" class="section">
+  <div class="section-title">
+    <span class="vn">3. Báo Cáo Cộng Đồng (Social Sentiment)</span>
+    <span class="en">3. Social Sentiment Report</span>
+  </div>
+  <p class="section-sub">
+    <span class="vn">Nguồn: 3 Weekly Reports (02–22 Apr 2026) | Markets: VN · TH · ID · PH · SGMY</span>
+    <span class="en">Source: 3 Weekly Reports (Apr 02–22, 2026) | Markets: VN · TH · ID · PH · SGMY</span>
+  </p>
+
+  <div class="social-grid">
+    <!-- 3.1 Sentiment -->
+    <div class="social-card" style="grid-column: 1 / -1;">
+      <h3>📊 <span class="vn">3.1 Sentiment Cộng Đồng</span><span class="en">3.1 Social Platform Sentiment</span></h3>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">
+        <span class="vn">Diễn biến 3 tuần: Frustration (W1) → Hype (W2) → Đánh giá (W3)</span>
+        <span class="en">3-week arc: Frustration (W1) → Hype (W2) → Evaluation (W3)</span>
+      </p>
+      <ul>
+        <li><span class="vn"><strong>Chủ đề #1:</strong> Server Transfer — liên tục 3 tuần, mạnh nhất VN/TH</span><span class="en"><strong>Topic #1:</strong> Server Transfer — persistent 3 weeks, strongest VN/TH</span></li>
+        <li><span class="vn"><strong>Chủ đề #2:</strong> Crossbow Class + All Class Change — hype mạnh nhất tháng từ W2</span><span class="en"><strong>Topic #2:</strong> Crossbow Class + All Class Change — peak hype from W2</span></li>
+        <li><span class="vn"><strong>Chủ đề #3:</strong> Event Rewards & RNG — Bremnon W1, chuyển sang progression cost W2–W3</span><span class="en"><strong>Topic #3:</strong> Event Rewards & RNG — Bremnon W1, shifting to progression cost W2–W3</span></li>
+        <li><span class="vn"><strong>Positive:</strong> Soul Crystal - Survival (TH), Crossbow launch (VN/TH), Clan Payback Skin Package</span><span class="en"><strong>Positive:</strong> Soul Crystal - Survival (TH), Crossbow launch (VN/TH), Clan Payback Skin Package</span></li>
+        <li><span class="vn"><strong>Negative:</strong> Bremnon overlap với Boss Invasion (VN/TH/ID), Class Change Legendary Weapon fairness (W3), PH negative narrative liên tục</span><span class="en"><strong>Negative:</strong> Bremnon/Boss Invasion overlap (VN/TH/ID), Class Change weapon fairness issue (W3), PH ongoing negative narrative</span></li>
+      </ul>
+      <div class="mkt-mood" style="margin-top:14px;">
+        <div class="mkt-row"><div class="mkt-tag">🇻🇳 VN</div><div><span class="vn">Tích cực & active nhất — Server Transfer + Crossbow hype, dấu hiệu churn nhẹ ở W3</span><span class="en">Most active & positive — Server Transfer + Crossbow hype, slight churn signal W3</span></div></div>
+        <div class="mkt-row"><div class="mkt-tag">🇹🇭 TH</div><div><span class="vn">Mixed thiên positive — PvP community mạnh, friction thiếu thông tin cost/timing</span><span class="en">Mixed but leaning positive — strong PvP community, friction around cost/timing info</span></div></div>
+        <div class="mkt-row"><div class="mkt-tag">🇮🇩 ID</div><div><span class="vn">Stable — activity nhẹ, cải thiện nhẹ từ W1 sang W2–W3</span><span class="en">Stable — light activity, slight improvement W1→W2–W3</span></div></div>
+        <div class="mkt-row"><div class="mkt-tag">🇵🇭 PH</div><div><span class="vn" style="color:var(--neg);">Tiêu cực nhất — bot, giá cao, không có server mới, đang discourage new users</span><span class="en" style="color:var(--neg);">Most negative — bots, high pricing, no new server, actively discouraging new players</span></div></div>
+        <div class="mkt-row"><div class="mkt-tag">🇸🇬 SG</div><div><span class="vn">Ổn định tích cực — không có major issue, VIP raise RNG concerns qua kênh riêng</span><span class="en">Stable positive — no major issues, VIPs raise RNG concerns via private channels</span></div></div>
+      </div>
+    </div>
+
+    <!-- 3.2 Scouts -->
+    <div class="social-card">
+      <h3>🔍 <span class="vn">3.2 Ingame Scouts Report</span><span class="en">3.2 Ingame Scouts Report</span></h3>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:10px;"><span class="vn">Intel từ VIP community & clan leadership (3 tuần)</span><span class="en">Intel from VIP community & clan leadership (3 weeks)</span></p>
+      <ul>
+        <li><span class="vn"><strong>W1:</strong> Wuxia (T9) morale cao sau Castle Siege S1 win. Arktoshi (T9) spend ~$20K trong 2 tuần → chain spending, market prices tăng mạnh</span><span class="en"><strong>W1:</strong> Wuxia (T9) high morale post Castle Siege S1 win. Arktoshi (T9) spent ~$20K in 2 weeks → chain spending, market prices surged</span></li>
+        <li><span class="vn"><strong>W1:</strong> Leona là PvP hotspot nhất — Boss Veora 2-2 balanced, PvP liên tục TOI Floor 3–4</span><span class="en"><strong>W1:</strong> Leona is most active PvP server — Boss Veora 2-2, ongoing PvP at TOI Floor 3–4</span></li>
+        <li><span class="vn"><strong>W2:</strong> Crossbow leak tạo economic pre-shift — players mua low-demand class items để prep class change; market T3–T4 skills tăng ~10%</span><span class="en"><strong>W2:</strong> Crossbow leak triggered economic pre-shift — players buying low-demand class items; T3–T4 skill market up ~10%</span></li>
+        <li><span class="vn"><strong>W2:</strong> Ecosystem vào "Pre-Meta Shift Phase" — behavior driven by leaks hơn content release. Teon 50v50 tournament (Arktoshi T9) trước Ancient Island</span><span class="en"><strong>W2:</strong> Ecosystem entering "Pre-Meta Shift Phase" — behavior driven by leaks. Teon 50v50 tournament (Arktoshi T9) before Ancient Island</span></li>
+        <li><span class="vn"><strong>W3:</strong> Ancient Island tích cực — sandbox PvP, top users farm EXP hiệu quả. Leona power shift: L8/L9 rời Cibal → Behurn dẫn</span><span class="en"><strong>W3:</strong> Ancient Island positive — sandbox PvP effective EXP farming. Leona power shift: L8/L9 left Cibal → Behurn now leading</span></li>
+        <li><span class="vn"><strong>W3:</strong> Crossbow chỉ hiệu quả với top-tier users — mid-level users dễ bị surrounded. Đề xuất Event Codex tăng CC Resist kéo sớm May 6</span><span class="en"><strong>W3:</strong> Crossbow only effective for top-tier — mid-level users vulnerable. PRD proposes CC Resist Event Codex pulled forward to May 6</span></li>
+      </ul>
+    </div>
+
+    <!-- 3.3 VIP CS -->
+    <div class="social-card">
+      <h3>👑 <span class="vn">3.3 VIP CS Report</span><span class="en">3.3 VIP CS Report</span></h3>
+      <div>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:10px;"><span class="vn">Top Issues VIP phản ánh</span><span class="en">Top VIP Issues</span></p>
+          <ul>
+            <li><span class="vn"><strong>Server Transfer:</strong> Miss transfer window do xử lý mail lâu; yêu cầu monthly frequency (TH), regional migration (ID→VN)</span><span class="en"><strong>Server Transfer:</strong> Missed windows due to slow mail processing; requests for monthly frequency (TH), regional migration (ID→VN)</span></li>
+            <li><span class="vn"><strong>VIP System Clarity:</strong> Confusion về Platinum tier requirements, benefit "reconfirm duplicated class/agathion", tier drop đột ngột — cần grace period</span><span class="en"><strong>VIP System Clarity:</strong> Confusion on Platinum tier requirements, duplicated class benefit, sudden tier drops — need grace period</span></li>
+            <li><span class="vn"><strong>Class Change Matrix:</strong> VIP cần biết eligibility, weapon expertise transfer, T3→T4 upgrade, số lần được phép change — đề xuất publish "Class Change Matrix"</span><span class="en"><strong>Class Change Matrix:</strong> VIPs need clarity on eligibility, weapon expertise transfer, T3→T4 upgrade, max changes — propose publishing "Class Change Matrix"</span></li>
+            <li><span class="vn"><strong>RNG Audit:</strong> SGMY Diamond VIP báo cáo 0/12 failure streak Epic-to-Legend — cần response protocol chuẩn cho dạng ticket này</span><span class="en"><strong>RNG Audit:</strong> SGMY Diamond VIP reported 0/12 Epic-to-Legend failure streak — need standard response protocol</span></li>
+            <li><span class="vn"><strong>Shop Consistency:</strong> Skin packages vắng mặt nhiều tuần (VN/TH/SGMY), thiếu Character Rename items, 15M Honor Medal Purple Skill ra trễ</span><span class="en"><strong>Shop Consistency:</strong> Skin packages absent for weeks (VN/TH/SGMY), missing Character Rename items, 15M Honor Medal Purple Skill delayed</span></li>
+          </ul>
+          <p style="font-size:12px; color:var(--muted); margin-top:12px;">
+            <span class="vn">VIP KEYCAP Reward: 194 VIPs contacted → 86 registered (~44% response rate). TH highest response rate.</span>
+            <span class="en">VIP KEYCAP Reward: 194 VIPs contacted → 86 registered (~44% response rate). TH highest response rate.</span>
+          </p>
+          <div class="attention-card" style="margin-top:14px;">
+            <h4>⚠️ <span class="vn">Cần chú ý</span><span class="en">Items to Watch</span></h4>
+            <ul>
+              <li><span class="vn"><strong>Purple ON Security Bug (VN/TH):</strong> Session không expire sau khi đổi password — cần patch kỹ thuật ngay</span><span class="en"><strong>Purple ON Security Bug (VN/TH):</strong> Session remains active after password change — requires immediate technical patch</span></li>
+              <li style="margin-top:8px;"><span class="vn"><strong>Class Change Legendary Weapon (W3):</strong> VIP reaction tiêu cực về fairness — monitoring + steer public opinion nếu escalate tiếp</span><span class="en"><strong>Class Change Legendary Weapon (W3):</strong> VIP negative reaction on fairness — monitor and steer public opinion if it escalates</span></li>
+              <li style="margin-top:8px;"><span class="vn"><strong>PH Market Churn Risk:</strong> Community đang chủ động discourage new players — cần action plan cụ thể (bot, pricing, server)</span><span class="en"><strong>PH Market Churn Risk:</strong> Community actively discouraging new players — need concrete action plan (bots, pricing, server)</span></li>
+              <li style="margin-top:8px;"><span class="vn"><strong>SGMY RNG Audit Requests:</strong> Diamond VIP streak failures — cần response protocol chuẩn hóa</span><span class="en"><strong>SGMY RNG Audit Requests:</strong> Diamond VIP streak failures — need standardized response protocol</span></li>
+            </ul>
+            <p class="attention-note">📌 <span class="vn">CS đã ghi nhận toàn bộ và đã báo cáo lên NCSOFT để tìm hướng khắc phục.</span><span class="en">CS has acknowledged all items above and reported to NCSOFT for resolution.</span></p>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 4: NEXT STEPS -->
+<div id="s4" class="section">
+  <div class="section-title">
+    <span class="vn">4. Next Steps</span>
+    <span class="en">4. Next Steps</span>
+  </div>
+  <p class="section-sub">
+    <span class="vn">Đúc kết từ các mục phân tích bên trên — plan cải tiến sản phẩm trong các tháng tới</span>
+    <span class="en">Consolidated from the analyses above — product improvement plan for the coming months</span>
+  </p>
+
+  <div class="ns-grid">
+
+    <div class="ns-card t5">
+      <div class="ns-tag t5">⚡ Priority</div>
+      <div class="ns-title"><span class="vn">Nâng cấp Chương Trình VIP</span><span class="en">VIP Program Upgrade</span></div>
+      <div class="ns-body">
+        <span class="vn"><strong>40.2% VIP đang rủi ro</strong> (Churned + Sleeping). Kế hoạch: request thay đổi phần quà Monthly VIP Gift với NC để hỗ trợ users tốt hơn. Tặng exclusive VIP gifts dịp <strong>1Y Anniversary</strong> và cải tiến VIP Leaking Program — chia sẻ hints về upcoming content &amp; BM trước khi public.</span>
+        <span class="en"><strong>40.2% of VIPs at risk</strong> (Churned + Sleeping). Plan: refresh gift pool, exclusive <strong>1Y Anniversary</strong> VIP gifts, and enhance VIP Leaking Program — share content &amp; BM hints ahead of public announcements.</span>
+      </div>
+    </div>
+
+    <div class="ns-card t5">
+      <div class="ns-tag t5">⚡ Priority</div>
+      <div class="ns-title"><span class="vn">Webshop — Mở rộng Base Paying Users</span><span class="en">Webshop — Expand Paying User Base</span></div>
+      <div class="ns-body">
+        <span class="vn">Paying Users giảm <strong>−12.8% MoM</strong>. Trong T5 nhân dịp 1Y Anniversary, ra mắt <strong>5 gói nạp mới từ $2–4</strong> kèm <strong>rebate rate cao</strong> — nhắm trực tiếp vào mid-tier users để cải thiện PU và giảm phụ thuộc vào whale tier.</span>
+        <span class="en">Paying Users down <strong>−12.8% MoM</strong>. In May for the 1Y Anniversary, launching <strong>5 new bundles priced $2–4</strong> with <strong>high rebate rates</strong> — directly targeting mid-tier users to improve PU count and reduce whale revenue concentration.</span>
+      </div>
+    </div>
+
+    <div class="ns-card t5">
+      <div class="ns-tag t5">⚡ Priority</div>
+      <div class="ns-title"><span class="vn">MAU Retention — Engagement &amp; 1Y Anniversary</span><span class="en">MAU Retention — Engagement &amp; 1Y Anniversary</span></div>
+      <div class="ns-body">
+        <span class="vn">MAU giảm <strong>−9.4% MoM</strong>. Tối ưu ingame broadcast về daily/event/guild activities để giữ login habit. Tổ chức <strong>1Y Anniversary events phát quà free</strong> để kéo lại users inactive và tạo buzz social.</span>
+        <span class="en">MAU down <strong>−9.4% MoM</strong>. Optimize in-game broadcasts for daily/event/guild activities to reinforce login habits. Run <strong>1Y Anniversary free gift events</strong> to re-engage inactive users and drive social buzz.</span>
+      </div>
+    </div>
+
+    <div class="ns-card monitor">
+      <div class="ns-tag monitor">🔵 Monitor</div>
+      <div class="ns-title"><span class="vn">Post-May 6 &amp; 20 — Content Assessment</span><span class="en">Post-May 6 &amp; 20 — Content Assessment</span></div>
+      <div class="ns-body">
+        <span class="vn">Sau Spear Reboot (May 6) và Mythic Raul + BM Pa'agrio's Seal (May 20), đánh giá nhanh VIP reception và revenue impact — kết quả sẽ xác định lịch Update T6+.</span>
+        <span class="en">After Spear Reboot (May 6) and Mythic Raul + BM Pa'agrio's Seal (May 20), assess VIP reception and revenue impact — results will determine the Jun+ update schedule.</span>
+      </div>
+    </div>
+
+    <div class="ns-card monitor">
+      <div class="ns-tag monitor">🔵 Monitor</div>
+      <div class="ns-title"><span class="vn">Account Trading — Alert Threshold</span><span class="en">Account Trading — Alert Threshold</span></div>
+      <div class="ns-body">
+        <span class="vn"><strong>162 accounts đổi chủ</strong> đang theo dõi. Thiết lập threshold auto-flag (VD: &gt;2 lần/tháng hoặc đổi trong 7 ngày sau nạp lớn). Ưu tiên market TH · VN · ID.</span>
+        <span class="en"><strong>162 change-owner accounts</strong> under monitoring. Set auto-flag thresholds (e.g. &gt;2 transfers/month or within 7 days of large top-up). Priority markets: TH · VN · ID.</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SECTION 5: CONTENT ROADMAP -->
+<div id="s5" class="section">
+  <div class="section-title">
+    <span class="vn">5. Content Roadmap — T4/2026 → T5/2026</span>
+    <span class="en">5. Content Roadmap — Apr 2026 → May 2026</span>
+  </div>
+  <p class="section-sub">
+    <span class="vn">🟢 Released — đã phát hành &nbsp;|&nbsp; 🟡 On Plan — kế hoạch T5 &nbsp;|&nbsp; ⬜ TBD — chưa plan chi tiết</span>
+    <span class="en">🟢 Released — live &nbsp;|&nbsp; 🟡 On Plan — May schedule &nbsp;|&nbsp; ⬜ TBD — detail pending</span>
+  </p>
+
+  <!-- Horizontal Timeline -->
+  <div class="rdm-h-wrap">
+    <!-- Track line -->
+    <div class="rdm-h-line"></div>
+
+    <div class="rdm-h-cols">
+
+      <!-- APR 1 RELEASED -->
+      <div class="rdm-h-col">
+        <div class="rdm-h-head rl">
+          <div class="rdm-h-dot rl"></div>
+          <div class="rdm-h-date">Apr 1, 2026</div>
+          <div class="rdm-h-badge rl">✅ RELEASED</div>
+        </div>
+        <div class="rdm-h-body rl">
+          <div class="rdm-h-item"><span class="rdm-cat">DUNGEON</span><span class="vn">Arena Dungeon "Điện Thờ Zepar" — Lv70+</span><span class="en">Arena Dungeon "Hall of Zepar" — Lv70+</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">BOSS</span><span class="vn">Boss Zepar — T7 22:00, Zone 6</span><span class="en">Boss Zepar — Sat 22:00, Zone 6</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">ITEM</span><span class="vn">Collection System refresh</span><span class="en">Collection System refresh</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">SYSTEM</span><span class="vn">Bỏ AFK kick trong Catacombs · Einhasad Quest min Lv 50</span><span class="en">Remove AFK kick in Catacombs · Einhasad Quest min Lv 50</span></div>
+        </div>
+      </div>
+
+      <!-- MAY 6 ON PLAN -->
+      <div class="rdm-h-col">
+        <div class="rdm-h-head op">
+          <div class="rdm-h-dot op"></div>
+          <div class="rdm-h-date">May 6, 2026</div>
+          <div class="rdm-h-badge op">📋 ON PLAN</div>
+        </div>
+        <div class="rdm-h-body op">
+          <div class="rdm-h-item"><span class="rdm-cat">CLASS</span><span class="vn">Spear Class Reboot</span><span class="en">Spear Class Reboot</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">DUNGEON</span><span class="vn">Stronghold Island / Devastated Castle Lv70</span><span class="en">Stronghold Island / Devastated Castle Lv70</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">DUNGEON</span><span class="vn">Party Dungeon — Ketra Barracks</span><span class="en">Party Dungeon — Ketra Barracks</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">SYSTEM</span><span class="vn">Clan Party Function</span><span class="en">Clan Party Function</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">SYSTEM</span><span class="vn">Peace Mode Adjustment</span><span class="en">Peace Mode Adjustment</span></div>
+        </div>
+      </div>
+
+      <!-- MAY 20 ON PLAN -->
+      <div class="rdm-h-col">
+        <div class="rdm-h-head op">
+          <div class="rdm-h-dot op"></div>
+          <div class="rdm-h-date">May 20, 2026</div>
+          <div class="rdm-h-badge op">📋 ON PLAN</div>
+        </div>
+        <div class="rdm-h-body op">
+          <div class="rdm-h-item"><span class="rdm-cat">CLASS</span><span class="vn">Mythic Class — Raul</span><span class="en">Mythic Class — Raul</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">DUNGEON</span><span class="vn">Rift: Zephar</span><span class="en">Rift: Zephar</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">BM</span><span class="vn">BM Accessory — Pa'agrio's Seal</span><span class="en">BM Accessory — Pa'agrio's Seal</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">EVENT</span><span class="vn">TJ Coupon</span><span class="en">TJ Coupon</span></div>
+          <div class="rdm-h-item"><span class="rdm-cat">SYSTEM</span><span class="vn">Membership 22→21 ngày; World Boss → Dungeon</span><span class="en">Membership 22→21 days; World Boss → Dungeon</span></div>
+        </div>
+      </div>
+
+      <!-- JUN–DEC TBD -->
+      <div class="rdm-h-col">
+        <div class="rdm-h-head tbd">
+          <div class="rdm-h-dot tbd"></div>
+          <div class="rdm-h-date"><span class="vn">T6 – T12/2026</span><span class="en">Jun – Dec 2026</span></div>
+          <div class="rdm-h-badge tbd">⬜ TBD</div>
+        </div>
+        <div class="rdm-h-body tbd">
+          <div class="rdm-h-item tbd-note"><span class="vn">📌 KR roadmap có đủ content pipeline để phát hành ổn định đến cuối năm. Tuy nhiên, team sẽ không plan detail cho T6 trở đi vào thời điểm này — cần monitor sát sao Stats & Liveops T5 trước khi chốt Update Plan T6+.</span><span class="en">📌 KR content pipeline is sufficient for stable monthly releases through year-end. However, Jun+ update plans will not be detailed at this stage — May stats & liveops performance must be monitored first before committing to H2 schedule.</span></div>
+        </div>
+      </div>
+
+    </div><!-- /rdm-h-cols -->
+  </div><!-- /rdm-h-wrap -->
+
+  <div class="assess" style="margin-top:20px;">
+    <span class="vn">
+      <strong>Đánh giá:</strong> Game hiện có đủ content pipeline từ KR để duy trì lịch update ổn định <strong>đến hết 2026</strong> — bao gồm các class mới, dungeon, BM cycle và system adjustment.
+      Tuy nhiên, team chọn <strong>chỉ plan detail đến T5</strong> vì cần theo dõi sát Stats người dùng và kết quả Liveops thực tế của T5 (đặc biệt là phản hồi với Mythic Class Raul và Spear Reboot) trước khi xác nhận lịch T6 trở đi.
+      Approach này giúp Update Plan luôn phản ánh đúng trạng thái thực của game thay vì commit sớm vào lịch cố định.
+    </span>
+    <span class="en">
+      <strong>Assessment:</strong> The KR content pipeline provides sufficient material to sustain stable monthly updates <strong>through the end of 2026</strong> — covering new classes, dungeons, BM cycles, and system adjustments.
+      However, the team has chosen to <strong>plan in detail only through May</strong>, prioritizing close monitoring of May user stats and liveops outcomes (especially reception of Mythic Class Raul and Spear Reboot) before committing to Jun+ schedules.
+      This approach keeps the Update Plan grounded in real game performance rather than locked to a fixed cadence.
+    </span>
+  </div>
+
+  <p style="font-size:12px; color:var(--muted); margin-top:12px;">
+    <span class="vn">Nguồn: 08_Roadmap/data/l2m_roadmap_data_kr.json (Released) · data/raw/2026-04/operations/content/May Plan.txt (On Plan)</span>
+    <span class="en">Source: 08_Roadmap/data/l2m_roadmap_data_kr.json (Released) · data/raw/2026-04/operations/content/May Plan.txt (On Plan)</span>
+  </p>
+</div>
+
+<!-- SECTION 6: KPI FORECAST CHART -->
+<div id="s6" class="section">
+  <div class="section-title">
+    <span class="vn">6. KPI Forecast — Revenue Plan 2026</span>
+    <span class="en">6. KPI Forecast — Revenue Plan 2026</span>
+  </div>
+  <p class="section-sub">
+    <span class="vn">Doanh thu thực tế (Jan–Apr) và dự báo (May–Dec) | Mục tiêu Y2026 KPI: $15,773,608</span>
+    <span class="en">Actual revenue (Jan–Apr) and forecast (May–Dec) | Y2026 KPI Target: $15,773,608</span>
+  </p>
+
+  <div style="position:relative; background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:24px 24px 16px;">
+    <canvas id="kpiChart" style="width:100%; max-height:320px;"></canvas>
+  </div>
+
+  <div style="display:flex; gap:24px; flex-wrap:wrap; margin-top:16px; font-size:12px; color:var(--muted);">
+    <span><span style="display:inline-block;width:12px;height:12px;background:#4ade80;border-radius:2px;margin-right:4px;vertical-align:middle;"></span><span class="vn">Actual (Jan–Apr)</span><span class="en">Actual (Jan–Apr)</span></span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:rgba(251,191,36,.65);border-radius:2px;margin-right:4px;vertical-align:middle;"></span><span class="vn">Forecast (May–Dec)</span><span class="en">Forecast (May–Dec)</span></span>
+    <span><span style="display:inline-block;width:28px;height:2px;background:#4ade80;margin-right:4px;vertical-align:middle;"></span><span class="vn">Lũy kế thực tế/dự báo</span><span class="en">Cumulative Actual/Forecast</span></span>
+    <span><span style="display:inline-block;width:28px;height:2px;background:rgba(248,113,113,.8);border:none;border-top:2px dashed rgba(248,113,113,.8);margin-right:4px;vertical-align:middle;"></span><span class="vn">Tiến độ KPI (đều tháng)</span><span class="en">KPI Monthly Pace</span></span>
+  </div>
+
+  <!-- KPI Summary Cards -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-top:20px;">
+    <div class="kpi-sum-card">
+      <div class="kpi-sum-label"><span class="vn">Y2026 KPI</span><span class="en">Y2026 KPI</span></div>
+      <div class="kpi-sum-val">$15,773,608</div>
+    </div>
+    <div class="kpi-sum-card">
+      <div class="kpi-sum-label"><span class="vn">Y2026 Forecast</span><span class="en">Y2026 Forecast</span></div>
+      <div class="kpi-sum-val pos-text">$16,562,231</div>
+      <div class="kpi-sum-sub pos-text">+5.0% vs KPI</div>
+    </div>
+    <div class="kpi-sum-card">
+      <div class="kpi-sum-label"><span class="vn">Actual Jan–Apr</span><span class="en">Actual Jan–Apr</span></div>
+      <div class="kpi-sum-val">$7,344,440</div>
+      <div class="kpi-sum-sub pos-text"><span class="vn">+46.5% trước KPI pace</span><span class="en">+46.5% ahead of KPI pace</span></div>
+    </div>
+    <div class="kpi-sum-card">
+      <div class="kpi-sum-label"><span class="vn">Forecast May–Dec</span><span class="en">Forecast May–Dec</span></div>
+      <div class="kpi-sum-val">$9,217,787</div>
+    </div>
+  </div>
+
+  <div class="assess" style="margin-top:20px;">
+    <span class="vn">
+      <strong>Đánh giá:</strong> Dựa trên Actual Jan–Apr và Forecast team, game đang <strong class="pos-text">vượt tiến độ KPI +46.5%</strong> sau 4 tháng đầu năm ($7.34M thực tế vs $5.26M KPI pace).
+      Y2026 Forecast cuối năm $16.56M sẽ <strong class="pos-text">vượt KPI +5.0%</strong> nếu team giữ được Forecast từ T5 trở đi.
+      Revenue theo tháng dự kiến giảm dần từ T5 ($1.65M) về T12 ($0.85M) — phản ánh game đang trong giai đoạn mature, nhưng <strong>core whale tier G+F vẫn ổn định</strong> đảm bảo revenue floor.
+      Key risk: nếu Sleeping Whale không được tái kích hoạt và tier D/E tiếp tục churn, Forecast H2 có thể miss. Re-engagement campaign T5 là critical để giữ trajectory.
+    </span>
+    <span class="en">
+      <strong>Assessment:</strong> Based on Jan–Apr actuals and team forecast, the game is <strong class="pos-text">+46.5% ahead of KPI pace</strong> after the first 4 months ($7.34M actual vs $5.26M KPI pace).
+      Year-end Y2026 Forecast of $16.56M will <strong class="pos-text">exceed KPI by +5.0%</strong> if the team sustains the May-onward forecast.
+      Monthly revenue is projected to decline gradually from May ($1.65M) to Dec ($0.85M) — expected for a maturing game, but the <strong>stable G+F whale tier provides a revenue floor</strong>.
+      Key risk: if Sleeping Whales are not re-engaged and D/E tiers continue churning, H2 forecast may miss. A May re-engagement campaign is critical to maintain trajectory.
+    </span>
+  </div>
+
+  <p style="font-size:12px; color:var(--muted); margin-top:12px;">
+    <span class="vn">Nguồn: April Actual + Forecast.xlsx (Sheet All) · Col D = Y2026 KPI · Col E = Y2026 Forecast · Col N–Q = Actual T1–T4 · Col F–M = Forecast T5–T12</span>
+    <span class="en">Source: April Actual + Forecast.xlsx (Sheet All) · Col D = Y2026 KPI · Col E = Y2026 Forecast · Col N–Q = Actual Jan–Apr · Col F–M = Forecast May–Dec</span>
+  </p>
+</div>
+
+
+</div><!-- /container -->
+
+<div class="footer">
+  <p>
+    <span class="vn">L2M PUM Report — All SEA — Tháng 4/2026 | NCV Games × NCSOFT | Generated by Claude Cowork 2026-05-08</span>
+    <span class="en">L2M PUM Report — All SEA — April 2026 | NCV Games × NCSOFT | Generated by Claude Cowork 2026-05-08</span>
+  </p>
+  <p style="margin-top:6px;">
+    <span class="vn">Nguồn dữ liệu: April Actual + Forecast.xlsx · Behavior Alerts.csv · Guild Info.csv · Weekly Reports (Apr 2–22) · May Plan.txt · KR Roadmap JSON</span>
+    <span class="en">Data sources: April Actual + Forecast.xlsx · Behavior Alerts.csv · Guild Info.csv · Weekly Reports (Apr 2–22) · May Plan.txt · KR Roadmap JSON</span>
+  </p>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(function() {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const actuals  = [2097220, 1742629, 1704520, 1800071, null, null, null, null, null, null, null, null];
+  const forecasts = [null, null, null, null, 1647855, 1360491, 1229533, 1140242, 1058854, 995002, 935225, 850585];
+  const cumulative = [2097220, 3839849, 5544369, 7344440, 8992295, 10352786, 11582319, 12722561, 13781415, 14776417, 15711642, 16562227];
+  const kpiPace   = [1314467, 2628934, 3943401, 5257868, 6572335, 7886802, 9201269, 10515736, 11830203, 13144670, 14459137, 15773608];
+
+  const isDark = true;
+  const textColor = '#b0b0b0';
+  const gridColor = 'rgba(255,255,255,0.06)';
+
+  const ctx = document.getElementById('kpiChart');
+  if (!ctx) return;
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: 'Actual',
+          data: actuals,
+          backgroundColor: 'rgba(74,222,128,0.75)',
+          borderColor: '#4ade80',
+          borderWidth: 1,
+          borderRadius: 4,
+          order: 3,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Forecast',
+          data: forecasts,
+          backgroundColor: 'rgba(251,191,36,0.5)',
+          borderColor: 'rgba(251,191,36,0.8)',
+          borderWidth: 1,
+          borderRadius: 4,
+          order: 3,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Cumulative',
+          data: cumulative,
+          type: 'line',
+          borderColor: '#4ade80',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#4ade80',
+          tension: 0.3,
+          order: 1,
+          yAxisID: 'y2',
+        },
+        {
+          label: 'KPI Pace',
+          data: kpiPace,
+          type: 'line',
+          borderColor: 'rgba(248,113,113,0.8)',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          borderDash: [6,4],
+          pointRadius: 0,
+          tension: 0.1,
+          order: 2,
+          yAxisID: 'y2',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(20,20,30,0.92)',
+          titleColor: '#e0e0e0',
+          bodyColor: '#b0b0b0',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.raw === null) return null;
+              const val = ctx.raw;
+              if (ctx.dataset.yAxisID === 'y2') {
+                return ctx.dataset.label + ': $' + (val/1e6).toFixed(2) + 'M';
+              }
+              return ctx.dataset.label + ': $' + val.toLocaleString();
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: textColor, font: { size: 11 } },
+          grid: { color: gridColor }
+        },
+        y: {
+          position: 'left',
+          title: { display: true, text: 'Monthly Revenue (USD)', color: textColor, font: { size: 11 } },
+          ticks: {
+            color: textColor, font: { size: 10 },
+            callback: v => '$' + (v/1e6).toFixed(1) + 'M'
+          },
+          grid: { color: gridColor },
+          max: 2500000
+        },
+        y2: {
+          position: 'right',
+          title: { display: true, text: 'Cumulative Revenue (USD)', color: textColor, font: { size: 11 } },
+          ticks: {
+            color: textColor, font: { size: 10 },
+            callback: v => '$' + (v/1e6).toFixed(0) + 'M'
+          },
+          grid: { display: false },
+          max: 18000000,
+          min: 0
+        }
+      }
+    }
+  });
+
+  // Fix canvas height
+  ctx.style.height = '300px';
+})();
+</script>
+
+<script>
+function setLang(lang) {
+  document.body.className = 'lang-' + lang;
+  document.getElementById('btn-vn').classList.toggle('active', lang === 'vn');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+}
+// Smooth scroll for nav
+document.querySelectorAll('.nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
