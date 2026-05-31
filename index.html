@@ -15,7 +15,6 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:var(--fb);background:var(--n900);color:var(--white);min-height:100vh}
 
-    /* ── Header ── */
     .hdr{background:linear-gradient(135deg,#1A1D24 0%,#0F1419 60%,#1a0a04 100%);
           border-bottom:1px solid var(--n700);padding:26px 40px 22px}
     .hdr-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;
@@ -32,7 +31,6 @@
     .stat .l{font-size:11px;color:var(--n400);text-transform:uppercase;letter-spacing:.5px}
     .upd{font-size:11px;color:var(--n500)}
 
-    /* ── Controls ── */
     .ctrl{background:#13161C;border-bottom:1px solid var(--n700);
            padding:12px 40px;position:sticky;top:0;z-index:100}
     .ctrl-in{max-width:1200px;margin:0 auto;display:flex;gap:12px;
@@ -53,14 +51,6 @@
     .tab:hover{border-color:var(--n500);color:var(--white)}
     .tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
 
-    /* ── Pinned strip ── */
-    .pins{background:linear-gradient(135deg,#1a0f07,#1A1D24);
-           border-bottom:1px solid #3D2010;padding:18px 40px}
-    .pins-in{max-width:1200px;margin:0 auto}
-    .pins-hdr{display:flex;align-items:center;gap:6px;margin-bottom:12px}
-    .pins-hdr span{font:600 12px var(--fh);color:var(--accent);
-                    text-transform:uppercase;letter-spacing:.6px}
-    .pins-row{display:flex;gap:10px;flex-wrap:wrap}
     .pcard{background:#231208;border:1px solid #5A2D0C;border-radius:10px;
             padding:12px 16px;cursor:pointer;text-decoration:none;
             display:flex;align-items:center;gap:10px;transition:all .18s;min-width:180px}
@@ -69,8 +59,8 @@
     .pcard-icon{font-size:20px;flex-shrink:0}
     .pcard-title{font:600 13px/1.3 var(--fh);color:#fff}
     .pcard-area{font-size:11px;color:var(--n400);margin-top:2px}
+    .pins-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
 
-    /* ── Main ── */
     .main{max-width:1200px;margin:0 auto;padding:26px 40px 60px}
     .sec{margin-bottom:34px}
     .sec-hdr{display:flex;align-items:center;gap:9px;margin-bottom:12px;
@@ -91,14 +81,16 @@
     .bdg{font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;
           padding:2px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0}
     .cf{display:flex;align-items:center;justify-content:space-between}
-    .cdate{font-size:11px;color:var(--n500)}
+    .cdate{font-size:11px;color:var(--n500);display:flex;align-items:center;gap:7px}
+    .scopetag{font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+               color:var(--n400);background:var(--n700);padding:1px 6px;border-radius:4px}
     .copn{font-size:11px;color:var(--accent);font-weight:600;opacity:0;transition:opacity .15s}
     .card:hover .copn{opacity:1}
     .empty{text-align:center;padding:60px 20px;color:var(--n500)}
     .empty .ei{font-size:44px;margin-bottom:10px}
 
     @media(max-width:768px){
-      .hdr,.ctrl,.pins,.main{padding-left:20px;padding-right:20px}
+      .hdr,.ctrl,.main{padding-left:20px;padding-right:20px}
       .stats{display:none}
     }
   </style>
@@ -119,7 +111,7 @@
         <div class="stat"><div class="n" id="vis-count">25</div><div class="l">Reports</div></div>
         <div class="stat"><div class="n">4</div><div class="l">Pinned</div></div>
       </div>
-      <div class="upd">Updated: 2026-05-31 07:30 UTC</div>
+      <div class="upd">Updated: 2026-05-31 07:41 UTC</div>
     </div>
   </div>
 </header>
@@ -131,13 +123,6 @@
       <input type="text" id="q" placeholder="Search reports…" autocomplete="off">
     </div>
     <div class="tabs" id="tabs"></div>
-  </div>
-</div>
-
-<div class="pins" id="pins-section">
-  <div class="pins-in">
-    <div class="pins-hdr"><span>📌 Pinned</span></div>
-    <div class="pins-row" id="pins-row"></div>
   </div>
 </div>
 
@@ -156,6 +141,8 @@ const REPORTS = [
     "area_color": "#3B82F6",
     "area_bg": "#1E3A5F",
     "area_icon": "📊",
+    "scope_id": "combined",
+    "scope_label": "Combined — All Scopes",
     "pinned": true
   },
   {
@@ -163,12 +150,14 @@ const REPORTS = [
     "title": "L2M Live Dashboard",
     "date": "",
     "date_display": "",
-    "area_id": "area10",
-    "area_num": "10",
-    "area_label": "GameOps Analytics",
-    "area_color": "#3B82F6",
-    "area_bg": "#1E3A5F",
-    "area_icon": "📊",
+    "area_id": "area04",
+    "area_num": "04",
+    "area_label": "Social Listening",
+    "area_color": "#FBBF24",
+    "area_bg": "#2E2208",
+    "area_icon": "📡",
+    "scope_id": "live",
+    "scope_label": "Live Dashboard",
     "pinned": true
   },
   {
@@ -182,6 +171,8 @@ const REPORTS = [
     "area_color": "#10B981",
     "area_bg": "#0D2B1F",
     "area_icon": "📦",
+    "scope_id": "a",
+    "scope_label": "Scope A — Content Roadmap",
     "pinned": true
   },
   {
@@ -195,6 +186,8 @@ const REPORTS = [
     "area_color": "#9CA3AF",
     "area_bg": "#1F2937",
     "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
     "pinned": true
   },
   {
@@ -208,6 +201,8 @@ const REPORTS = [
     "area_color": "#10B981",
     "area_bg": "#0D2B1F",
     "area_icon": "📦",
+    "scope_id": "b1",
+    "scope_label": "Scope B1 — Webshop BM",
     "pinned": false
   },
   {
@@ -221,6 +216,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
     "pinned": false
   },
   {
@@ -234,6 +231,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
     "pinned": false
   },
   {
@@ -247,6 +246,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
     "pinned": false
   },
   {
@@ -260,6 +261,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
     "pinned": false
   },
   {
@@ -273,6 +276,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
     "pinned": false
   },
   {
@@ -286,6 +291,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
     "pinned": false
   },
   {
@@ -299,6 +306,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
     "pinned": false
   },
   {
@@ -312,6 +321,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
     "pinned": false
   },
   {
@@ -319,12 +330,14 @@ const REPORTS = [
     "title": "CMM Report 2026 Q1q2",
     "date": "2026-05-17",
     "date_display": "17 May 2026",
-    "area_id": "other",
-    "area_num": "",
-    "area_label": "Other",
-    "area_color": "#9CA3AF",
-    "area_bg": "#1F2937",
-    "area_icon": "📁",
+    "area_id": "area13",
+    "area_num": "13",
+    "area_label": "PUM Report",
+    "area_color": "#F87171",
+    "area_bg": "#2D1010",
+    "area_icon": "📋",
+    "scope_id": "",
+    "scope_label": "",
     "pinned": false
   },
   {
@@ -338,6 +351,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "e",
+    "scope_label": "Scope E — Discord",
     "pinned": false
   },
   {
@@ -351,6 +366,8 @@ const REPORTS = [
     "area_color": "#A78BFA",
     "area_bg": "#1E1040",
     "area_icon": "📖",
+    "scope_id": "a",
+    "scope_label": "Scope A — CTS Manual Audit",
     "pinned": false
   },
   {
@@ -364,6 +381,8 @@ const REPORTS = [
     "area_color": "#F87171",
     "area_bg": "#2D1010",
     "area_icon": "📋",
+    "scope_id": "",
+    "scope_label": "",
     "pinned": false
   },
   {
@@ -377,6 +396,8 @@ const REPORTS = [
     "area_color": "#9CA3AF",
     "area_bg": "#1F2937",
     "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
     "pinned": false
   },
   {
@@ -390,6 +411,8 @@ const REPORTS = [
     "area_color": "#9CA3AF",
     "area_bg": "#1F2937",
     "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
     "pinned": false
   },
   {
@@ -403,6 +426,8 @@ const REPORTS = [
     "area_color": "#9CA3AF",
     "area_bg": "#1F2937",
     "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
     "pinned": false
   },
   {
@@ -410,12 +435,14 @@ const REPORTS = [
     "title": "Conflicts Review UI",
     "date": "",
     "date_display": "",
-    "area_id": "other",
-    "area_num": "",
-    "area_label": "Other",
-    "area_color": "#9CA3AF",
-    "area_bg": "#1F2937",
-    "area_icon": "📁",
+    "area_id": "area03",
+    "area_num": "03",
+    "area_label": "Glossary & Termbase",
+    "area_color": "#A78BFA",
+    "area_bg": "#1E1040",
+    "area_icon": "📖",
+    "scope_id": "b",
+    "scope_label": "Scope B — Claude Pipeline",
     "pinned": false
   },
   {
@@ -429,6 +456,8 @@ const REPORTS = [
     "area_color": "#3B82F6",
     "area_bg": "#1E3A5F",
     "area_icon": "📊",
+    "scope_id": "a",
+    "scope_label": "Scope A — Liveops & Forecast",
     "pinned": false
   },
   {
@@ -442,6 +471,8 @@ const REPORTS = [
     "area_color": "#10B981",
     "area_bg": "#0D2B1F",
     "area_icon": "📦",
+    "scope_id": "b2",
+    "scope_label": "Scope B2 — Ingame BM",
     "pinned": false
   },
   {
@@ -455,6 +486,8 @@ const REPORTS = [
     "area_color": "#FBBF24",
     "area_bg": "#2E2208",
     "area_icon": "📡",
+    "scope_id": "b",
+    "scope_label": "Scope B — Facebook Groups",
     "pinned": false
   },
   {
@@ -468,10 +501,12 @@ const REPORTS = [
     "area_color": "#3B82F6",
     "area_bg": "#1E3A5F",
     "area_icon": "📊",
+    "scope_id": "b",
+    "scope_label": "Scope B — VIP & Communities",
     "pinned": false
   }
 ];
-const AREAS   = [{"id": "all", "label": "All Reports", "icon": "◉", "num": ""}, {"id": "area10", "label": "GameOps Analytics", "icon": "📊", "num": "10"}, {"id": "area08", "label": "Content Release Analytics", "icon": "📦", "num": "08"}, {"id": "area04", "label": "Social Listening", "icon": "📡", "num": "04"}, {"id": "area13", "label": "PUM Report", "icon": "📋", "num": "13"}, {"id": "area03", "label": "Glossary & Termbase", "icon": "📖", "num": "03"}, {"id": "other", "label": "Other", "icon": "📁", "num": ""}];
+const AREAS   = [{"id": "all", "label": "Master", "icon": "📌", "num": ""}, {"id": "area10", "label": "GameOps Analytics", "icon": "📊", "num": "10", "scopes": [{"id": "combined", "label": "Combined — All Scopes"}, {"id": "a", "label": "Scope A — Liveops & Forecast"}, {"id": "b", "label": "Scope B — VIP & Communities"}]}, {"id": "area08", "label": "Content Release Analytics", "icon": "📦", "num": "08", "scopes": [{"id": "a", "label": "Scope A — Content Roadmap"}, {"id": "b1", "label": "Scope B1 — Webshop BM"}, {"id": "b2", "label": "Scope B2 — Ingame BM"}]}, {"id": "area04", "label": "Social Listening", "icon": "📡", "num": "04", "scopes": [{"id": "live", "label": "Live Dashboard"}, {"id": "b", "label": "Scope B — Facebook Groups"}, {"id": "d", "label": "Scope D — Purple Chat / Clan Intel"}, {"id": "e", "label": "Scope E — Discord"}]}, {"id": "area13", "label": "PUM Report", "icon": "📋", "num": "13", "scopes": []}, {"id": "area03", "label": "Glossary & Termbase", "icon": "📖", "num": "03", "scopes": [{"id": "a", "label": "Scope A — CTS Manual Audit"}, {"id": "b", "label": "Scope B — Claude Pipeline"}]}, {"id": "other", "label": "Other", "icon": "📁", "num": "", "scopes": []}];
 
 let activeArea = 'all', query = '';
 
@@ -481,8 +516,8 @@ function renderTabs() {
   document.getElementById('tabs').innerHTML = AREAS
     .filter(a => a.id==='all' || counts[a.id])
     .map(a => {
-      const n   = counts[a.id]||0;
-      const lbl = a.id==='all' ? `${a.icon} All (${n})` : `${a.icon} ${a.num ? a.num+' · ':''}${a.label}`;
+      const n   = a.id==='all' ? REPORTS.filter(r=>r.pinned).length : (counts[a.id]||0);
+      const lbl = a.id==='all' ? `${a.icon} Master (${n})` : `${a.icon} ${a.num ? a.num+' · ':''}${a.label}`;
       return `<button class="tab${activeArea===a.id?' active':''}" data-id="${a.id}">${lbl}</button>`;
     }).join('');
   document.querySelectorAll('.tab').forEach(b => b.addEventListener('click',()=>{activeArea=b.dataset.id;render();}));
@@ -497,34 +532,43 @@ function getFiltered() {
   });
 }
 
+function scopeTag(label) { const p = label.split('—'); return p.length>1 ? p[0].trim() : ''; }
+function scopeTitle(label) { const p = label.split('—'); return p.length>1 ? p.slice(1).join('—').trim() : label; }
+
 function cardHTML(r) {
+  const scopeBadge = r.scope_label
+    ? `<span class="scopetag">${scopeTag(r.scope_label)||r.scope_label}</span>` : '';
   return `<a class="card" href="${r.filename}" target="_blank" rel="noopener">
     <div class="ct">
       <div class="ctitle">${r.title}</div>
       <span class="bdg" style="background:${r.area_bg};color:${r.area_color}">${r.area_icon} ${r.area_num||r.area_label}</span>
     </div>
     <div class="cf">
-      <span class="cdate">${r.date_display||'—'}</span>
+      <span class="cdate">${scopeBadge}${r.date_display||'—'}</span>
       <span class="copn">Open →</span>
     </div>
   </a>`;
 }
 
-function renderPins() {
-  const ps  = document.getElementById('pins-section');
-  const row = document.getElementById('pins-row');
-  const pinned = REPORTS.filter(r => r.pinned);
-  const show   = activeArea==='all' && !query && pinned.length;
-  ps.style.display = show ? '' : 'none';
-  if (!show) return;
-  row.innerHTML = pinned.map(r => `
-    <a class="pcard" href="${r.filename}" target="_blank" rel="noopener">
-      <div class="pcard-icon">${r.area_icon}</div>
-      <div>
-        <div class="pcard-title">${r.title}</div>
-        <div class="pcard-area">${r.area_num?'Area '+r.area_num+' · ':''}${r.area_label}</div>
-      </div>
-    </a>`).join('');
+function pcardHTML(r) {
+  return `<a class="pcard" href="${r.filename}" target="_blank" rel="noopener">
+    <div class="pcard-icon">${r.area_icon}</div>
+    <div>
+      <div class="pcard-title">${r.title}</div>
+      <div class="pcard-area">${r.area_num?'Area '+r.area_num+' · ':''}${r.area_label}${r.scope_label?' · '+scopeTag(r.scope_label):''}</div>
+    </div>
+  </a>`;
+}
+
+function sectionHTML(tag, title, cards) {
+  return `<section class="sec">
+    <div class="sec-hdr">
+      ${tag?`<span class="sec-num">${tag}</span>`:''}
+      <span class="sec-title">${title}</span>
+      <span class="sec-cnt">${cards.length}</span>
+    </div>
+    <div class="grid">${cards.map(cardHTML).join('')}</div>
+  </section>`;
 }
 
 function renderMain() {
@@ -537,30 +581,41 @@ function renderMain() {
     return;
   }
 
-  if (activeArea !== 'all' || query) {
+  // Master tab (no query) -> pinned reports only
+  if (activeArea === 'all' && !query) {
+    const pinned = REPORTS.filter(r => r.pinned);
+    if (!pinned.length) {
+      main.innerHTML = `<div class="empty"><div class="ei">📌</div><p>No pinned reports yet.</p></div>`;
+      return;
+    }
+    main.innerHTML = `<section class="sec">
+      <div class="sec-hdr"><span class="sec-num">📌 MASTER</span>
+        <span class="sec-title">Pinned Reports</span>
+        <span class="sec-cnt">${pinned.length}</span></div>
+      <div class="pins-row">${pinned.map(pcardHTML).join('')}</div>
+    </section>`;
+    return;
+  }
+
+  const area = AREAS.find(a => a.id === activeArea);
+
+  // Search, or area without scopes -> flat grid
+  if (query || !area || !area.scopes || !area.scopes.length) {
     main.innerHTML = `<div class="grid">${list.map(cardHTML).join('')}</div>`;
     return;
   }
 
-  // Grouped view — exclude pinned from body (already shown above)
-  const groups = {};
-  list.filter(r => !r.pinned).forEach(r => { (groups[r.area_id]=groups[r.area_id]||[]).push(r); });
-  const order = AREAS.filter(a => a.id!=='all').map(a => a.id);
-  main.innerHTML = order.filter(id => groups[id]?.length).map(id => {
-    const a = AREAS.find(x => x.id===id);
-    return `<section class="sec">
-      <div class="sec-hdr">
-        ${a.num?`<span class="sec-num">Area ${a.num}</span>`:''}
-        <span style="font-size:15px">${a.icon}</span>
-        <span class="sec-title">${a.label}</span>
-        <span class="sec-cnt">${groups[id].length}</span>
-      </div>
-      <div class="grid">${groups[id].map(cardHTML).join('')}</div>
-    </section>`;
-  }).join('');
+  // Area with scopes -> scope sub-sections
+  const byScope = {};
+  list.forEach(r => { const k = r.scope_id || '_'; (byScope[k] = byScope[k] || []).push(r); });
+  let html = area.scopes.map(s => s.id).filter(id => byScope[id] && byScope[id].length)
+    .map(id => { const s = area.scopes.find(x => x.id === id);
+      return sectionHTML(scopeTag(s.label), scopeTitle(s.label), byScope[id]); }).join('');
+  if (byScope['_'] && byScope['_'].length) html += sectionHTML('•', 'Khác / Ungrouped', byScope['_']);
+  main.innerHTML = html;
 }
 
-function render() { renderTabs(); renderPins(); renderMain(); }
+function render() { renderTabs(); renderMain(); }
 
 document.getElementById('q').addEventListener('input', e => { query=e.target.value.trim(); render(); });
 render();
