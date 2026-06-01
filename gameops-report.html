@@ -652,27 +652,4 @@ function switchMonth(m){
     b.classList.toggle('mactive', b.dataset.m===m);
     if(b.dataset.m===m){b.style.background=m==='May'?'#7c3aed':'#ae2012'; b.style.color='#ffffff'; b.style.borderColor=m==='May'?'#7c3aed':'#ae2012';}
     else if(b.dataset.m==='May'){b.style.background=''; b.style.color=''; b.style.borderColor='';}
-    else{b.style.background=''; b.style.color=''; b.style.borderColor='';}
-  });
-  renderView(curMonth, curCountry);
-}
-
-function switchCountry(c){
-  curCountry = c;
-  const col = COUNTRY_COLORS_JS[c]||'#ae2012';
-  document.querySelectorAll('.cbtn').forEach(b=>{
-    b.classList.toggle('cactive', b.dataset.c===c);
-    if(b.dataset.c===c){b.style.background=col; b.style.color='#ffffff'; b.style.border='1px solid '+col;}
-    else{b.style.background=''; b.style.color=''; b.style.border='';}
-  });
-  renderView(curMonth, curCountry);
-}
-
-window.onload=()=>{
-  switchMonth('May');
-  switchCountry('Total');
-};
-
-</script>
-</body>
-</html>
+    else{b.style.background=''; b.style.color=''; b.style.borderColo
