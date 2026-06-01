@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo Event 1 Year Anniversary — Hashtag Collection (SEA)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+--brand-dark:#0F1419;--brand-accent:#EE5524;--brand-accent-hover:#D44A1F;--brand-accent-soft:#FFE8DD;--brand-white:#FFF;
+--n900:#0F1419;--n800:#1A1D24;--n700:#2A2E37;--n600:#4A4F5A;--n500:#6B7280;--n400:#9CA3AF;--n300:#D1D5DB;--n200:#E5E7EB;--n100:#F3F4F6;--n50:#F9FAFB;
+--success:#10B981;--warning:#F59E0B;--info:#3B82F6;
+--font-h:'Sora',system-ui,sans-serif;--font-b:'Inter',system-ui,sans-serif;--font-m:'JetBrains Mono',Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-b);background:var(--n50);color:var(--n900);line-height:1.6;font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:24px}
+header.hero{background:linear-gradient(135deg,var(--brand-dark) 0%,#1d2530 100%);color:#fff;border-radius:18px;padding:36px 32px;position:relative;overflow:hidden}
+header.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;background:radial-gradient(circle,var(--brand-accent) 0%,transparent 70%);opacity:.35}
+.eyebrow{font-family:var(--font-m);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--brand-accent);font-weight:600}
+header.hero h1{font-family:var(--font-h);font-size:2rem;font-weight:800;margin:8px 0 6px;line-height:1.15}
+header.hero p.sub{color:var(--n300);font-size:15px;max-width:680px}
+.meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.meta-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:6px 14px;font-size:12.5px;font-family:var(--font-m);color:var(--n200)}
+.meta-chip b{color:#fff}
+.hashtags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.htag{background:var(--brand-accent);color:#fff;font-weight:600;font-size:13px;padding:5px 12px;border-radius:8px;font-family:var(--font-m)}
+.note-box{background:var(--brand-accent-soft);border:1px solid var(--brand-accent);border-left:5px solid var(--brand-accent);border-radius:12px;padding:18px 20px;margin:24px 0}
+.note-box h3{font-family:var(--font-h);font-size:1rem;color:var(--brand-accent-hover);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.note-box p{font-size:14px;color:var(--n800);margin-bottom:6px}
+.note-box code{font-family:var(--font-m);background:#fff;padding:1px 6px;border-radius:5px;font-size:13px;color:var(--brand-accent-hover)}
+.section-label{font-family:var(--font-h);font-size:1.2rem;font-weight:700;margin:30px 0 14px;display:flex;align-items:center;gap:10px}
+.section-label::before{content:"";width:4px;height:22px;background:var(--brand-accent);border-radius:3px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.kpi{background:#fff;border:1px solid var(--n200);border-radius:14px;padding:18px;text-align:left;cursor:pointer;transition:.18s;font-family:var(--font-b)}
+.kpi:hover{border-color:var(--brand-accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(238,85,36,.12)}
+.kpi.active{border-color:var(--brand-accent);background:var(--brand-accent-soft)}
+.kpi.kpi-zero{opacity:.55}
+.kpi-flag{font-size:22px}
+.kpi-num{font-family:var(--font-h);font-size:2rem;font-weight:800;color:var(--brand-dark);line-height:1}
+.kpi-lbl{font-size:13px;color:var(--n600);font-weight:600;margin-top:2px}
+.kpi-lbl span{color:var(--n400);font-weight:500}
+.kpi-total{background:var(--brand-dark);color:#fff}
+.kpi-total .kpi-num{color:#fff}.kpi-total .kpi-lbl{color:var(--n300)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 8px}
+.toolbar input{flex:1;min-width:200px;padding:10px 14px;border:1px solid var(--n300);border-radius:10px;font-family:var(--font-b);font-size:14px}
+.toolbar input:focus{outline:none;border-color:var(--brand-accent)}
+.fbtn{padding:8px 14px;border:1px solid var(--n300);background:#fff;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;color:var(--n700);transition:.15s}
+.fbtn:hover{border-color:var(--brand-accent)}
+.fbtn.active{background:var(--brand-accent);color:#fff;border-color:var(--brand-accent)}
+.market-block{background:#fff;border:1px solid var(--n200);border-radius:16px;padding:22px;margin-bottom:18px}
+.market-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.market-title{font-family:var(--font-h);font-size:1.25rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.flag{font-size:24px}
+.mk-tag{font-family:var(--font-m);font-size:12px;background:var(--n100);color:var(--n600);padding:2px 8px;border-radius:6px}
+.market-count{font-size:14px;color:var(--n600)}
+.market-count strong{font-family:var(--font-h);font-size:1.5rem;color:var(--brand-accent)}
+.group-link{display:inline-block;font-family:var(--font-m);font-size:12px;color:var(--n500);margin:6px 0 12px;text-decoration:none;word-break:break-all}
+.group-link:hover{color:var(--brand-accent)}
+.market-note{background:var(--color-warning,#F59E0B);background:#FEF3C7;border-radius:10px;padding:10px 14px;font-size:13px;color:#92400E;margin-bottom:12px}
+.table-wrap{overflow-x:auto;border:1px solid var(--n150,#eef0f3);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead th{background:var(--n50);text-align:left;padding:11px 12px;font-weight:600;color:var(--n600);font-size:12px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--n200);white-space:nowrap}
+tbody td{padding:11px 12px;border-bottom:1px solid var(--n100);vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--n50)}
+.c-idx{color:var(--n400);font-family:var(--font-m);width:34px}
+.c-user{font-weight:600;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.c-time{font-family:var(--font-m);font-size:12px;color:var(--n500);white-space:nowrap}
+.c-text{color:var(--n700);min-width:240px;max-width:420px}
+.c-link a{color:var(--brand-accent);font-weight:600;text-decoration:none;white-space:nowrap}
+.c-link a:hover{text-decoration:underline}
+.vb{font-family:var(--font-m);font-size:11px;font-weight:600;padding:3px 7px;border-radius:6px;white-space:nowrap}
+.vb-year{background:#DBEAFE;color:#1E40AF}
+.vb-short{background:var(--brand-accent-soft);color:var(--brand-accent-hover)}
+.empty{color:var(--n400);font-style:italic;padding:14px}
+footer{text-align:center;color:var(--n400);font-size:12.5px;margin:34px 0 10px;font-family:var(--font-m)}
+.hidden{display:none!important}
+@media(max-width:640px){
+.wrap{padding:14px}
+header.hero{padding:26px 20px}
+header.hero h1{font-size:1.5rem}
+.kpi-grid{grid-template-columns:repeat(2,1fr)}
+.c-text{display:none} thead th.h-text{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Lineage2M SEA · Event Collection Report</div>
+  <h1>Sự kiện 1 Year Anniversary — Tổng hợp bài đăng hashtag</h1>
+  <p class="sub">Tổng hợp các bài post của người chơi tham gia event sinh nhật 1 năm trên Facebook Groups 6 thị trường SEA, lọc theo điều kiện đủ cả 3 hashtag yêu cầu.</p>
+  <div class="hashtags">
+    <span class="htag">#1YearAnni</span>
+    <span class="htag">#1WithL2M / #1YearWithL2M</span>
+    <span class="htag">#Lineage2MSEA</span>
+  </div>
+  <div class="meta-row">
+    <span class="meta-chip">Quét: <b>01/06/2026 07:19 UTC</b></span>
+    <span class="meta-chip">Cửa sổ: <b>13/05 → 01/06/2026</b></span>
+    <span class="meta-chip">Nguồn: <b>Apify · facebook-groups-scraper</b></span>
+    <span class="meta-chip">Tổng bài đạt: <b>280</b></span>
+    <span class="meta-chip">Dataset: <b>yHQwJaFBYSTgH6dnw</b></span>
+  </div>
+</header>
+
+<div class="note-box">
+  <h3>📌 Lưu ý về điều kiện hashtag (cần biết khi trao thưởng)</h3>
+  <p>Brief ghi 3 hashtag là <code>#1YearAnni</code> + <code>#1WithL2M</code> + <code>#Lineage2MSEA</code>. Tuy nhiên khi quét thực tế, hashtag thứ 2 mà <b>gần như toàn bộ người chơi</b> sử dụng là <code>#1YearWithL2M</code> (272 bài), trong khi đúng y chữ <code>#1WithL2M</code> chỉ có 8 bài (toàn VN).</p>
+  <p>Theo quyết định của bạn, report này tính <b>đạt yêu cầu = chấp nhận CẢ 2 biến thể</b> (<code>#1WithL2M</code> hoặc <code>#1YearWithL2M</code>), cùng với <code>#1YearAnni</code> và <code>#Lineage2MSEA</code>, không phân biệt hoa/thường → <b>280 bài</b>. Cột "Hashtag" trong mỗi bảng đánh dấu biến thể từng bài đã dùng.</p>
+</div>
+
+<div class="section-label">Tổng hợp số liệu theo thị trường</div>
+<div class="kpi-grid">
+  <button class="kpi kpi-total" data-filter="ALL"><div class="kpi-flag">🌏</div><div class="kpi-num">280</div><div class="kpi-lbl">Tổng cộng <span>(SEA)</span></div></button>
+  <button class="kpi " data-filter="VN"><div class="kpi-flag">🇻🇳</div><div class="kpi-num">144</div><div class="kpi-lbl">Vietnam <span>(VN)</span></div></button><button class="kpi " data-filter="TH"><div class="kpi-flag">🇹🇭</div><div class="kpi-num">53</div><div class="kpi-lbl">Thailand <span>(TH)</span></div></button><button class="kpi " data-filter="ID"><div class="kpi-flag">🇮🇩</div><div class="kpi-num">25</div><div class="kpi-lbl">Indonesia <span>(ID)</span></div></button><button class="kpi " data-filter="PH"><div class="kpi-flag">🇵🇭</div><div class="kpi-num">57</div><div class="kpi-lbl">Philippines <span>(PH)</span></div></button><button class="kpi " data-filter="MY"><div class="kpi-flag">🇲🇾</div><div class="kpi-num">1</div><div class="kpi-lbl">Malaysia <span>(MY)</span></div></button><button class="kpi kpi-zero" data-filter="SG"><div class="kpi-flag">🇸🇬</div><div class="kpi-num">0</div><div class="kpi-lbl">Singapore <span>(SG)</span></div></button>
+</div>
+
+<div class="toolbar">
+  <input id="search" type="text" placeholder="🔍 Tìm theo tên người chơi hoặc nội dung...">
+  <button class="fbtn active" data-filter="ALL">Tất cả</button>
+  <button class="fbtn" data-filter="VN">VN</button>
+  <button class="fbtn" data-filter="TH">TH</button>
+  <button class="fbtn" data-filter="ID">ID</button>
+  <button class="fbtn" data-filter="PH">PH</button>
+  <button class="fbtn" data-filter="MY">MY</button>
+  <button class="fbtn" data-filter="SG">SG</button>
+</div>
+
+<div class="section-label">Danh sách bài đạt yêu cầu</div>
+<section class="market-block" data-market="VN">
+  <div class="market-head">
+    <div class="market-title"><span class="flag">🇻🇳</span> Vietnam <span class="mk-tag">VN</span></div>
+    <div class="market-count"><strong>144</strong> bài đạt</div>
+  </div>
+  <a class="group-link" href="https://www.facebook.com/groups/lineage2mvng/" target="_blank" rel="noopener">https://www.facebook.com/groups/lineage2mvng/</a>
+  
+  <div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Người chơi</th><th>Thời gian (UTC)</th><th>Hashtag</th><th>Nội dung</th><th>Link</th></tr></thead>
+<tbody><tr>
+<td class="c-idx">1</td>
+<td class="c-user">Hoàng Phủi</td>
+<td class="c-time">13/05/2026 16:01</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc Lineage2m sinh nhật 1 tuổi vui vẻ, thành công!#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1567895831366787/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">2</td>
+<td class="c-user">Ngọc Huấn</td>
+<td class="c-time">13/05/2026 16:01</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi LINEAGE2M.<br> #1YearAnni #1YearWithL2M #Lineage2MSEA<br>Minh Thư Hoai Vu Phan Quốc Bảo<br>ID: 9OgjRBTFBGZ7KKS9UrXOiA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1567836814706022/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">3</td>
+<td class="c-user">Phạm Duy Thiện</td>
+<td class="c-time">13/05/2026 16:57</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi LINEAGE2M.<br> #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID: OGES24TIYUBhBrP4m4iiAQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568007458022291/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">4</td>
+<td class="c-user">Sang Trần</td>
+<td class="c-time">13/05/2026 16:57</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID: 5NkYZvPCCz4qCq6/vJ/fww==<br><br>Nam Phan Hồ Thạch Bánh Bao</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568006801355690/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">5</td>
+<td class="c-user">Giang Thanh</td>
+<td class="c-time">14/05/2026 00:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật L2M tròn 1 tuoi,,#1YearAnni #1YearWithL2M #Lineage2MSEA Adm Trinh Trinh Suong Suong Thai Nguyen Yc+o5UXFfSrK7v8Guvas8w==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568084294681274/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">6</td>
+<td class="c-user">Phúc Hồ OO</td>
+<td class="c-time">14/05/2026 03:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi <br> #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID: rx+tC8tXg2xtw5vtd5OTWA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568389901317380/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">7</td>
+<td class="c-user">Quang Đông Bùi</td>
+<td class="c-time">14/05/2026 03:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển<br>Thân Trọng KhảiNguyen Ngoc BaoNguyễn Tú<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br> ID: eBbYSc/IykJF13NAf9W8gg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568385114651192/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">8</td>
+<td class="c-user">Cao Phạm Anh Tài</td>
+<td class="c-time">14/05/2026 03:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: wH6k8yKdRcVK3DlickwtYg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568380054651698/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">9</td>
+<td class="c-user">Ham Học Hỏi</td>
+<td class="c-time">14/05/2026 03:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M, mãi trường tồn <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>Lovelove LoveloveHoai Vu VanMd Belal Khan<br><br>ID: fUHH69s3KrqwRExwGvysPQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568367264652977/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">10</td>
+<td class="c-user">Nguyễn Khôi Khôi</td>
+<td class="c-time">14/05/2026 03:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi LINEAGE2M. #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID : W8As1gZZ0chWoUU8L0pcPw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568360877986949/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">11</td>
+<td class="c-user">Lê Tùng</td>
+<td class="c-time">14/05/2026 03:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID: fgGSMG9tdGZZUC1evTxdgA==<br>Bùi TuấnAnhThanh TuấnMai Long</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568337964655907/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">12</td>
+<td class="c-user">Lê Hải</td>
+<td class="c-time">14/05/2026 03:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">chúc mừng sinh nhật L2M #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID : BM0/TRAccExhiII4A0rpkw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568317311324639/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">13</td>
+<td class="c-user">Nguyễn Anh</td>
+<td class="c-time">14/05/2026 04:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">chúc mừng sinh nhật L2M cho mình vài món tím<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>tkXGpNQS5Ya77FlCq618iw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568457757977261/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">14</td>
+<td class="c-user">Cáo Đeo Nơ</td>
+<td class="c-time">14/05/2026 04:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br> ID: 8Eh/92rB0+Ffq/Q4+A9q7g==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568454037977633/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">15</td>
+<td class="c-user">Viêm Đế</td>
+<td class="c-time">14/05/2026 04:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: c0ZFvwPAD0/xJkoct1vQcg==<br>Quang TèoViêm ĐếGino D&#x27;Acampo</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568444501311920/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">16</td>
+<td class="c-user">QViet Pham</td>
+<td class="c-time">14/05/2026 04:35</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi LINEAGE2M.<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA <br>ID: 9Wzve5YPO29+iAtdwMWxHQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568467987976238/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">17</td>
+<td class="c-user">Misaki Mei</td>
+<td class="c-time">14/05/2026 04:42</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br> ID: 7bEktXOOTUQlJ2bdmf1hMg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568472001309170/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">18</td>
+<td class="c-user">Thanh Trung</td>
+<td class="c-time">14/05/2026 05:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật lineage2m vừa tròn 1 tuổi,năm sau sinh nhật 2 tuổi fb nhắc lại nhaaaa :v #1YearAnni #1YearWithL2M #Lineage2MSEA ID : iNs+pKyw6/QGnyyr8InJwQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568495907973446/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">19</td>
+<td class="c-user">Phong Huỳnh</td>
+<td class="c-time">14/05/2026 05:50</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật L2M<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br>KqBdnrtWGb41cLebQhoOGg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568511017971935/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">20</td>
+<td class="c-user">Nguyễn Đức Bình</td>
+<td class="c-time">14/05/2026 07:58</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">chúc mừng sinh nhật 1 tuổi lineage2m , mong game ngày càng phát triển và ra nhiều sự kiện mới =))<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID : 4qPomSoGXYscFYwnSqIsVQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568581227964914/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">21</td>
+<td class="c-user">Huỳnh Đại</td>
+<td class="c-time">14/05/2026 07:58</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi <br> #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID: n+QlNiS6sp+OG2s1zycJ4Q==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568574121298958/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">22</td>
+<td class="c-user">Nguyễn Minh Tâm</td>
+<td class="c-time">14/05/2026 08:12</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật L2M ,mong game trở thành cộng đồng hiến máu nhân đạo lớn nhất Việt NAM #1YearAnni #1YearWithL2M #Lineage2MSEA <br><br>ID : uqU6/XdLO23dBU8U4U7J2Q==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568590681297302/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">23</td>
+<td class="c-user">Pham Nguyen Quoc Viet</td>
+<td class="c-time">14/05/2026 08:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi LINEAGE2M. Mong game luôn thành công hơn trong 2026.<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA <br>ID: maGQ63bC45Oi/t5XPpB3Ug==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568483751307995/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">24</td>
+<td class="c-user">Thái Nam</td>
+<td class="c-time">14/05/2026 10:30</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">1 năm ! một hành trình đáng nhớ 🥰<br><br>Điều đáng nhớ nhất không phải món đồ hiếm hay rank cao, mà là cảm giác cả guild đứng chờ giờ boss, gọi nhau online giữa đêm và cùng ăn mừng sau một trận thắng khó quên.<br><br>Lineage2M với m…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568675124622191/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">25</td>
+<td class="c-user">Ngoc Minh LightningMan</td>
+<td class="c-time">14/05/2026 10:30</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật L2M ,mong game trở thành cộng đồng hiến máu nhân đạo lớn nhất Việt NAM #1YearAnni #1YearWithL2M #Lineage2MSEA <br><br>ID : Al01/MyfCci1clNXHONkHg==<br>Dũng MT Mei Mei Ayu Ayu</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568671541289216/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">26</td>
+<td class="c-user">Đáquýsóctrăng Bảo Uyên</td>
+<td class="c-time">14/05/2026 10:47</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>Id : IbC5UerajRm75L97qKK1rQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568687004621003/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">27</td>
+<td class="c-user">Trần Vỹ</td>
+<td class="c-time">14/05/2026 11:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m <br>#1YearAnni #1YearWithL2M #Lineage2MSEAId<br>ID: XLGCobxEdjPIB/8s3ZeMSw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568699931286377/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">28</td>
+<td class="c-user">Toàn Trần</td>
+<td class="c-time">14/05/2026 11:13</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID: up0xt4GLycico8qsumNrCw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568700697952967/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">29</td>
+<td class="c-user">Phutung Xe May</td>
+<td class="c-time">14/05/2026 13:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID 6QPfKQu2cJ+l6/87cZ3hNA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568741204615583/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">30</td>
+<td class="c-user">Nguyễn Thiên Phước</td>
+<td class="c-time">14/05/2026 13:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển<br> #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: E00+QWxAjMsFe6WqLSAcbQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568733054616398/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">31</td>
+<td class="c-user">Thân Trọng Khải</td>
+<td class="c-time">14/05/2026 13:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">vậy là tròn 1 năm bên nhau &lt;3 <br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID: oF4xGp0IeNK4E4TJsY8IvQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568726997950337/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">32</td>
+<td class="c-user">Hân Nguyễn</td>
+<td class="c-time">14/05/2026 13:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID : 7Zku13kH1qHP9O5Mnj5Rsg==<br>Bảo Bình Phúc Nguyễn Huy Nguyen</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568716597951377/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">33</td>
+<td class="c-user">Nam Hoàng</td>
+<td class="c-time">14/05/2026 13:47</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng Lineage2m sinh nhật 1 tuổi,thành công!<br>#1YearAnni #1YearWithL2M #Lineage2MSEA <br><br>ID: wGFBU47EZbuBtrDLUb/k8A==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568816467941390/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">34</td>
+<td class="c-user">Thái Sơn</td>
+<td class="c-time">14/05/2026 13:47</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi 😻 #Lineage2m #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>id:t7CmpY1LczFhsi4YCJYvbw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568814824608221/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">35</td>
+<td class="c-user">Mạnh Cường</td>
+<td class="c-time">14/05/2026 14:46</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng Lineage2m sinh nhật 1 tuổi, chúc cho chúng ta có thêm nhiều cái nữa về sau<br>Lineage2m mãi đỉnh !<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: KKo9ePujknVPj3Sr6EDwug==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568848437938193/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">36</td>
+<td class="c-user">Dagger🥰</td>
+<td class="c-time">15/05/2026 01:54</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">“Chúc game tròn 1 tuổi 🎉 – càng chơi càng cuốn, càng update càng cháy, anh em vào là vui hết nấc!”<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>z3a+KJCvdIhu5vnrr+v1YQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1569010504588653/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">37</td>
+<td class="c-user">Nguyễn Đức</td>
+<td class="c-time">15/05/2026 01:54</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng Lineage2m sinh nhật 1 tuổi, chúc cho chúng ta có thêm nhiều cái nữa về sau<br>Lineage2m mãi đỉnh !<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br>Nguyễn Đức Anh<br>ID: qmSHOiTJrRiatjoK9md7PQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568940034595700/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">38</td>
+<td class="c-user">Trương Khắc Trọng Khôi</td>
+<td class="c-time">15/05/2026 01:54</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi #Lineage2m #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568898677933169/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">39</td>
+<td class="c-user">Nguyễn Nam Hoàng</td>
+<td class="c-time">15/05/2026 01:54</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">#1YearAnni #1YearWithL2M #Lineage2MSEA<br>chúc mừng 1 năm sinh nhật Lineage2M mong năm tới sẽ thật bùng cháy cùng các sự kiện, hoạt động mới góp phần phát triển và thật thành công 20/05/2025<br>ID: /PCF3RiUa+Np4u88RR/HBw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568891764600527/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">40</td>
+<td class="c-user">Mei Mei</td>
+<td class="c-time">15/05/2026 01:54</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: E00+QWxAjMsFe6WqLSAcbQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568889394600764/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">41</td>
+<td class="c-user">An Trần</td>
+<td class="c-time">15/05/2026 01:54</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật tròn 1 tuổi❤️ #Lineage2m #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>id: oX85ImFIz0HdI6LI9LtTDg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568876334602070/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">42</td>
+<td class="c-user">Việt Trương</td>
+<td class="c-time">15/05/2026 02:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br> ID: LghzbtfWJXIrxbjEB1lCng==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1569282107894826/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">43</td>
+<td class="c-user">Le Nhat</td>
+<td class="c-time">15/05/2026 02:56</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng Lineage2m sinh nhật 1 tuổi, chúc cho chúng ta có thêm ngày càng phát triển và ban quản trị thật nhiều sức khỏe. Xin hết !<br>Lineage2m mãi đỉnh !<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: t6uq3C1mw2G5h6…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1569297844559919/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">44</td>
+<td class="c-user">Bảo Nguyễn</td>
+<td class="c-time">15/05/2026 04:32</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng lineage2m sinh nhật 1 tuổi chúc cho game ngày càng phát triển và ban quản trị thật nhiều sức khoẻ<br>Xin cho em được 1 món tím😆😆😆😆<br>#1yearanni #1YearWithL2m #Lineage2MSEA <br><br>0OvJ6Ga0WtQDzCi3J6KCjA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1569349391221431/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">45</td>
+<td class="c-user">Huyền Châu</td>
+<td class="c-time">15/05/2026 04:32</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng Sinh Nhật Lineage2m , ước được nph cho em ghép được tím #1YearAnni #1YearWithL2M #Lineage2MSEA <br>ID : hfEdWe4do3klNnMtCNvoaQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1569362031220167/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">46</td>
+<td class="c-user">Ngoc Minh LightningMan</td>
+<td class="c-time">15/05/2026 05:56</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng Lineage2m sinh nhật 1 tuổi, chúc cho chúng ta có thêm ngày càng phát triển và ban quản trị thật nhiều sức khỏe. Xin hết !<br><br>Lineage2m mãi đỉnh !<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>Mei Mei Ayu Ayu …</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1569399797883057/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">47</td>
+<td class="c-user">Tú Nguyễn</td>
+<td class="c-time">16/05/2026 06:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m.Tuổi mới chúc game:<br>🔥 server luôn đông<br>🔥 anh em luôn cháy<br>🔥 nhiều event<br><br>Còn anh em thì… bớt xịt cường hóa nha 🙏😂<br>ID : vSVpzpiKCpbmFyo4QMBpPg==<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1570234934466210/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">48</td>
+<td class="c-user">Oliver Leo</td>
+<td class="c-time">16/05/2026 06:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Mừng sinh nhật Lineage 2M, mong game mãi đồng hành cùng anh em! #1YearAnni #1YearWithL2M #Lineage2MSEA @Leah @Người Kế Thừa @Aden<br>ID: 5brADtuBO/Q17IYTyB0Oog==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1570135581142812/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">49</td>
+<td class="c-user">Huynh Tri</td>
+<td class="c-time">17/05/2026 07:30</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M, mong game sống thọ.<br><br>#1YearAnni #1YearWithL2m #Lineage2MSEA<br><br>[Phongka](https://www.facebook.com/profile.php?id=100082512562129&amp;__cft__[0]=AZZHYAq7-FBw804mpOoeHqEFT9_uTU6lWdL0nrHgdXFXGDf…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1571026894387014/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">50</td>
+<td class="c-user">Nguyễn Ngọc Sơn</td>
+<td class="c-time">17/05/2026 07:31</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Tôi đã từng yếu đuối nhưng cái gì đến cũng sẽ đến… Chúc mừng sinh nhật Lineage2M, mong rằng game sẽ ngày càng phát triển mạnh để chúng ta sẽ có thật nhiều những trận chiến căng não, những event thú vị và cả những niềm vu…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1570889254400778/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">51</td>
+<td class="c-user">Tuyết Nhi</td>
+<td class="c-time">17/05/2026 07:31</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br>Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: qts8+sPUWLddfuXmn0ObGA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1570368094452894/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">52</td>
+<td class="c-user">Long</td>
+<td class="c-time">17/05/2026 07:31</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M, chúc mọi người nhiều sức khoẻ &lt;3 #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID : VbXIFIAwVuqwE35z8IU9OA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1570350467787990/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">53</td>
+<td class="c-user">Lê Thanh Liêm</td>
+<td class="c-time">17/05/2026 07:31</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M ngày càng lớn mạnh ...!!!!<br> #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1570546017768435/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">54</td>
+<td class="c-user">Nguocngao Tran</td>
+<td class="c-time">18/05/2026 05:08</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">chúc mừng sinh nhật L2M !!<br>Mong Game đến đc cái sinh nhật thứ 2 ở VN<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1571992540957116/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">55</td>
+<td class="c-user">Đinh Quốc Khang</td>
+<td class="c-time">18/05/2026 05:08</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M Sea tròn 1 tuổi, chúc game ngày càng nhiều event và tính năng hấp dẫn.<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>Ya/rrxkAoKmgFDgHga2F7g==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1571515307671506/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">56</td>
+<td class="c-user">Vu Vơ Thôi</td>
+<td class="c-time">18/05/2026 07:03</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 năm của Lineage2M! 🎉<br>Cảm ơn vì đã mang đến một thế giới fantasy đầy kỷ niệm, những trận combat máu lửa và những người anh em đồng hành suốt hành trình vừa qua. Chúc game ngày càng phát triển, update…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1572073110949059/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">57</td>
+<td class="c-user">Anh Quân</td>
+<td class="c-time">18/05/2026 15:24</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng Lineage2m sinh nhật 1 tuổi, chúc cho chúng ta lên được class vàng.<br>#1YearAnni #1YearWithL2M #Lineage2MSEA kThDr3XKQuhBxAvXGSH27A==<br>Tuấn Đạt Tuấn Đạt Tuấn Đạt</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1572411434248560/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">58</td>
+<td class="c-user">Nguyễn Yến Nhi</td>
+<td class="c-time">19/05/2026 04:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M Sea tròn 1 tuổi, chúc game ngày càng nhiều event và tính năng hấp dẫn.<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>SkngjcUq6GrsRz2CbW9ntQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1572942254195478/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">59</td>
+<td class="c-user">Lâm Sơn</td>
+<td class="c-time">19/05/2026 04:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M, ngày càng phát triển, thêm nhiều sự kiện <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>id: Po7g46jOZsZiK04JhFoWCw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1572802910876079/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">60</td>
+<td class="c-user">Linh Chee</td>
+<td class="c-time">19/05/2026 04:30</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc L2M tuổi mới đi săn boss không còn cảnh vừa tới nơi boss đã chết 🤡<br>#1YearAnni #1YearWithL2M #Lineage2MSEA <br><br>ID : /YqxIRTFdrcQ58oRvX+sBA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1572517897571247/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">61</td>
+<td class="c-user">MinhTuan Nguyen</td>
+<td class="c-time">19/05/2026 08:49</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng #1YearAnni #1YearWithL2M #Lineage2MSEA <br>ID: xWsle8ufTZ6pCUEkEFqPpQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573083157514721/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">62</td>
+<td class="c-user">Không Còn Tồn Tại</td>
+<td class="c-time">19/05/2026 08:49</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br>Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: 0/tEEcrY02i+1Zai8YM0/w==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573034410852929/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">63</td>
+<td class="c-user">Chi Lan</td>
+<td class="c-time">19/05/2026 08:49</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M ngày càng phát triển<br> #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>Chúc mừng sinh nhật Lineage2M ngày càng phát triển<br> #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: vW/LZ85RfBR3idKTGjpELg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573008677522169/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">64</td>
+<td class="c-user">Trinh Bao Nguyen</td>
+<td class="c-time">19/05/2026 08:50</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">**Chúc mừng sinh nhật Lineage2M ngày càng phát triển ****#1YearAnni**** ****#1YearWithL2M**** ****#Lineage2MSEA**<br><br>Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>id: ipn/ehA2HK…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573007644188939/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">65</td>
+<td class="c-user">Đặng Văn Trọng</td>
+<td class="c-time">19/05/2026 08:50</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">chúc mừng sinh nhật L2M !!<br>Mong Game ít cho xịt tím lại .<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1572990714190632/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">66</td>
+<td class="c-user">Mariano Danieele</td>
+<td class="c-time">19/05/2026 11:22</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M, chúc game bớt hãm cái tỉ lệ ghép đồ, pet, skin, vòng lại #1YearAnni #1YearWithL2M #Lineage2MSEAid: LvS9ifGL9LNEvCJXYXhNiQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573129587510078/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">67</td>
+<td class="c-user">Hoàng Iss</td>
+<td class="c-time">19/05/2026 14:34</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng lineage2m 1 năm thật nhiều thành công . Mong muốn được 1 class tím<br>Hashtag: #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573290740827296/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">68</td>
+<td class="c-user">Thành Huy</td>
+<td class="c-time">19/05/2026 14:34</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M, #1YearAnni #1YearWithL2M #Lineage2MSEAid: 9AvJHxZTyLvFkRj8Zeo7Sg==<br>Nguyễn Hữu MinhNguyễn LộcNguyễn Tuấn Cảnh</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573251734164530/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">69</td>
+<td class="c-user">Đức Cường</td>
+<td class="c-time">19/05/2026 15:47</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật lineage2M.#1YearAnni#1YearWithL2M#Lineage2MSEAid<br>ukD58I7WcoZoEkZsStFJOg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573351994154504/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">70</td>
+<td class="c-user">Chien Quach Ngoc</td>
+<td class="c-time">20/05/2026 03:33</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật lineage2M.#1YearAnni#1YearWithL2M#Lineage2MSEAid<br>Ymm4i3MKEN+ikzQq/UC3hQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573601294129574/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">71</td>
+<td class="c-user">Phong Phit</td>
+<td class="c-time">20/05/2026 03:34</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Cám ơn lineage2m đã cho tôi những giây phút trải nghiệm game tuyệt vời là trò chơi MMo với mình là hay nhất hiện nay với tôi , nhờ LN2 tôi đã biết và kết bạn được rất nhiều những người anh em ! Những kỷ niệm vì cay cú bị…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1573431150813255/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">72</td>
+<td class="c-user">Anonymous participant</td>
+<td class="c-time">20/05/2026 16:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text"># **Chúc mừng sinh nhật Lineage2m, gặt hái nhiều thành công hơn nha**<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: LC3SToHu3OpaRugQsDpS3g==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574266257396411/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">73</td>
+<td class="c-user">Khiêm Huân</td>
+<td class="c-time">20/05/2026 16:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2M<br>Chúc mừng sinh nhật Lineage2M ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEAID: <br>sxdDzXZyrvcOK9D12zUSHQ==<br><br>Kiến Nhân Anh Tuấn Danny Vo</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574228167400220/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">74</td>
+<td class="c-user">Bão Linh</td>
+<td class="c-time">20/05/2026 16:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển<br>Hải Trương Nghiệp Quyền Trường Tiến <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br> ID: GUyHVElQ5Vxy1s3ZEjKdFg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574212067401830/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">75</td>
+<td class="c-user">Trung Tranh Thủ</td>
+<td class="c-time">20/05/2026 16:12</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage 2M bằng 1 video siêu phẩm<br>[#1YearAnni]( [#1YearWithL2M]( [#Lineage2MSEA](<br>4f7+Q0HET1noqVEK2dRJNw==<br><br>chi tiết tại : <br>tiktok Hổ Gaming : https://www.tiktok.com/@ho.gaming25</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574202884069415/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">76</td>
+<td class="c-user">Nguyễn Tú Anh</td>
+<td class="c-time">20/05/2026 16:12</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc game ngày càng phát triển. <br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>Zdi2Xiwa+AgG3MIzqT1lQQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574153780740992/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">77</td>
+<td class="c-user">Venn Venn</td>
+<td class="c-time">20/05/2026 16:12</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc Lineage2M luôn phát triển mạnh mẽ hơn nữa nhé. Chúc mừng sinh nhật ^^<br><br>f+4awPMEg/nrnHzAgA4z0g==<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574153240741046/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">78</td>
+<td class="c-user">Đoàn Tiến Vương</td>
+<td class="c-time">20/05/2026 16:12</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Không có gì ngoài lời chúc. Chúc mừng Sinh Nhật Lineage2M 1 tuổi. Chúc game phát triển thật nhiều tuổi😁<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574115784078125/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">79</td>
+<td class="c-user">Lê Huỳnh</td>
+<td class="c-time">20/05/2026 16:12</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">**Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển **<br>**sinh nhật 1 tuổi rồi mong sớm có class tím **<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID :7ElY5DwRibggpFcKuZ1CIw==<br>Hiền Black Bình Nguyên Fast PC Q Musi…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574103467412690/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">80</td>
+<td class="c-user">Cung Cung</td>
+<td class="c-time">20/05/2026 16:12</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Mặc dù vớ phải con acc đen nhất nhì quả đất nhưng vẫn trung thành chơi đến cùng. Chúc mừng game và NPH một sinh nhật vô cùng thành công và phát triển lâu dài bền vững. Mong NPH chú ý ID của em để em ghép Clas Pet và trai…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574073507415686/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">81</td>
+<td class="c-user">Đinh Tiến Khang</td>
+<td class="c-time">21/05/2026 03:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triểnsinh nhật 1 tuổi rồi mong sớm có class tím#1YearAnni <br>#1YearWithL2M #Lineage2MSEA<br>ID: Qq964tKM/3sayKhdMMFS+Q==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574595800696790/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">82</td>
+<td class="c-user">Phạm Phúc</td>
+<td class="c-time">21/05/2026 03:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br> ID: TwgWcofxry4OBXj+Uf1wNA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574361314053572/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">83</td>
+<td class="c-user">Nguyễn Hoàng Long</td>
+<td class="c-time">21/05/2026 03:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Không có gì ngoài lời chúc. Chúc mừng Sinh Nhật Lineage2M 1 tuổi. Chúc game phát triển thật nhiều tuổi😁<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574354430720927/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">84</td>
+<td class="c-user">Duy Rinh</td>
+<td class="c-time">21/05/2026 06:26</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật 1 tuổi Lineage2M<br> Thấm thoát đã 1 năm từ khi game được phát hành 🥰 bao nhiêu kỷ niệm từ khi bắt đầu<br> Lần đầu đăng nhập game mình đã nghĩ sẽ không gắn bó qua lâu đâu nhưng sau những lần Upgrade mới lin…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574762994013404/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">85</td>
+<td class="c-user">Ham Học Hỏi</td>
+<td class="c-time">21/05/2026 08:04</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m.<br><br>Sau bao cố gắng thì mình cũng lên được cấp 65, và có 1 bộ Skill khá là ưng ý. Chúc game ngày càng thu hút người chơi và có nhiều sự kiện cho mọi người trải nghiệm.<br><br>#1YearAnni #1YearWithL2…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574891884000515/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">86</td>
+<td class="c-user">Nam Hoàng</td>
+<td class="c-time">21/05/2026 11:42</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Mừng thôi nôi Lineage2m<br>#1YearAnni #1YearWithL2M #Lineage2MSEA <br><br>Id: wGFBU47EZbuBtrDLUb/k8A==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1574955540660816/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">87</td>
+<td class="c-user">Hoàng Phủi</td>
+<td class="c-time">21/05/2026 11:42</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br><br> [#1YearAnni][#1YearWithL2M][#Lineage2MSEA]<br><br>pcU4vOj+SGXu1XEHD1TpOg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1575050423984661/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">88</td>
+<td class="c-user">Duy Rinh</td>
+<td class="c-time">21/05/2026 15:23</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục Dự tiệc : Muse Raido 🏅 . Là trang phục được nhận miễn phí từ tham gia sự kiện game nhưng cả về ngoại hình và chỉ số phải gọi là suất sắc 😘. Lại còn đa class hỗ trợ pk cực mạnh cho ae chưa có demon slayer. <br> Ướ…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1575085093981194/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">89</td>
+<td class="c-user">Long</td>
+<td class="c-time">21/05/2026 15:23</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">TRANG PHỤC DỰ TIỆC<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: VbXIFIAwVuqwE35z8IU9OA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1575082877314749/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">90</td>
+<td class="c-user">Cao Phạm Anh Tài</td>
+<td class="c-time">21/05/2026 15:24</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m, chúc game ngày càng phát triển #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>id: wH6k8yKdRcVK3DlickwtYg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1575071787315858/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">91</td>
+<td class="c-user">Lê Hải</td>
+<td class="c-time">21/05/2026 15:24</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1575057150650655/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">92</td>
+<td class="c-user">Nghĩvềtươnglaicuộcsống Saunàyconđường Màmìnhđãchọn</td>
+<td class="c-time">21/05/2026 15:24</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">#1YearAnni #1YearWithL2M #Lineage2MSEA <br>Chúc mừng sinh nhật lineage2m tròn 1 tuổi, chúc cho mình cố duy trì đc và xin vía ghép dc thêm class tím chứ ghép xịt 8 phát 1 hôm là muốn nghỉ lắm r đấy</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1575056573984046/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">93</td>
+<td class="c-user">Phúc Hồ OO</td>
+<td class="c-time">22/05/2026 02:22</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc <br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br>rx+tC8tXg2xtw5vtd5OTWA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1575618393927864/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">94</td>
+<td class="c-user">Tú Nguyễn</td>
+<td class="c-time">22/05/2026 11:50</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">TRANG PHỤC DỰ TIỆC 😁<br><br> #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1575868083902895/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">95</td>
+<td class="c-user">Nguyễn Thiên Phước</td>
+<td class="c-time">22/05/2026 14:18</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: E00+QWxAjMsFe6WqLSAcbQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576069380549432/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">96</td>
+<td class="c-user">Huỳnh Đại</td>
+<td class="c-time">23/05/2026 06:09</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: n+QlNiS6sp+OG2s1zycJ4Q==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576300807192956/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">97</td>
+<td class="c-user">Ngô Mạnh</td>
+<td class="c-time">23/05/2026 06:10</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">TUẦN 2: TRANG PHỤC DỰ TIỆC<br><br>Chúc mừng sinh nhật 1 tuổi Lineage2M<br>Trang phục Lionel<br>id: j1B50KyqqB56qiYAj9V8ug==<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576251983864505/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">98</td>
+<td class="c-user">Ba Duy</td>
+<td class="c-time">23/05/2026 06:10</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">It is me,<br>ID: XYnf/nTYzwZpycmOinkptw==.<br><br>#1YearAnni<br><br>#1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576113273878376/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">99</td>
+<td class="c-user">Le Nhat</td>
+<td class="c-time">23/05/2026 06:10</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">trang phục dự tiệc !!<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>id: t6uq3C1mw2G5h6q6Jsyu0g==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576107713878932/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">100</td>
+<td class="c-user">Bảo Nguyễn</td>
+<td class="c-time">23/05/2026 08:16</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br>#1YearAnni #1YearWithL2M #Lineage2MSEA <br><br>0OvJ6Ga0WtQDzCi3J6KCjA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576677500488620/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">101</td>
+<td class="c-user">Trần Vỹ</td>
+<td class="c-time">24/05/2026 04:06</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br> ID: XLGCobxEdjPIB/8s3ZeMSw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1577049033784800/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">102</td>
+<td class="c-user">Toàn Trần</td>
+<td class="c-time">24/05/2026 04:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc #1YearAnni #1YearWithL2M #Lineage2MSEA<br>ID: up0xt4GLycico8qsumNrCw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576965863793117/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">103</td>
+<td class="c-user">Anonymous participant</td>
+<td class="c-time">24/05/2026 04:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br> MjzpnAO9x7kURm3Hq1AcWA==<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576950187128018/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">104</td>
+<td class="c-user">Ông Bụt</td>
+<td class="c-time">24/05/2026 04:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Miss cô gái VN. <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576761267146910/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">105</td>
+<td class="c-user">Đinh Quốc Khang</td>
+<td class="c-time">24/05/2026 04:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự sự kiện L2M Sea Sinh Nhật 1 Tuổi.<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>Ya/rrxkAoKmgFDgHga2F7g==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1576802560476114/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">106</td>
+<td class="c-user">Hoàng Iss</td>
+<td class="c-time">24/05/2026 08:04</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br>QdxnsIrsO4VlBNFfAeuqdA==<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1577597190396651/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">107</td>
+<td class="c-user">Phong Ho</td>
+<td class="c-time">25/05/2026 02:46</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">#1YearAnni #1YearWithL2M #Lineage2MSEA<br>TRANG PHỤC DỰ TIỆC<br><br>MONG GAME SỚM NĂNG CẤP CÁC SỰ KIỆN VÀO THỨ 7 - CN . 1 TUẦN ĐI 1 LẦN MÀ PHẦN THƯỞNG KHÔNG ĐÁNG KỂ.<br><br>UqD3jQr46T7GI13J863jIg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1577965047026532/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">108</td>
+<td class="c-user">Nguyễn Khôi Khôi</td>
+<td class="c-time">25/05/2026 02:46</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1577895593700144/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">109</td>
+<td class="c-user">Huynh Tri</td>
+<td class="c-time">25/05/2026 02:47</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự sự kiện L2M Sea Sinh Nhật 1 Tuổi.<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: 4phBgTT2WcQkJw3HkkaG4g==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1577822933707410/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">110</td>
+<td class="c-user">Giang Thanh</td>
+<td class="c-time">25/05/2026 06:07</td>
+<td class="c-var"><span class="vb vb-short">#1WithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br>#1YearAnni #1WithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1578460066977030/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">111</td>
+<td class="c-user">MinhTuan Nguyen</td>
+<td class="c-time">26/05/2026 07:10</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục sự kiện<br><br> #1YearAnni #1YearWithL2M #Lineage2MSEA. <br><br>xWsle8ufTZ6pCUEkEFqPpQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1578765780279792/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">112</td>
+<td class="c-user">Thanh Duy</td>
+<td class="c-time">26/05/2026 07:10</td>
+<td class="c-var"><span class="vb vb-short">#1WithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br>#1YearAnni #1WithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1578702086952828/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">113</td>
+<td class="c-user">Asha Asha</td>
+<td class="c-time">26/05/2026 07:10</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc<br>không có, đành làm đầu bếp để tham gia tiệc cùng gia đình L2M<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>QfdoNwKV2L163zSxglFgWQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1578489510307419/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">114</td>
+<td class="c-user">Trịnh Hoàng Phúc</td>
+<td class="c-time">26/05/2026 07:10</td>
+<td class="c-var"><span class="vb vb-short">#1WithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br>#1YearAnni #1WithL2M #Lineage2MSEA<br><br>Id : kNHg4Jo/jOrIPB+TY0xNIA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1578482610308109/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">115</td>
+<td class="c-user">Cao Phạm Anh Tài</td>
+<td class="c-time">26/05/2026 08:56</td>
+<td class="c-var"><span class="vb vb-short">#1WithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc<br><br>#1YearAnni #1WithL2M #Lineage2MSEA<br><br>ID: wH6k8yKdRcVK3DlickwtYg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579424716880565/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">116</td>
+<td class="c-user">Pham Nguyen Quoc Viet</td>
+<td class="c-time">26/05/2026 10:05</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br><br>#1yearanni #1YearWithL2M #Lineage2MSEA<br><br>ID: maGQ63bC45Oi/t5XPpB3Ug==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579494663540237/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">117</td>
+<td class="c-user">QViet Pham</td>
+<td class="c-time">26/05/2026 10:05</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br>#1YearAnni #1YearWithL2M #Lineage2MSEA <br><br>ID: 9Wzve5YPO29+iAtdwMWxHQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579488140207556/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">118</td>
+<td class="c-user">Phong Ho</td>
+<td class="c-time">26/05/2026 10:18</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>chúc mừng 1 năm sinh nhật Lineage2M mong năm tới sẽ cos thêm nhiều tính năng mới hấp dẫn hơn. vui hơn mỗi ngày cộng đồng ngày càng đông đảo.<br><br>UqD3jQr46T7GI13J863jIg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1569425841213786/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">119</td>
+<td class="c-user">Phutung Xe May</td>
+<td class="c-time">26/05/2026 10:18</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật Lineage2m <br><br>#1YearAnni #1YearWithL2M #lineage2mseaid<br><br>ID 6QPfKQu2cJ+l6/87cZ3hNA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1568748904614813/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">120</td>
+<td class="c-user">Trần Đình Duy</td>
+<td class="c-time">26/05/2026 10:39</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc Lineage2M<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579529996870037/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">121</td>
+<td class="c-user">Nguyễn Minh Tâm</td>
+<td class="c-time">26/05/2026 13:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc, mới bị ngân hàng xiết nợ nên nhìn hơi xơ xác...<br><br>id : uqU6/XdLO23dBU8U4U7J2Q==<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579636686859368/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">122</td>
+<td class="c-user">Sang Trần</td>
+<td class="c-time">26/05/2026 13:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc Lineage2M<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579620113527692/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">123</td>
+<td class="c-user">Duy Trần</td>
+<td class="c-time">26/05/2026 13:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc Lineage2M<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>mtBmrjmMRqA8CMjapWlTmw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579609733528730/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">124</td>
+<td class="c-user">Khoa Do</td>
+<td class="c-time">26/05/2026 13:58</td>
+<td class="c-var"><span class="vb vb-short">#1WithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc #1YearAnni #1WithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579650420191328/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">125</td>
+<td class="c-user">Vison Nguyễn</td>
+<td class="c-time">26/05/2026 13:58</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc Lineage2M<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>G/LOOVB+cgvAn2H6HcZTuQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579649506858086/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">126</td>
+<td class="c-user">Lực Visu</td>
+<td class="c-time">26/05/2026 13:58</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc Lineage2M<br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>C/GaTDXqWj5BujRNcIhZlA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579648516858185/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">127</td>
+<td class="c-user">Oliver Leo</td>
+<td class="c-time">26/05/2026 15:50</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Mừng sinh nhật Lineage 2M, mong game mãi đồng hành cùng anh em! #1YearAnni #1YearWithL2M #Lineage2MSEA @Leah @Người Kế Thừa @Aden<br>Trang phục dự tiệc Lineage2M<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>5brADtuBO/Q17IYTyB0O…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1579707946852242/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">128</td>
+<td class="c-user">Misaki Mei</td>
+<td class="c-time">27/05/2026 01:15</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Trang phục dự tiệc Lineage2M<br>7bEktXOOTUQlJ2bdmf1hMg==<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1580151386807898/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">129</td>
+<td class="c-user">Ngoc Minh LightningMan</td>
+<td class="c-time">27/05/2026 03:38</td>
+<td class="c-var"><span class="vb vb-short">#1WithL2M</span></td>
+<td class="c-text">**Trang Phục Dự Tiệc**<br><br>#1YearAnni #1WithL2M #Lineage2MSEA<br><br>id: Al01/MyfCci1clNXHONkHg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1580263720129998/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">130</td>
+<td class="c-user">Dũng Cao Anh</td>
+<td class="c-time">28/05/2026 02:43</td>
+<td class="c-var"><span class="vb vb-short">#1WithL2M</span></td>
+<td class="c-text">Trang Phục Dự Tiệc<br>#1YearAnni #1WithL2M #Lineage2MSEA<br><br>Id: ZrYox+VKN7uklmdcPAORig==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1580804153409288/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">131</td>
+<td class="c-user">Hoàng Phủi</td>
+<td class="c-time">29/05/2026 04:40</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">1 năm một hành trình: &quot;+10...&quot;<br><br>[#1YearAnni] [#1YearWithL2M] [#Lineage2MSEA]<br>pcU4vOj+SGXu1XEHD1TpOg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1581774703312233/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">132</td>
+<td class="c-user">Long</td>
+<td class="c-time">29/05/2026 12:01</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">MỘT NĂM CÙNG LINEAGE 2M - TUẦN 3: 1 NĂM MỘT HÀNH TRÌNH <br><br>Kỷ niệm đáng nhớ: +1 Pet Tím &lt;3<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID : VbXIFIAwVuqwE35z8IU9OA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1582365519919818/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">133</td>
+<td class="c-user">Ham Học Hỏi</td>
+<td class="c-time">29/05/2026 23:16</td>
+<td class="c-var"><span class="vb vb-short">#1WithL2M</span></td>
+<td class="c-text">MỘT NĂM CÙNG LINEAGE 2M - TUẦN 3: 1 NĂM MỘT HÀNH TRÌNH CÙNG CÁC KÝ NIỆM ĐÁNG NHỚ.<br><br>Đây có thể tính là lần may mắn nhất mà mình nhận được kể từ khi chơi game. gom đc đủ mảnh công thức vũ khí đỏ, ép đc luôn công thức vũ kh…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1582686769887693/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">134</td>
+<td class="c-user">Thanh Duy</td>
+<td class="c-time">31/05/2026 01:45</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">MỘT NĂM CÙNG LINEAGE 2M - TUẦN 3: 1 NĂM MỘT HÀNH TRÌNH <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID : ZzKTYHJQoAFli4QLyxzsTw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1583974343092269/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">135</td>
+<td class="c-user">Giang Thanh</td>
+<td class="c-time">31/05/2026 01:45</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">1 nam choi game mà khong duoc 1 lass cung đỏ<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1583550923134611/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">136</td>
+<td class="c-user">Phúc Hồ OO</td>
+<td class="c-time">31/05/2026 01:45</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">1 năm một hành trình: sưu vl<br><br>[#1YearAnni] [#1YearWithL2M] [#Lineage2MSEA]<br>rx+tC8tXg2xtw5vtd5OTWA==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1583362949820075/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">137</td>
+<td class="c-user">Cao Phạm Anh Tài</td>
+<td class="c-time">31/05/2026 01:45</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">MỘT NĂM CÙNG LINEAGE 2M - TUẦN 3: 1 NĂM MỘT HÀNH TRÌNH <br><br>Kỷ niệm đáng nhớ: +1 Pet Tím + 1 Class tím<br><br> #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID : wH6k8yKdRcVK3DlickwtYg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1583296406493396/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">138</td>
+<td class="c-user">Nguyễn Khôi Khôi</td>
+<td class="c-time">31/05/2026 01:45</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">1 năm một hành trình ,lãi đc mỗi cây kiếm <br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1583271079829262/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">139</td>
+<td class="c-user">Trần Vỹ</td>
+<td class="c-time">31/05/2026 07:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">1 năm một hành trình ,roll 1 lần ra pét tím luôn <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: XLGCobxEdjPIB/8s3ZeMSw==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1584127796410257/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">140</td>
+<td class="c-user">Nguyễn Phi Long</td>
+<td class="c-time">31/05/2026 07:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">MỘT NĂM CÙNG LINEAGE 2M - TUẦN 3: 1 NĂM MỘT HÀNH TRÌNH <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID : DoToFbBDL2yiBqnMc5zwqg==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1584112906411746/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">141</td>
+<td class="c-user">Nguyễn Thiên Phước</td>
+<td class="c-time">31/05/2026 07:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">MỘT NĂM CÙNG LINEAGE 2M<br>🪷 TUẦN 3 : 1 NĂM MỘT HÀNH TRÌNH <br><br>SAU 1 NĂM SỐ LƯỢNG CLONE VẪN ĐÔNG NHƯ QUÂN NGUYÊN.<br><br> #1YearAnni #1YearWithL2M #Lineage2MSEA<br><br>ID: E00+QWxAjMsFe6WqLSAcbQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1584094056413631/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">142</td>
+<td class="c-user">Nam Hoàng</td>
+<td class="c-time">31/05/2026 07:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">1 năm hành trình cùng lineage2m<br>Cày cuốc chăm chỉ vẫn bộ blue<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA <br><br>Id: wGFBU47EZbuBtrDLUb/k8A==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1584040766418960/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">143</td>
+<td class="c-user">Duy Rinh</td>
+<td class="c-time">31/05/2026 13:58</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">1 năm một hành trình cùng lineaga2m <br>Kỷ niệm lần đầu đập được vũ khí + 10 😘<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1584439486379088/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">144</td>
+<td class="c-user">Mạnh Cường</td>
+<td class="c-time">01/06/2026 03:16</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Chúc mừng sinh nhật L2M, chúc mừng quốc tế thiếu nhi :)))<br>I love L2M <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mvng/permalink/1585045076318529/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr></tbody></table></div>
+</section><section class="market-block" data-market="TH">
+  <div class="market-head">
+    <div class="market-title"><span class="flag">🇹🇭</span> Thailand <span class="mk-tag">TH</span></div>
+    <div class="market-count"><strong>53</strong> bài đạt</div>
+  </div>
+  <a class="group-link" href="https://www.facebook.com/groups/lineage2mthai/" target="_blank" rel="noopener">https://www.facebook.com/groups/lineage2mthai/</a>
+  
+  <div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Người chơi</th><th>Thời gian (UTC)</th><th>Hashtag</th><th>Nội dung</th><th>Link</th></tr></thead>
+<tbody><tr>
+<td class="c-idx">1</td>
+<td class="c-user">PeacefulWallaby8938</td>
+<td class="c-time">14/05/2026 00:12</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD อยู่กันไปนานๆนะ เกมส์นี้หนุกดีค้าบ เลอาใจดีแจกม่วงหน่อยค้าบ ไม่เอาหินม่วงนะครับดักไว้ก่อน🥹<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/985822017595476/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">2</td>
+<td class="c-user">Ponlaphat Bo</td>
+<td class="c-time">14/05/2026 00:12</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD Lineage2M #1YearAnni #1YearwithL2m #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/985653047612373/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">3</td>
+<td class="c-user">Nontanan Juntasin</td>
+<td class="c-time">14/05/2026 19:19</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด แฮปปี้เบิร์ดเดย์ ขอให้เป็นวันที่ดี อายุวันโนสุขังปูตังอินา รวยไม่ไหวแล้ว #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/986549240856087/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">4</td>
+<td class="c-user">Auttachart Thongbua</td>
+<td class="c-time">15/05/2026 01:37</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD.<br>ไม่ต้องแจกให้มากอย่างใครเขา <br><br>จงแจกเอาเท่าที่เราจะแจกไหว<br><br>กิจกรรมไม่จำเป็นต้องเหมือนใคร<br><br>แค่แจกให้สมฐานะ เท่านั้นพอ<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/986977554146589/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">5</td>
+<td class="c-user">Wachirasak Buarach</td>
+<td class="c-time">15/05/2026 02:24</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday 🎉ขอให้วันนี้เป็นวันพิเศษที่เต็มไปด้วยรอยยิ้ม ปล่อยความสนุกไปกับเกมส์🎯<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987001667477511/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">6</td>
+<td class="c-user">SümmërNïght</td>
+<td class="c-time">15/05/2026 03:17</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday น้าา 🎂 อยู่ด้วยกันมาก็ 1 ปีแล้วเนาะ ขอบคุณที่ทำให้เจอมิตรภาพมากมายนะคะ🎯<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987010707476607/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">7</td>
+<td class="c-user">Cast Away</td>
+<td class="c-time">15/05/2026 04:40</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD Lineage2M รวยไม่ไหวแล้ว<br>#1YearAnni #1YearwithL2m #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987098570801154/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">8</td>
+<td class="c-user">อา&#x27; ชา</td>
+<td class="c-time">15/05/2026 04:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday น้าา 🎂 อยู่ด้วยกันมาก็ 1 ปีแล้วเนาะ ขอบคุณที่ทำให้เจอมิตรภาพมากมายนะคะ🎯<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987065207471157/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">9</td>
+<td class="c-user">Thanapipat BP</td>
+<td class="c-time">15/05/2026 05:28</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday น้าา 🎂 อยู่ด้วยกันมาก็ 1 ปีแล้วเนาะ ขอบคุณที่ทำให้เจอมิตรภาพมากมายนะครับ🎯<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987115190799492/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">10</td>
+<td class="c-user">RadiantReindeer6772</td>
+<td class="c-time">15/05/2026 05:28</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD Lineage2M ขอให้อัปเดตมีคนเล่นเยอะเยอะตลอดไปครับ<br>#1YearAnni #1YearwithL2m #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987106260800385/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">11</td>
+<td class="c-user">Aoe Sane</td>
+<td class="c-time">15/05/2026 08:34</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">**HBD Lineage2M ตรงนี้เมื่อ 1 ปีที่แล้ว **<br>#1YearAnni #1YearwithL2m #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987232337454444/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">12</td>
+<td class="c-user">Thakon Tk Doungchana</td>
+<td class="c-time">15/05/2026 08:34</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD Lineage2M แจกตัวม่วงหน่อย<br>#1YearAnni #1YearwithL2m #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987131187464559/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">13</td>
+<td class="c-user">พลวัต สวนนิสิต</td>
+<td class="c-time">15/05/2026 08:34</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด แบ่งกันรวยบ้างอย่ารวยคนเดียว<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987129217464756/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">14</td>
+<td class="c-user">Starlord Mc</td>
+<td class="c-time">15/05/2026 15:20</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด !! หมดไปหลาย แต่ได้เพื่อนกลับมา ปล.ม่วงผมละ<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987529970758014/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">15</td>
+<td class="c-user">รุ่งนภา เสริมสี</td>
+<td class="c-time">15/05/2026 16:25</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด l2m<br><br>อาวุธแดงหลบไปอาวุธบัคจะเดิน..ถึงไม่มีอาวุธแดงอย่างใครเขาแต่ผมก็ภูมิใจว่าครั้งนึ่งเคยได้พกอาวุธ2อย่างพร้อมกัน..ติดบัคก็เท่ได้อาวุธแดงตลาดมีขายแต่อาวุธบัคนี้ต้องมากับดวง..ฮ่าๆ..เหตุการณ์เกิดขึ้นนานมาแล…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987534040757607/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">16</td>
+<td class="c-user">Jeerapon Malliganil</td>
+<td class="c-time">15/05/2026 16:25</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">1 ปีที่ผ่านมา หมอดูบอกจะผ่านช่วงเวลาที่ยากลำบาก อดหลับอดนอน โดนไล่ทำร้าย ก็ไม่คิดว่าจะลำบากจากเกมหมา ขนาดนี้ #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987440607433617/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">17</td>
+<td class="c-user">อลงค์กร ชัยวัฒนะ</td>
+<td class="c-time">15/05/2026 16:25</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด !! อยู่กันจนจะครบปีละ มายืนที่จุดเริ่มต้น แต่วันนี้มีม่วงละ อิอิ <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/987570300753981/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">18</td>
+<td class="c-user">Pitiphon Saysantia</td>
+<td class="c-time">16/05/2026 09:57</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Effect สุดอลัง คงตีมอนซัก 20 <br>1 ปีแล้ว ขอตีให้แรงกว่านี้ได้ไหม ฮ่าๆๆ<br>สุขสันต์วันเกิด L2M<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/988205007357177/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">19</td>
+<td class="c-user">Thanawat W. Sangwipak</td>
+<td class="c-time">16/05/2026 09:57</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด ครบ1ปีแล้วสินะ จากวันนั้นถึงวันนี้ จากศัตรู กลายเป็นมิตร จนมาสนิทกันถึงทุกวันนี้ <br><br>ขอให้อยู่ด้วยกันไปนานๆนะ<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/988075450703466/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">20</td>
+<td class="c-user">Kitisak Khwanon</td>
+<td class="c-time">16/05/2026 13:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สสวกl2m เล่นตั้งแต่เปิดเซิฟจนมาถึงวันนี้ด้วยกัน เพิ่งดรอปแดงชิ้นแรกไม่กี่วันนี้เอง ภูมิใจมาก😂😂 ปล่อยเรทดรอปให้มากกว่านี้เถอะขอร้อง สายฟรีสายเติมน้อยลูกเมียน้อยหรอ😆😆😆 #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/988328340678177/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">21</td>
+<td class="c-user">อดิศักดิ์ วันนา</td>
+<td class="c-time">18/05/2026 00:19</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">เฮงๆ..รวยๆ..ใหเจอคู่สวยๆหล่อๆในเกม<br>#1YearAnni#1YearWithL2M<br>#lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/989577800553231/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">22</td>
+<td class="c-user">Suvijak Leeprasirtsilp</td>
+<td class="c-time">19/05/2026 02:01</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HAPPY BIRTH DAY นะจ๊ะ<br>อยู่ไปนานๆนะจ๊ะ<br>HBD มรณํ สุขขํ TO YOU<br> #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/990492573795087/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">23</td>
+<td class="c-user">Pichit Lepkrut</td>
+<td class="c-time">19/05/2026 03:19</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">#HAPPY BIRTH DAY นะจ๊ะL2M<br>ขอให้เป็นเกมที่ดี ต่อไป<br> #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/990546267123051/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">24</td>
+<td class="c-user">Prestige X Playzone</td>
+<td class="c-time">19/05/2026 11:28</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">&gt; &quot;สุขสันต์วันเกิด&quot; จะครบปีแล้วนะ <br>วันที่ตัวละครนี้กำเนิด 20/5/25<br>เกมส์ดี๊ เกมส์มหา เกมส์ที่เรา(ลัก) ลักตังเมียมาเติม<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/990595393784805/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">25</td>
+<td class="c-user">Korawit Yin Juprasertporn</td>
+<td class="c-time">19/05/2026 15:25</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">✨ **ความทรงจำ 365 วัน... จากเกมแก้เหงา สู่มิตรภาพแท้ในชีวิตจริง...**✨<br><br>เริ่มต้นจากความตั้งใจแค่จะมาเล่นสนุก ๆ จอย ๆ พักผ่อนสมอง แต่ยิ่งเล่นไป โลกของ Lineage 2M กลับมอบอะไรให้มากกว่านั้นเยอะมาก ทั้งความมันส์ระดับสะท้านเซิ…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/990997763744568/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">26</td>
+<td class="c-user">Kumron Klungfa</td>
+<td class="c-time">20/05/2026 03:33</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">ครบรอบ1ปีก็ขอให้จากนี้เกมส์ทำให้อยากเล่นไปอีกสักนิสสก็ยังดี เติมไม่ไหว ไปฟอกไตก่อน #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/991104670400544/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">27</td>
+<td class="c-user">Thanachok Rungsang</td>
+<td class="c-time">21/05/2026 02:33</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด Lineage2M Thailand ครบ 1 ขวบ ก้าวแรกแห่งความมันได้เริ่มขึ้น ก้าวต่อไป พัฒนาต่อไป เพิ่มความสนุกต่อไป เพื่อใครก็ตาม สำหรับเราก็เล่นต่อไปเพื่อ Lineage2M Thailand แม้จะไม่มีของเทพ ก็ตาม<br><br>#1YearAnni #1YearWith…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/991942600316751/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">28</td>
+<td class="c-user">OptimisticHummingbird1711</td>
+<td class="c-time">21/05/2026 02:33</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด Lineage2M<br>เป็นเกมส์ที่ชอบตั้งแต่รุ่น PC กลับมาเล่นใหม่ด้วยความคิดถึง เล่นสนุกแถมได้เพื่อนมากมาย บางครั้งตีกันพอจบก็ทักทายตามปกติ โดยรวมประทับใจและมีความสุขที่ได้เล่นครับ<br><br>#1YearAnni #1YearWithL2M #Lineage…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/991920703652274/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">29</td>
+<td class="c-user">Chamchoi Pro Krittha</td>
+<td class="c-time">21/05/2026 02:34</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">ครบรอบ1ปี เป็นเกมที่ดีนะ ดีต่อไต จะใจร้ายกันไปถึงไหน #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/991911076986570/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">30</td>
+<td class="c-user">ทนงศัก กามารู</td>
+<td class="c-time">21/05/2026 02:35</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด L2M เลิกเกลือทีเล่นมานานละ 🤣 #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/991784493665895/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">31</td>
+<td class="c-user">Tanawat Yingsakul</td>
+<td class="c-time">21/05/2026 02:35</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">One year down, forever to go Happy 1st Anniversary <br>ลูกเติบโตสุขภาพแข็งแรง ส่วนลูกในเกมไตวายไตพังจ้าด<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/992036573640687/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">32</td>
+<td class="c-user">Teety Dusit</td>
+<td class="c-time">21/05/2026 05:08</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด Lineage2M<br><br>เป็นเกมที่ชอบมากเล่นมาตั้งแต่ ม.ปลาย<br>เป็นเกมที่สโลแกนตรงเกมมาก เกมจริงของคนจริง สู้ไม่ได้ก็แค่เติม 😆😆😆<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/992445283599816/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">33</td>
+<td class="c-user">Yuuki Emanerus</td>
+<td class="c-time">21/05/2026 07:18</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">ขอแสดงความยินดีกับการครบรอบ 1 ปี<br><br>ตลอด 1 ปีที่ผ่านมา เป็นช่วงเวลาแห่งการผจญภัย มิตรภาพ และความทรงจำดี ๆ ที่เหล่านักรบทุกคนได้ร่วมสร้างไปด้วยกัน<br><br>ขอให้โลกแห่ง Aden เต็มไปด้วยความสนุก ความท้าทาย และการต่อสู้สุดมันส์ต่อไปอี…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/992499416927736/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">34</td>
+<td class="c-user">ชูหริ่ง สลิ่งโบ๋ว</td>
+<td class="c-time">21/05/2026 07:18</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday 1ปี <br><br>ดรอปแดง1ชิ้น มีอยู่จริง <br><br>เธอๆมาดูไซบีเรียนที่ห้องเรามั้ย<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/992473126930365/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">35</td>
+<td class="c-user">Master Teerawat</td>
+<td class="c-time">21/05/2026 07:26</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด เกือบปีพึ่งได้เข้าเล่น😅<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/992517300259281/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">36</td>
+<td class="c-user">PeacefulWallaby8938</td>
+<td class="c-time">21/05/2026 18:11</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">แฟชั่นไม่สนหวดอย่างเดียว อย่ามาตาแข็งใส่นะ😂<br>#1Yearanni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/992929196884758/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">37</td>
+<td class="c-user">TB</td>
+<td class="c-time">22/05/2026 23:07</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">ใครท้อดูภาพนี้ครับ เนื่องในโอกาสฉลอง 1ปี<br>ยิบดีกับเกมส์ครบรอบ 1 ปีด้วยนะครับ สิ่งหนึ่งที่เกมส์นี้มีให้เห็นเสมอคือ แข่งอะไรแข่งได้ครับ แข่งบุญแข่งวาสนา แข่งยากครับ #บอทเปิดได้ตัวม่วง<br><br>#1Yearanni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/993888993455445/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">38</td>
+<td class="c-user">Chutithep Khrongsin</td>
+<td class="c-time">23/05/2026 04:10</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">สุขสันต์วันเกิด L2M ครบรอบ 1 ปี เค้ามีแต่ยังโอม นี่ยังเกลือ 😂<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/994004760110535/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">39</td>
+<td class="c-user">Auttachart Thongbua</td>
+<td class="c-time">25/05/2026 13:31</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBDL2M แจกยั่ง แจกยืน แจกอีกได้ป่าว<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/996093736568304/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">40</td>
+<td class="c-user">Nontanan Juntasin</td>
+<td class="c-time">25/05/2026 20:40</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">ปาร์ตี้ชุดเมท สาวทรงสะบึ่ม พร้อมปรนนิบัตินายท่านทุกรูปแบบ #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/994506486727029/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">41</td>
+<td class="c-user">Ponlaphat Bo</td>
+<td class="c-time">26/05/2026 10:32</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HbD แจกเยอะๆ เกมส์ใหม่เปิดเยอะมาก คนที่อยุ่ คือ แฟนคลับ ตลอดไป #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/996798266497851/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">42</td>
+<td class="c-user">เฉลิมพล บุตรเทศ</td>
+<td class="c-time">26/05/2026 13:10</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBDL2M ยินดีกับการครบรอบ1ปี ขอให้เกมส์นี้คงอยู่กับแฟนคลับนานๆครับ<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/996892839821727/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">43</td>
+<td class="c-user">ภาคภูมิ อ้นอินทรฺ์</td>
+<td class="c-time">26/05/2026 13:19</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD L2M ทายสิแถวไหน ถึงว่ามีปีกนี่เองถึงบินได้ มองหน้าอย่าหามองโนม #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/996921679818843/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">44</td>
+<td class="c-user">อดิศักดิ์ วันนา</td>
+<td class="c-time">26/05/2026 14:50</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">อย่างน้อยก้อเล่นยามว่างได้ดี..แม้จะไม่มีชุดแดงสักอัน..<br>HBD. L2M AGAIN<br>#1YearAnni<br>#1YearWithL2M<br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/996982123146132/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">45</td>
+<td class="c-user">โจร รถกระป๋อง</td>
+<td class="c-time">26/05/2026 16:28</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD 1 Year จะอย่างไร ก็ขอได้ได้ตัวนี้ ด้วยเถิด #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/997008986476779/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">46</td>
+<td class="c-user">Utai Brr</td>
+<td class="c-time">27/05/2026 03:10</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy birth day<br>#1YearWithL2M#1YearAnni#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/997394333104911/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">47</td>
+<td class="c-user">Kumron Klungfa</td>
+<td class="c-time">27/05/2026 03:10</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">เป็นพ่อครัวที่เล่นเกมส์ได้นิดหน่อยจะลาออกมานั่งเล่นL2Mล่ะ ขอให้เกมส์นี้ใจดีกับเรามั่งนะ ไตจะพังหมดแล้ว #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/997247399786271/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">48</td>
+<td class="c-user">Jeerapon Malliganil</td>
+<td class="c-time">27/05/2026 04:08</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD Lineage2m อดีตสถานที่เคยคึกคัก ไม่ได้หลับไม่ได้นอน ทุกวันนี้ไม่เจอแม้แต่คน #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/996944769816534/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">49</td>
+<td class="c-user">FunGoose551</td>
+<td class="c-time">27/05/2026 11:30</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBDL2M ยินดีกับการครบรอบ1ปี เกมส์ดีๆ ที่คนเล่นกันเป็นล้านๆ คน<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/997558763088468/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">50</td>
+<td class="c-user">Oo Koi Bas OO</td>
+<td class="c-time">27/05/2026 11:30</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy happy Birthday (๛ ˘ ³˘ )♡ เกมดีย์ ผู้เล่นน่ารัก ความอดทนสูง พยามเท่านั้นที่อยู่ในมือเรา แจกของดี ให้พวกเราเยอะๆนะค้าบบบบ #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/997458553098489/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">51</td>
+<td class="c-user">Thakon Tk Doungchana</td>
+<td class="c-time">28/05/2026 05:03</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">แฟนซีมีแค่นี้ แจกหน่อย#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/998321859678825/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">52</td>
+<td class="c-user">Nut Sk</td>
+<td class="c-time">29/05/2026 11:18</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HBD 1 Year จะอย่างไร เปิดกาชาได้แดง ม่วง ตีบวกให้ติดง่าย+5 +7 +10 <br>**#1YearAnni**** ****#1YearWithL2M**** ****#Lineage2MSEA**</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/999277856249892/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">53</td>
+<td class="c-user">PeacefulWallaby8938</td>
+<td class="c-time">29/05/2026 12:46</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">อะ จะเอ๊ อะ จะเอ๊ ครบ 1 ปีแล้วน้าาเตง เดินทางมาใกล้มาก🤣<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mthai/permalink/999486496229028/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr></tbody></table></div>
+</section><section class="market-block" data-market="ID">
+  <div class="market-head">
+    <div class="market-title"><span class="flag">🇮🇩</span> Indonesia <span class="mk-tag">ID</span></div>
+    <div class="market-count"><strong>25</strong> bài đạt</div>
+  </div>
+  <a class="group-link" href="https://www.facebook.com/groups/lineage2mid/" target="_blank" rel="noopener">https://www.facebook.com/groups/lineage2mid/</a>
+  
+  <div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Người chơi</th><th>Thời gian (UTC)</th><th>Hashtag</th><th>Nội dung</th><th>Link</th></tr></thead>
+<tbody><tr>
+<td class="c-idx">1</td>
+<td class="c-user">Lineage2M</td>
+<td class="c-time">13/05/2026 12:00</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">🎁 A JOURNEY OF BONDS, SATU TAHUN BERSAMA LINEAGE 2M<br><br>Sudah tepat satu tahun sejak para Inheritors pertama kali menginjakkan kaki di tanah Aden, sebuah dunia yang penuh tantangan sekaligus kejayaan. Sebagai bentuk rasa te…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/969669938802039/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">2</td>
+<td class="c-user">Agoes Maulana</td>
+<td class="c-time">14/05/2026 04:54</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">selamat ulang tahun yg pertama l2m sea semoga semakin seru dan menarik dan banyak update event2 terbaru biar tidak bosan. [#1YearAnni] [#1YearWithL2M] [#Lineage2MSEA]</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/969853825450317/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">3</td>
+<td class="c-user">Yoona Achelia</td>
+<td class="c-time">14/05/2026 08:23</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy first anniversary to Lineage 2M! I hope the game gets even more popular and that there are more events,<br><br>and I hope my character gets lucky and becomes even stronger<br>[#1YearAnni][#1YearWithL2M][#Lineage2MSEA]</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/970357308733302/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">4</td>
+<td class="c-user">Roy</td>
+<td class="c-time">14/05/2026 10:36</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Selamat Ulang Tahun Lineage2M<br>Perjalanan yg luar biasa dengan versi terbaru membawa banyak tantangan.<br>Semoga tahun ini semakin banyak inovasi dan update luar biasa<br><br>#1YearAnni<br>#1YearWithL2M<br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/970438855391814/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">5</td>
+<td class="c-user">Yoseph Stevanus</td>
+<td class="c-time">17/05/2026 14:25</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HAPPY 1ST ANNIVERSARY...<br>The best for Lineage 2M...<br><br>WISH YOU ALL THE BEST...<br><br>#1YearAnni<br><br>#1YearWithL2M<br><br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/973030065132693/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">6</td>
+<td class="c-user">James Wijaya</td>
+<td class="c-time">18/05/2026 08:33</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Anniversary Lineage2M<br>Selamat Ulang Tahun untuk Lineage2M, Saya tetap main game nya walaupun sempat kena banned sementara, ga bisa login 15 hari di 1 character utama, tapi setelah itu drop rate jadi gacor, F2P …</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/971176075318092/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">7</td>
+<td class="c-user">Alfredy Harianja</td>
+<td class="c-time">19/05/2026 03:01</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">L2M, Happy birthday! I don&#x27;t care if my video is ugly, I don&#x27;t know how to edit HAHAHAHAHAHAHAAH<br><br>To be honest, this is the longest online game I&#x27;ve ever played since 2007<br><br>wish you all the best, and put S…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/973785668390466/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">8</td>
+<td class="c-user">Lee Seo Ra</td>
+<td class="c-time">19/05/2026 17:33</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Brithday lineage....<br>Moga tambah sukses.. Tambah banyak pemain baru nya... XD<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/974782458290787/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">9</td>
+<td class="c-user">Martin Untoro</td>
+<td class="c-time">20/05/2026 10:21</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HAPPY BIRTHDAY LINEAGE2M<br>Nggak kerasa udah SETAHUN kita begadang bareng di Aden! Happy 1st Anniversary, Lineage2M! Setahun ini bener-bener penuh drama dan perjuangan. Mulai dari perang di satu server, sampai drama ketemu…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/974438324991867/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">10</td>
+<td class="c-user">Putra Medaan</td>
+<td class="c-time">20/05/2026 10:28</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy birthday lineage2M<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA #1yearanni<br><br>Tak terasa sudah 1 tahun, semoga komunitas player semakin solid, <br><br>Dan lebih banyak event menarik lagi</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/975336838235349/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">11</td>
+<td class="c-user">Virgo</td>
+<td class="c-time">22/05/2026 03:14</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Dari awal merangkak melawan monster kecil hingga kini berdiri gagah dengan armor Epic, satu tahun ini adalah bukti dari dedikasi, ambisi, dan persahabatan tanpa batas. Selamat hari jadi yang pertama untuk rumah kedua kit…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/976370208132012/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">12</td>
+<td class="c-user">Andrey Esw</td>
+<td class="c-time">22/05/2026 03:14</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Selamat Ulang Tahun Lineage 2M! 🎉⚔️<br>Semoga dunia Aden semakin ramai oleh petualangan epik, loot melimpah, dan party yang solid!<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA #1yearanni<br><br>Terima kasih sudah menjadi tempat berkum…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/975395281562838/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">13</td>
+<td class="c-user">Kings Iyoes FakeHearts</td>
+<td class="c-time">22/05/2026 03:14</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy birthday lineage2M<br><br>Semoga semakin sukses dan lancar rezeki game nya,,,semoga drop item di permudah lagi aamiin...<br>#1YearAnni #1YearWithL2M #Lineage2MSEA #1yearanni</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/975374368231596/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">14</td>
+<td class="c-user">Yoona Achelia</td>
+<td class="c-time">22/05/2026 14:39</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">SATU TAHUN BERSAMA LINEAGE 2M - WEEK 2: PARTY ATTIRE 🥰<br>PROSES PERKEMBANGAN KARAKTER DI GAME Lineage2M YANG PENUH DENGAN PERJUANGAN SEMOGA DI 1 TAHUN INI Lineage2M MENJADI GAME YANG RAMAH DAN MAKIN RAMAI PEMAINNYA - I LOV…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/976805441421822/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">15</td>
+<td class="c-user">Agoes Maulana</td>
+<td class="c-time">23/05/2026 10:48</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">SATU TAHUN BERMAIN LINEAGE 2M - WEEK 2: party attire<br><br>saya suka pake class yiana karena belum ada class legend semoga perjalanan petualangan menuju tahun ke dua nanti saya bisa dapat class legend khusunya DualBlade. <br><br>[#…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/977647124670987/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">16</td>
+<td class="c-user">Roy</td>
+<td class="c-time">23/05/2026 10:49</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">PARTY ATTIRE <br>🥳🥳🥳🥳🥳<br><br>#1YearAnni<br>#1YearWithL2M<br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/977555814680118/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">17</td>
+<td class="c-user">Alvin R</td>
+<td class="c-time">23/05/2026 10:49</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy birthday lineage2m<br>Di tunggu kejutan yang lebih menarik dari tahun kemarin <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/977079628061070/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">18</td>
+<td class="c-user">Putra Medaan</td>
+<td class="c-time">25/05/2026 07:59</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Event weeks 02: PARTY Attire<br><br>#1yearanni #1YearWithL2M #Lineage2MSEA<br><br>Outfit terbaik adalah eirena class orb<br><br>saya akan kembali sebagai rakyat biasa server bart04</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/979192184516481/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">19</td>
+<td class="c-user">Muchamad Yusuf Arri Zaqi</td>
+<td class="c-time">25/05/2026 15:03</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">SATU TAHUN BERMAIN LINEAGE 2M - WEEK 2: party attire<br><br>Class favorit saya adalah duak blade dengan skin bapak tua botak.<br><br>[#1YearAnni] [#1YearWithL2M] [#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/978336017935431/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">20</td>
+<td class="c-user">Kings Iyoes FakeHearts</td>
+<td class="c-time">25/05/2026 15:03</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Enggak kerasa sudah 1 Tahun bermain lineage2M <br>2: party attire<br><br>Dari lvl 50 memiliki clan terkuat dengan banyak teman hingga di tinggal pindah server tapi semangat bermain makin menarik, untung nya di kasih hadiah class …</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/977814284654271/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">21</td>
+<td class="c-user">Dilan</td>
+<td class="c-time">29/05/2026 06:44</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy birthday lineage2M<br>udah 6 bulanan vakum dari game tersebut, coba login dan akhirnya masih ada sisa sisa akun biarpun kecil semoga berkesan kembali, ada yang mau nampung clan aktif Barz 04, penasaran dengan event ev…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/982111094224590/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">22</td>
+<td class="c-user">Yunasz Praditya</td>
+<td class="c-time">29/05/2026 06:44</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">perjalanan satu tahun: akhirnya +10<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/981949577574075/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">23</td>
+<td class="c-user">Rifki Muliawan</td>
+<td class="c-time">29/05/2026 06:44</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/981792314256468/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">24</td>
+<td class="c-user">Roy</td>
+<td class="c-time">30/05/2026 01:57</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">ONE YEAR , ONE JOURNEY<br><br>Terlalu banyak momen <br>Dari Ramai sampai tinggal sendiri😁<br><br>#1YearAnni<br>#1YearWithL2M<br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/983077620794604/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">25</td>
+<td class="c-user">Agoes Maulana</td>
+<td class="c-time">30/05/2026 06:03</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">satu tahun perjalanan thanks min sudah balikin giant guwa yg +7<br><br>#1YearAnni #1yearwithl2m #lineage2msea</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mid/permalink/982423604193339/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr></tbody></table></div>
+</section><section class="market-block" data-market="PH">
+  <div class="market-head">
+    <div class="market-title"><span class="flag">🇵🇭</span> Philippines <span class="mk-tag">PH</span></div>
+    <div class="market-count"><strong>57</strong> bài đạt</div>
+  </div>
+  <a class="group-link" href="https://www.facebook.com/groups/lineage2mph/" target="_blank" rel="noopener">https://www.facebook.com/groups/lineage2mph/</a>
+  
+  <div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Người chơi</th><th>Thời gian (UTC)</th><th>Hashtag</th><th>Nội dung</th><th>Link</th></tr></thead>
+<tbody><tr>
+<td class="c-idx">1</td>
+<td class="c-user">Alex West</td>
+<td class="c-time">14/05/2026 02:25</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday<br>My wish to get first purple skill in the coming year #1YearAnni #1YearWithL2M #Lineage2MSEA uwGPfGgmXboLsru5edrgNQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1664782687894943/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">2</td>
+<td class="c-user">Lineage2M</td>
+<td class="c-time">14/05/2026 11:34</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">ONE YEAR WITH LINEAGE 2M - 🌸 WEEK 1: BIRTHDAY WISHES FOR LINEAGE 2M<br><br>NOTICE: This is Facebook Group event!!! Inheritors, please join the Lineage 2M Official Facebook Group to participate!<br><br>The first week of the &quot;A J…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665570614482817/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">3</td>
+<td class="c-user">Rudymar Capuras</td>
+<td class="c-time">14/05/2026 12:23</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">``HAPPY BIRTHDAY &quot;<br><br>Lineage2M &quot;I wish for Another year of adventures, another year of leveling up! Thanks for creating a virtual home where friendships are made and epic tales are written.&quot;Happy Anniversar…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665599014479977/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">4</td>
+<td class="c-user">Juban Sang La Paz</td>
+<td class="c-time">14/05/2026 12:23</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday Lineage 2M! <br><br>From the very first day until now, this journey became more than just a game — it became a battlefield where friendships were forged and legends were born.<br><br>To every clan member, ally, and ri…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665589457814266/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">5</td>
+<td class="c-user">Tyrone Yv Es</td>
+<td class="c-time">14/05/2026 12:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday Lineage2M and More Birthdays to come. Please increase my account luck percentage hahahah and give me good loot. Best MMORPG game I played since PC Platforms L2 SEA (Blackbird Server)<br><br>#1YearAnni #1YearWith…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665605271146018/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">6</td>
+<td class="c-user">Mac-Mac Albenio Delfin</td>
+<td class="c-time">15/05/2026 02:40</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">One year ago, we entered Aden as strangers.<br>Today, we became warriors, rivals, allies, and family. <br><br>From endless grinding, boss hunts, failed enchants, server wars, and unforgettable memories — Lineage2M became part of …</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666048931101652/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">7</td>
+<td class="c-user">Juan D. Marco</td>
+<td class="c-time">15/05/2026 02:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy happy happy birthday lineage, L2M..hope to continue the game until the very end. . Thank you for always giving me joy and happiness despite my wife&#x27;s angry because I played to much. Hahahaha. Please give me re…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665773324462546/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">8</td>
+<td class="c-user">Andromeda Bandera Chikotingtong</td>
+<td class="c-time">15/05/2026 02:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy birthday L2msea, more birthday days to come. And more power to the most generous NCV you&#x27;ve never failed us. Ty so much for everything L2sea pc Aria L2msea mobile rock on 🤘🤘🤘<br>#1yearanni<br>#lineage2msea<br>#1YearWit…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665762531130292/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">9</td>
+<td class="c-user">Introboygaming Lodi</td>
+<td class="c-time">15/05/2026 02:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday L2M! 🎂<br><br>Honestly, I can’t decide if you’re a video game or a toxic relationship. From the soul-crushing betrayals to the &quot;ride-or-die&quot; camaraderie, you’ve given me enough emotional damage to last…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665695737803638/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">10</td>
+<td class="c-user">Diether Bebanco Lazarte</td>
+<td class="c-time">15/05/2026 02:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">happy birthday L2M..hope we have many more events to look forward to and I hope this game lasts longer..I&#x27;ve been playing since day 1 until now let&#x27;s go!<br><br>#1yearanni<br>#1yearwithL2M<br>#Lineage2MSEA<br><br>SnW5XASBLYj8kmg…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665668914472987/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">11</td>
+<td class="c-user">Marciano José</td>
+<td class="c-time">15/05/2026 02:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday!<br>Happy 1st Anniversary [Lineage2M](https://www.facebook.com/lineage2m.ph?__cft__[0]=AZb3P8tFtSzKAQG1xUtMQ4OMEpwEzRCBqsy3RmpUAKY5x0Wj6U_T1TlFJu1Yim139s_opVB1hIhTz2QMfqRKPscG8QJIGyKHC3CJOitD1w-bdYFVPctJd-Q26…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665663287806883/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">12</td>
+<td class="c-user">GorgeousFlower3182</td>
+<td class="c-time">15/05/2026 02:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">#1YearAnni #1YearWithL2M #Lineage2MSEA<br>Happy Birthday Lineage2M and More Birthdays to come. Please increase my account luck percentage hahahah and give me good loot.<br><br>emIhI4tnoIuwtMahPDPbJQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665636461142899/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">13</td>
+<td class="c-user">Simply Mac</td>
+<td class="c-time">15/05/2026 02:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">🎉 Happy 1st Anniversary Lineage 2M SEA! <br><br>Isang taon na tayong puyat sa grind, gyera, at daily login 😂<br><br>Maraming nagpalit ng character…<br><br>Maraming nag-quit…<br><br>Pero eto pa rin ako kalbo at loyal hanggang ngayon.<br><br>Sana this …</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665635597809652/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">14</td>
+<td class="c-user">Mc Eric Dimson Iral</td>
+<td class="c-time">15/05/2026 02:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday Lineage2M more power and birthdays to come! I wish to have my 1st purple Agathion!!... more events to come happy grinding!!.. <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1665627271143818/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">15</td>
+<td class="c-user">MK AB</td>
+<td class="c-time">15/05/2026 02:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy First Birthday Lineage2M<br><br>What a journey! A lot of game came past this year but I still chose to play here. From every grind (AFKers), I felt a sense of ownership of my avatar just to open and complete even just th…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666058234434055/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">16</td>
+<td class="c-user">Jan-ariz Baguilat</td>
+<td class="c-time">15/05/2026 11:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday Lineage2M!!! Everyday PVP on teon please another server transfer hahahah!!!<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666246241081921/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">17</td>
+<td class="c-user">Gustavo Morales</td>
+<td class="c-time">15/05/2026 11:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Anniversary Lineage 2M SEA!<br><br>Happy first anniversary Lineage 2M SEA! May you have a very happy birthday and 100 more years to come!<br><br>Many of us have stopped sleeping, exploring other games, and spending time wi…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666170571089488/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">18</td>
+<td class="c-user">Gustavo Morales</td>
+<td class="c-time">15/05/2026 11:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Anniversary Lineage 2M SEA!<br><br>Happy first anniversary Lineage 2M SEA! May you have a very happy birthday and 100 more years to come!<br><br>Many of us have stopped sleeping, exploring other games, and spending time wi…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666167001089845/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">19</td>
+<td class="c-user">Nico D. Ong</td>
+<td class="c-time">15/05/2026 11:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">&quot;Happy Birthday&quot; to the incredible community of Lineage2M! <br>📖⚔️🔮🔪🔱🏹<br><br>Wishing every warrior Epic drops, successful upgrades, and endless fun ahead. Here’s to another year of glory, unity, and epic adventures in …</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666399631066582/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">20</td>
+<td class="c-user">Engine Gomz</td>
+<td class="c-time">15/05/2026 11:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Anniversary Lineage 2M Sea !!!<br><br>Thanks for the entertainment, bonuses, and gifts you’ve given away. Even Free-to-Play gamers like me can still keep up and enjoy the game. My fellow friends of L10 and K4 keep it…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666191991087346/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">21</td>
+<td class="c-user">Khel Brwl</td>
+<td class="c-time">15/05/2026 11:27</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HAPPY 1ST BIRTHDAY Lineage2M<br><br>Happy, chill, and challenges. #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666131134426765/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">22</td>
+<td class="c-user">Anonymous participant</td>
+<td class="c-time">17/05/2026 09:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HAPPY BIRTHDAY Lineage2M! A Journey of Bonds - One Year with Lineage 2M. Wishing for more years of epic adventures and bonds between inheritors. Happy Anniversary L2M!!!<br><br>As we celebrate your 1 year anniversary, i took m…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1667841120922433/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">23</td>
+<td class="c-user">pasawaykangkumagka</td>
+<td class="c-time">17/05/2026 09:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1year birthday lineage 2m #1yearAnni #1yearwithL2M #LineAge2MSEA more inheritors to come😎😎</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666908151015730/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">24</td>
+<td class="c-user">Jan Niño Kaien Pajaron</td>
+<td class="c-time">17/05/2026 09:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Birthday, Lineage 2M! 🎉⚔️<br><br>One year of grinding, adventures, guild wars, epic drops, and unforgettable memories with amazing players. Thank you for giving us a world where friendships and battles became part of…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1667333304306548/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">25</td>
+<td class="c-user">A Bel Zeugirdor</td>
+<td class="c-time">17/05/2026 09:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">happy birthday L2M..hope we have many more events to look forward to and I hope this game lasts longer..I&#x27;ve been playing since day 1 until now let&#x27;s go!<br>Happy Birthday And Happy 1st Anniversary <br><br>Wish is to ha…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666646194375259/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">26</td>
+<td class="c-user">Angelica Castillo</td>
+<td class="c-time">17/05/2026 09:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday and Happy 1st Anniversary<br><br>My wish to get legend class and plus 10 legend swordin this year #1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666639291042616/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">27</td>
+<td class="c-user">Slown Art</td>
+<td class="c-time">17/05/2026 09:29</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Year Anniversary Lineage 2M SEA! <br>My Wish: is for you to keep developing the Game with pure entertainment. And please do more marketing and advertisements so other people will discover this amazing Game. And le…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1666521277721084/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">28</td>
+<td class="c-user">Mico Alvaracin Maraggun</td>
+<td class="c-time">18/05/2026 07:16</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Anniversary L2m, more voucher and reward to come, LOL I`m still level 65 after 1 year hahaha.<br><br>#1yearanni<br><br>#1YearWithL2M<br><br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1668158684224010/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">29</td>
+<td class="c-user">Raymund Apilado</td>
+<td class="c-time">19/05/2026 02:55</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Birthday, Lineage 2M! 🎉⚔️<br><br>One year of spending, grinding and PK.<br><br>More years to come and more income to come<br><br>Happy birthday 1st birthday!<br><br>Lab You!<br><br>#1YearAnni <br>#1YearWithL2M <br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1669227244117154/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">30</td>
+<td class="c-user">FascinatingPear1890</td>
+<td class="c-time">20/05/2026 02:33</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy birthday line2m wish more lagend and epic class to come..fast exp.....<br>#1YearAnni<br><br>#1yearWithL2m<br><br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1669952260711319/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">31</td>
+<td class="c-user">Christian-Israel Bodade Codangos</td>
+<td class="c-time">20/05/2026 02:33</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Birthday, Lineage 2M! <br><br>Even though a late comer, still best MMORPG<br><br>More years to come, more grind to come. <br><br>Wishing you could increase drop rate for epic items ^^<br><br>Happy birthday 1st birthday!<br><br>Lab You!<br><br>#1Y…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1669946064045272/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">32</td>
+<td class="c-user">Iyah Lei Francisco Calomos</td>
+<td class="c-time">20/05/2026 02:33</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday, **Lineage2M**!<br><br>To the game that brought the massive, breathtaking world of Aden right to our fingertips: thank you for the epic castle sieges, the unforgettable clan raids, and the countless hours spent …</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1669868287386383/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">33</td>
+<td class="c-user">Mico Alvaracin Maraggun</td>
+<td class="c-time">20/05/2026 09:36</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Birthday Lineage2M I got my epic bow today, Thanks you my Supportive Clan, KINGSMAN (K9 Server)🥳🥳🥳<br><br>#1YearAnni<br>#1YearWithL2M<br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1670433030663242/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">34</td>
+<td class="c-user">Josh Escubio</td>
+<td class="c-time">21/05/2026 05:54</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday L2MSEA, more Birthday Days to come. And more power to the most generous NCV you&#x27;ve never failed us. Ty so much for everything L2MSEA mobile. Bebetime while playing🤣🤣 <br><br>#1yearanni<br>#lineage2msea<br>#1YearW…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1671045823935296/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">35</td>
+<td class="c-user">Anonymous participant</td>
+<td class="c-time">21/05/2026 05:55</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Anniversary, Lineage2M!<br><br>Here&#x27;s to another year of glory, conquest, and unforgettable memories.<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1670759830630562/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">36</td>
+<td class="c-user">Karlo Syd Allan</td>
+<td class="c-time">21/05/2026 05:55</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday L2M<br>Wishing more players and less Bot Farmers.<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1670695583970320/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">37</td>
+<td class="c-user">Anonymous participant</td>
+<td class="c-time">21/05/2026 05:55</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday L2M 🎈🎉🎂<br>1 year of fun❤️<br><br>This game reminds my childhood memories because i also played Lineage2 classic. I wish more blessings and Improvements to come this year.💯<br><br>#1YearAnni<br><br>#1YearWithL2M <br><br>#Lineage2MSE…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1670680090638536/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">38</td>
+<td class="c-user">Anonymous participant</td>
+<td class="c-time">21/05/2026 05:55</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HAPPY ANNIVERSARY Lineage2M<br><br>I hope you can give me legend aghation or class because im noob hehe still no epic weapon. More power to L2M!! <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1670613793978499/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">39</td>
+<td class="c-user">Chard Sevilla</td>
+<td class="c-time">21/05/2026 05:55</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Birthday Lineage2m :) I really love this game :) more years of adventures to come :) <br><br>#1YearAnni <br><br>#1YearWithL2M <br><br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1670552937317918/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">40</td>
+<td class="c-user">Tyrone Yv Es</td>
+<td class="c-time">22/05/2026 04:25</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Once again &quot;HAPPY 1ST BIRTHDAY Lineage2M&quot;<br>- Please boost my Legend Class and Agath Fuse Success Rates! hahaha 🥳🎉🎂🎈❤️<br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1671494670557078/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">41</td>
+<td class="c-user">Juban Sang La Paz</td>
+<td class="c-time">22/05/2026 04:26</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">ONE YEAR WITH LINEAGE 2M<br>WEEK 2: PARTY ATTIRE <br>Favorite Class: Orb <br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1671480323891846/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">42</td>
+<td class="c-user">Nico D. Ong</td>
+<td class="c-time">22/05/2026 04:26</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">#1YearAnni<br>#1YearWithL2M<br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1671462663893612/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">43</td>
+<td class="c-user">Dagger🥰</td>
+<td class="c-time">22/05/2026 04:26</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">#1YearAnni #1YearWithL2M #Lineage2MSEA<br>z3a+KJCvdIhu5vnrr+v1YQ==</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1671425233897355/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">44</td>
+<td class="c-user">Rudymar Capuras</td>
+<td class="c-time">22/05/2026 10:06</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">&quot; ONE YEAR WITH L2M &quot;<br><br>PARTY ATTIRE FOR WEEK 2 EVENT<br><br>FAVORITE CLASS : [ SPEAR ] JP &amp; SEA<br><br>#1YearAnni<br>#1YearWithL2M<br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1672139860492559/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">45</td>
+<td class="c-user">Diether Bebanco Lazarte</td>
+<td class="c-time">22/05/2026 10:06</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy anniversary l2m <br>WEEK 2 PARTY ATTIRE<br>favorite class: SPEAR<br>#1yearanni<br>#1yearWithL2M<br>#lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1672040347169177/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">46</td>
+<td class="c-user">Mike Angelo Gunao Navales</td>
+<td class="c-time">22/05/2026 10:06</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st Anniversary, Lineage2M!<br><br>Here&#x27;s to another year of glory, conquest, and unforgettable memories.<br>emIhI4tnoIuwtMahPDPbJQ==<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1672021540504391/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">47</td>
+<td class="c-user">Simply Mac</td>
+<td class="c-time">22/05/2026 14:45</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Rate my Party Attire from 1-10 😆<br><br>Makakasama ba ako sa fashion week ng Aden?<br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1672355187137693/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">48</td>
+<td class="c-user">Mark A. Flores</td>
+<td class="c-time">22/05/2026 14:45</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HAPPY 1ST BIRTHDAY Lineage2M<br><br>#1yearanni<br>#1YearWithL2M<br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1672291937144018/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">49</td>
+<td class="c-user">MK AB</td>
+<td class="c-time">24/05/2026 11:47</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Week 2 Party! Party! Ya&#x27;ll. <br><br>#1YearAnni #1YearWithL2M #Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1672814447091767/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">50</td>
+<td class="c-user">Mark Joseph Bataller</td>
+<td class="c-time">24/05/2026 11:47</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy Anniversary Lineage2m<br>WEEK 2 PARTY ATTIRE<br><br>favorite class: Staff<br><br>#1yearanniversary<br><br>#1yearWithL2M<br><br>#lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1672788423761036/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">51</td>
+<td class="c-user">Raymund Apilado</td>
+<td class="c-time">26/05/2026 11:41</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy anniversary l2m <br>WEEK 2 PARTY ATTIRE<br>favorite class: Greatsword<br>#1yearanni<br>#1yearWithL2M<br>#lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1675276550178890/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">52</td>
+<td class="c-user">Delicious9999sungflower</td>
+<td class="c-time">27/05/2026 13:00</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">HAPPY 1ST BIRTHDAY 🎂 🎁 🎉<br>Lineage2M <br><br>PARTY ATTIRE FORLineage2MK 2 EVENT<br><br>FAVORITE CLASS : [ORB]<br><br>PLEASE GIVE ME MORE CHANCE <br><br>GET LEGEND HEHEHE 🤭 <br><br>#1YearAnniversary<br><br>#1YearWithL2M<br><br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1676354706737741/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">53</td>
+<td class="c-user">Slown Art</td>
+<td class="c-time">27/05/2026 13:00</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy ONE YEAR WITH LINEAGE 2M:<br><br>This is my most memorable first Epic draw and I&#x27;m so happy about it :)<br><br>Thank you!! Now join us in this Castle Ballroom party with Candle Lighting. No PK please 🤣 <br><br>#1YearAnni<br>#1Year…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1675504450156100/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">54</td>
+<td class="c-user">Diether Bebanco Lazarte</td>
+<td class="c-time">29/05/2026 02:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">happy anniversary l2m we have been through a lot this whole year. new friends new enemy but the fun is still there. let&#x27;s move to another journey let&#x27;s go 🔥<br><br>#1yearanni<br>#1yearwithl2m<br>#Lineage2MSEA</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1677271206646091/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">55</td>
+<td class="c-user">Rudymar Capuras</td>
+<td class="c-time">29/05/2026 04:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">When we first logged on, we were just a ragtag group of adventurers. But over months and now a year, we became a family. I will never forget the countless hours we spent grinding late at night, the legendary wipes on bos…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1677774953262383/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">56</td>
+<td class="c-user">TotoyniMangKanor</td>
+<td class="c-time">29/05/2026 04:53</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">Happy 1st anniversary L2mSea. <br>Thank you NCV for a wonderful experience youve brought to us<br>Thank you developer for your wonderful creation<br>More power to NCV and to the L2m developer<br>God bless more power🙌<br><br>#1yearanni <br>#1…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1677772646595947/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr><tr>
+<td class="c-idx">57</td>
+<td class="c-user">Tyrone Yv Es</td>
+<td class="c-time">29/05/2026 05:38</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">A One-Year Journey Lineage2M Happy 1st Birthday <br><br>It all Started at Leona5 Server VIP Clan, then to Leona8 LuxuryPH Clan, then Teon10 LXR &amp; Ragnarok Clan, then to Teon5 Eclipse nub Clan and then Finally to Kain10 AUR…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2mph/permalink/1677823213257557/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr></tbody></table></div>
+</section><section class="market-block" data-market="MY">
+  <div class="market-head">
+    <div class="market-title"><span class="flag">🇲🇾</span> Malaysia <span class="mk-tag">MY</span></div>
+    <div class="market-count"><strong>1</strong> bài đạt</div>
+  </div>
+  <a class="group-link" href="https://www.facebook.com/groups/lineage2m.malaysia/" target="_blank" rel="noopener">https://www.facebook.com/groups/lineage2m.malaysia/</a>
+  <div class="market-note">⚠️ Group có rất ít hoạt động trong cửa sổ (chỉ ~7 bài tổng).</div>
+  <div class="table-wrap"><table>
+<thead><tr><th>#</th><th>Người chơi</th><th>Thời gian (UTC)</th><th>Hashtag</th><th>Nội dung</th><th>Link</th></tr></thead>
+<tbody><tr>
+<td class="c-idx">1</td>
+<td class="c-user">Lineage2M</td>
+<td class="c-time">21/05/2026 11:05</td>
+<td class="c-var"><span class="vb vb-year">#1YearWithL2M</span></td>
+<td class="c-text">ONE YEAR WITH LINEAGE 2M - 🌸 WEEK 2: PARTY ATTIRE<br><br>⚠️ NOTE: This event takes place exclusively in our Facebook Group! Inheritors, please join the official Lineage 2M Facebook Group to participate!<br><br>Week 2 of the &quot;On…</td>
+<td class="c-link"><a href="https://www.facebook.com/groups/lineage2m.malaysia/permalink/2364663844022511/" target="_blank" rel="noopener">Mở bài ↗</a></td>
+</tr></tbody></table></div>
+</section><section class="market-block" data-market="SG">
+  <div class="market-head">
+    <div class="market-title"><span class="flag">🇸🇬</span> Singapore <span class="mk-tag">SG</span></div>
+    <div class="market-count"><strong>0</strong> bài đạt</div>
+  </div>
+  <a class="group-link" href="https://www.facebook.com/groups/lineage2m.singapore/" target="_blank" rel="noopener">https://www.facebook.com/groups/lineage2m.singapore/</a>
+  <div class="market-note">⚠️ Group trả về rỗng / private — Apify không truy cập được (0 bài quét).</div>
+  <div class="empty">Không có bài đạt yêu cầu.</div>
+</section>
+
+<footer>
+  Generated 01/06/2026 07:19 UTC · NCV Games · Lineage2M SEA · Apify FB Scan · Dataset yHQwJaFBYSTgH6dnw
+</footer>
+</div>
+
+<script>
+const search=document.getElementById('search');
+const fbtns=document.querySelectorAll('.fbtn');
+const kpis=document.querySelectorAll('.kpi');
+let curFilter='ALL';
+function apply(){
+  const q=search.value.trim().toLowerCase();
+  document.querySelectorAll('.market-block').forEach(block=>{
+    const mk=block.dataset.market;
+    const mkOk=(curFilter==='ALL'||curFilter===mk);
+    let anyRow=false;
+    block.querySelectorAll('tbody tr').forEach(tr=>{
+      const txt=tr.innerText.toLowerCase();
+      const rowOk=mkOk&&(q===''||txt.includes(q));
+      tr.classList.toggle('hidden',!rowOk);
+      if(rowOk)anyRow=true;
+    });
+    block.classList.toggle('hidden',!mkOk);
+  });
+}
+function setFilter(f){
+  curFilter=f;
+  fbtns.forEach(b=>b.classList.toggle('active',b.dataset.filter===f));
+  kpis.forEach(k=>k.classList.toggle('active',k.dataset.filter===f));
+  apply();
+}
+fbtns.forEach(b=>b.addEventListener('click',()=>setFilter(b.dataset.filter)));
+kpis.forEach(k=>k.addEventListener('click',()=>setFilter(k.dataset.filter)));
+search.addEventListener('input',apply);
+</script>
+</body>
+</html>
