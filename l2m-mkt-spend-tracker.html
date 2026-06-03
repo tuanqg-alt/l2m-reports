@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L2M Marketing Spend Tracker — NCV Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* NCV Design System v1.0 — Inline */
+:root {
+  --bg-primary: #0F1419;
+  --bg-card: #161D27;
+  --bg-card-hover: #1C2533;
+  --border: rgba(255,255,255,0.08);
+  --border-accent: rgba(238,85,36,0.3);
+  --text-primary: #E8EAED;
+  --text-secondary: #9BA3AF;
+  --text-muted: #6B7280;
+  --orange: #EE5524;
+  --orange-dim: rgba(238,85,36,0.12);
+  --green: #22C55E;
+  --green-dim: rgba(34,197,94,0.12);
+  --yellow: #F59E0B;
+  --yellow-dim: rgba(245,158,11,0.12);
+  --blue: #3B82F6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --font-heading: 'Sora', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --radius: 8px;
+  --radius-sm: 4px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 24px; }
+
+/* Header */
+.header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+}
+.header-left h1 {
+  font-family: var(--font-heading); font-size: 22px; font-weight: 700;
+}
+.header-left h1 span { color: var(--orange); }
+.header-left .subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.last-updated {
+  font-size: 12px; color: var(--text-muted);
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 8px 14px; white-space: nowrap;
+  align-self: flex-start;
+}
+
+/* Summary */
+.summary-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
+.summary-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+}
+.summary-card.accent { border-color: var(--border-accent); }
+.summary-card .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-muted); font-weight: 600; margin-bottom: 8px;
+}
+.summary-card .value {
+  font-family: var(--font-heading); font-size: 26px; font-weight: 700;
+}
+.summary-card.accent .value { color: var(--orange); }
+.summary-card .sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+/* Filter */
+.filter-bar {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 18px;
+  margin-bottom: 18px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
+}
+.filter-group { display: flex; align-items: center; gap: 8px; }
+.filter-group label {
+  font-size: 11px; color: var(--text-muted); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+}
+.filter-group select {
+  background: var(--bg-primary); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text-primary);
+  padding: 6px 10px; font-family: var(--font-body); font-size: 13px;
+  cursor: pointer; outline: none;
+}
+.filter-group select:focus { border-color: var(--orange); }
+.record-count { margin-left: auto; font-size: 12px; color: var(--text-muted); }
+
+/* Table */
+.table-wrap {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; overflow-x: auto;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th {
+  background: var(--bg-primary); color: var(--text-muted);
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .07em; padding: 11px 14px; text-align: left;
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover:not(.campaign-header):not(.subtotal-row) { background: var(--bg-card-hover); }
+tbody td { padding: 10px 14px; vertical-align: middle; }
+
+/* Campaign header row */
+tr.campaign-header td {
+  padding: 10px 14px 8px;
+  background: rgba(255,255,255,0.025);
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 13px; color: var(--text-primary);
+  border-top: 1px solid rgba(238,85,36,0.25);
+}
+
+/* Subtotal row */
+tr.subtotal-row td {
+  background: rgba(238,85,36,0.05);
+  font-size: 12px; font-weight: 600; color: var(--orange);
+  padding: 8px 14px;
+}
+
+/* Badges */
+.plan-code {
+  font-family: 'Courier New', monospace; font-size: 11.5px;
+  color: var(--text-secondary); background: rgba(255,255,255,0.05);
+  padding: 2px 7px; border-radius: 3px; white-space: nowrap;
+}
+.market-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 3px;
+  font-size: 11px; font-weight: 700; letter-spacing: .05em;
+}
+.m-VN  { background: rgba(255,193,7,.15);  color: #FFC107; }
+.m-TH  { background: rgba(59,130,246,.15); color: #60A5FA; }
+.m-ID  { background: rgba(239,68,68,.15);  color: #F87171; }
+.m-PH  { background: rgba(168,85,247,.15); color: #C084FC; }
+.m-SG  { background: rgba(20,184,166,.15); color: #2DD4BF; }
+.m-MY  { background: rgba(34,197,94,.15);  color: #4ADE80; }
+.m-SEA { background: var(--orange-dim);    color: var(--orange); }
+
+.type-badge { display: inline-block; padding: 2px 9px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+.t-digital  { background: var(--blue-dim);  color: #60A5FA; }
+.t-giftcard { background: var(--green-dim); color: var(--green); }
+.t-kol      { background: rgba(168,85,247,.12); color: #C084FC; }
+.t-vendor   { background: var(--yellow-dim); color: var(--yellow); }
+
+.status-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+}
+.s-pending  { background: var(--yellow-dim); color: var(--yellow); }
+.s-approved { background: var(--green-dim);  color: var(--green); }
+.s-paid     { background: var(--blue-dim);   color: #60A5FA; }
+.s-running  { background: var(--orange-dim); color: var(--orange); }
+
+/* Number cells */
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.c-green  { color: var(--green); }
+.c-yellow { color: var(--yellow); }
+.c-muted  { color: var(--text-muted); font-style: italic; }
+.c-secondary { color: var(--text-secondary); }
+
+/* Notes tooltip */
+.note-icon { cursor: default; color: var(--text-muted); font-size: 13px; }
+.note-icon[title]:hover { color: var(--orange); }
+
+/* Footer */
+.footer { margin-top: 24px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.footer a { color: var(--orange); text-decoration: none; }
+
+/* Responsive */
+@media (max-width: 900px) { .summary-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 600px) {
+  .summary-grid { grid-template-columns: 1fr; }
+  .filter-bar { flex-direction: column; align-items: flex-start; }
+  .header { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>L2M <span>Marketing Spend</span> Tracker</h1>
+      <div class="subtitle">NCV Games · Lineage2M SEA · Approved by AnhNLH Hennessy</div>
+    </div>
+    <div class="last-updated">🕐 Last updated: <strong id="tsLabel"></strong> · Source: Outlook</div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid" id="summaryGrid"></div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label>Type</label>
+      <select id="fType" onchange="render()">
+        <option value="">All</option>
+        <option value="digital">Digital Ads</option>
+        <option value="giftcard">Giftcard/Reward</option>
+        <option value="kol">PR / KOL</option>
+        <option value="vendor">Vendor/Branding</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Market</label>
+      <select id="fMarket" onchange="render()">
+        <option value="">All</option>
+        <option value="VN">VN</option>
+        <option value="TH">TH</option>
+        <option value="ID">ID</option>
+        <option value="PH">PH</option>
+        <option value="SG">SG</option>
+        <option value="MY">MY</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Status</label>
+      <select id="fStatus" onchange="render()">
+        <option value="">All</option>
+        <option value="pending">Pending</option>
+        <option value="approved">Approved</option>
+        <option value="paid">Paid</option>
+        <option value="running">Running</option>
+      </select>
+    </div>
+    <span class="record-count" id="rowCount"></span>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="min-width:220px">Campaign</th>
+          <th>Plan Code</th>
+          <th>Type</th>
+          <th>Market</th>
+          <th class="num">Budget Before Tax</th>
+          <th class="num">Budget After Tax</th>
+          <th class="num">Actual Spent</th>
+          <th class="num">Variance</th>
+          <th style="min-width:130px">Period</th>
+          <th>Status</th>
+          <th style="min-width:120px">Approved By</th>
+          <th>Date</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    L2M MKT Spend Tracker · NCV Games ·
+    <a href="https://tuanqg-alt.github.io/l2m-reports/" target="_blank">l2m-reports hub ↗</a>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   DATA — Update this block when new approvals / actuals come in
+   ================================================================ */
+const LAST_UPDATED = "03/06/2026";
+
+const CAMPAIGNS = [
+
+  // ── 1. UCG Minigame Happy 1 Year Anniversary ──────────────────
+  {
+    id: "C1",
+    name: "UCG Minigame — L2M 1 Year Anniversary",
+    plans: [
+      {
+        code: "A22PA026 / JV1xPA018-025",
+        type: "giftcard",
+        market: "SEA",
+        beforeTax: 1140,
+        afterTax: 1140,
+        actual: null,
+        period: "May 2026",
+        status: "approved",
+        approvedBy: "Hennessy (NLH)",
+        approvedDate: "13/05/2026",
+        notes: "30M VND: 5 Grand (2M) · 5 Second (1M) · 30 Consolation (500K). GGcard SEA + Zingcard VN. Forward NC: 18/05."
+      }
+    ]
+  },
+
+  // ── 2. 1Y Digital Ads — UGC Only ─────────────────────────────
+  {
+    id: "C2",
+    name: "1Y Digital Ads — UGC Only",
+    plans: [
+      { code: "A22PA025",    type: "digital", market: "VN", beforeTax: 718.61, afterTax: 783.28, actual: null, period: "13/05 – 31/05/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "13/05/2026", notes: "Forwarded to NCSoft 18/05. Invoice tháng 5 chưa gửi." },
+      { code: "JV1THPA017",  type: "digital", market: "TH", beforeTax: 602.88, afterTax: 657.14, actual: null, period: "13/05 – 31/05/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "13/05/2026", notes: "" },
+      { code: "JV1IDPA024",  type: "digital", market: "ID", beforeTax: 397.10, afterTax: 432.84, actual: null, period: "13/05 – 31/05/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "13/05/2026", notes: "" }
+    ]
+  },
+
+  // ── 3. Digital Ads — 3K & UGC Promote ────────────────────────
+  {
+    id: "C3",
+    name: "Digital Ads — 3K & UGC Promote",
+    plans: [
+      { code: "A22PA028",    type: "digital", market: "VN", beforeTax: 288.58, afterTax: 314.55, actual: null, period: "04/06 – 10/06/2026", status: "pending", approvedBy: "—", approvedDate: "—", notes: "Gửi 03/06, chờ duyệt từ chị Hen." },
+      { code: "JV1THPA020",  type: "digital", market: "TH", beforeTax: 430.46, afterTax: 469.20, actual: null, period: "04/06 – 10/06/2026", status: "pending", approvedBy: "—", approvedDate: "—", notes: "" },
+      { code: "JV1IDPA027",  type: "digital", market: "ID", beforeTax: 269.84, afterTax: 294.13, actual: null, period: "04/06 – 10/06/2026", status: "pending", approvedBy: "—", approvedDate: "—", notes: "" }
+    ]
+  }
+
+  /* ── ADD NEW CAMPAIGNS BELOW ──
+  ,{
+    id: "C4",
+    name: "Campaign Name",
+    plans: [
+      { code: "PLAN_CODE", type: "digital|giftcard|kol|vendor", market: "VN",
+        beforeTax: 0, afterTax: 0, actual: null,
+        period: "DD/MM – DD/MM/YYYY", status: "pending|approved|paid|running",
+        approvedBy: "Hennessy (NLH)", approvedDate: "DD/MM/YYYY", notes: "" }
+    ]
+  }
+  */
+];
+
+/* ================================================================
+   RENDER ENGINE
+   ================================================================ */
+const $ = id => document.getElementById(id);
+const fmt = n => n != null
+  ? '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})
+  : '<span class="c-muted">—</span>';
+
+const TYPE_META  = { digital:'Digital Ads', giftcard:'Giftcard/Reward', kol:'PR/KOL', vendor:'Vendor/Branding' };
+const STATUS_META = {
+  pending:  { label: '⏳ Pending',  cls: 's-pending' },
+  approved: { label: '✅ Approved', cls: 's-approved' },
+  paid:     { label: '💳 Paid',     cls: 's-paid' },
+  running:  { label: '▶ Running',   cls: 's-running' }
+};
+
+function filteredCampaigns() {
+  const ft = $('fType').value;
+  const fm = $('fMarket').value;
+  const fs = $('fStatus').value;
+  return CAMPAIGNS.map(c => {
+    const plans = c.plans.filter(p =>
+      (!ft || p.type === ft) &&
+      (!fm || p.market === fm || p.market === 'SEA') &&
+      (!fs || p.status === fs)
+    );
+    return plans.length ? { ...c, plans } : null;
+  }).filter(Boolean);
+}
+
+function renderSummary(campaigns) {
+  const allPlans = campaigns.flatMap(c => c.plans);
+  const totalApproved = allPlans.filter(p => ['approved','paid','running'].includes(p.status))
+    .reduce((s,p) => s + (p.afterTax||0), 0);
+  const pendingAmt = allPlans.filter(p => p.status === 'pending')
+    .reduce((s,p) => s + (p.afterTax||0), 0);
+  const actualTotal = allPlans.reduce((s,p) => s + (p.actual||0), 0);
+  const approvedCount = allPlans.filter(p => ['approved','paid','running'].includes(p.status)).length;
+  const pendingCount  = allPlans.filter(p => p.status === 'pending').length;
+
+  $('summaryGrid').innerHTML = `
+    <div class="summary-card accent">
+      <div class="label">Total Approved (After Tax)</div>
+      <div class="value">$${Math.round(totalApproved).toLocaleString('en-US')}</div>
+      <div class="sub">${approvedCount} plan đã được duyệt</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Pending Approval</div>
+      <div class="value" style="color:var(--yellow)">$${Math.round(pendingAmt).toLocaleString('en-US')}</div>
+      <div class="sub">${pendingCount} plan chờ duyệt</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Actual Spent</div>
+      <div class="value" style="color:var(--green)">${actualTotal > 0 ? '$'+Math.round(actualTotal).toLocaleString('en-US') : '—'}</div>
+      <div class="sub">Invoice actual pending (T5/2026)</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Campaigns Tracked</div>
+      <div class="value">${campaigns.length}</div>
+      <div class="sub">${allPlans.length} plan codes · ${[...new Set(allPlans.map(p=>p.market))].length} markets</div>
+    </div>`;
+}
+
+function renderTable(campaigns) {
+  let html = '';
+  let totalPlans = 0;
+
+  campaigns.forEach(c => {
+    totalPlans += c.plans.length;
+    const firstType = c.plans[0].type;
+    const typeCls = 't-' + firstType;
+    const typeLabel = TYPE_META[firstType] || firstType;
+
+    // Campaign header
+    html += `<tr class="campaign-header">
+      <td colspan="13">
+        ${c.name}&nbsp;&nbsp;<span class="type-badge ${typeCls}">${typeLabel}</span>
+      </td>
+    </tr>`;
+
+    c.plans.forEach(p => {
+      const sm = STATUS_META[p.status] || { label: p.status, cls: '' };
+      const variance = (p.actual != null && p.afterTax != null)
+        ? (p.actual - p.afterTax) : null;
+      const varHtml = variance != null
+        ? `<span class="${variance <= 0 ? 'c-green' : 'c-yellow'}">${variance <= 0 ? '−' : '+'}$${Math.abs(variance).toFixed(2)}</span>`
+        : '<span class="c-muted">—</span>';
+      const noteHtml = p.notes
+        ? `<span class="note-icon" title="${p.notes}">💬</span>`
+        : '';
+
+      html += `<tr data-type="${p.type}" data-market="${p.market}" data-status="${p.status}">
+        <td></td>
+        <td><span class="plan-code">${p.code}</span></td>
+        <td></td>
+        <td><span class="market-badge m-${p.market}">${p.market}</span></td>
+        <td class="num c-secondary">${p.beforeTax != null ? fmt(p.beforeTax) : '<span class="c-muted">—</span>'}</td>
+        <td class="num">${fmt(p.afterTax)}</td>
+        <td class="num c-green">${p.actual != null ? fmt(p.actual) : '<span class="c-muted">—</span>'}</td>
+        <td class="num">${varHtml}</td>
+        <td style="font-size:12px;color:var(--text-secondary)">${p.period}</td>
+        <td><span class="status-badge ${sm.cls}">${sm.label}</span></td>
+        <td style="font-size:12px">${p.approvedBy}</td>
+        <td style="font-size:12px;color:var(--text-secondary);white-space:nowrap">${p.approvedDate}</td>
+        <td>${noteHtml}</td>
+      </tr>`;
+    });
+
+    // Subtotal (only if >1 plan in campaign)
+    if (c.plans.length > 1) {
+      const sub = c.plans.reduce((s,p) => s + (p.afterTax||0), 0);
+      const subActual = c.plans.reduce((s,p) => s + (p.actual||0), 0);
+      html += `<tr class="subtotal-row">
+        <td colspan="4" style="text-align:right;padding-right:14px;font-size:11px;color:var(--text-muted)">
+          SUBTOTAL — ${c.plans.length} markets
+        </td>
+        <td class="num">${fmt(c.plans.reduce((s,p)=>s+(p.beforeTax||0),0))}</td>
+        <td class="num">${fmt(sub)}</td>
+        <td class="num">${subActual > 0 ? fmt(subActual) : '<span class="c-muted">—</span>'}</td>
+        <td colspan="6"></td>
+      </tr>`;
+    }
+  });
+
+  $('tbody').innerHTML = html;
+  $('rowCount').textContent = `${totalPlans} record${totalPlans !== 1 ? 's' : ''}`;
+}
+
+function render() {
+  const campaigns = filteredCampaigns();
+  renderSummary(campaigns);
+  renderTable(campaigns);
+}
+
+// Init
+$('tsLabel').textContent = LAST_UPDATED;
+render();
+</script>
+</body>
+</html>
