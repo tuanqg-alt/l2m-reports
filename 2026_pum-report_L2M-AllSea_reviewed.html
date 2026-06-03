@@ -55,7 +55,7 @@ body.lang-en .en-block{display:block!important}body.lang-en .vn-block{display:no
 .lang-btn.active{background:var(--hdr-gold);color:#000;border-color:var(--hdr-gold);font-weight:700;}
 
 /* ── NAV — dark ──────────────────────────────────────────── */
-.nav{background:var(--nav-bg);border-bottom:1px solid #1f2d47;padding:0 32px;display:flex;gap:0;overflow-x:auto;position:sticky;top:57px;z-index:99;}
+.nav{background:var(--nav-bg);border-bottom:1px solid #1f2d47;padding:0 32px;display:flex;gap:0;overflow-x:auto;position:sticky;top:var(--header-h,70px);z-index:99;}
 .nav a{color:var(--hdr-muted);text-decoration:none;padding:12px 20px;font-size:13px;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
 .nav a:hover{color:var(--hdr-gold);border-bottom-color:var(--hdr-gold);}
 
@@ -334,7 +334,19 @@ function renderAll(m) {
   }, 60);
 }
 
-document.addEventListener('DOMContentLoaded', function(){ renderAll('2026-05'); });
+function fixNavTop(){
+  var h = document.querySelector('.header');
+  var nav = document.querySelector('.nav');
+  if(h && nav){
+    var hh = h.getBoundingClientRect().height;
+    document.documentElement.style.setProperty('--header-h', hh + 'px');
+  }
+}
+document.addEventListener('DOMContentLoaded', function(){
+  renderAll('2026-05');
+  fixNavTop();
+  window.addEventListener('resize', fixNavTop);
+});
 
 </script>
 </body>
