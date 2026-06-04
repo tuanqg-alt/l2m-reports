@@ -207,9 +207,73 @@ tr.subtotal-row td { background: var(--accent-dim); font-size: 12px; font-weight
 </div>
 
 <script>
-var LAST_UPDATED = "03/06/2026";
+var LAST_UPDATED = "04/06/2026";
 
 var CAMPAIGNS = [
+  {
+    id: "C0",
+    name: "Digital Ads - Payback System Campaign",
+    plans: [
+      {
+        code: "A22PA023",
+        type: "digital",
+        market: "VN",
+        beforeTax: 3509.65,
+        afterTax: 3825.52,
+        actual: 3732.67,
+        period: "09/02 - 22/02/2026",
+        status: "paid",
+        approvedBy: "Hennessy (NLH)",
+        approvedDate: "23/01/2026",
+        notes: "Payback System: churn users >14D. Objective: retargeting ~78% + boost post ~22%. Actual before tax: $3,425.06. Invoices: FB #243000023763, GG #5511564461."
+      },
+      {
+        code: "JV1THPA013",
+        type: "digital",
+        market: "SEA",
+        beforeTax: 5329.58,
+        afterTax: 5809.24,
+        actual: 5520.48,
+        period: "09/02 - 22/02/2026",
+        status: "paid",
+        approvedBy: "Hennessy (NLH)",
+        approvedDate: "23/01/2026",
+        notes: "Covers TH + ID. Actual: TH $3,414.41 after tax (FB #243000023584, GG #5511634248); ID $2,106.07 after tax (FB #243000023178, GG #5509869470). Total actual before tax: $5,065.78."
+      }
+    ]
+  },
+  {
+    id: "C0B",
+    name: "Digital Ads - Server Transfer & Castle Siege",
+    plans: [
+      {
+        code: "A22PA024",
+        type: "digital",
+        market: "VN",
+        beforeTax: 3684.30,
+        afterTax: 4015.89,
+        actual: null,
+        period: "18/03 - 31/03/2026",
+        status: "approved",
+        approvedBy: "Hennessy (NLH)",
+        approvedDate: "13/03/2026",
+        notes: "Server Transfer (25/03) + Castle Siege campaign. Churn users >14D. Retargeting ~90% + boost post ~10%. KPI: 4,500 re-activated users."
+      },
+      {
+        code: "JV1THPA014",
+        type: "digital",
+        market: "SEA",
+        beforeTax: 4971.90,
+        afterTax: 5419.37,
+        actual: null,
+        period: "18/03 - 31/03/2026",
+        status: "approved",
+        approvedBy: "Hennessy (NLH)",
+        approvedDate: "13/03/2026",
+        notes: "Covers TH + ID markets. Forwarded to NC 13/03. Invoice actual chua gui."
+      }
+    ]
+  },
   {
     id: "C1",
     name: "UCG Minigame - L2M 1 Year Anniversary",
@@ -355,62 +419,4 @@ function renderTable(campaigns) {
     for (var j = 0; j < c.plans.length; j++) {
       var p  = c.plans[j];
       var sm = STATUS_META[p.status] || { label: p.status, icon: "", cls: "" };
-      var variance = (p.actual != null && p.afterTax != null) ? (p.actual - p.afterTax) : null;
-      var varHtml;
-      if (variance != null) {
-        var vcls = variance <= 0 ? "c-green" : "c-yellow";
-        var vsign = variance <= 0 ? "-" : "+";
-        varHtml = '<span class="' + vcls + '">' + vsign + "$" + Math.abs(variance).toFixed(2) + "</span>";
-      } else {
-        varHtml = '<span class="c-muted">-</span>';
-      }
-      var noteHtml = p.notes ? '<span class="note-icon" title="' + p.notes + '">&#128172;</span>' : "";
-      var beforeStr = p.beforeTax != null ? fmt(p.beforeTax) : '<span class="c-muted">-</span>';
-      var actualStr = p.actual   != null ? fmt(p.actual)    : '<span class="c-muted">-</span>';
-
-      html += '<tr data-type="' + p.type + '" data-market="' + p.market + '" data-status="' + p.status + '">';
-      html += "<td></td>";
-      html += '<td><span class="plan-code">' + p.code + "</span></td>";
-      html += "<td></td>";
-      html += '<td><span class="market-badge m-' + p.market + '">' + p.market + "</span></td>";
-      html += '<td class="num c-secondary">' + beforeStr + "</td>";
-      html += '<td class="num">'             + fmt(p.afterTax) + "</td>";
-      html += '<td class="num c-green">'     + actualStr + "</td>";
-      html += '<td class="num">'             + varHtml + "</td>";
-      html += '<td style="font-size:12px;color:var(--neutral-400)">' + p.period + "</td>";
-      html += '<td><span class="status-badge ' + sm.cls + '">' + sm.icon + " " + sm.label + "</span></td>";
-      html += '<td style="font-size:12px">'  + p.approvedBy + "</td>";
-      html += '<td style="font-size:12px;color:var(--neutral-400)">' + p.approvedDate + "</td>";
-      html += "<td>" + noteHtml + "</td>";
-      html += "</tr>";
-    }
-
-    if (c.plans.length > 1) {
-      var sub = 0, subBefore = 0;
-      for (var k = 0; k < c.plans.length; k++) {
-        sub      += c.plans[k].afterTax  || 0;
-        subBefore += c.plans[k].beforeTax || 0;
-      }
-      html += '<tr class="subtotal-row">';
-      html += '<td colspan="4" style="text-align:right;padding-right:14px;font-size:11px;color:var(--neutral-500)">SUBTOTAL &mdash; ' + c.plans.length + " markets</td>";
-      html += '<td class="num">' + fmt(subBefore) + "</td>";
-      html += '<td class="num">' + fmt(sub)       + "</td>";
-      html += "<td colspan=\"7\"></td>";
-      html += "</tr>";
-    }
-  }
-  el("tbody").innerHTML = html;
-  el("rowCount").textContent = totalPlans + " record" + (totalPlans !== 1 ? "s" : "");
-}
-
-function render() {
-  var campaigns = getFiltered();
-  renderSummary(campaigns);
-  renderTable(campaigns);
-}
-
-el("tsLabel").textContent = LAST_UPDATED;
-render();
-</script>
-</body>
-</html>
+      var variance = 
