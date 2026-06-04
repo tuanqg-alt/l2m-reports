@@ -5,47 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>L2M Marketing Spend Tracker — NCV Games</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* NCV Design System v1.0 — Inline spec-compliant */
+/* NCV Design System v1.0 — Inline */
 :root {
-  --brand-dark: #0F1419;
-  --brand-accent: #EE5524;
-  --brand-accent-hover: #D44A1F;
-  --brand-accent-soft: #FFE8DD;
-  --brand-white: #FFFFFF;
-  --neutral-900: #0F1419;
-  --neutral-800: #1A1D24;
-  --neutral-700: #2A2E37;
-  --neutral-600: #4A4F5A;
-  --neutral-500: #6B7280;
-  --neutral-400: #9CA3AF;
-  --neutral-300: #D1D5DB;
-  --neutral-200: #E5E7EB;
-  --neutral-100: #F3F4F6;
-  --neutral-50:  #F9FAFB;
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error:   #EF4444;
-  --color-info:    #3B82F6;
-  --accent-dim:   rgba(238,85,36,0.12);
-  --success-dim:  rgba(16,185,129,0.12);
-  --warning-dim:  rgba(245,158,11,0.12);
-  --info-dim:     rgba(59,130,246,0.12);
-  --border-base:  rgba(255,255,255,0.08);
+  --bg-primary: #0F1419;
+  --bg-card: #161D27;
+  --bg-card-hover: #1C2533;
+  --border: rgba(255,255,255,0.08);
   --border-accent: rgba(238,85,36,0.3);
-  --font-heading: 'Sora', system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, sans-serif;
-  --font-mono:    'JetBrains Mono', Consolas, monospace;
+  --text-primary: #E8EAED;
+  --text-secondary: #9BA3AF;
+  --text-muted: #6B7280;
+  --orange: #EE5524;
+  --orange-dim: rgba(238,85,36,0.12);
+  --green: #22C55E;
+  --green-dim: rgba(34,197,94,0.12);
+  --yellow: #F59E0B;
+  --yellow-dim: rgba(245,158,11,0.12);
+  --blue: #3B82F6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --font-heading: 'Sora', sans-serif;
+  --font-body: 'Inter', sans-serif;
   --radius: 8px;
   --radius-sm: 4px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
 body {
-  background: var(--brand-dark);
-  color: var(--neutral-100);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 14px;
   line-height: 1.6;
@@ -53,94 +41,196 @@ body {
 }
 .container { max-width: 1440px; margin: 0 auto; padding: 28px 24px; }
 
-.header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
-.header-left h1 { font-family: var(--font-heading); font-size: 22px; font-weight: 700; color: var(--neutral-100); }
-.header-left h1 span { color: var(--brand-accent); }
-.header-left .subtitle { font-size: 13px; color: var(--neutral-400); margin-top: 4px; }
-.last-updated { font-size: 12px; color: var(--neutral-500); background: var(--neutral-800); border: 1px solid var(--border-base); border-radius: var(--radius); padding: 8px 14px; white-space: nowrap; align-self: flex-start; }
+/* Header */
+.header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+}
+.header-left h1 {
+  font-family: var(--font-heading); font-size: 22px; font-weight: 700;
+}
+.header-left h1 span { color: var(--orange); }
+.header-left .subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.last-updated {
+  font-size: 12px; color: var(--text-muted);
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 8px 14px; white-space: nowrap;
+  align-self: flex-start;
+}
 
-.summary-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
-.summary-card { background: var(--neutral-800); border: 1px solid var(--border-base); border-radius: var(--radius); padding: 18px 20px; }
+/* Summary */
+.summary-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 24px; }
+
+/* Monthly section */
+.monthly-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 18px; overflow: hidden; }
+.monthly-section-header { padding: 14px 20px 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.monthly-section-header h3 { font-family: var(--font-heading); font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.monthly-section-header .note { font-size: 11px; color: var(--text-muted); }
+.monthly-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.monthly-table th { background: rgba(0,0,0,0.2); color: var(--text-muted); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; padding: 9px 16px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.monthly-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.monthly-table tr:last-child td { border-bottom: none; }
+.monthly-table tr.ytd-row td { background: var(--orange-dim); font-weight: 600; }
+.monthly-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.ratio-pill { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.ratio-pill.paid  { background: var(--green-dim); color: var(--green); }
+.ratio-pill.appr  { background: var(--orange-dim); color: var(--orange); }
+.ratio-pill.zero  { color: var(--text-muted); }
+.mkt-paid   { color: var(--green); font-weight: 600; }
+.mkt-appr   { color: var(--orange); }
+.mkt-zero   { color: var(--text-muted); font-style: italic; }
+.summary-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+}
 .summary-card.accent { border-color: var(--border-accent); }
-.summary-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--neutral-500); font-weight: 600; margin-bottom: 8px; }
-.summary-card .value { font-family: var(--font-heading); font-size: 26px; font-weight: 700; color: var(--neutral-100); }
-.summary-card.accent .value { color: var(--brand-accent); }
-.summary-card .sub { font-size: 12px; color: var(--neutral-400); margin-top: 4px; }
+.summary-card .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-muted); font-weight: 600; margin-bottom: 8px;
+}
+.summary-card .value {
+  font-family: var(--font-heading); font-size: 26px; font-weight: 700;
+}
+.summary-card.accent .value { color: var(--orange); }
+.summary-card .sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
 
-.filter-bar { background: var(--neutral-800); border: 1px solid var(--border-base); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 18px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+/* Filter */
+.filter-bar {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 18px;
+  margin-bottom: 18px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
+}
 .filter-group { display: flex; align-items: center; gap: 8px; }
-.filter-group label { font-size: 11px; color: var(--neutral-500); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
-.filter-group select { background: var(--neutral-900); border: 1px solid var(--border-base); border-radius: var(--radius-sm); color: var(--neutral-100); padding: 6px 10px; font-family: var(--font-body); font-size: 13px; cursor: pointer; outline: none; }
-.filter-group select:focus { border-color: var(--brand-accent); }
-.record-count { margin-left: auto; font-size: 12px; color: var(--neutral-500); }
+.filter-group label {
+  font-size: 11px; color: var(--text-muted); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+}
+.filter-group select {
+  background: var(--bg-primary); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text-primary);
+  padding: 6px 10px; font-family: var(--font-body); font-size: 13px;
+  cursor: pointer; outline: none;
+}
+.filter-group select:focus { border-color: var(--orange); }
+.record-count { margin-left: auto; font-size: 12px; color: var(--text-muted); }
 
-.table-wrap { background: var(--neutral-800); border: 1px solid var(--border-base); border-radius: var(--radius); overflow: hidden; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+/* Table */
+.table-wrap {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; overflow-x: auto;
+}
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead th { background: var(--neutral-900); color: var(--neutral-500); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border-base); white-space: nowrap; }
-tbody tr { border-bottom: 1px solid var(--border-base); transition: background .15s; }
+thead th {
+  background: var(--bg-primary); color: var(--text-muted);
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .07em; padding: 11px 14px; text-align: left;
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
 tbody tr:last-child { border-bottom: none; }
-tbody tr:hover:not(.campaign-header):not(.subtotal-row) { background: var(--neutral-700); }
-tbody td { padding: 10px 14px; vertical-align: middle; color: var(--neutral-100); }
+tbody tr:hover:not(.campaign-header):not(.subtotal-row) { background: var(--bg-card-hover); }
+tbody td { padding: 10px 14px; vertical-align: middle; }
 
-tr.campaign-header td { padding: 10px 14px 8px; background: rgba(255,255,255,0.025); font-family: var(--font-heading); font-weight: 600; font-size: 13px; color: var(--neutral-100); border-top: 1px solid rgba(238,85,36,0.25); }
-tr.subtotal-row td { background: var(--accent-dim); font-size: 12px; font-weight: 600; color: var(--brand-accent); padding: 8px 14px; }
+/* Campaign header row */
+tr.campaign-header td {
+  padding: 10px 14px 8px;
+  background: rgba(255,255,255,0.025);
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 13px; color: var(--text-primary);
+  border-top: 1px solid rgba(238,85,36,0.25);
+}
 
-.plan-code { font-family: var(--font-mono); font-size: 11.5px; color: var(--neutral-400); background: rgba(255,255,255,0.05); padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
-.market-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: .05em; }
+/* Subtotal row */
+tr.subtotal-row td {
+  background: rgba(238,85,36,0.05);
+  font-size: 12px; font-weight: 600; color: var(--orange);
+  padding: 8px 14px;
+}
+
+/* Badges */
+.plan-code {
+  font-family: 'Courier New', monospace; font-size: 11.5px;
+  color: var(--text-secondary); background: rgba(255,255,255,0.05);
+  padding: 2px 7px; border-radius: 3px; white-space: nowrap;
+}
+.market-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 3px;
+  font-size: 11px; font-weight: 700; letter-spacing: .05em;
+}
 .m-VN  { background: rgba(255,193,7,.15);  color: #FFC107; }
 .m-TH  { background: rgba(59,130,246,.15); color: #60A5FA; }
 .m-ID  { background: rgba(239,68,68,.15);  color: #F87171; }
 .m-PH  { background: rgba(168,85,247,.15); color: #C084FC; }
 .m-SG  { background: rgba(20,184,166,.15); color: #2DD4BF; }
 .m-MY  { background: rgba(34,197,94,.15);  color: #4ADE80; }
-.m-SEA { background: var(--accent-dim);    color: var(--brand-accent); }
+.m-SEA { background: var(--orange-dim);    color: var(--orange); }
 
 .type-badge { display: inline-block; padding: 2px 9px; border-radius: 3px; font-size: 11px; font-weight: 600; }
-.t-digital  { background: var(--info-dim);    color: #60A5FA; }
-.t-giftcard { background: var(--success-dim); color: var(--color-success); }
+.t-digital  { background: var(--blue-dim);  color: #60A5FA; }
+.t-giftcard { background: var(--green-dim); color: var(--green); }
 .t-kol      { background: rgba(168,85,247,.12); color: #C084FC; }
-.t-vendor   { background: var(--warning-dim); color: var(--color-warning); }
+.t-vendor   { background: var(--yellow-dim); color: var(--yellow); }
 
-.status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-.s-pending  { background: var(--warning-dim); color: var(--color-warning); }
-.s-approved { background: var(--success-dim); color: var(--color-success); }
-.s-paid     { background: var(--info-dim);    color: var(--color-info); }
-.s-running  { background: var(--accent-dim);  color: var(--brand-accent); }
+.status-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+}
+.s-pending  { background: var(--yellow-dim); color: var(--yellow); }
+.s-approved { background: var(--green-dim);  color: var(--green); }
+.s-paid     { background: var(--blue-dim);   color: #60A5FA; }
+.s-running  { background: var(--orange-dim); color: var(--orange); }
 
+/* Number cells */
 .num { text-align: right; font-variant-numeric: tabular-nums; }
-.c-green    { color: var(--color-success); }
-.c-yellow   { color: var(--color-warning); }
-.c-muted    { color: var(--neutral-500); font-style: italic; }
-.c-secondary { color: var(--neutral-400); }
-.note-icon { cursor: default; color: var(--neutral-500); font-size: 13px; }
-.note-icon[title]:hover { color: var(--brand-accent); }
-.footer { margin-top: 24px; text-align: center; font-size: 12px; color: var(--neutral-500); }
-.footer a { color: var(--brand-accent); text-decoration: none; }
+.c-green  { color: var(--green); }
+.c-yellow { color: var(--yellow); }
+.c-muted  { color: var(--text-muted); font-style: italic; }
+.c-secondary { color: var(--text-secondary); }
 
-@media (max-width: 900px) { .summary-grid { grid-template-columns: repeat(2,1fr); } }
+/* Notes tooltip */
+.note-icon { cursor: default; color: var(--text-muted); font-size: 13px; }
+.note-icon[title]:hover { color: var(--orange); }
+
+/* Footer */
+.footer { margin-top: 24px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.footer a { color: var(--orange); text-decoration: none; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: repeat(2,1fr) !important; }
+  .monthly-table th:nth-child(3),.monthly-table td:nth-child(3),
+  .monthly-table th:nth-child(6),.monthly-table td:nth-child(6) { display: none; }
+}
 @media (max-width: 640px) {
-  html, body { overflow-x: hidden; max-width: 100vw; }
-  .container { padding-left: 12px; padding-right: 12px; }
   .summary-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 900px) { .summary-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 600px) {
+  .summary-grid { grid-template-columns: 1fr; }
   .filter-bar { flex-direction: column; align-items: flex-start; }
   .header { flex-direction: column; }
-  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- HEADER -->
   <div class="header">
     <div class="header-left">
       <h1>L2M <span>Marketing Spend</span> Tracker</h1>
-      <div class="subtitle">NCV Games &middot; Lineage2M SEA &middot; Approved by AnhNLH Hennessy</div>
+      <div class="subtitle">NCV Games · Lineage2M SEA · Approved by AnhNLH Hennessy</div>
     </div>
-    <div class="last-updated">&#128336; Last updated: <strong id="tsLabel"></strong> &middot; Source: Outlook</div>
+    <div class="last-updated">🕐 Last updated: <strong id="tsLabel"></strong> · Source: Outlook</div>
   </div>
 
+  <!-- SUMMARY CARDS -->
   <div class="summary-grid" id="summaryGrid"></div>
 
+  <!-- MONTHLY SECTION -->
+  <div id="monthlySection"></div>
+
+  <!-- FILTER BAR -->
   <div class="filter-bar">
     <div class="filter-group">
       <label>Type</label>
@@ -177,6 +267,7 @@ tr.subtotal-row td { background: var(--accent-dim); font-size: 12px; font-weight
     <span class="record-count" id="rowCount"></span>
   </div>
 
+  <!-- TABLE -->
   <div class="table-wrap">
     <table>
       <thead>
@@ -201,18 +292,23 @@ tr.subtotal-row td { background: var(--accent-dim); font-size: 12px; font-weight
   </div>
 
   <div class="footer">
-    L2M MKT Spend Tracker &middot; NCV Games &middot;
-    <a href="https://tuanqg-alt.github.io/l2m-reports/" target="_blank">l2m-reports hub &nearr;</a>
+    L2M MKT Spend Tracker · NCV Games ·
+    <a href="https://tuanqg-alt.github.io/l2m-reports/" target="_blank">l2m-reports hub ↗</a>
   </div>
 </div>
 
 <script>
-var LAST_UPDATED = "04/06/2026";
+/* ================================================================
+   DATA — Update this block when new approvals / actuals come in
+   ================================================================ */
+const LAST_UPDATED = "04/06/2026";
 
-var CAMPAIGNS = [
+const CAMPAIGNS = [
+
+  // ── Payback System Campaign (Jan→Feb 2026) ────────────────────
   {
     id: "C0",
-    name: "Digital Ads - Payback System Campaign",
+    name: "Digital Ads — Payback System Campaign",
     plans: [
       {
         code: "A22PA023",
@@ -221,11 +317,11 @@ var CAMPAIGNS = [
         beforeTax: 3509.65,
         afterTax: 3825.52,
         actual: 3732.67,
-        period: "09/02 - 22/02/2026",
+        period: "09/02 – 22/02/2026",
         status: "paid",
         approvedBy: "Hennessy (NLH)",
         approvedDate: "23/01/2026",
-        notes: "Payback System: churn users >14D. Objective: retargeting ~78% + boost post ~22%. Actual before tax: $3,425.06. Invoices: FB #243000023763, GG #5511564461."
+        notes: "Payback System: churn users >14D. Retargeting ~78% + boost post ~22%. Actual before tax: $3,425.06. Invoices: FB #243000023763, GG #5511564461."
       },
       {
         code: "JV1THPA013",
@@ -234,17 +330,19 @@ var CAMPAIGNS = [
         beforeTax: 5329.58,
         afterTax: 5809.24,
         actual: 5520.48,
-        period: "09/02 - 22/02/2026",
+        period: "09/02 – 22/02/2026",
         status: "paid",
         approvedBy: "Hennessy (NLH)",
         approvedDate: "23/01/2026",
-        notes: "Covers TH + ID. Actual: TH $3,414.41 after tax (FB #243000023584, GG #5511634248); ID $2,106.07 after tax (FB #243000023178, GG #5509869470). Total actual before tax: $5,065.78."
+        notes: "Covers TH + ID. Actual: TH $3,414.41 after tax (FB #243000023584, GG #5511634248); ID $2,106.07 after tax (FB #243000023178, GG #5509869470). Total before tax: $5,065.78."
       }
     ]
   },
+
+  // ── Server Transfer & Castle Siege (Mar 2026) ─────────────────
   {
     id: "C0B",
-    name: "Digital Ads - Server Transfer & Castle Siege",
+    name: "Digital Ads — Server Transfer & Castle Siege",
     plans: [
       {
         code: "A22PA024",
@@ -252,12 +350,12 @@ var CAMPAIGNS = [
         market: "VN",
         beforeTax: 3684.30,
         afterTax: 4015.89,
-        actual: null,
-        period: "18/03 - 31/03/2026",
-        status: "approved",
+        actual: 3803.06,
+        period: "18/03 – 31/03/2026",
+        status: "paid",
         approvedBy: "Hennessy (NLH)",
         approvedDate: "13/03/2026",
-        notes: "Server Transfer (25/03) + Castle Siege campaign. Churn users >14D. Retargeting ~90% + boost post ~10%. KPI: 4,500 re-activated users."
+        notes: "Server Transfer (25/03) + Castle Siege. Actual before tax: $3,493.89. NC paid 22/04/2026. Invoices: FB #243000027740, GG #5535019178."
       },
       {
         code: "JV1THPA014",
@@ -265,18 +363,20 @@ var CAMPAIGNS = [
         market: "SEA",
         beforeTax: 4971.90,
         afterTax: 5419.37,
-        actual: null,
-        period: "18/03 - 31/03/2026",
-        status: "approved",
+        actual: 5263.34,
+        period: "18/03 – 31/03/2026",
+        status: "paid",
         approvedBy: "Hennessy (NLH)",
         approvedDate: "13/03/2026",
-        notes: "Covers TH + ID markets. Forwarded to NC 13/03. Invoice actual chua gui."
+        notes: "Covers TH + ID. Actual: TH $3,737.10 after tax (FB #243000025347, GG #5535968172); ID $1,526.24 after tax (FB #243000026325, GG #5539286164). NC paid 22/04/2026."
       }
     ]
   },
+
+  // ── 1. UCG Minigame Happy 1 Year Anniversary ──────────────────
   {
     id: "C1",
-    name: "UCG Minigame - L2M 1 Year Anniversary",
+    name: "UCG Minigame — L2M 1 Year Anniversary",
     plans: [
       {
         code: "A22PA026 / JV1xPA018-025",
@@ -289,134 +389,282 @@ var CAMPAIGNS = [
         status: "approved",
         approvedBy: "Hennessy (NLH)",
         approvedDate: "13/05/2026",
-        notes: "30M VND: 5 Grand x2M + 5 Second x1M + 30 Consolation x500K. GGcard SEA + Zingcard VN. Forwarded NC 18/05."
+        notes: "30M VND: 5 Grand (2M) · 5 Second (1M) · 30 Consolation (500K). GGcard SEA + Zingcard VN. Forward NC: 18/05."
       }
     ]
   },
+
+  // ── 2. 1Y Digital Ads — UGC Only ─────────────────────────────
   {
     id: "C2",
-    name: "1Y Digital Ads - UGC Only",
+    name: "1Y Digital Ads — UGC Only",
     plans: [
-      { code: "A22PA025",   type: "digital", market: "VN", beforeTax: 718.61, afterTax: 783.28, actual: null, period: "13/05 - 31/05/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "13/05/2026", notes: "Forwarded to NCSoft 18/05. Invoice thang 5 chua gui." },
-      { code: "JV1THPA017", type: "digital", market: "TH", beforeTax: 602.88, afterTax: 657.14, actual: null, period: "13/05 - 31/05/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "13/05/2026", notes: "" },
-      { code: "JV1IDPA024", type: "digital", market: "ID", beforeTax: 397.10, afterTax: 432.84, actual: null, period: "13/05 - 31/05/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "13/05/2026", notes: "" }
+      { code: "A22PA025",    type: "digital", market: "VN", beforeTax: 718.61, afterTax: 783.28, actual: null, period: "13/05 – 31/05/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "13/05/2026", notes: "Forwarded to NCSoft 18/05. Invoice tháng 5 chưa gửi." },
+      { code: "JV1THPA017",  type: "digital", market: "TH", beforeTax: 602.88, afterTax: 657.14, actual: null, period: "13/05 – 31/05/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "13/05/2026", notes: "" },
+      { code: "JV1IDPA024",  type: "digital", market: "ID", beforeTax: 397.10, afterTax: 432.84, actual: null, period: "13/05 – 31/05/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "13/05/2026", notes: "" }
     ]
   },
+
+  // ── 3. Digital Ads — 3K & UGC Promote ────────────────────────
   {
     id: "C3",
-    name: "Digital Ads - 3K & UGC Promote",
+    name: "Digital Ads — 3K & UGC Promote",
     plans: [
-      { code: "A22PA028",   type: "digital", market: "VN", beforeTax: 288.58, afterTax: 314.55, actual: null, period: "04/06 - 10/06/2026", status: "pending", approvedBy: "-", approvedDate: "-", notes: "Gui 03/06, cho duyet tu chi Hen." },
-      { code: "JV1THPA020", type: "digital", market: "TH", beforeTax: 430.46, afterTax: 469.20, actual: null, period: "04/06 - 10/06/2026", status: "pending", approvedBy: "-", approvedDate: "-", notes: "" },
-      { code: "JV1IDPA027", type: "digital", market: "ID", beforeTax: 269.84, afterTax: 294.13, actual: null, period: "04/06 - 10/06/2026", status: "pending", approvedBy: "-", approvedDate: "-", notes: "" }
+      { code: "A22PA028",    type: "digital", market: "VN", beforeTax: 288.58, afterTax: 314.55, actual: null, period: "04/06 – 10/06/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "03/06/2026", notes: "Gửi 03/06, duyệt 03/06 cùng ngày. Campaign 04/06–10/06. [auto-KB-wire verified 04/06]" },
+      { code: "JV1THPA020",  type: "digital", market: "TH", beforeTax: 430.46, afterTax: 469.20, actual: null, period: "04/06 – 10/06/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "03/06/2026", notes: "" },
+      { code: "JV1IDPA027",  type: "digital", market: "ID", beforeTax: 269.84, afterTax: 294.13, actual: null, period: "04/06 – 10/06/2026", status: "approved", approvedBy: "Hennessy (NLH)", approvedDate: "03/06/2026", notes: "" }
     ]
   }
+
+  /* ── ADD NEW CAMPAIGNS BELOW ──
+  ,{
+    id: "C4",
+    name: "Campaign Name",
+    plans: [
+      { code: "PLAN_CODE", type: "digital|giftcard|kol|vendor", market: "VN",
+        beforeTax: 0, afterTax: 0, actual: null,
+        period: "DD/MM – DD/MM/YYYY", status: "pending|approved|paid|running",
+        approvedBy: "Hennessy (NLH)", approvedDate: "DD/MM/YYYY", notes: "" }
+    ]
+  }
+  */
 ];
 
-var TYPE_META = {
-  digital:  "Digital Ads",
-  giftcard: "Giftcard/Reward",
-  kol:      "PR/KOL",
-  vendor:   "Vendor/Branding"
-};
-var STATUS_META = {
-  pending:  { label: "Pending",  icon: "&#9203;", cls: "s-pending" },
-  approved: { label: "Approved", icon: "&#9989;",  cls: "s-approved" },
-  paid:     { label: "Paid",     icon: "&#128179;", cls: "s-paid" },
-  running:  { label: "Running",  icon: "&#9654;",  cls: "s-running" }
+/* ================================================================
+   RENDER ENGINE
+   ================================================================ */
+const $ = id => document.getElementById(id);
+const fmt = n => n != null
+  ? '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})
+  : '<span class="c-muted">—</span>';
+
+const TYPE_META  = { digital:'Digital Ads', giftcard:'Giftcard/Reward', kol:'PR/KOL', vendor:'Vendor/Branding' };
+const STATUS_META = {
+  pending:  { label: '⏳ Pending',  cls: 's-pending' },
+  approved: { label: '✅ Approved', cls: 's-approved' },
+  paid:     { label: '💳 Paid',     cls: 's-paid' },
+  running:  { label: '▶ Running',   cls: 's-running' }
 };
 
-function el(id) { return document.getElementById(id); }
-
-function fmt(n) {
-  if (n == null) return '<span class="c-muted">-</span>';
-  return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function filteredCampaigns() {
+  const ft = $('fType').value;
+  const fm = $('fMarket').value;
+  const fs = $('fStatus').value;
+  return CAMPAIGNS.map(c => {
+    const plans = c.plans.filter(p =>
+      (!ft || p.type === ft) &&
+      (!fm || p.market === fm || p.market === 'SEA') &&
+      (!fs || p.status === fs)
+    );
+    return plans.length ? { ...c, plans } : null;
+  }).filter(Boolean);
 }
 
-function getFiltered() {
-  var ft = el("fType").value;
-  var fm = el("fMarket").value;
-  var fs = el("fStatus").value;
-  var result = [];
-  for (var i = 0; i < CAMPAIGNS.length; i++) {
-    var c = CAMPAIGNS[i];
-    var plans = [];
-    for (var j = 0; j < c.plans.length; j++) {
-      var p = c.plans[j];
-      var okType   = !ft || p.type === ft;
-      var okMarket = !fm || p.market === fm || p.market === "SEA";
-      var okStatus = !fs || p.status === fs;
-      if (okType && okMarket && okStatus) plans.push(p);
-    }
-    if (plans.length > 0) {
-      result.push({ id: c.id, name: c.name, plans: plans });
-    }
-  }
-  return result;
-}
+/* ── Gross Revenue (KB GameOps, B VND → USD, FX 1 USD = 25,255 VND) ── */
+const GROSS_REVENUE = {
+  '2026-01': { usd: 2036824, label: 'Jan 2026', bvnd: 51.44 },
+  '2026-02': { usd: 1759256, label: 'Feb 2026', bvnd: 44.43 },
+  '2026-03': { usd: 1764007, label: 'Mar 2026', bvnd: 44.55 },
+  '2026-04': { usd: 1844783, label: 'Apr 2026', bvnd: 46.59 },
+  '2026-05': { usd: 1907345, label: 'May 2026', bvnd: 48.17 },
+};
+
+/* ── MKT spend by month (derived from CAMPAIGNS above) ── */
+const MONTHLY_MKT = {
+  '2026-01': { paid: 0,       approved: 0        },
+  '2026-02': { paid: 9253.15, approved: 9253.15  }, // Payback paid
+  '2026-03': { paid: 9066.40, approved: 9066.40  }, // Server Transfer paid 22/04 (Meta $5,970.74 + Google $3,095.66)
+  '2026-04': { paid: 0,       approved: 0        },
+  '2026-05': { paid: 0,       approved: 3013.26  }, // 1Y UCG + Digital UGC
+};
 
 function renderSummary(campaigns) {
-  var allPlans = [];
-  for (var i = 0; i < campaigns.length; i++) {
-    for (var j = 0; j < campaigns[i].plans.length; j++) {
-      allPlans.push(campaigns[i].plans[j]);
-    }
-  }
-  var totalApproved = 0, pendingAmt = 0, actualTotal = 0, approvedCount = 0, pendingCount = 0;
-  for (var k = 0; k < allPlans.length; k++) {
-    var p = allPlans[k];
-    if (p.status === "approved" || p.status === "paid" || p.status === "running") {
-      totalApproved += p.afterTax || 0;
-      approvedCount++;
-    }
-    if (p.status === "pending") { pendingAmt += p.afterTax || 0; pendingCount++; }
-    actualTotal += p.actual || 0;
-  }
-  var markets = {};
-  for (var m = 0; m < allPlans.length; m++) markets[allPlans[m].market] = 1;
-  var marketCount = Object.keys(markets).length;
+  const allPlans = campaigns.flatMap(c => c.plans);
+  // All CAMPAIGNS (unfiltered) for global totals
+  const allPlansGlobal = CAMPAIGNS.flatMap(c => c.plans);
 
-  var actualStr = actualTotal > 0 ? "$" + Math.round(actualTotal).toLocaleString("en-US") : "-";
-  var html = "";
-  html += '<div class="summary-card accent">';
-  html += '<div class="label">Total Approved (After Tax)</div>';
-  html += '<div class="value">$' + Math.round(totalApproved).toLocaleString("en-US") + "</div>";
-  html += '<div class="sub">' + approvedCount + " plan da duyet</div></div>";
+  const totalApproved = allPlansGlobal.filter(p => ['approved','paid','running'].includes(p.status))
+    .reduce((s,p) => s + (p.afterTax||0), 0);
+  const pendingAmt = allPlansGlobal.filter(p => p.status === 'pending')
+    .reduce((s,p) => s + (p.afterTax||0), 0);
+  const paidMkt = allPlansGlobal.filter(p => p.status === 'paid')
+    .reduce((s,p) => s + (p.actual||0), 0);
+  const approvedCount = allPlansGlobal.filter(p => ['approved','paid','running'].includes(p.status)).length;
+  const pendingCount  = allPlansGlobal.filter(p => p.status === 'pending').length;
 
-  html += '<div class="summary-card">';
-  html += '<div class="label">Pending Approval</div>';
-  html += '<div class="value" style="color:var(--color-warning)">$' + Math.round(pendingAmt).toLocaleString("en-US") + "</div>";
-  html += '<div class="sub">' + pendingCount + " plan cho duyet</div></div>";
+  const grossYTD = Object.values(GROSS_REVENUE).reduce((s,m) => s + m.usd, 0);
+  const paidRatio = grossYTD > 0 ? (paidMkt / grossYTD * 100) : 0;
+  const apprRatio = grossYTD > 0 ? (totalApproved / grossYTD * 100) : 0;
 
-  html += '<div class="summary-card">';
-  html += '<div class="label">Actual Spent</div>';
-  html += '<div class="value" style="color:var(--color-success)">' + actualStr + "</div>";
-  html += '<div class="sub">Invoice actual pending (T5/2026)</div></div>';
-
-  html += '<div class="summary-card">';
-  html += '<div class="label">Campaigns Tracked</div>';
-  html += '<div class="value">' + campaigns.length + "</div>";
-  html += '<div class="sub">' + allPlans.length + " plan codes &middot; " + marketCount + " markets</div></div>";
-
-  el("summaryGrid").innerHTML = html;
+  $('summaryGrid').innerHTML = `
+    <div class="summary-card" style="border-color:rgba(59,130,246,0.35)">
+      <div class="label">Gross Revenue YTD 2026</div>
+      <div class="value" style="color:var(--blue)">$${Math.round(grossYTD).toLocaleString('en-US')}</div>
+      <div class="sub">Jan–May · Source: KB GameOps (FX 25,255 VND/USD)</div>
+    </div>
+    <div class="summary-card" style="border-color:rgba(34,197,94,0.35)">
+      <div class="label">Paid MKT YTD</div>
+      <div class="value" style="color:var(--green)">$${Math.round(paidMkt).toLocaleString('en-US')}</div>
+      <div class="sub">${allPlansGlobal.filter(p=>p.status==='paid').length} plan đã thanh toán</div>
+    </div>
+    <div class="summary-card" style="border-color:rgba(34,197,94,0.2)">
+      <div class="label">Paid MKT / Gross Rev</div>
+      <div class="value" style="color:var(--green)">${paidRatio.toFixed(2)}%</div>
+      <div class="sub">Approved budget / Rev: <strong style="color:var(--orange)">${apprRatio.toFixed(2)}%</strong></div>
+    </div>
+    <div class="summary-card accent">
+      <div class="label">Total Approved MKT Budget</div>
+      <div class="value">$${Math.round(totalApproved).toLocaleString('en-US')}</div>
+      <div class="sub">${approvedCount} plan đã duyệt (after tax)</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Pending Approval</div>
+      <div class="value" style="color:var(--yellow)">$${Math.round(pendingAmt).toLocaleString('en-US')}</div>
+      <div class="sub">${pendingCount} plan chờ duyệt</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Campaigns Tracked</div>
+      <div class="value">${CAMPAIGNS.length}</div>
+      <div class="sub">${allPlansGlobal.length} plan codes · ${[...new Set(allPlansGlobal.map(p=>p.market))].length} markets</div>
+    </div>`;
 }
 
 function renderTable(campaigns) {
-  var html = "";
-  var totalPlans = 0;
-  for (var i = 0; i < campaigns.length; i++) {
-    var c = campaigns[i];
+  let html = '';
+  let totalPlans = 0;
+
+  campaigns.forEach(c => {
     totalPlans += c.plans.length;
-    var firstType = c.plans[0].type;
-    var typeCls   = "t-" + firstType;
-    var typeLabel = TYPE_META[firstType] || firstType;
+    const firstType = c.plans[0].type;
+    const typeCls = 't-' + firstType;
+    const typeLabel = TYPE_META[firstType] || firstType;
 
-    html += '<tr class="campaign-header"><td colspan="13">';
-    html += c.name + "&nbsp;&nbsp;";
-    html += '<span class="type-badge ' + typeCls + '">' + typeLabel + "</span>";
-    html += "</td></tr>";
+    // Campaign header
+    html += `<tr class="campaign-header">
+      <td colspan="13">
+        ${c.name}&nbsp;&nbsp;<span class="type-badge ${typeCls}">${typeLabel}</span>
+      </td>
+    </tr>`;
 
-    for (var j = 0; j < c.plans.length; j++) {
-      var p  = c.plans[j];
-      var sm = STATUS_META[p.status] || { label: p.status, icon: "", cls: "" };
-      var variance = 
+    c.plans.forEach(p => {
+      const sm = STATUS_META[p.status] || { label: p.status, cls: '' };
+      const variance = (p.actual != null && p.afterTax != null)
+        ? (p.actual - p.afterTax) : null;
+      const varHtml = variance != null
+        ? `<span class="${variance <= 0 ? 'c-green' : 'c-yellow'}">${variance <= 0 ? '−' : '+'}$${Math.abs(variance).toFixed(2)}</span>`
+        : '<span class="c-muted">—</span>';
+      const noteHtml = p.notes
+        ? `<span class="note-icon" title="${p.notes}">💬</span>`
+        : '';
+
+      html += `<tr data-type="${p.type}" data-market="${p.market}" data-status="${p.status}">
+        <td></td>
+        <td><span class="plan-code">${p.code}</span></td>
+        <td></td>
+        <td><span class="market-badge m-${p.market}">${p.market}</span></td>
+        <td class="num c-secondary">${p.beforeTax != null ? fmt(p.beforeTax) : '<span class="c-muted">—</span>'}</td>
+        <td class="num">${fmt(p.afterTax)}</td>
+        <td class="num c-green">${p.actual != null ? fmt(p.actual) : '<span class="c-muted">—</span>'}</td>
+        <td class="num">${varHtml}</td>
+        <td style="font-size:12px;color:var(--text-secondary)">${p.period}</td>
+        <td><span class="status-badge ${sm.cls}">${sm.label}</span></td>
+        <td style="font-size:12px">${p.approvedBy}</td>
+        <td style="font-size:12px;color:var(--text-secondary);white-space:nowrap">${p.approvedDate}</td>
+        <td>${noteHtml}</td>
+      </tr>`;
+    });
+
+    // Subtotal (only if >1 plan in campaign)
+    if (c.plans.length > 1) {
+      const sub = c.plans.reduce((s,p) => s + (p.afterTax||0), 0);
+      const subActual = c.plans.reduce((s,p) => s + (p.actual||0), 0);
+      html += `<tr class="subtotal-row">
+        <td colspan="4" style="text-align:right;padding-right:14px;font-size:11px;color:var(--text-muted)">
+          SUBTOTAL — ${c.plans.length} markets
+        </td>
+        <td class="num">${fmt(c.plans.reduce((s,p)=>s+(p.beforeTax||0),0))}</td>
+        <td class="num">${fmt(sub)}</td>
+        <td class="num">${subActual > 0 ? fmt(subActual) : '<span class="c-muted">—</span>'}</td>
+        <td colspan="6"></td>
+      </tr>`;
+    }
+  });
+
+  $('tbody').innerHTML = html;
+  $('rowCount').textContent = `${totalPlans} record${totalPlans !== 1 ? 's' : ''}`;
+}
+
+function renderMonthly() {
+  const months = Object.keys(GROSS_REVENUE).sort();
+  const fmtK = n => n >= 1000000
+    ? '$' + (n/1000000).toFixed(2) + 'M'
+    : n > 0 ? '$' + n.toLocaleString('en-US', {minimumFractionDigits:0}) : '—';
+
+  const ytdRev = months.reduce((s,m) => s + GROSS_REVENUE[m].usd, 0);
+  const ytdPaid = months.reduce((s,m) => s + (MONTHLY_MKT[m]?.paid||0), 0);
+  const ytdAppr = months.reduce((s,m) => s + (MONTHLY_MKT[m]?.approved||0), 0);
+
+  let rows = months.map(m => {
+    const rev = GROSS_REVENUE[m].usd;
+    const paid = MONTHLY_MKT[m]?.paid || 0;
+    const appr = MONTHLY_MKT[m]?.approved || 0;
+    const paidRatio = rev > 0 && paid > 0 ? (paid/rev*100).toFixed(3)+'%' : null;
+    const apprRatio = rev > 0 && appr > 0 && appr !== paid ? (appr/rev*100).toFixed(3)+'%' : null;
+
+    return `<tr>
+      <td style="font-weight:600;white-space:nowrap">${GROSS_REVENUE[m].label}</td>
+      <td style="font-variant-numeric:tabular-nums"><span style="color:var(--blue);font-weight:600">${fmtK(rev)}</span> <span style="font-size:11px;color:var(--text-muted)">(${GROSS_REVENUE[m].bvnd}B VND)</span></td>
+      <td class="num">${paid > 0 ? '<span class="mkt-paid">'+fmtK(paid)+'</span>' : '<span class="mkt-zero">—</span>'}</td>
+      <td class="num">${appr > 0 && appr !== paid ? '<span class="mkt-appr">'+fmtK(appr)+'</span>' : (paid > 0 ? '<span style="color:var(--text-muted);font-size:11px">(same)</span>' : '<span class="mkt-zero">—</span>')}</td>
+      <td class="num">${paidRatio ? '<span class="ratio-pill paid">'+paidRatio+'</span>' : '<span class="ratio-pill zero">—</span>'}</td>
+      <td class="num">${apprRatio ? '<span class="ratio-pill appr">'+apprRatio+'</span>' : (paidRatio ? '<span class="ratio-pill appr">'+paidRatio+'</span>' : '<span class="ratio-pill zero">—</span>')}</td>
+    </tr>`;
+  }).join('');
+
+  // YTD row
+  const ytdPaidRatio = ytdRev > 0 && ytdPaid > 0 ? (ytdPaid/ytdRev*100).toFixed(3)+'%' : '—';
+  const ytdApprRatio = ytdRev > 0 && ytdAppr > 0 ? (ytdAppr/ytdRev*100).toFixed(3)+'%' : '—';
+  rows += `<tr class="ytd-row">
+    <td style="font-weight:700">YTD Total</td>
+    <td><span style="color:var(--blue);font-weight:700">${fmtK(ytdRev)}</span></td>
+    <td class="num"><span class="mkt-paid">${fmtK(ytdPaid)}</span></td>
+    <td class="num"><span class="mkt-appr">${fmtK(ytdAppr)}</span></td>
+    <td class="num"><span class="ratio-pill paid">${ytdPaidRatio}</span></td>
+    <td class="num"><span class="ratio-pill appr">${ytdApprRatio}</span></td>
+  </tr>`;
+
+  $('monthlySection').innerHTML = `
+    <div class="monthly-section">
+      <div class="monthly-section-header">
+        <h3>📊 Monthly MKT vs Gross Revenue — Jan → May 2026</h3>
+        <span class="note">Source: KB GameOps (FX 1 USD = 25,255 VND) · Paid only = actual invoiced</span>
+      </div>
+      <table class="monthly-table">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Gross Revenue</th>
+            <th class="num">Paid MKT</th>
+            <th class="num">Approved MKT Budget</th>
+            <th class="num">Paid / Rev</th>
+            <th class="num">Approved / Rev</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function render() {
+  const campaigns = filteredCampaigns();
+  renderSummary(campaigns);
+  renderMonthly();
+  renderTable(campaigns);
+}
+
+// Init
+document.getElementById('tsLabel').textContent = LAST_UPDATED;
+render();
+</script>
+</body>
+</html>
