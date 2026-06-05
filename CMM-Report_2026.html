@@ -543,6 +543,32 @@
 .en { display: none; }
 body.lang-en .en { display: revert; }
 body.lang-en .vn { display: none; }
+
+/* ── MOBILE RESPONSIVE ── */
+@media (max-width: 640px) {
+  .site-header { padding: 14px 16px 10px; }
+  .header-top { gap: 8px; margin-bottom: 10px; }
+  .header-badge { font-size: 10px; padding: 3px 7px; }
+  .header-title { font-size: 15px; line-height: 1.3; }
+  .header-subtitle { font-size: 11px; }
+  .lang-toggle-wrap { gap: 4px; }
+  .lang-btn { padding: 4px 9px; font-size: 12px; }
+  .lang-note { display: none; }
+  .tab-btn { padding: 6px 11px; font-size: 12px; }
+  .main { padding: 20px 14px 60px; }
+  .section { padding: 14px 14px; }
+  .exec-summary { padding: 16px 14px; }
+  .report-header { padding: 10px 14px; }
+  .report-header h2 { font-size: 16px; }
+  .key-point { padding: 10px 12px; gap: 10px; }
+  .key-point-icon { font-size: 16px; }
+  .action-item { padding: 10px 12px; gap: 10px; }
+  .market-table { display: block; overflow-x: auto; font-size: 12px; }
+  .market-table th, .market-table td { padding: 8px 8px; }
+  .stat-row { gap: 8px; }
+  .stat-chip { padding: 5px 12px; font-size: 12px; }
+  .section-title { font-size: 14px; }
+}
 </style>
 </style>
 
@@ -562,6 +588,11 @@ body.lang-en .vn { display: none; }
       <div class="header-title">Community &amp; Market Monitor — Lineage2M SEA/VN</div>
       <div class="header-subtitle">Báo cáo tổng hợp cộng đồng và vận hành sản phẩm · Q1–Q2/2026</div>
     </div>
+    <div class="lang-toggle-wrap">
+      <button class="lang-btn active" id="btn-vn" onclick="setLang('vn')">VN</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      <span class="lang-note">T06 only</span>
+    </div>
   </div>
   <nav class="tab-nav">
     <button class="tab-btn active" onclick="switchTab('t01')">Tháng 01</button>
@@ -570,11 +601,6 @@ body.lang-en .vn { display: none; }
     <button class="tab-btn" onclick="switchTab('t04')">Tháng 04</button>
     <button class="tab-btn" onclick="switchTab('t05')">Tháng 05</button>
     <button class="tab-btn" onclick="switchTab('t06')">Tháng 06</button>
-    <div class="lang-toggle-wrap">
-      <button class="lang-btn active" id="btn-vn" onclick="setLang('vn')">VN</button>
-      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
-      <span class="lang-note">T06 only</span>
-    </div>
   </nav>
 </header>
 
