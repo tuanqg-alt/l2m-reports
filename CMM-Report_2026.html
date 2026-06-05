@@ -516,6 +516,34 @@
   }
 
   .stat-chip span { color: var(--accent); font-weight: 700; }
+
+<style>
+/* ── LANG TOGGLE ── */
+.lang-toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.lang-btn {
+  background: var(--tag-bg);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.lang-btn.active { background:#1e3a5f; border-color:#4a9eff; color:#4a9eff; }
+.lang-btn:hover  { border-color:#4a9eff; color:#4a9eff; }
+.lang-note { font-size:11px; color:var(--text-muted); font-style:italic; }
+.en { display: none; }
+body.lang-en .en { display: revert; }
+body.lang-en .vn { display: none; }
+</style>
 </style>
 
 <!-- NCV-DESIGN-SYSTEM-INJECTED -->
@@ -542,6 +570,11 @@
     <button class="tab-btn" onclick="switchTab('t04')">Tháng 04</button>
     <button class="tab-btn" onclick="switchTab('t05')">Tháng 05</button>
     <button class="tab-btn" onclick="switchTab('t06')">Tháng 06</button>
+    <div class="lang-toggle-wrap">
+      <button class="lang-btn active" id="btn-vn" onclick="setLang('vn')">VN</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      <span class="lang-note">T06 only</span>
+    </div>
   </nav>
 </header>
 
@@ -1539,11 +1572,185 @@
       </div>
     </div>
   </div>
-
-
   <!-- ═══════════════════════════════════════════════ THÁNG 06 ═══ -->
   <div id="t06" class="tab-panel">
     <div class="report-header">
-      <h2>Báo Cáo Tháng 06/2026</h2>
-      <div class="period">Phân tích cộng đồng và vận hành game · 28/05 – 05/06/2026</div>
-      <div style="margin-top:1
+      <h2><span class="vn">Báo Cáo Tháng 06/2026</span><span class="en">June 2026 Report</span></h2>
+      <div class="period"><span class="vn">Phân tích cộng đồng và vận hành game · 28/05 – 05/06/2026</span><span class="en">Community analysis &amp; game operations · 28/05 – 05/06/2026</span></div>
+      <div style="margin-top:10px;padding:8px 14px;background:rgba(240,165,48,0.1);border:1px solid rgba(240,165,48,0.3);border-radius:6px;font-size:12.5px;color:#f0a530;display:inline-flex;align-items:center;gap:8px;">
+        <span>&#9888;&#65039;</span>
+        <span>
+          <span class="vn"><strong>Lưu ý:</strong> Đây là báo cáo tuần đầu tháng 6 (28/05 – 05/06/2026), chưa phải báo cáo cả tháng 6.</span>
+          <span class="en"><strong>Note:</strong> This is the first-week-of-June report (28/05–05/06/2026), not the full month.</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="exec-summary">
+      <h3><span class="vn">Tóm lược điều hành</span><span class="en">Executive Summary</span></h3>
+      <p>
+        <span class="vn">Trong giai đoạn từ cuối tháng 5 đến đầu tháng 6 năm 2026, sự tham gia của cộng đồng duy trì ở mức trung bình, được thúc đẩy chủ yếu bởi chiến dịch kỷ niệm và các cập nhật mới. Tuy nhiên, tâm lý chung của người chơi đang có xu hướng tiêu cực do các vấn đề kỹ thuật kéo dài và lo ngại về sự mất cân bằng trong hệ thống tiến triển nhân vật.</span>
+        <span class="en">During the period from late May to early June 2026, community engagement remained at a moderate level, driven primarily by the anniversary campaign and new updates. However, overall player sentiment is trending negative due to persistent technical issues and concerns about imbalance in the character progression system.</span>
+      </p>
+      <div class="key-points">
+        <div class="key-point">
+          <div class="key-point-icon">&#9876;&#65039;</div>
+          <div class="key-point-body">
+            <strong><span class="vn">Cập nhật Tam Quốc (3Q)</span><span class="en">Three Kingdoms (3Q) Update</span></strong>
+            <p><span class="vn">Nhận được phản hồi tích cực ngoài mong đợi, được xem là tính năng hỗ trợ tiến trình hơn là công cụ hút tiền.</span><span class="en">Received unexpectedly positive feedback — viewed as a progression support feature rather than a monetization tool.</span></p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#9888;&#65039;</div>
+          <div class="key-point-body">
+            <strong><span class="vn">Vấn đề Kỹ thuật</span><span class="en">Technical Issues</span></strong>
+            <p><span class="vn">Tình trạng giật lag nghiêm trọng tại các bản đồ cuối (Zepar, TOI Tầng 4 &amp; 5) đang ảnh hưởng trực tiếp đến nhóm khách hàng VIP tại Việt Nam và SGMY.</span><span class="en">Severe lag at endgame maps (Zepar, TOI Floor 4 &amp; 5) is directly impacting VIP customers in Vietnam and SGMY.</span></p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#128257;</div>
+          <div class="key-point-body">
+            <strong><span class="vn">Nhu cầu Chuyển Server</span><span class="en">Server Transfer Demand</span></strong>
+            <p><span class="vn">Đây là mối quan tâm hàng đầu trên tất cả các khu vực, kèm theo nhiều tin đồn thất thiệt gây hoang mang.</span><span class="en">This is the top concern across all regions, accompanied by false rumors causing widespread confusion.</span></p>
+          </div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-icon">&#128481;&#65039;</div>
+          <div class="key-point-body">
+            <strong><span class="vn">Cạnh tranh PvP</span><span class="en">PvP Competition</span></strong>
+            <p><span class="vn">Đảo Cổ Đại (Ancient Island) đã trở thành chiến trường chính; tại cụm Leona, sự áp đảo của một số liên minh đang gây nản lòng cho các nhóm người chơi khác.</span><span class="en">Ancient Island has become the main battlefield; in the Leona cluster, dominance by certain alliances is discouraging other player groups.</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section">
+      <div class="section-title"><span class="num">1</span> <span class="vn">Phân Tích Thị Trường và Cộng Đồng Theo Khu Vực</span><span class="en">Market &amp; Community Analysis by Region</span></div>
+      <table class="market-table">
+        <thead>
+          <tr>
+            <th><span class="vn">Khu vực</span><span class="en">Region</span></th>
+            <th><span class="vn">Mức độ tương tác</span><span class="en">Engagement</span></th>
+            <th><span class="vn">Tâm lý chủ đạo</span><span class="en">Primary Sentiment</span></th>
+            <th><span class="vn">Điểm nhấn chính</span><span class="en">Key Highlights</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Việt Nam (VN)</strong></td>
+            <td><span class="market-tag tag-positive"><span class="vn">Cao nhất</span><span class="en">Highest</span></span></td>
+            <td><span class="market-tag tag-negative"><span class="vn">Tiêu cực</span><span class="en">Negative</span></span></td>
+            <td><span class="vn">Quan tâm đến Golden Class và Chuyển Server; phàn nàn về lỗi kỹ thuật và xu hướng chuyển sang Lineage W.</span><span class="en">Interest in Golden Class and Server Transfer; complaints about technical bugs and trend toward switching to Lineage W.</span></td>
+          </tr>
+          <tr>
+            <td><strong>Thái Lan (TH)</strong></td>
+            <td><span class="market-tag tag-positive"><span class="vn">Tích cực</span><span class="en">Active</span></span></td>
+            <td><span class="market-tag tag-negative"><span class="vn">Tiêu cực</span><span class="en">Negative</span></span></td>
+            <td><span class="vn">Tập trung vào kỹ năng mới, bản đồ mới; phản đối hệ thống Thăng tiến Giai cấp vì ưu tiên người nạp tiền.</span><span class="en">Focused on new skills and maps; opposing Class Advancement for favoring spenders.</span></td>
+          </tr>
+          <tr>
+            <td><strong>Indonesia (ID)</strong></td>
+            <td><span class="market-tag tag-neutral"><span class="vn">Ổn định</span><span class="en">Stable</span></span></td>
+            <td><span class="market-tag tag-positive"><span class="vn">Tích cực / Trung lập</span><span class="en">Positive / Neutral</span></span></td>
+            <td><span class="vn">Tham gia sự kiện kỷ niệm tốt; bắt đầu lo ngại về cân bằng thăng tiến giai cấp.</span><span class="en">Good anniversary event participation; beginning to worry about class advancement balance.</span></td>
+          </tr>
+          <tr>
+            <td><strong>Philippines (PH)</strong></td>
+            <td><span class="market-tag tag-negative"><span class="vn">Thấp</span><span class="en">Low</span></span></td>
+            <td><span class="market-tag tag-mixed"><span class="vn">Hỗn hợp / Tiêu cực</span><span class="en">Mixed / Negative</span></span></td>
+            <td><span class="vn">Hoài niệm về sự kiện kỷ niệm nhưng bị cản trở bởi lỗi kết nối và lỗi client Purple.</span><span class="en">Nostalgic about the anniversary but hindered by connection errors and Purple client bugs.</span></td>
+          </tr>
+          <tr>
+            <td><strong>SGMY</strong></td>
+            <td><span class="market-tag tag-negative"><span class="vn">Thấp</span><span class="en">Low</span></span></td>
+            <td><span class="market-tag tag-positive"><span class="vn">Tích cực</span><span class="en">Positive</span></span></td>
+            <td><span class="vn">Thảo luận hạn chế, chủ yếu là nhóm VIP yêu cầu thêm nội dung cao cấp.</span><span class="en">Limited discussion; mainly VIP group requesting more premium content.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+      <div class="section-title"><span class="num">2</span> <span class="vn">Phản Hồi Người Dùng và Các Vấn Đề Trọng Tâm</span><span class="en">User Feedback &amp; Key Issues</span></div>
+      <div class="subsection-title"><span class="vn">2.1. Các tín hiệu tích cực</span><span class="en">2.1. Positive Signals</span></div>
+      <ul class="bullet-list">
+        <li><span class="vn"><strong>Sự kiện Kỷ niệm:</strong> Tiếp tục là động lực chính duy trì sự gắn kết. Tại VN, hơn 500 người dùng đã tham gia hoạt động trên Fanpage/Group. Tại PH, yếu tố hoài niệm vẫn có sức hút lớn hơn các thông báo tính năng mới.</span><span class="en"><strong>Anniversary Event:</strong> Continues to be the main engagement driver. In VN, 500+ users participated in Fanpage/Group activities. In PH, nostalgia still draws more interest than new feature announcements.</span></li>
+        <li><span class="vn"><strong>Sức hút từ Cập nhật 3Q:</strong> Các phần thưởng miễn phí (Gia Cát Lượng, Xích Thố) và các gói kim cương giá trị cao được đón nhận nồng nhiệt. Người chơi đánh giá cao việc sử dụng các lớp nhân vật bậc thấp làm nguyên liệu nâng cấp. <strong>Diao Chan</strong> là lựa chọn phổ biến nhất cho mục đích liên kết ngoại trang.</span><span class="en"><strong>3Q Update Appeal:</strong> Free rewards (Zhuge Liang, Red Hare) and high-value diamond packages received enthusiastically. Players appreciate using lower-tier class cards as upgrade materials. <strong>Diao Chan</strong> is the most popular costume link choice.</span></li>
+        <li><span class="vn"><strong>Hiệu ứng từ Raul:</strong> Việc người chơi <strong>CB (Thientai)</strong> tại Teon09 sở hữu Raul đầu tiên đã tạo hiệu ứng lan tỏa, kích thích các "cá voi" khác (Arktoshi, Adachi) chi tiêu để thử vận may.</span><span class="en"><strong>Raul Effect:</strong> Player <strong>CB (Thientai)</strong> on Teon09 being the first to obtain Raul created a ripple effect, spurring other whales (Arktoshi, Adachi) to spend and try their luck.</span></li>
+      </ul>
+      <hr class="divider">
+      <div class="subsection-title"><span class="vn">2.2. Các vấn đề gây tiêu cực và rủi ro</span><span class="en">2.2. Negative Issues &amp; Risks</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="risk-banner"><div class="risk-icon">&#128295;</div><div class="risk-body"><span class="vn"><strong>Tính ổn định kỹ thuật:</strong> Tình trạng lag, mất kết nối và lỗi vận hành sự kiện là khiếu nại phổ biến nhất, đặc biệt tại VN và PH.</span><span class="en"><strong>Technical Stability:</strong> Lag, disconnections and event bugs are the most common complaints, especially in VN and PH.</span></div></div>
+        <div class="risk-banner"><div class="risk-icon">&#9878;&#65039;</div><div class="risk-body"><span class="vn"><strong>Cân bằng Hệ thống:</strong> Các hệ thống mới như Thăng tiến Giai cấp (Class Advancement) và Liên kết (Link System) bị chỉ trích là nới rộng khoảng cách giữa người chơi nạp tiền và người chơi thông thường.</span><span class="en"><strong>System Balance:</strong> New systems like Class Advancement and Link System are criticized for widening the gap between paying and casual players.</span></div></div>
+        <div class="risk-banner"><div class="risk-icon">&#128226;</div><div class="risk-body"><span class="vn"><strong>Sự thiếu hụt thông tin:</strong> Tin đồn về việc chuyển server tại Indonesia gây ra sự nhầm lẫn và mất lòng tin vào các kênh thông tin chính thức.</span><span class="en"><strong>Information Deficit:</strong> Server transfer rumors in Indonesia caused confusion and eroded trust in official communication channels.</span></div></div>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+      <div class="section-title"><span class="num">3</span> <span class="vn">Báo Cáo VIP và Đề Xuất Xử Lý</span><span class="en">VIP Report &amp; Action Recommendations</span></div>
+      <p class="body-text"><span class="vn">Nhóm người chơi VIP đang thể hiện sự không hài lòng rõ rệt đối với chất lượng dịch vụ hiện tại.</span><span class="en">The VIP player group is showing clear dissatisfaction with current service quality.</span></p>
+      <div class="subsection-title"><span class="vn">3.1. Các vấn đề cấp bách của VIP</span><span class="en">3.1. Urgent VIP Issues</span></div>
+      <div class="action-list">
+        <div class="action-item"><div class="action-num">1</div><div class="action-body"><strong><span class="vn">Hiệu năng tại bản đồ Endgame</span><span class="en">Endgame Map Performance</span></strong><p><span class="vn">Tình trạng lag nghiêm trọng tại Zepar và TOI Tầng 4 &amp; 5 đang làm gián đoạn trải nghiệm của VIP tại VN và SGMY.</span><span class="en">Severe lag at Zepar and TOI Floor 4 &amp; 5 is disrupting VIP experience in VN and SGMY.</span></p></div></div>
+        <div class="action-item"><div class="action-num">2</div><div class="action-body"><strong><span class="vn">Yêu cầu lộ trình nội dung</span><span class="en">Content Roadmap Request</span></strong><p><span class="vn">VIP tại SGMY báo cáo các hệ thống hiện tại đã đạt giới hạn (Max bảng Aster) và yêu cầu sớm ra mắt Sách 20M Medal, Mythic Agathion và hệ thống Thần linh mới.</span><span class="en">SGMY VIPs report current systems have hit their limit (Max Aster Board) and are requesting early release of 20M Medal Book, Mythic Agathion, and the new Divine system.</span></p></div></div>
+        <div class="action-item"><div class="action-num">3</div><div class="action-body"><strong><span class="vn">Làm rõ việc Chuyển/Gộp Server</span><span class="en">Server Transfer/Merge Clarification</span></strong><p><span class="vn">Nhu cầu thông tin xác thực về lịch trình chuyển server hiện diện ở tất cả các khu vực để tránh các tin giả (hoax).</span><span class="en">Demand for authenticated server transfer timelines is present across all regions to counter fake news.</span></p></div></div>
+      </div>
+      <div class="subsection-title"><span class="vn">3.2. Đề xuất giải quyết (Levers)</span><span class="en">3.2. Recommended Solutions (Levers)</span></div>
+      <ul class="bullet-list">
+        <li><span class="vn">Xác nhận chính thức về lỗi lag tại Zepar/TOI và đưa ra lộ trình khắc phục kèm bồi thường.</span><span class="en">Official acknowledgment of Zepar/TOI lag with a fix roadmap and compensation plan.</span></li>
+        <li><span class="vn">Công bố lộ trình nội dung (Roadmap) từ 2–3 tháng tới để giữ chân nhóm VIP đã đạt giới hạn sức mạnh.</span><span class="en">Publish a 2–3 month content roadmap to retain VIPs who have reached their power ceiling.</span></li>
+        <li><span class="vn">Tổ chức sự kiện Thay đổi Giai cấp (Class Change) theo yêu cầu từ khu vực SGMY.</span><span class="en">Organize a Class Change event as requested by the SGMY region.</span></li>
+      </ul>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="section">
+      <div class="section-title"><span class="num">4</span> <span class="vn">Phân Tích Sản Phẩm và Biến Động Chiến Trường</span><span class="en">Product Analysis &amp; Battlefield Changes</span></div>
+      <div class="subsection-title"><span class="vn">4.1. Hệ sinh thái PvP tại Đảo Cổ Đại (Ancient Island)</span><span class="en">4.1. Ancient Island PvP Ecosystem</span></div>
+      <p class="body-text"><span class="vn">Đảo Cổ Đại đã vượt qua Zepar để trở thành chiến trường lớn nhất nhờ cơ chế ghép trận Thế giới (World-vs-World).</span><span class="en">Ancient Island has surpassed Zepar as the biggest battlefield thanks to World-vs-World matchmaking.</span></p>
+      <div class="card-grid">
+        <div class="card"><div class="card-label"><span class="vn">Tình trạng</span><span class="en">Status</span></div><div class="card-content"><span class="vn">Phe Burnhee hiện đang áp đảo về số lượng (gấp 3–4 lần) so với phe Stormblood sau khi ghép trận với Leona.</span><span class="en">The Burnhee faction currently dominates in numbers (3–4×) compared to Stormblood after matchmaking with Leona.</span></div></div>
+        <div class="card"><div class="card-label"><span class="vn">Hệ quả</span><span class="en">Consequences</span></div><div class="card-content"><span class="vn">Các cuộc giao tranh diễn ra liên tục, tạo ra một hệ sinh thái PvP bền vững nhưng gây áp lực lớn cho phe yếu thế.</span><span class="en">Continuous engagements create a sustainable PvP ecosystem but put significant pressure on the weaker side.</span></div></div>
+      </div>
+      <div class="subsection-title"><span class="vn">4.2. Tình hình Cụm Leona</span><span class="en">4.2. Leona Cluster Situation</span></div>
+      <p class="body-text"><span class="vn">Mặc dù phản hồi về cập nhật (Thăng tiến giai cấp, quà tặng đỏ) là tích cực, nhưng thực tế chiến trường lại rất khắc nghiệt:</span><span class="en">Despite positive feedback about updates (Class Advancement, red gift cards), the actual battlefield remains very harsh:</span></p>
+      <ul class="bullet-list">
+        <li><span class="vn"><strong>Sự thống trị của Cibal:</strong> Liên minh Cibal kiểm soát hầu hết các mục tiêu quan trọng và Boss, khiến các phe phái mới gặp khó khăn trong việc tranh chấp.</span><span class="en"><strong>Cibal Dominance:</strong> The Cibal alliance controls most key objectives and Bosses, making it difficult for new factions to compete.</span></li>
+        <li><span class="vn"><strong>Rủi ro rời bỏ:</strong> Một số tài khoản cấp cao (như Ultimic, Yenna) đã được rao bán, cho thấy dấu hiệu nản lòng do sự mất cân bằng trong PvP và ghép trận không thuận lợi tại Đảo Cổ Đại.</span><span class="en"><strong>Churn Risk:</strong> Several high-level accounts (e.g., Ultimic, Yenna) have been listed for sale, signaling discouragement due to PvP imbalance and unfavorable matchmaking at Ancient Island.</span></li>
+      </ul>
+      <div class="subsection-title"><span class="vn">4.3. Nhận định về Hệ thống Thăng tiến (Class Elevation)</span><span class="en">4.3. Class Elevation System Assessment</span></div>
+      <p class="body-text"><span class="vn">Trái với lo ngại ban đầu về việc bị coi là tính năng "hút máu", hệ thống này đang được cộng đồng chấp nhận nhờ khả năng tối ưu hóa các thẻ giai cấp thấp. Điều này đã thúc đẩy doanh số bán các gói thẻ giai cấp, đặc biệt là các gói phần thưởng Công thành chiến.</span><span class="en">Contrary to initial concerns about being a "pay-to-win" feature, the system is gaining community acceptance thanks to its ability to optimize lower-tier class cards — boosting sales of class card packages, especially Castle Siege reward packages.</span></p>
+      <div class="conclusion">
+        <span class="vn">Tuần 28/05–05/06/2026 ghi nhận mức tương tác ổn định nhờ 3Q và kỷ niệm, nhưng áp lực kỹ thuật (lag Zepar/TOI) và lo ngại về chuyển server là hai rủi ro chính cần xử lý ngay. Nếu thông tin server merge được làm rõ và roadmap nội dung được công bố, tâm lý tiêu cực hoàn toàn có thể đảo chiều trong những tuần tới.</span>
+        <span class="en">Week 28/05–05/06/2026 saw stable engagement thanks to 3Q and the anniversary, but technical pressure (Zepar/TOI lag) and server transfer uncertainty are the two main risks needing immediate action. If merge details are clarified and a content roadmap published, the negative wave could fully reverse in the coming weeks.</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function setLang(lang) {
+  if (lang === 'en') {
+    document.body.classList.add('lang-en');
+    document.getElementById('btn-en').classList.add('active');
+    document.getElementById('btn-vn').classList.remove('active');
+  } else {
+    document.body.classList.remove('lang-en');
+    document.getElementById('btn-vn').classList.add('active');
+    document.getElementById('btn-en').classList.remove('active');
+  }
+}
+</script>
+</body>
