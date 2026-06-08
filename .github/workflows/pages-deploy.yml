@@ -1,0 +1,40 @@
+# Deploy HTML reports to Cloudflare Pages (project: l2m-reports)
+# Setup: 2026-06-08 — thay GitHub Pages bằng CF Pages (chuẩn bị cho Zero Trust Access)
+# Secret cần có: CLOUDFLARE_API_TOKEN (Pages:Edit) — Settings > Secrets > Actions
+# Flow giữ nguyên: cowork.bat [11] push → workflow này tự deploy
+
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build dist (exclude _to_delete, README, .github)
+        run: |
+          mkdir -p dist
+          rsync -a ./ dist/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '_to_delete' \
+            --exclude 'README.md' \
+            --exclude 'dist'
+
+      - name: Create Pages project (first run only, no-op afterwards)
+        run: npx wrangler@4 pages project create l2m-reports --production-branch=main || echo "Project already exists - OK"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: d6f857b7e80736c01f77941e1c23bdd6
+
+      - name: Deploy to Cloudflare Pages
+        run: npx wrangler@4 pages deploy dist --project-name=l2m-reports --branch=main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: d6f857b7e80736c01f77941e1c23bdd6
