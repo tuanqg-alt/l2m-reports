@@ -301,7 +301,7 @@ tr.subtotal-row td {
 /* ================================================================
    DATA — Update this block when new approvals / actuals come in
    ================================================================ */
-const LAST_UPDATED = "04/06/2026";
+const LAST_UPDATED = '08/06/2026';
 
 const CAMPAIGNS = [
 
@@ -428,6 +428,1157 @@ const CAMPAIGNS = [
     ]
   }
   */
+,
+
+  // ── 2025 Historical Data (imported from L2M_Contract Progress Tracker) ──
+  {
+    id: 'H25-PH-01',
+    name: 'PH — KOL/Media/OOH Plan',
+    plans: [
+      {
+        code: 'JV1PHPA002', type: 'kol', market: 'PH',
+        beforeTax: 81750.0, afterTax: 81750.0,
+        actual: 40971.71,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1PHLG002. 1st pmnt May 15, 2nd Jul 10. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-PH-02',
+    name: 'PH — Social & Community Event',
+    plans: [
+      {
+        code: 'JV1PHPA003', type: 'vendor', market: 'PH',
+        beforeTax: 638.38, afterTax: 638.38,
+        actual: 402.43,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1PHLG003. 1st pmnt Sep 15. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-01',
+    name: 'VN — Outsource Plan (Lam Phuong)',
+    plans: [
+      {
+        code: 'A22PA001', type: 'vendor', market: 'VN',
+        beforeTax: 10785.0, afterTax: 10785.0,
+        actual: 3510.54,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG001. 1st pmnt Apr 8, 2nd Jun 20. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-02',
+    name: 'VN — PR Plan (Lam Phuong)',
+    plans: [
+      {
+        code: 'A22PA002', type: 'vendor', market: 'VN',
+        beforeTax: 37308.0, afterTax: 37308.0,
+        actual: 13195.69,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG002. 1st pmnt Apr 10. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-03',
+    name: 'VN — XOM Social & Community Plan',
+    plans: [
+      {
+        code: 'A22PA003', type: 'vendor', market: 'VN',
+        beforeTax: 18887.0, afterTax: 18887.0,
+        actual: 9467.05,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG003. 1st pmnt May 9. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-04',
+    name: 'VN — KOL Plan (Lam Phuong)',
+    plans: [
+      {
+        code: 'A22PA004', type: 'kol', market: 'VN',
+        beforeTax: 92994.0, afterTax: 92994.0,
+        actual: 34286.79,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG004. 1st pmnt Apr 11, 2nd Jun 27. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-05',
+    name: 'VN — Eflow Plan (NCV Sing)',
+    plans: [
+      {
+        code: 'A22PA005', type: 'vendor', market: 'VN',
+        beforeTax: 6615.0, afterTax: 6615.0,
+        actual: 6670.54,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG005. 1st pmnt Jul 25. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-06',
+    name: 'VN — OOH Plan (Chicilon)',
+    plans: [
+      {
+        code: 'A22PA006', type: 'vendor', market: 'VN',
+        beforeTax: 67502.0, afterTax: 67502.0,
+        actual: 12454.04,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG006. 1st pmnt Jun 9, 2nd Jul 10. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-07',
+    name: 'VN — OOH Plan (BIZMAN)',
+    plans: [
+      {
+        code: 'A22PA006', type: 'vendor', market: 'VN',
+        beforeTax: 35056.0, afterTax: 35056.0,
+        actual: 32532.51,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG014. Shares plan A22PA006 with Chicilon. 1st pmnt Jun 9. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-08',
+    name: 'VN — Cyber Chain Plan',
+    plans: [
+      {
+        code: 'A22PA007', type: 'vendor', market: 'VN',
+        beforeTax: 18429.0, afterTax: 18429.0,
+        actual: 8957.38,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG007. 1st pmnt May 19. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-09',
+    name: 'VN — Accesstrade UGC Program Social',
+    plans: [
+      {
+        code: 'A22PA009', type: 'vendor', market: 'VN',
+        beforeTax: 39370.0, afterTax: 39370.0,
+        actual: 10854.23,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG009. 1st pmnt Jun 16. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-10',
+    name: 'VN — External Social & KOL',
+    plans: [
+      {
+        code: 'A22PA010', type: 'kol', market: 'VN',
+        beforeTax: 58511.0, afterTax: 58511.0,
+        actual: 22426.47,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG010. 1st pmnt May 12. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-11',
+    name: 'VN — XOM Logistic Event & Gift',
+    plans: [
+      {
+        code: 'A22PA012', type: 'vendor', market: 'VN',
+        beforeTax: 5650.0, afterTax: 5650.0,
+        actual: 2880.56,
+        period: '2025 M0-M1', status: 'approved',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG012. 1st pmnt Jun 18 Done, 2nd Have not. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-12',
+    name: 'VN — Offline Event (Game Verse)',
+    plans: [
+      {
+        code: 'A22PA013', type: 'vendor', market: 'VN',
+        beforeTax: 13411.75, afterTax: 13411.75,
+        actual: 13474.18,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG013. 1st pmnt Jun 10. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-13',
+    name: 'VN — Super VIP Care Hotline',
+    plans: [
+      {
+        code: 'A22PA014', type: 'vendor', market: 'VN',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: '2025 M0-M1', status: 'approved',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG017. Status \'Have not\' — unresolved. No cost data. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-14',
+    name: 'VN — XOM Nano Influencers',
+    plans: [
+      {
+        code: 'A22PA015', type: 'kol', market: 'VN',
+        beforeTax: 12602.1, afterTax: 12602.1,
+        actual: 6342.59,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG015. 1st pmnt Jul 7. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-15',
+    name: 'VN — Youtube Creator (METUB)',
+    plans: [
+      {
+        code: 'A22PA016', type: 'kol', market: 'VN',
+        beforeTax: 12000.0, afterTax: 12000.0,
+        actual: 12060.55,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG016. 1st pmnt Jun 10. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-16',
+    name: 'VN — Digital Ads COCCOC',
+    plans: [
+      {
+        code: 'A22PA008', type: 'digital', market: 'VN',
+        beforeTax: 4000.0, afterTax: 4000.0,
+        actual: 4055.57,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG018. 1st pmnt Jun 20. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-17',
+    name: 'VN — Outsource Plan Batch 2 (Jul-Dec)',
+    plans: [
+      {
+        code: 'A22PA017', type: 'vendor', market: 'VN',
+        beforeTax: 7055.0, afterTax: 7055.0,
+        actual: null,
+        period: 'Jul-Dec 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG020. 1st pmnt Done (no amount visible). Actual TBD. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-VN-18',
+    name: 'VN — Prize Delivery Plan (Lam Phuong)',
+    plans: [
+      {
+        code: 'A22PA020', type: 'giftcard', market: 'VN',
+        beforeTax: 5409.0, afterTax: 5409.0,
+        actual: null,
+        period: '2025 M0-M1', status: 'approved',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: A22LG019. 1st pmnt Have not. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SM-01',
+    name: 'SM — Collaborator Lim Han Chait',
+    plans: [
+      {
+        code: 'JV1SMPA001', type: 'kol', market: 'SEA',
+        beforeTax: 1200.0, afterTax: 1200.0,
+        actual: 1255.68,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1SMLG008. 1st May 15, 2nd Jun 30. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SM-02',
+    name: 'SM — Collaborator Lim Jian Hao',
+    plans: [
+      {
+        code: 'JV1SMPA001', type: 'kol', market: 'SEA',
+        beforeTax: 1200.0, afterTax: 1200.0,
+        actual: 1255.68,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1SMLG002. 1st May 15, 2nd Jun 30. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SM-03',
+    name: 'SM — Collaborator Pie Xin Man',
+    plans: [
+      {
+        code: 'JV1SMPA001', type: 'kol', market: 'SEA',
+        beforeTax: 1200.0, afterTax: 1200.0,
+        actual: 1255.68,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1SMLG003. 1st May 15, 2nd Jun 30. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SM-04',
+    name: 'SM — Drone / Shooting / ACG Event / Media',
+    plans: [
+      {
+        code: 'JV1SMPA003', type: 'vendor', market: 'SEA',
+        beforeTax: 50000.0, afterTax: 50000.0,
+        actual: 25075.74,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1SMLG001. 1st May 1, 2nd May 28. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SM-05',
+    name: 'SM — KOL/Streamer/Media Batch 1',
+    plans: [
+      {
+        code: 'JV1SMPA004', type: 'kol', market: 'SEA',
+        beforeTax: 71000.0, afterTax: 71000.0,
+        actual: 35589.87,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1SMLG004. 1st May 9, 2nd Jun 11. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SM-06',
+    name: 'SM — DOOH Plan',
+    plans: [
+      {
+        code: 'JV1SMPA005', type: 'vendor', market: 'SEA',
+        beforeTax: 59000.0, afterTax: 59000.0,
+        actual: 29582.38,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1SMLG005. 1st May 9, 2nd Jun 11. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SM-07',
+    name: 'SM — KOL/Streamer/Media Batch 2',
+    plans: [
+      {
+        code: 'JV1SMPA006', type: 'kol', market: 'SEA',
+        beforeTax: 42000.0, afterTax: 42000.0,
+        actual: 42097.95,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1SMLG006. 1st Jun 3. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SM-08',
+    name: 'SM — PR Plan OB',
+    plans: [
+      {
+        code: 'JV1SMPA007', type: 'vendor', market: 'SEA',
+        beforeTax: 15000.0, afterTax: 15000.0,
+        actual: 15064.26,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1SMLG007. 1st May 30. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-01',
+    name: 'ID — Collaborator Jehans',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 613.0, afterTax: 613.0,
+        actual: 667.91,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG001. 1st Mar 27. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-02',
+    name: 'ID — Collaborator Erika (March)',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 375.0, afterTax: 375.0,
+        actual: 430.32,
+        period: 'Mar 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG002. 1st Apr 21. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-03',
+    name: 'ID — Collaborator Erika (May)',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 402.25, afterTax: 402.25,
+        actual: 457.85,
+        period: 'May 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG002. 1st Jun 15. Actual = 1st pmnt. Source: M0-M1 tab. Note: row 33 (Apr) not captured.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-04',
+    name: 'ID — Collaborator Meiditya (March)',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 375.0, afterTax: 375.0,
+        actual: 430.32,
+        period: 'Mar 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG003. 1st Apr 21. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-05',
+    name: 'ID — Collaborator Panji (March)',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 375.0, afterTax: 375.0,
+        actual: 430.32,
+        period: 'Mar 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG004. 1st Apr 21. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-06',
+    name: 'ID — Collaborator Bayu (March)',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 437.5, afterTax: 437.5,
+        actual: 492.82,
+        period: 'Mar 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG005. 1st Apr 21. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-07',
+    name: 'ID — Collaborator Bayu (April)',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 437.5, afterTax: 437.5,
+        actual: 492.88,
+        period: 'Apr 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG005. 1st May 15. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-08',
+    name: 'ID — Collaborator Bayu (May)',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 437.5, afterTax: 437.5,
+        actual: 493.1,
+        period: 'May 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG005. 1st Jun 15. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-09',
+    name: 'ID — Collaborator Sarah (April)',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 406.0, afterTax: 406.0,
+        actual: 461.38,
+        period: 'Apr 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG013. 1st May 15. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-10',
+    name: 'ID — Collaborator Sarah (May)',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 406.0, afterTax: 406.0,
+        actual: 461.1,
+        period: 'May 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG013. 1st Jun 15. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-11',
+    name: 'ID — Collaborator Arif',
+    plans: [
+      {
+        code: 'JV1IDPA001', type: 'kol', market: 'ID',
+        beforeTax: 514.0, afterTax: 514.0,
+        actual: 569.52,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG019. 1st May 22. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-12',
+    name: 'ID — Collaborator Bayu (July)',
+    plans: [
+      {
+        code: 'JV1IDPA015', type: 'kol', market: 'ID',
+        beforeTax: 437.5, afterTax: 437.5,
+        actual: 493.07,
+        period: 'Jul 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG021. 1st Aug 19. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-13',
+    name: 'ID — Collaborator Feryan (July)',
+    plans: [
+      {
+        code: 'JV1IDPA015', type: 'kol', market: 'ID',
+        beforeTax: 400.0, afterTax: 400.0,
+        actual: 455.57,
+        period: 'Jul 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG020. 1st Aug 19. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-14',
+    name: 'ID — Collaborator Bayu (August)',
+    plans: [
+      {
+        code: 'JV1IDPA015', type: 'kol', market: 'ID',
+        beforeTax: 437.5, afterTax: 437.5,
+        actual: 493.09,
+        period: 'Aug 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG021. 1st Sep 19. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-15',
+    name: 'ID — Collaborator Feryan (August)',
+    plans: [
+      {
+        code: 'JV1IDPA015', type: 'kol', market: 'ID',
+        beforeTax: 400.0, afterTax: 400.0,
+        actual: 455.59,
+        period: 'Aug 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG020. 1st Sep 19. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-16',
+    name: 'ID — PR Estu',
+    plans: [
+      {
+        code: 'JV1IDPA002', type: 'vendor', market: 'ID',
+        beforeTax: 293.75, afterTax: 293.75,
+        actual: 348.56,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG011. 1st Apr 9. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-17',
+    name: 'ID — PR Alif',
+    plans: [
+      {
+        code: 'JV1IDPA003', type: 'vendor', market: 'ID',
+        beforeTax: 420.0, afterTax: 420.0,
+        actual: 474.81,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG012. 1st Apr 9. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-18',
+    name: 'ID — ABY',
+    plans: [
+      {
+        code: 'JV1IDPA004', type: 'kol', market: 'ID',
+        beforeTax: 5320.0, afterTax: 5320.0,
+        actual: 5375.37,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG009. 1st May 9. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-19',
+    name: 'ID — EDTS Batch 1',
+    plans: [
+      {
+        code: 'JV1IDPA005', type: 'kol', market: 'ID',
+        beforeTax: 5811.62, afterTax: 5811.62,
+        actual: 5866.94,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG010. 1st May 12. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-20',
+    name: 'ID — Lotus',
+    plans: [
+      {
+        code: 'JV1IDPA006', type: 'kol', market: 'ID',
+        beforeTax: 6321.0, afterTax: 6321.0,
+        actual: 6376.32,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG006. 1st May 12. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-21',
+    name: 'ID — VY',
+    plans: [
+      {
+        code: 'JV1IDPA007', type: 'kol', market: 'ID',
+        beforeTax: 4151.0, afterTax: 4151.0,
+        actual: 4206.32,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG007. 1st May 12. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-22',
+    name: 'ID — Kotak Game',
+    plans: [
+      {
+        code: 'JV1IDPA008', type: 'kol', market: 'ID',
+        beforeTax: 370.0, afterTax: 370.0,
+        actual: 425.32,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG008. 1st May 12. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-23',
+    name: 'ID — Cyber Chain Plan',
+    plans: [
+      {
+        code: 'JV1IDPA010', type: 'vendor', market: 'ID',
+        beforeTax: 19950.47, afterTax: 19950.47,
+        actual: 6040.76,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG014. 1st May 9, 2nd Jul 9. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-24',
+    name: 'ID — Eunoia KOL/Cosplay/POSM/Shipping',
+    plans: [
+      {
+        code: 'JV1IDPA011', type: 'kol', market: 'ID',
+        beforeTax: 14730.0, afterTax: 14730.0,
+        actual: 7420.59,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG015. 1st May 9, 2nd Jun 16. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-25',
+    name: 'ID — EDTS Batch 2 Media/KOL/Streamer',
+    plans: [
+      {
+        code: 'JV1IDPA012', type: 'kol', market: 'ID',
+        beforeTax: 16652.15, afterTax: 16652.15,
+        actual: 16718.46,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG016. 1st Jun 3. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-26',
+    name: 'ID — Eunoia KOL/Streamer/Media Batch 2',
+    plans: [
+      {
+        code: 'JV1IDPA013', type: 'kol', market: 'ID',
+        beforeTax: 27878.0, afterTax: 27878.0,
+        actual: 14002.02,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG017. 1st May 30, 2nd Jul 9. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-27',
+    name: 'ID — EDTS KOL/Streamer/Media Batch 3',
+    plans: [
+      {
+        code: 'JV1IDPA014', type: 'kol', market: 'ID',
+        beforeTax: 89095.3, afterTax: 89095.3,
+        actual: 44648.87,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1IDLG018. 1st May 30. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-ID-28',
+    name: 'ID — EDTS KOL/Streamer/Media Batch 4',
+    plans: [
+      {
+        code: 'JV1IDPA016', type: 'kol', market: 'ID',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: '2025 M0-M1', status: 'pending',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'No contract/cost data in source. Status blank. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-TH-01',
+    name: 'TH — Showcase Plan (7DUCKS)',
+    plans: [
+      {
+        code: '7DUCKS', type: 'vendor', market: 'TH',
+        beforeTax: 79129.78, afterTax: 79129.78,
+        actual: 39659.5,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: 7DUCKS. 1st Mar 18, 2nd Apr 28. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-TH-02',
+    name: 'TH — Outsource Plan (March)',
+    plans: [
+      {
+        code: 'JV1THPA001', type: 'vendor', market: 'TH',
+        beforeTax: 643.0, afterTax: 643.0,
+        actual: 698.32,
+        period: 'Mar 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1THLG002. 1st Apr 21. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-TH-03',
+    name: 'TH — Outsource Plan (April)',
+    plans: [
+      {
+        code: 'JV1THPA001', type: 'vendor', market: 'TH',
+        beforeTax: 643.0, afterTax: 643.0,
+        actual: 698.38,
+        period: 'Apr 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1THLG002. 1st May 15. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-TH-04',
+    name: 'TH — Outsource Plan (May)',
+    plans: [
+      {
+        code: 'JV1THPA001', type: 'vendor', market: 'TH',
+        beforeTax: 643.0, afterTax: 643.0,
+        actual: 698.68,
+        period: 'May 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1THLG002. 1st Jun 16. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-TH-05',
+    name: 'TH — Outsource Plan (June)',
+    plans: [
+      {
+        code: 'JV1THPA001', type: 'vendor', market: 'TH',
+        beforeTax: 643.0, afterTax: 643.0,
+        actual: 698.57,
+        period: 'Jun 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1THLG002. 1st Jul 15. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-TH-06',
+    name: 'TH — Eflow UA Creative Plan',
+    plans: [
+      {
+        code: 'JV1THPA002', type: 'vendor', market: 'TH',
+        beforeTax: 22800.0, afterTax: 22800.0,
+        actual: 22873.27,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1THLG001. 1st Apr 11. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-TH-07',
+    name: 'TH — KOL/Streamer/Media/Cosplay',
+    plans: [
+      {
+        code: 'JV1THPA004', type: 'kol', market: 'TH',
+        beforeTax: 246235.0, afterTax: 246235.0,
+        actual: 104755.09,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1THLG004. 1st May 14, 2nd Jun 20. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-TH-08',
+    name: 'TH — Cyber Chain Plan & SEA Rewards Plan',
+    plans: [
+      {
+        code: 'JV1THPA005', type: 'vendor', market: 'TH',
+        beforeTax: 56885.43, afterTax: 56885.43,
+        actual: 22966.56,
+        period: '2025 M0-M1', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1THLG005. 1st May 30. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-TH-09',
+    name: 'TH — Prize Delivery Plan (Birdzilla)',
+    plans: [
+      {
+        code: 'JV1THPA006', type: 'giftcard', market: 'TH',
+        beforeTax: 7942.0, afterTax: 7942.0,
+        actual: 7997.53,
+        period: 'Sep 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: '2025',
+        notes: 'Contract: JV1THLG006. 1st Sep 25. Actual = 1st pmnt. Source: M0-M1 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SEP-VN-01',
+    name: 'VN — Digital Ads New World Erica',
+    plans: [
+      {
+        code: 'A22PA018', type: 'digital', market: 'VN',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Sep 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Sep 2025',
+        notes: 'No contract cost in source. Status Done. Source: Sep25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SEP-VN-02',
+    name: 'VN — New Server Erica Branding (XOM Agency)',
+    plans: [
+      {
+        code: 'A22PA019', type: 'vendor', market: 'VN',
+        beforeTax: 33000.0, afterTax: 33000.0,
+        actual: null,
+        period: 'Sep 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Sep 2025',
+        notes: 'Contract: A22LG022. Source: Sep25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SEP-TH-01',
+    name: 'TH — Digital Ads New World Erica',
+    plans: [
+      {
+        code: 'JV1THPA007', type: 'digital', market: 'TH',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Sep 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Sep 2025',
+        notes: 'No contract cost in source. Status Done. Source: Sep25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SEP-TH-02',
+    name: 'TH — Digital Ads New World Erica (Backup)',
+    plans: [
+      {
+        code: 'JV1THPA008', type: 'digital', market: 'TH',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Sep 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Sep 2025',
+        notes: 'No contract cost in source. Status Done. Source: Sep25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SEP-TH-03',
+    name: 'TH — New Server Erica Branding (Ampverse)',
+    plans: [
+      {
+        code: 'JV1THPA009', type: 'vendor', market: 'TH',
+        beforeTax: 25205.0, afterTax: 25205.0,
+        actual: null,
+        period: 'Sep 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Sep 2025',
+        notes: 'Contract: JV1THLG007. Source: Sep25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SEP-ID-01',
+    name: 'ID — Outsource Plan Sep-Dec (Collaborator Bayu & Feryan)',
+    plans: [
+      {
+        code: 'JV1IDPA017', type: 'kol', market: 'ID',
+        beforeTax: 3908.3, afterTax: 3908.3,
+        actual: null,
+        period: 'Sep-Dec 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Sep 2025',
+        notes: 'Contract: JV1IDLG022 (Bayu) + JV1IDLG023 (Feryan). Source: Sep25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SEP-ID-02',
+    name: 'ID — Digital Ads New World Erica',
+    plans: [
+      {
+        code: 'JV1IDPA018', type: 'digital', market: 'ID',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Sep 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Sep 2025',
+        notes: 'No contract cost in source. Status Done. Source: Sep25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SEP-ID-03',
+    name: 'ID — Digital Ads New World Erica (Backup)',
+    plans: [
+      {
+        code: 'JV1IDPA019', type: 'digital', market: 'ID',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Sep 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Sep 2025',
+        notes: 'No contract cost in source. Status Done. Source: Sep25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-SEP-ID-04',
+    name: 'ID — New Server Erica Branding (Lotus Agency)',
+    plans: [
+      {
+        code: 'JV1IDPA020', type: 'vendor', market: 'ID',
+        beforeTax: 18560.0, afterTax: 18560.0,
+        actual: null,
+        period: 'Sep-Nov 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Sep 2025',
+        notes: 'Contract: JV1IDLG024. 1st pmnt Nov 4. Source: Sep25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-OCT-VN-01',
+    name: 'VN — Plan for Supporting Flood-Affected Communities',
+    plans: [
+      {
+        code: 'A22PA021', type: 'vendor', market: 'VN',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Oct 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Oct 2025',
+        notes: 'No contract cost visible. 1st pmnt Oct 9 Done. Source: Oct25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-OCT-TH-01',
+    name: 'TH — Digital Ads New World Aria',
+    plans: [
+      {
+        code: 'JV1THPA010', type: 'digital', market: 'TH',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Oct 2025', status: 'pending',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Oct 2025',
+        notes: 'No contract cost, no payment done. Source: Oct25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-OCT-ID-01',
+    name: 'ID — Digital Ads New World Aria',
+    plans: [
+      {
+        code: 'JV1IDPA021', type: 'digital', market: 'ID',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Oct 2025', status: 'pending',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Oct 2025',
+        notes: 'No contract cost, no payment done. Source: Oct25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-OCT-ID-02',
+    name: 'ID — Collaborator Bayu (October)',
+    plans: [
+      {
+        code: 'JV1IDPA017', type: 'kol', market: 'ID',
+        beforeTax: 437.5, afterTax: 437.5,
+        actual: null,
+        period: 'Oct 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Oct 2025',
+        notes: 'Contract: JV1IDLG022. 1st pmnt Nov 10. Source: Oct25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H25-OCT-ID-03',
+    name: 'ID — Collaborator Feryan (October)',
+    plans: [
+      {
+        code: 'JV1IDPA017', type: 'kol', market: 'ID',
+        beforeTax: 400.0, afterTax: 400.0,
+        actual: null,
+        period: 'Oct 2025', status: 'paid',
+        approvedBy: 'NCV MKT (2025)', approvedDate: 'Oct 2025',
+        notes: 'Contract: JV1IDLG023. 1st pmnt Nov 10. Source: Oct25 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H26-JAN-VN-01',
+    name: 'VN — Localize Social & Community Maintenance (CTS)',
+    plans: [
+      {
+        code: 'TBD', type: 'vendor', market: 'VN',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Jan 2026', status: 'pending',
+        approvedBy: 'NCV MKT (2026)', approvedDate: 'Jan 2026',
+        notes: 'No plan code, no contract cost. CTS for VN-PH-SG-MY. Source: Jan26 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H26-JAN-TH-01',
+    name: 'TH — Localize Banner Design',
+    plans: [
+      {
+        code: 'JV1THPA011', type: 'vendor', market: 'TH',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Jan 2026', status: 'pending',
+        approvedBy: 'NCV MKT (2026)', approvedDate: 'Jan 2026',
+        notes: 'Status: Planned. No contract cost. Source: Jan26 tab.'
+      }
+    ]
+  },
+  {
+    id: 'H26-JAN-TH-02',
+    name: 'TH/ID — Localize Social & Community Campaign Management (CTS)',
+    plans: [
+      {
+        code: 'TBD', type: 'vendor', market: 'SEA',
+        beforeTax: 0, afterTax: 0,
+        actual: null,
+        period: 'Jan 2026', status: 'pending',
+        approvedBy: 'NCV MKT (2026)', approvedDate: 'Jan 2026',
+        notes: 'No plan code, no contract cost. CTS for TH-ID. Source: Jan26 tab.'
+      }
+    ]
+  }
 ];
 
 /* ================================================================
