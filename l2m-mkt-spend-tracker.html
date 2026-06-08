@@ -96,9 +96,12 @@ body {
 
 /* Filter */
 .filter-bar {
-  background: var(--bg-card); border: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(22,29,39,0.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
   border-radius: var(--radius); padding: 14px 18px;
   margin-bottom: 18px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
 }
 .filter-group { display: flex; align-items: center; gap: 8px; }
 .filter-group label {
@@ -224,14 +227,16 @@ tr.subtotal-row td {
     <div class="last-updated">🕐 Last updated: <strong id="tsLabel"></strong> · Source: Outlook</div>
   </div>
 
-  <!-- SUMMARY CARDS -->
-  <div class="summary-grid" id="summaryGrid"></div>
-
-  <!-- MONTHLY SECTION -->
-  <div id="monthlySection"></div>
-
   <!-- FILTER BAR -->
   <div class="filter-bar">
+    <div class="filter-group">
+      <label>Kỳ</label>
+      <select id="fView" onchange="render()">
+        <option value="all">All · OB → nay</option>
+        <option value="2025">Năm 2025</option>
+        <option value="2026">Năm 2026</option>
+      </select>
+    </div>
     <div class="filter-group">
       <label>Type</label>
       <select id="fType" onchange="render()">
@@ -266,6 +271,12 @@ tr.subtotal-row td {
     </div>
     <span class="record-count" id="rowCount"></span>
   </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid" id="summaryGrid"></div>
+
+  <!-- MONTHLY SECTION -->
+  <div id="monthlySection"></div>
 
   <!-- TABLE -->
   <div class="table-wrap">
@@ -1625,12 +1636,20 @@ const STATUS_META = {
   running:  { label: '▶ Running',   cls: 's-running' }
 };
 
+/* ── Derive the year (2025/2026) of a plan from its period, fallback approvedDate ── */
+function planYear(p) {
+  const m = (p.period || '').match(/20\d\d/) || (p.approvedDate || '').match(/20\d\d/);
+  return m ? m[0] : null;
+}
+
 function filteredCampaigns() {
+  const fv = $('fView').value;
   const ft = $('fType').value;
   const fm = $('fMarket').value;
   const fs = $('fStatus').value;
   return CAMPAIGNS.map(c => {
     const plans = c.plans.filter(p =>
+      (fv === 'all' || planYear(p) === fv) &&
       (!ft || p.type === ft) &&
       (!fm || p.market === fm || p.market === 'SEA') &&
       (!fs || p.status === fs)
@@ -1641,6 +1660,16 @@ function filteredCampaigns() {
 
 /* ── Gross Revenue (KB GameOps, B VND → USD, FX 1 USD = 25,255 VND) ── */
 const GROSS_REVENUE = {
+  // 2025 — VIP charge-based monthly total (kb_gameops · VIP Tier Revenue Distribution); OB launch May 2025
+  '2025-05': { usd: 3271431, label: 'May 2025', bvnd: 82.62 },
+  '2025-06': { usd: 5720451, label: 'Jun 2025', bvnd: 144.47 },
+  '2025-07': { usd: 5086913, label: 'Jul 2025', bvnd: 128.47 },
+  '2025-08': { usd: 3975450, label: 'Aug 2025', bvnd: 100.4 },
+  '2025-09': { usd: 3436547, label: 'Sep 2025', bvnd: 86.79 },
+  '2025-10': { usd: 2660463, label: 'Oct 2025', bvnd: 67.19 },
+  '2025-11': { usd: 2229262, label: 'Nov 2025', bvnd: 56.3 },
+  '2025-12': { usd: 2190457, label: 'Dec 2025', bvnd: 55.32 },
+  // 2026 — Atlas liveops gross (KB GameOps Scope A)
   '2026-01': { usd: 2036824, label: 'Jan 2026', bvnd: 51.44 },
   '2026-02': { usd: 1759256, label: 'Feb 2026', bvnd: 44.43 },
   '2026-03': { usd: 1764007, label: 'Mar 2026', bvnd: 44.55 },
@@ -1658,53 +1687,63 @@ const MONTHLY_MKT = {
 };
 
 function renderSummary(campaigns) {
-  const allPlans = campaigns.flatMap(c => c.plans);
-  // All CAMPAIGNS (unfiltered) for global totals
-  const allPlansGlobal = CAMPAIGNS.flatMap(c => c.plans);
+  const fv = $('fView').value;
+  const yearLabel = fv === 'all' ? 'OB → nay' : 'Năm ' + fv;
 
-  const totalApproved = allPlansGlobal.filter(p => ['approved','paid','running'].includes(p.status))
+  const viewPlans = CAMPAIGNS.flatMap(c => c.plans).filter(p => fv === 'all' || planYear(p) === fv);
+  const viewCampaigns = CAMPAIGNS.filter(c => c.plans.some(p => fv === 'all' || planYear(p) === fv));
+
+  const totalApproved = viewPlans.filter(p => ['approved','paid','running'].includes(p.status))
     .reduce((s,p) => s + (p.afterTax||0), 0);
-  const pendingAmt = allPlansGlobal.filter(p => p.status === 'pending')
+  const pendingAmt = viewPlans.filter(p => p.status === 'pending')
     .reduce((s,p) => s + (p.afterTax||0), 0);
-  const paidMkt = allPlansGlobal.filter(p => p.status === 'paid')
+  const paidMkt = viewPlans.filter(p => p.status === 'paid')
     .reduce((s,p) => s + (p.actual||0), 0);
-  const approvedCount = allPlansGlobal.filter(p => ['approved','paid','running'].includes(p.status)).length;
-  const pendingCount  = allPlansGlobal.filter(p => p.status === 'pending').length;
+  const approvedCount = viewPlans.filter(p => ['approved','paid','running'].includes(p.status)).length;
+  const pendingCount  = viewPlans.filter(p => p.status === 'pending').length;
+  const paidCount     = viewPlans.filter(p => p.status === 'paid').length;
+  const usd = n => '$' + Math.round(n).toLocaleString('en-US');
 
-  const grossYTD = Object.values(GROSS_REVENUE).reduce((s,m) => s + m.usd, 0);
-  const paidRatio = grossYTD > 0 ? (paidMkt / grossYTD * 100) : 0;
-  const apprRatio = grossYTD > 0 ? (totalApproved / grossYTD * 100) : 0;
+  // Revenue scoped to the active view's year(s)
+  const gross = Object.entries(GROSS_REVENUE)
+    .filter(([k]) => fv === 'all' || k.startsWith(fv))
+    .reduce((s,[,m]) => s + m.usd, 0);
+  const grossSub = fv === '2026' ? 'Jan–May 2026 · Atlas (FX 25,255)'
+                 : fv === '2025' ? 'May–Dec 2025 · VIP charge total (FX 25,255)'
+                 : '2025 (May–Dec) + 2026 (Jan–May) · FX 25,255';
+  const paidRatio = gross > 0 ? (paidMkt / gross * 100) : null;
+  const apprRatio = gross > 0 ? (totalApproved / gross * 100) : null;
 
   $('summaryGrid').innerHTML = `
     <div class="summary-card" style="border-color:rgba(59,130,246,0.35)">
-      <div class="label">Gross Revenue YTD 2026</div>
-      <div class="value" style="color:var(--blue)">$${Math.round(grossYTD).toLocaleString('en-US')}</div>
-      <div class="sub">Jan–May · Source: KB GameOps (FX 25,255 VND/USD)</div>
+      <div class="label">Gross Revenue · ${yearLabel}</div>
+      <div class="value" style="color:var(--blue)">${usd(gross)}</div>
+      <div class="sub">${grossSub}</div>
     </div>
     <div class="summary-card" style="border-color:rgba(34,197,94,0.35)">
-      <div class="label">Paid MKT YTD</div>
-      <div class="value" style="color:var(--green)">$${Math.round(paidMkt).toLocaleString('en-US')}</div>
-      <div class="sub">${allPlansGlobal.filter(p=>p.status==='paid').length} plan đã thanh toán</div>
+      <div class="label">Paid MKT · ${yearLabel}</div>
+      <div class="value" style="color:var(--green)">${usd(paidMkt)}</div>
+      <div class="sub">${paidCount} plan đã thanh toán</div>
     </div>
     <div class="summary-card" style="border-color:rgba(34,197,94,0.2)">
       <div class="label">Paid MKT / Gross Rev</div>
-      <div class="value" style="color:var(--green)">${paidRatio.toFixed(2)}%</div>
-      <div class="sub">Approved budget / Rev: <strong style="color:var(--orange)">${apprRatio.toFixed(2)}%</strong></div>
+      <div class="value" style="color:var(--green)">${paidRatio != null ? paidRatio.toFixed(2)+'%' : 'N/A'}</div>
+      <div class="sub">Approved / Rev: <strong style="color:var(--orange)">${apprRatio != null ? apprRatio.toFixed(2)+'%' : 'N/A'}</strong></div>
     </div>
     <div class="summary-card accent">
-      <div class="label">Total Approved MKT Budget</div>
-      <div class="value">$${Math.round(totalApproved).toLocaleString('en-US')}</div>
+      <div class="label">Total Approved Budget · ${yearLabel}</div>
+      <div class="value">${usd(totalApproved)}</div>
       <div class="sub">${approvedCount} plan đã duyệt (after tax)</div>
     </div>
     <div class="summary-card">
-      <div class="label">Pending Approval</div>
-      <div class="value" style="color:var(--yellow)">$${Math.round(pendingAmt).toLocaleString('en-US')}</div>
+      <div class="label">Pending Approval · ${yearLabel}</div>
+      <div class="value" style="color:var(--yellow)">${usd(pendingAmt)}</div>
       <div class="sub">${pendingCount} plan chờ duyệt</div>
     </div>
     <div class="summary-card">
-      <div class="label">Campaigns Tracked</div>
-      <div class="value">${CAMPAIGNS.length}</div>
-      <div class="sub">${allPlansGlobal.length} plan codes · ${[...new Set(allPlansGlobal.map(p=>p.market))].length} markets</div>
+      <div class="label">Campaigns · ${yearLabel}</div>
+      <div class="value">${viewCampaigns.length}</div>
+      <div class="sub">${viewPlans.length} plan codes · ${[...new Set(viewPlans.map(p=>p.market))].length} markets</div>
     </div>`;
 }
 
@@ -1774,14 +1813,17 @@ function renderTable(campaigns) {
 }
 
 function renderMonthly() {
-  const months = Object.keys(GROSS_REVENUE).sort();
+  const fv = $('fView').value;
+  const months = Object.keys(GROSS_REVENUE).filter(m => fv === 'all' || m.startsWith(fv)).sort();
   const fmtK = n => n >= 1000000
     ? '$' + (n/1000000).toFixed(2) + 'M'
     : n > 0 ? '$' + n.toLocaleString('en-US', {minimumFractionDigits:0}) : '—';
 
-  const ytdRev = months.reduce((s,m) => s + GROSS_REVENUE[m].usd, 0);
-  const ytdPaid = months.reduce((s,m) => s + (MONTHLY_MKT[m]?.paid||0), 0);
-  const ytdAppr = months.reduce((s,m) => s + (MONTHLY_MKT[m]?.approved||0), 0);
+  const totRev = months.reduce((s,m) => s + GROSS_REVENUE[m].usd, 0);
+  // Total MKT from CAMPAIGNS (2025 spend is lumped M0–M1, not attributed per-month)
+  const vp = CAMPAIGNS.flatMap(c => c.plans).filter(p => fv === 'all' || planYear(p) === fv);
+  const totPaid = vp.filter(p => p.status === 'paid').reduce((s,p) => s + (p.actual||0), 0);
+  const totAppr = vp.filter(p => ['approved','paid','running'].includes(p.status)).reduce((s,p) => s + (p.afterTax||0), 0);
 
   let rows = months.map(m => {
     const rev = GROSS_REVENUE[m].usd;
@@ -1789,7 +1831,6 @@ function renderMonthly() {
     const appr = MONTHLY_MKT[m]?.approved || 0;
     const paidRatio = rev > 0 && paid > 0 ? (paid/rev*100).toFixed(3)+'%' : null;
     const apprRatio = rev > 0 && appr > 0 && appr !== paid ? (appr/rev*100).toFixed(3)+'%' : null;
-
     return `<tr>
       <td style="font-weight:600;white-space:nowrap">${GROSS_REVENUE[m].label}</td>
       <td style="font-variant-numeric:tabular-nums"><span style="color:var(--blue);font-weight:600">${fmtK(rev)}</span> <span style="font-size:11px;color:var(--text-muted)">(${GROSS_REVENUE[m].bvnd}B VND)</span></td>
@@ -1800,23 +1841,26 @@ function renderMonthly() {
     </tr>`;
   }).join('');
 
-  // YTD row
-  const ytdPaidRatio = ytdRev > 0 && ytdPaid > 0 ? (ytdPaid/ytdRev*100).toFixed(3)+'%' : '—';
-  const ytdApprRatio = ytdRev > 0 && ytdAppr > 0 ? (ytdAppr/ytdRev*100).toFixed(3)+'%' : '—';
+  const totPaidRatio = totRev > 0 && totPaid > 0 ? (totPaid/totRev*100).toFixed(3)+'%' : '—';
+  const totApprRatio = totRev > 0 && totAppr > 0 ? (totAppr/totRev*100).toFixed(3)+'%' : '—';
   rows += `<tr class="ytd-row">
-    <td style="font-weight:700">YTD Total</td>
-    <td><span style="color:var(--blue);font-weight:700">${fmtK(ytdRev)}</span></td>
-    <td class="num"><span class="mkt-paid">${fmtK(ytdPaid)}</span></td>
-    <td class="num"><span class="mkt-appr">${fmtK(ytdAppr)}</span></td>
-    <td class="num"><span class="ratio-pill paid">${ytdPaidRatio}</span></td>
-    <td class="num"><span class="ratio-pill appr">${ytdApprRatio}</span></td>
+    <td style="font-weight:700">Total · ${fv === 'all' ? 'OB → nay' : fv}</td>
+    <td><span style="color:var(--blue);font-weight:700">${fmtK(totRev)}</span></td>
+    <td class="num"><span class="mkt-paid">${fmtK(totPaid)}</span></td>
+    <td class="num"><span class="mkt-appr">${fmtK(totAppr)}</span></td>
+    <td class="num"><span class="ratio-pill paid">${totPaidRatio}</span></td>
+    <td class="num"><span class="ratio-pill appr">${totApprRatio}</span></td>
   </tr>`;
 
+  const hdr = fv === '2025' ? 'May → Dec 2025' : fv === '2026' ? 'Jan → May 2026' : 'OB → nay (2025–2026)';
+  const noteExtra = (fv === 'all' || fv === '2025')
+    ? ' · ⚠️ MKT 2025 gộp M0–M1 (chưa tách theo tháng) — chỉ phản ánh ở dòng Total'
+    : '';
   $('monthlySection').innerHTML = `
     <div class="monthly-section">
       <div class="monthly-section-header">
-        <h3>📊 Monthly MKT vs Gross Revenue — Jan → May 2026</h3>
-        <span class="note">Source: KB GameOps (FX 1 USD = 25,255 VND) · Paid only = actual invoiced</span>
+        <h3>📊 Monthly MKT vs Gross Revenue — ${hdr}</h3>
+        <span class="note">Rev 2025 = VIP charge total · Rev 2026 = Atlas · FX 25,255${noteExtra}</span>
       </div>
       <table class="monthly-table">
         <thead>
