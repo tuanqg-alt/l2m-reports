@@ -305,65 +305,79 @@
 </main>
 
 <script>
-  var TOTAL=13,secTotals={'sec-a':4,'sec-b':4,'sec-c':3,'sec-d':2},
-      secDone={'sec-a':0,'sec-b':0,'sec-c':0,'sec-d':0};
+  var TOTAL=13;
+  var secTotals={'sec-a':4,'sec-b':4,'sec-c':3,'sec-d':2};
+  var secDone={'sec-a':0,'sec-b':0,'sec-c':0,'sec-d':0};
 
-  function tick(cb,itemId,secId,secTotal){
-    var item=document.getElementById(itemId);
-    if(cb.checked){item.classList.add('done');secDone[secId]++;}
-    else{item.classList.remove('done');secDone[secId]--;}
-    document.getElementById('stat-'+secId).textContent=secDone[secId]+' / '+secTotal;
-    updateProgress();save();
-  }
-  function updateProgress(){
-    var done=Object.values(secDone).reduce(function(a,b){return a+b;},0);
-    var pct=Math.round(done/TOTAL*100);
-    document.getElementById('progressFill').style.width=pct+'%';
-    document.getElementById('progressLabel').innerHTML='<strong>'+done+'</strong> / '+TOTAL+' hang muc ('+pct+'%)';
-  }
-  function toggleSection(secId){
-    var body=document.getElementById('body-'+secId);
-    body.style.display=body.style.display==='none'?'':'none';
+  function tick(cb, itemId, secId, secTotal) {
+    var item = document.getElementById(itemId);
+    if (cb.checked) { item.classList.add('done'); secDone[secId]++; }
+    else             { item.classList.remove('done'); secDone[secId]--; }
+    document.getElementById('stat-'+secId).textContent = secDone[secId]+' / '+secTotal;
+    updateProgress(); save(); showToast();
   }
 
-  /* ── Save: cookie (primary) + localStorage (fallback) + URL hash ── */
-  function getBits(){
-    var b='';
-    for(var i=1;i<=TOTAL;i++){var cb=document.getElementById('ch'+i);b+=(cb&&cb.checked)?'1':'0';}
+  function updateProgress() {
+    var done = 0; for (var k in secDone) done += secDone[k];
+    var pct = Math.round(done / TOTAL * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').innerHTML =
+      '<strong>' + done + '</strong> / ' + TOTAL + ' hang muc (' + pct + '%)';
+  }
+
+  function toggleSection(secId) {
+    var body = document.getElementById('body-'+secId);
+    body.style.display = (body.style.display === 'none') ? '' : 'none';
+  }
+
+  function getBits() {
+    var b = '';
+    for (var i = 1; i <= TOTAL; i++) {
+      var cb = document.getElementById('ch'+i);
+      b += (cb && cb.checked) ? '1' : '0';
+    }
     return b;
   }
-  function save(){
-    var bits=getBits();
-    // 1. Cookie — 90 days, works on Cloudflare Pages
-    document.cookie='ncv_glc='+bits+'; max-age='+(90*24*3600)+'; path=/; SameSite=Lax';
-    // 2. localStorage fallback
-    try{localStorage.setItem('ncv_glc_cl',bits);}catch(e){}
-    // 3. URL hash (so state survives if cookies cleared)
-    if(history.replaceState) history.replaceState(null,'','#'+bits);
+
+  function save() {
+    var bits = getBits();
+    try { history.replaceState(null, '', location.pathname + '?s=' + bits); } catch(e) {}
+    try { sessionStorage.setItem('glc', bits); } catch(e) {}
+    try { localStorage.setItem('glc', bits); } catch(e) {}
+    try { document.cookie = 'glc=' + bits + '; max-age=7776000; path=/; SameSite=Lax'; } catch(e) {}
   }
 
-  /* ── Load: hash → cookie → localStorage ── */
-  function load(){
-    var bits='';
-    // 1. URL hash
-    if(location.hash && location.hash.length===TOTAL+1) bits=location.hash.substring(1);
-    // 2. Cookie
-    if(!bits){var m=document.cookie.match(/ncv_glc=([01]{13})/);if(m)bits=m[1];}
-    // 3. localStorage
-    if(!bits){try{var s=localStorage.getItem('ncv_glc_cl');if(s&&s.length===TOTAL)bits=s;}catch(e){}}
-    if(!bits||bits.length<TOTAL)return;
-    for(var i=0;i<TOTAL;i++){
-      if(bits[i]!=='1')continue;
-      var cb=document.getElementById('ch'+(i+1));if(!cb)continue;
-      cb.checked=true;
-      var item=cb.closest('.check-item');if(item)item.classList.add('done');
-      var sec=item&&item.closest('.section-card');if(sec)secDone[sec.id]++;
+  function load() {
+    var bits = '', rx = /^[01]{13}$/;
+    try { var m = location.search.match(/[?&]s=([01]{13})/); if (m) bits = m[1]; } catch(e) {}
+    if (!bits) { try { var a = sessionStorage.getItem('glc'); if (rx.test(a)) bits = a; } catch(e) {} }
+    if (!bits) { try { var b = localStorage.getItem('glc'); if (rx.test(b)) bits = b; } catch(e) {} }
+    if (!bits) { try { var c = document.cookie.match(/glc=([01]{13})/); if (c) bits = c[1]; } catch(e) {} }
+    if (!bits) return;
+    for (var i = 0; i < TOTAL; i++) {
+      if (bits[i] !== '1') continue;
+      var cb = document.getElementById('ch'+(i+1)); if (!cb) continue;
+      cb.checked = true;
+      var item = cb.parentElement; while (item && !item.classList.contains('check-item')) item = item.parentElement;
+      if (item) item.classList.add('done');
+      var sec = item; while (sec && !sec.classList.contains('section-card')) sec = sec.parentElement;
+      if (sec && sec.id) secDone[sec.id]++;
     }
-    for(var sid in secTotals)
-      document.getElementById('stat-'+sid).textContent=secDone[sid]+' / '+secTotals[sid];
+    for (var sid in secTotals)
+      document.getElementById('stat-'+sid).textContent = secDone[sid] + ' / ' + secTotals[sid];
     updateProgress();
   }
+
+  function showToast() {
+    var t = document.getElementById('save-toast');
+    if (!t) return;
+    t.style.opacity = '1'; t.style.transform = 'translateY(0)';
+    clearTimeout(t._tid);
+    t._tid = setTimeout(function() { t.style.opacity='0'; t.style.transform='translateY(8px)'; }, 1800);
+  }
+
   load();
 </script>
+<div id="save-toast" style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#10B981;color:#fff;padding:8px 16px;border-radius:8px;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2);">&#10003; Da luu</div>
 </body>
 </html>
