@@ -307,6 +307,7 @@
 <script>
   var TOTAL=13,secTotals={'sec-a':4,'sec-b':4,'sec-c':3,'sec-d':2},
       secDone={'sec-a':0,'sec-b':0,'sec-c':0,'sec-d':0};
+
   function tick(cb,itemId,secId,secTotal){
     var item=document.getElementById(itemId);
     if(cb.checked){item.classList.add('done');secDone[secId]++;}
@@ -318,32 +319,49 @@
     var done=Object.values(secDone).reduce(function(a,b){return a+b;},0);
     var pct=Math.round(done/TOTAL*100);
     document.getElementById('progressFill').style.width=pct+'%';
-    document.getElementById('progressLabel').innerHTML='<strong>'+done+'</strong> / '+TOTAL+' hạng mục ('+pct+'%)';
+    document.getElementById('progressLabel').innerHTML='<strong>'+done+'</strong> / '+TOTAL+' hang muc ('+pct+'%)';
   }
   function toggleSection(secId){
     var body=document.getElementById('body-'+secId);
     body.style.display=body.style.display==='none'?'':'none';
   }
-  function save(){
-    var state={};
-    for(var i=1;i<=TOTAL;i++){var cb=document.getElementById('ch'+i);if(cb)state[i]=cb.checked;}
-    try{localStorage.setItem('ncv_glc_cl',JSON.stringify(state));}catch(e){}
+
+  /* ── Save: cookie (primary) + localStorage (fallback) + URL hash ── */
+  function getBits(){
+    var b='';
+    for(var i=1;i<=TOTAL;i++){var cb=document.getElementById('ch'+i);b+=(cb&&cb.checked)?'1':'0';}
+    return b;
   }
+  function save(){
+    var bits=getBits();
+    // 1. Cookie — 90 days, works on Cloudflare Pages
+    document.cookie='ncv_glc='+bits+'; max-age='+(90*24*3600)+'; path=/; SameSite=Lax';
+    // 2. localStorage fallback
+    try{localStorage.setItem('ncv_glc_cl',bits);}catch(e){}
+    // 3. URL hash (so state survives if cookies cleared)
+    if(history.replaceState) history.replaceState(null,'','#'+bits);
+  }
+
+  /* ── Load: hash → cookie → localStorage ── */
   function load(){
-    try{
-      var raw=localStorage.getItem('ncv_glc_cl');if(!raw)return;
-      var state=JSON.parse(raw);
-      for(var k in state){
-        if(!state[k])continue;
-        var cb=document.getElementById('ch'+k);if(!cb)continue;
-        cb.checked=true;
-        var item=cb.closest('.check-item');if(item)item.classList.add('done');
-        var sec=item&&item.closest('.section-card');if(sec)secDone[sec.id]++;
-      }
-      for(var sid in secTotals)
-        document.getElementById('stat-'+sid).textContent=secDone[sid]+' / '+secTotals[sid];
-      updateProgress();
-    }catch(e){}
+    var bits='';
+    // 1. URL hash
+    if(location.hash && location.hash.length===TOTAL+1) bits=location.hash.substring(1);
+    // 2. Cookie
+    if(!bits){var m=document.cookie.match(/ncv_glc=([01]{13})/);if(m)bits=m[1];}
+    // 3. localStorage
+    if(!bits){try{var s=localStorage.getItem('ncv_glc_cl');if(s&&s.length===TOTAL)bits=s;}catch(e){}}
+    if(!bits||bits.length<TOTAL)return;
+    for(var i=0;i<TOTAL;i++){
+      if(bits[i]!=='1')continue;
+      var cb=document.getElementById('ch'+(i+1));if(!cb)continue;
+      cb.checked=true;
+      var item=cb.closest('.check-item');if(item)item.classList.add('done');
+      var sec=item&&item.closest('.section-card');if(sec)secDone[sec.id]++;
+    }
+    for(var sid in secTotals)
+      document.getElementById('stat-'+sid).textContent=secDone[sid]+' / '+secTotals[sid];
+    updateProgress();
   }
   load();
 </script>
