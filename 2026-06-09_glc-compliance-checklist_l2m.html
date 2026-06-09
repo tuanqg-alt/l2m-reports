@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
+﻿<html lang="vi"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>L2M VN — GLC Compliance Checklist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
   :root {
     --brand-dark:#0F1419;--brand-dark-2:#1A1D24;--brand-accent:#EE5524;
@@ -144,6 +142,9 @@
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     <div class="progress-label" id="progressLabel">0 / 13 hạng mục</div>
   </div>
+  <button onclick="saveToFile()" style="background: rgb(212, 74, 31); color: rgb(255, 255, 255); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; cursor: pointer; padding: 8px 18px; border-radius: 6px; font-family: Sora, sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.03em; white-space: nowrap; transition: background 0.15s; flex-shrink: 0;" onmouseover="this.style.background='#D44A1F'" onmouseout="this.style.background='#EE5524'">
+    💾 Lưu file
+  </button>
 </header>
 
 <div class="ncv-hero">
@@ -165,7 +166,7 @@
       <div class="section-stat" id="stat-a">0 / 4</div>
     </div>
     <div class="section-body" id="body-sec-a">
-      <div class="check-item" id="ci1">
+      <div class="check-item done" id="ci1">
         <input type="checkbox" id="ch1" onchange="tick(this,'ci1','sec-a',4)">
         <label class="check-label" for="ch1">
           <div class="badges"><span class="ncv-badge ncv-badge-error">CRITICAL</span></div>
@@ -173,7 +174,7 @@
           <span class="item-note">Không được có cơ chế cho phép người dùng ẩn.</span>
         </label>
       </div>
-      <div class="check-item" id="ci2">
+      <div class="check-item done" id="ci2">
         <input type="checkbox" id="ch2" onchange="tick(this,'ci2','sec-a',4)">
         <label class="check-label" for="ch2">
           <div class="badges"><span class="ncv-badge ncv-badge-error">CRITICAL</span></div>
@@ -181,13 +182,13 @@
           <span class="item-note">⚠️ GLC nhấn mạnh: phải "chủ động hiện" — KHÔNG phải kiểu user có option ẩn đi.</span>
         </label>
       </div>
-      <div class="check-item" id="ci3">
+      <div class="check-item done" id="ci3">
         <input type="checkbox" id="ch3" onchange="tick(this,'ci3','sec-a',4)">
         <label class="check-label" for="ch3">
           <span class="item-title"><strong>Bộ lọc từ ngữ chat</strong> — hệ thống lọc từ nhạy cảm/vi phạm trong chat ingame đang hoạt động đúng.</span>
         </label>
       </div>
-      <div class="check-item" id="ci4">
+      <div class="check-item done" id="ci4">
         <input type="checkbox" id="ch4" onchange="tick(this,'ci4','sec-a',4)">
         <label class="check-label" for="ch4">
           <span class="item-title"><strong>Rà soát bản đồ</strong> — kiểm tra lại các bản đồ ingame, đảm bảo không có nội dung/tên gọi vi phạm quy định.</span>
@@ -204,27 +205,27 @@
       <div class="section-stat" id="stat-b">0 / 4</div>
     </div>
     <div class="section-body" id="body-sec-b">
-      <div class="check-item" id="ci5">
+      <div class="check-item done" id="ci5">
         <input type="checkbox" id="ch5" onchange="tick(this,'ci5','sec-b',4)">
         <label class="check-label" for="ch5">
           <span class="item-title"><strong>Tên game trên Store</strong> phải trùng khớp chính xác với tên đã xin phép trong Giấy phép G1 / QĐPH.</span>
         </label>
       </div>
-      <div class="check-item" id="ci6">
+      <div class="check-item done" id="ci6">
         <input type="checkbox" id="ch6" onchange="tick(this,'ci6','sec-b',4)">
         <label class="check-label" for="ch6">
           <span class="item-title"><strong>Phần mô tả trên Store</strong> phải có: thông tin QĐPH + đường link đến website ABEI.</span>
           <span class="item-note">🔗 Link bắt buộc: <a href="https://giayphep.abei.gov.vn" target="_blank">giayphep.abei.gov.vn</a></span>
         </label>
       </div>
-      <div class="check-item" id="ci7">
+      <div class="check-item done" id="ci7">
         <input type="checkbox" id="ch7" onchange="tick(this,'ci7','sec-b',4)">
         <label class="check-label" for="ch7">
           <span class="item-title"><strong>Nội dung / tính năng quảng cáo trên Store</strong> — tất cả nội dung đang promote đã thực hiện thủ tục <em>cập nhật nội dung kịch bản</em> với cơ quan quản lý.</span>
           <span class="item-note">📋 Quy trình: xem link SharePoint GLC cung cấp trong email gốc.</span>
         </label>
       </div>
-      <div class="check-item" id="ci8">
+      <div class="check-item done" id="ci8">
         <input type="checkbox" id="ch8" onchange="tick(this,'ci8','sec-b',4)">
         <label class="check-label" for="ch8">
           <div class="badges"><span class="ncv-badge ncv-badge-error">CRITICAL</span></div>
@@ -242,7 +243,7 @@
       <div class="section-stat" id="stat-c">0 / 3</div>
     </div>
     <div class="section-body" id="body-sec-c">
-      <div class="check-item" id="ci9">
+      <div class="check-item done" id="ci9">
         <input type="checkbox" id="ch9" onchange="tick(this,'ci9','sec-c',3)">
         <label class="check-label" for="ch9">
           <div class="badges"><span class="ncv-badge ncv-badge-error">CRITICAL</span></div>
@@ -250,13 +251,13 @@
           <span class="item-note">⚠️ Nếu L2M đã có cập nhật QĐPH mới → bắt buộc update ảnh và link tương ứng. File biểu tượng đính kèm email (gameG1.png).</span>
         </label>
       </div>
-      <div class="check-item" id="ci10">
+      <div class="check-item done" id="ci10">
         <input type="checkbox" id="ch10" onchange="tick(this,'ci10','sec-c',3)">
         <label class="check-label" for="ch10">
           <span class="item-title"><strong>Thông tin CSKH + Điều khoản sử dụng</strong> — trang chủ hiển thị rõ số điện thoại chăm sóc khách hàng và link điều khoản sử dụng của game.</span>
         </label>
       </div>
-      <div class="check-item" id="ci11">
+      <div class="check-item done" id="ci11">
         <input type="checkbox" id="ch11" onchange="tick(this,'ci11','sec-c',3)">
         <label class="check-label" for="ch11">
           <span class="item-title"><strong>Logo phân loại độ tuổi + Khuyến cáo 180 phút</strong> — có trên trang chủ (vị trí tùy chọn).</span>
@@ -280,7 +281,7 @@
           <span class="item-note">📌 Confirm với GPP / Hoàng Anh tiến độ hiện tại và ETA.</span>
         </label>
       </div>
-      <div class="check-item" id="ci13">
+      <div class="check-item done" id="ci13">
         <input type="checkbox" id="ch13" onchange="tick(this,'ci13','sec-d',2)">
         <label class="check-label" for="ch13">
           <div class="badges"><span class="ncv-badge ncv-badge-info">ONGOING</span></div>
@@ -305,16 +306,18 @@
 </main>
 
 <script>
-  var TOTAL=13;
-  var secTotals={'sec-a':4,'sec-b':4,'sec-c':3,'sec-d':2};
-  var secDone={'sec-a':0,'sec-b':0,'sec-c':0,'sec-d':0};
+  var TOTAL = 13;
+  var SAVED_STATE = '1111111111101';  /* auto-filled on Save — do not edit manually */
+  var secTotals = {'sec-a':4,'sec-b':4,'sec-c':3,'sec-d':2};
+  var secDone   = {'sec-a':0,'sec-b':0,'sec-c':0,'sec-d':0};
 
   function tick(cb, itemId, secId, secTotal) {
     var item = document.getElementById(itemId);
     if (cb.checked) { item.classList.add('done'); secDone[secId]++; }
     else             { item.classList.remove('done'); secDone[secId]--; }
     document.getElementById('stat-'+secId).textContent = secDone[secId]+' / '+secTotal;
-    updateProgress(); save(); showToast();
+    updateProgress();
+    autoSave();
   }
 
   function updateProgress() {
@@ -339,45 +342,73 @@
     return b;
   }
 
-  function save() {
+  /* ── Auto-save to session/local (best-effort) ─────────── */
+  function autoSave() {
     var bits = getBits();
-    try { history.replaceState(null, '', location.pathname + '?s=' + bits); } catch(e) {}
     try { sessionStorage.setItem('glc', bits); } catch(e) {}
     try { localStorage.setItem('glc', bits); } catch(e) {}
-    try { document.cookie = 'glc=' + bits + '; max-age=7776000; path=/; SameSite=Lax'; } catch(e) {}
   }
 
+  /* ── SAVE TO FILE: download HTML with state embedded ─── */
+  function saveToFile() {
+    var bits = getBits();
+    var html = document.documentElement.outerHTML;
+    /* Patch SAVED_STATE value in the downloaded copy */
+    html = html.replace(/var SAVED_STATE = '[01]*';/, "var SAVED_STATE = '" + bits + "';");
+    var blob = new Blob(['﻿' + html], {type: 'text/html;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = '2026-06-09_glc-compliance-checklist_l2m.html';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+    showToast('Da luu — thay the file roi push GitHub nhe!', '#EE5524');
+  }
+
+  /* ── Load state: SAVED_STATE > sessionStorage > localStorage ── */
   function load() {
     var bits = '', rx = /^[01]{13}$/;
-    try { var m = location.search.match(/[?&]s=([01]{13})/); if (m) bits = m[1]; } catch(e) {}
+    if (rx.test(SAVED_STATE)) bits = SAVED_STATE;
     if (!bits) { try { var a = sessionStorage.getItem('glc'); if (rx.test(a)) bits = a; } catch(e) {} }
     if (!bits) { try { var b = localStorage.getItem('glc'); if (rx.test(b)) bits = b; } catch(e) {} }
-    if (!bits) { try { var c = document.cookie.match(/glc=([01]{13})/); if (c) bits = c[1]; } catch(e) {} }
+    if (!bits) {
+      try { var m = location.search.match(/[?&]s=([01]{13})/); if (m) bits = m[1]; } catch(e) {}
+    }
     if (!bits) return;
     for (var i = 0; i < TOTAL; i++) {
       if (bits[i] !== '1') continue;
       var cb = document.getElementById('ch'+(i+1)); if (!cb) continue;
       cb.checked = true;
-      var item = cb.parentElement; while (item && !item.classList.contains('check-item')) item = item.parentElement;
+      var item = cb.parentElement;
+      while (item && !item.classList.contains('check-item')) item = item.parentElement;
       if (item) item.classList.add('done');
-      var sec = item; while (sec && !sec.classList.contains('section-card')) sec = sec.parentElement;
+      var sec = item;
+      while (sec && !sec.classList.contains('section-card')) sec = sec.parentElement;
       if (sec && sec.id) secDone[sec.id]++;
     }
     for (var sid in secTotals)
-      document.getElementById('stat-'+sid).textContent = secDone[sid] + ' / ' + secTotals[sid];
+      document.getElementById('stat-'+sid).textContent = secDone[sid]+' / '+secTotals[sid];
     updateProgress();
   }
 
-  function showToast() {
+  function showToast(msg, bg) {
     var t = document.getElementById('save-toast');
     if (!t) return;
+    t.textContent = msg || '✓ Da luu';
+    t.style.background = bg || '#10B981';
     t.style.opacity = '1'; t.style.transform = 'translateY(0)';
     clearTimeout(t._tid);
-    t._tid = setTimeout(function() { t.style.opacity='0'; t.style.transform='translateY(8px)'; }, 1800);
+    t._tid = setTimeout(function() { t.style.opacity='0'; t.style.transform='translateY(8px)'; }, 2500);
   }
 
   load();
 </script>
-<div id="save-toast" style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#10B981;color:#fff;padding:8px 16px;border-radius:8px;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2);">&#10003; Da luu</div>
-</body>
-</html>
+
+<div id="save-toast" style="position:fixed;bottom:24px;right:24px;z-index:9999;
+  background:#10B981;color:#fff;padding:10px 18px;border-radius:8px;
+  font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;
+  opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;
+  pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:280px;
+  text-align:center;"></div>
+
+
+</body></html>
