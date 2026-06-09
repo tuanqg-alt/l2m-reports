@@ -236,11 +236,25 @@ function showChat(){
   $("logoutBtn").style.display="inline-block";
   $("input").focus();
 }
-function tryEnter(){
+async function tryEnter(){
   const pw=$("pwInput").value.trim();
   if(!pw){$("pwErr").textContent="Nhập mật khẩu.";return;}
-  sessionStorage.setItem(PW_KEY,pw);
-  showChat();
+  if(WORKER_URL.includes("<your-subdomain>")){$("pwErr").textContent="Chưa cấu hình WORKER_URL.";return;}
+  $("pwErr").textContent="Đang kiểm tra…"; $("pwBtn").disabled=true;
+  try{
+    // Xác thực mật khẩu với worker TRƯỚC khi vào (probe nhẹ, không gọi LLM).
+    const r=await fetch(WORKER_URL,{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({password:pw,auth:true})
+    });
+    if(r.status===401){$("pwErr").textContent="Sai mật khẩu.";$("pwInput").select();return;}
+    if(r.status===500){const d=await r.json().catch(()=>({}));$("pwErr").textContent="Lỗi cấu hình server: "+(d.error||500);return;}
+    // 200 = worker mới xác nhận OK; 400 = worker cũ (chưa redeploy) báo thiếu messages → mật khẩu đã ĐÚNG.
+    if(r.ok||r.status===400){sessionStorage.setItem(PW_KEY,pw);$("pwErr").textContent="";showChat();return;}
+    $("pwErr").textContent="Lỗi không xác định: "+r.status;
+  }catch(e){
+    $("pwErr").textContent="Không kết nối được backend: "+e.message;
+  }finally{ $("pwBtn").disabled=false; }
 }
 $("pwBtn").onclick=tryEnter;
 $("pwInput").addEventListener("keydown",e=>{if(e.key==="Enter")tryEnter();});
