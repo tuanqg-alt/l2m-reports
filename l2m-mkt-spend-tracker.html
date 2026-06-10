@@ -198,6 +198,35 @@ tr.subtotal-row td {
 .footer { margin-top: 24px; text-align: center; font-size: 12px; color: var(--text-muted); }
 .footer a { color: var(--orange); text-decoration: none; }
 
+/* Tabs */
+.tab-nav { display:flex; gap:4px; margin-bottom:18px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+.tab-btn { background:none; border:none; color:var(--text-secondary); font-family:var(--font-heading); font-size:13px; font-weight:600; padding:10px 18px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .15s; }
+.tab-btn:hover { color:var(--text-primary); }
+.tab-btn.active { color:var(--orange); border-bottom-color:var(--orange); }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+/* Category tab */
+.cat-intro { background:var(--bg-card); border:1px solid var(--border); border-left:3px solid var(--orange); border-radius:var(--radius); padding:12px 16px; font-size:12.5px; line-height:1.55; color:var(--text-secondary); margin-bottom:18px; }
+.cat-cards { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; }
+.cat-card { background:var(--bg-card); border:1px solid var(--border); border-top:3px solid var(--cat-c,#888); border-radius:var(--radius); padding:14px 16px; }
+.cat-card .label { font-size:11px; font-weight:600; color:var(--text-secondary); margin-bottom:6px; line-height:1.3; }
+.cat-card .value { font-family:var(--font-heading); font-size:19px; font-weight:700; }
+.cat-card .sub { font-size:11px; color:var(--text-muted); margin-top:4px; }
+.cat-section { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:18px; }
+.cat-section-header { padding:14px 20px; border-bottom:1px solid var(--border); }
+.cat-section-header h3 { font-family:var(--font-heading); font-size:13px; font-weight:600; color:var(--text-primary); }
+.cat-bars { padding:18px 20px; display:flex; flex-direction:column; gap:14px; }
+.cat-bar-top { display:flex; justify-content:space-between; align-items:baseline; font-size:12px; margin-bottom:5px; }
+.cat-bar-top .nm { font-weight:600; color:var(--text-primary); }
+.cat-bar-track { height:14px; background:rgba(255,255,255,0.05); border-radius:7px; overflow:hidden; }
+.cat-bar-fill { height:100%; border-radius:7px; transition:width .4s ease; }
+.cat-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:7px; vertical-align:middle; }
+.cat-rules { padding:14px 20px; font-size:12.5px; line-height:1.7; color:var(--text-secondary); }
+.cat-rules code { background:rgba(255,255,255,0.06); padding:1px 6px; border-radius:3px; font-size:11.5px; color:var(--text-primary); }
+@media (max-width:900px){ .cat-cards{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:600px){ .cat-cards{ grid-template-columns:1fr; } }
+
 /* Responsive */
 @media (max-width: 900px) {
   .summary-grid { grid-template-columns: repeat(2,1fr) !important; }
@@ -225,6 +254,12 @@ tr.subtotal-row td {
       <div class="subtitle">NCV Games · Lineage2M SEA · Approved by AnhNLH Hennessy</div>
     </div>
     <div class="last-updated">🕐 Last updated: <strong id="tsLabel"></strong> · Source: Outlook</div>
+  </div>
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="detail" onclick="switchTab('detail')">📋 Tổng quan &amp; Chi tiết</button>
+    <button class="tab-btn" data-tab="category" onclick="switchTab('category')">🗂️ Phân loại chi phí</button>
   </div>
 
   <!-- FILTER BAR -->
@@ -272,6 +307,9 @@ tr.subtotal-row td {
     <span class="record-count" id="rowCount"></span>
   </div>
 
+  <!-- ============ TAB 1: DETAIL ============ -->
+  <div id="tab-detail" class="tab-panel active">
+
   <!-- SUMMARY CARDS -->
   <div class="summary-grid" id="summaryGrid"></div>
 
@@ -301,6 +339,49 @@ tr.subtotal-row td {
       <tbody id="tbody"></tbody>
     </table>
   </div>
+
+  </div><!-- /tab-detail -->
+
+  <!-- ============ TAB 2: CATEGORY CLASSIFICATION ============ -->
+  <div id="tab-category" class="tab-panel">
+
+    <div class="cat-intro" id="catIntro"></div>
+
+    <div class="cat-cards" id="catCards"></div>
+
+    <div class="cat-section">
+      <div class="cat-section-header"><h3>📊 Tỷ trọng ngân sách theo nhóm chiến lược (Approved · after-tax)</h3></div>
+      <div class="cat-bars" id="catBars"></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="min-width:240px">Nhóm chi phí</th>
+            <th class="num">Plans</th>
+            <th class="num">Approved Budget (after tax)</th>
+            <th class="num">Paid Actual</th>
+            <th class="num">% Approved</th>
+            <th style="min-width:140px">Markets</th>
+          </tr>
+        </thead>
+        <tbody id="catTbody"></tbody>
+      </table>
+    </div>
+
+    <div class="cat-section" style="margin-top:18px">
+      <div class="cat-section-header"><h3>🗂️ Quy tắc phân loại (transparent — anh review &amp; chỉnh được)</h3></div>
+      <div class="cat-rules">
+        <p><span class="cat-dot" style="background:#60A5FA"></span><strong>Digital Marketing</strong> — toàn bộ <code>type:digital</code> (Meta/Google/UA + retargeting + UGC promote) + các plan vendor ghi rõ <code>UA Creative</code> / <code>Branding</code>. Gộp UA &amp; Branding theo yêu cầu của anh.</p>
+        <p><span class="cat-dot" style="background:#C084FC"></span><strong>PR / Media</strong> — <code>type:kol</code> (KOL, streamer, collaborator) + vendor có từ khóa <code>PR</code> / <code>Media</code>.</p>
+        <p><span class="cat-dot" style="background:#F59E0B"></span><strong>Offline / Non-Digital</strong> — vendor có từ khóa <code>OOH</code> / <code>DOOH</code> / <code>Offline</code> / <code>Showcase</code> / <code>Game Verse</code> / <code>Drone</code> / <code>Shooting</code> / <code>ACG</code>.</p>
+        <p><span class="cat-dot" style="background:#22C55E"></span><strong>Giftcard / Rewards</strong> — toàn bộ <code>type:giftcard</code> (minigame prize, prize delivery, GGcard/Zingcard).</p>
+        <p><span class="cat-dot" style="background:#9BA3AF"></span><strong>Production / Outsource / Other</strong> — vendor còn lại: outsource, agency, social &amp; community, localization, logistics, Cyber Chain, CSR…</p>
+      </div>
+    </div>
+
+  </div><!-- /tab-category -->
 
   <div class="footer">
     L2M MKT Spend Tracker · NCV Games ·
@@ -1878,11 +1959,113 @@ function renderMonthly() {
     </div>`;
 }
 
+/* ================================================================
+   CATEGORY CLASSIFICATION — 5 strategic spend buckets
+   (Digital gộp UA+Branding theo yêu cầu · vendor split theo keyword)
+   ================================================================ */
+const CATEGORY_META = {
+  digital: { label: 'Digital Marketing',            color: '#60A5FA' },
+  pr:      { label: 'PR / Media',                   color: '#C084FC' },
+  offline: { label: 'Offline / Non-Digital',        color: '#F59E0B' },
+  reward:  { label: 'Giftcard / Rewards',           color: '#22C55E' },
+  other:   { label: 'Production / Outsource / Other',color: '#9BA3AF' }
+};
+const CATEGORY_ORDER = ['digital','pr','offline','reward','other'];
+
+function planCategory(p, c) {
+  if (p.type === 'digital')  return 'digital';
+  if (p.type === 'kol')      return 'pr';
+  if (p.type === 'giftcard') return 'reward';
+  // vendor → split by name/notes keywords
+  const s = ((c && c.name ? c.name : '') + ' ' + (p.notes || '')).toLowerCase();
+  if (/\booh\b|dooh|offline|game ?verse|showcase|\bdrone\b|shooting|\bacg\b/.test(s)) return 'offline';
+  if (/ua creative|eflow ua|branding/.test(s)) return 'digital';
+  if (/\bpr\b|\bmedia\b/.test(s)) return 'pr';
+  return 'other';
+}
+
+function renderCategory() {
+  const fv = $('fView').value, fm = $('fMarket').value, fs = $('fStatus').value;
+  const agg = {};
+  CATEGORY_ORDER.forEach(k => agg[k] = { approved:0, paid:0, n:0, markets:new Set() });
+  CAMPAIGNS.forEach(c => c.plans.forEach(p => {
+    if (fv !== 'all' && planYear(p) !== fv) return;
+    if (fm && p.market !== fm && p.market !== 'SEA') return;
+    if (fs && p.status !== fs) return;
+    const a = agg[planCategory(p, c)];
+    a.n++; a.markets.add(p.market);
+    if (['approved','paid','running'].includes(p.status)) a.approved += (p.afterTax || 0);
+    if (p.status === 'paid') a.paid += (p.actual || 0);
+  }));
+  const totApr  = CATEGORY_ORDER.reduce((s,k)=>s+agg[k].approved,0);
+  const totPaid = CATEGORY_ORDER.reduce((s,k)=>s+agg[k].paid,0);
+  const totN    = CATEGORY_ORDER.reduce((s,k)=>s+agg[k].n,0);
+  const maxApr  = Math.max(1, ...CATEGORY_ORDER.map(k=>agg[k].approved));
+  const usd = n => '$' + Math.round(n).toLocaleString('en-US');
+  const yearLabel = fv === 'all' ? 'OB → nay' : 'Năm ' + fv;
+
+  $('catCards').innerHTML = CATEGORY_ORDER.map(k => {
+    const m = CATEGORY_META[k], a = agg[k];
+    const pct = totApr > 0 ? (a.approved/totApr*100) : 0;
+    return `<div class="cat-card" style="--cat-c:${m.color}">
+      <div class="label"><span class="cat-dot" style="background:${m.color}"></span>${m.label}</div>
+      <div class="value" style="color:${m.color}">${usd(a.approved)}</div>
+      <div class="sub">${pct.toFixed(1)}% · ${a.n} plan · paid ${usd(a.paid)}</div>
+    </div>`;
+  }).join('');
+
+  $('catBars').innerHTML = CATEGORY_ORDER.map(k => {
+    const m = CATEGORY_META[k], a = agg[k];
+    const pct = totApr > 0 ? (a.approved/totApr*100) : 0;
+    const w = a.approved/maxApr*100;
+    return `<div class="cat-bar-row">
+      <div class="cat-bar-top">
+        <span class="nm"><span class="cat-dot" style="background:${m.color}"></span>${m.label}</span>
+        <span>${usd(a.approved)} · <strong style="color:${m.color}">${pct.toFixed(1)}%</strong></span>
+      </div>
+      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${w}%;background:${m.color}"></div></div>
+    </div>`;
+  }).join('');
+
+  let rows = CATEGORY_ORDER.map(k => {
+    const m = CATEGORY_META[k], a = agg[k];
+    const pct = totApr > 0 ? (a.approved/totApr*100) : 0;
+    const mk = [...a.markets].sort().map(x=>`<span class="market-badge m-${x}">${x}</span>`).join(' ') || '<span class="c-muted">—</span>';
+    return `<tr>
+      <td><span class="cat-dot" style="background:${m.color}"></span><strong>${m.label}</strong></td>
+      <td class="num">${a.n}</td>
+      <td class="num">${a.approved > 0 ? usd(a.approved) : '<span class="c-muted">—</span>'}</td>
+      <td class="num c-green">${a.paid > 0 ? usd(a.paid) : '<span class="c-muted">—</span>'}</td>
+      <td class="num"><strong style="color:${m.color}">${pct.toFixed(1)}%</strong></td>
+      <td>${mk}</td>
+    </tr>`;
+  }).join('');
+  rows += `<tr class="subtotal-row" style="font-size:13px">
+    <td><strong>TOTAL · ${yearLabel}</strong></td>
+    <td class="num">${totN}</td>
+    <td class="num">${usd(totApr)}</td>
+    <td class="num">${usd(totPaid)}</td>
+    <td class="num">100%</td><td></td></tr>`;
+  $('catTbody').innerHTML = rows;
+
+  $('catIntro').innerHTML = `Phân bổ <strong>${usd(totApr)}</strong> ngân sách đã duyệt (after-tax) qua <strong>${totN}</strong> plan thành 5 nhóm chiến lược · Kỳ: <strong>${yearLabel}</strong>${fm ? ` · Market: <strong>${fm}</strong>` : ''}. Digital gộp UA + Branding theo yêu cầu. ⚠️ Bao gồm dòng <em>UA tổng M0–M1 2025 (~$3.7M)</em> — chọn bộ lọc <strong>"Năm 2026"</strong> để xem bức tranh gần đây không bị dòng này chi phối.`;
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + t));
+  // Type filter only applies to the detail tab (category supersedes type)
+  const tg = $('fType').closest('.filter-group');
+  $('fType').disabled = (t === 'category');
+  if (tg) tg.style.opacity = (t === 'category') ? '0.4' : '1';
+}
+
 function render() {
   const campaigns = filteredCampaigns();
   renderSummary(campaigns);
   renderMonthly();
   renderTable(campaigns);
+  renderCategory();
 }
 
 // Init
