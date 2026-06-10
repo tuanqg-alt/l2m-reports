@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giáo trình — Giám sát & Ổn định Game (L2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand-dark:#0F1419; --brand-accent:#EE5524; --brand-accent-hover:#D44A1F;
+  --brand-accent-soft:#FFE8DD; --brand-white:#FFFFFF;
+  --neutral-900:#0F1419; --neutral-800:#1A1D24; --neutral-700:#2A2E37; --neutral-600:#4A4F5A;
+  --neutral-500:#6B7280; --neutral-400:#9CA3AF; --neutral-300:#D1D5DB; --neutral-200:#E5E7EB;
+  --neutral-100:#F3F4F6; --neutral-50:#F9FAFB;
+  --success:#10B981; --warning:#F59E0B; --error:#EF4444; --info:#3B82F6;
+  --font-heading:'Be Vietnam Pro','Inter',system-ui,sans-serif; --font-body:'Inter',system-ui,sans-serif; --font-mono:'Roboto Mono',Consolas,monospace;
+}
+*{box-sizing:border-box}
+/* overflow-x:clip (KHÔNG dùng hidden) — hidden tạo scroll-container phá vỡ position:sticky của sidebar */
+html,body{margin:0;padding:0;overflow-x:clip;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);color:var(--neutral-800);background:var(--neutral-50);line-height:1.65}
+a{color:var(--brand-accent-hover);text-decoration:none} a:hover{text-decoration:underline}
+
+/* hero */
+.hero{background:var(--brand-dark);color:#fff;padding:40px 32px}
+.hero .eyebrow{font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--brand-accent);font-size:12px;margin:0 0 10px}
+.hero h1{font-family:var(--font-heading);font-weight:800;font-size:30px;margin:0 0 8px;line-height:1.2}
+.hero p{margin:4px 0;color:var(--neutral-300);font-size:14px}
+.ncv-brand-mark{font-family:var(--font-heading);font-weight:800;letter-spacing:.04em}
+.ncv-brand-mark .v{color:var(--brand-accent)} .ncv-brand-mark .games{color:var(--neutral-400);font-weight:600;margin-left:4px}
+.badge-draft{display:inline-block;background:var(--brand-accent);color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;letter-spacing:.06em;margin-top:14px}
+
+/* ===== THANH CÔNG CỤ SỬA / LƯU (sticky top) ===== */
+.editbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:2px solid var(--brand-accent);
+  display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 20px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.editbar .grp{display:flex;align-items:center;gap:8px}
+.editbar label{font-family:var(--font-heading);font-weight:600;font-size:12.5px;color:var(--neutral-700)}
+.editbar input[type=text]{font-family:var(--font-body);font-size:13.5px;padding:7px 10px;border:1px solid var(--neutral-300);
+  border-radius:7px;min-width:180px;outline:none}
+.editbar input[type=text]:focus{border-color:var(--brand-accent)}
+.btn{font-family:var(--font-heading);font-weight:600;font-size:13px;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;transition:.15s}
+.btn-save{background:var(--brand-accent);color:#fff} .btn-save:hover{background:var(--brand-accent-hover)}
+.btn-ghost{background:var(--neutral-100);color:var(--neutral-700)} .btn-ghost:hover{background:var(--neutral-200)}
+.editbar .count{font-family:var(--font-mono);font-size:12px;color:var(--neutral-500)}
+.editbar .count b{color:var(--brand-accent-hover)}
+.editbar .hint{font-size:12px;color:var(--neutral-500);flex-basis:100%;margin-top:-2px}
+.editbar .hint b{color:var(--neutral-700)}
+
+/* layout */
+.layout{display:flex;align-items:flex-start;max-width:1180px;margin:0 auto}
+.sidebar{width:280px;flex:0 0 280px;position:sticky;top:78px;max-height:calc(100vh - 84px);overflow-y:auto;padding:24px 16px;border-right:1px solid var(--neutral-200);background:#fff}
+.sidebar .nav-title{font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--neutral-500);margin:0 0 12px}
+.sidebar nav ul{list-style:none;margin:0;padding:0}
+.sidebar nav>ul>li>a{font-family:var(--font-heading);font-weight:600;font-size:13px;color:var(--neutral-800)}
+.sidebar nav ul ul{margin:4px 0 10px 10px;border-left:1px solid var(--neutral-200);padding-left:10px}
+.sidebar nav li{margin:5px 0}
+.sidebar nav a{color:var(--neutral-600);font-size:12.5px;display:block;padding:2px 0}
+.sidebar nav a:hover{color:var(--brand-accent-hover);text-decoration:none}
+
+main{flex:1;min-width:0;padding:32px 40px 80px;max-width:860px}
+main h1{font-family:var(--font-heading);font-weight:800;font-size:24px;color:var(--brand-dark);margin:48px 0 16px;padding-bottom:8px;border-bottom:3px solid var(--brand-accent)}
+main h2{font-family:var(--font-heading);font-weight:700;font-size:20px;color:var(--brand-dark);margin:40px 0 14px;padding-left:12px;border-left:4px solid var(--brand-accent)}
+main h3{font-family:var(--font-heading);font-weight:600;font-size:16px;color:var(--brand-dark);margin:30px 0 12px;padding-top:18px;border-top:1px solid var(--neutral-200)}
+main h3::before{content:"";display:inline-block;width:8px;height:8px;background:var(--brand-accent);border-radius:2px;margin-right:9px;vertical-align:middle}
+/* mục h3 đầu tiên ngay dưới header card → không kẻ ranh giới (tránh trùng với thanh tiêu đề) */
+.modcard>h2:first-child + h3,.modcard>h1:first-child + h3{border-top:none;padding-top:0;margin-top:14px}
+main h4{font-family:var(--font-heading);font-weight:600;font-size:14.5px;color:var(--brand-dark);margin:22px 0 8px;padding-left:10px;border-left:3px solid var(--neutral-300)}
+main h1,main h2,main h3{scroll-margin-top:96px}
+
+/* ===== CARD cho từng PHẦN/Module — cuộn đọc không bị lẫn giữa các phần ===== */
+.modcard{background:#fff;border:1px solid var(--neutral-200);border-radius:16px;padding:0 26px 24px;
+  margin:30px 0;box-shadow:0 6px 24px rgba(15,20,25,.06);overflow:hidden;scroll-margin-top:96px}
+.modcard>h2:first-child,.modcard>h1:first-child{
+  margin:0 -26px 20px;padding:15px 24px;background:var(--brand-dark);color:#fff;font-size:19px;font-weight:700;
+  border-left:7px solid var(--brand-accent);border-bottom:none;border-radius:0;scroll-margin-top:96px}
+.modcard>h2:first-child i,.modcard>h1:first-child i{color:var(--neutral-300);font-weight:500;font-size:.82em}
+/* h1 phân cách PHẦN A/B — đứng riêng giữa các card như "chương" */
+main>h1[id^="phan-"]{text-align:center;letter-spacing:.04em;margin:40px 0 4px;border-bottom:none;
+  color:var(--brand-accent-hover);font-size:18px}
+@media(max-width:900px){
+  .modcard{padding:0 14px 16px;margin:18px 0;border-radius:12px}
+  .modcard>h2:first-child,.modcard>h1:first-child{margin:0 -14px 14px;padding:12px 14px;font-size:17px}
+}
+main p{margin:10px 0}
+main ul,main ol{margin:10px 0;padding-left:22px} main li{margin:5px 0}
+code{font-family:var(--font-mono);font-size:.88em;background:var(--neutral-100);padding:2px 6px;border-radius:4px;color:var(--brand-accent-hover)}
+pre{background:var(--brand-dark);color:#E5E7EB;padding:16px;border-radius:10px;overflow-x:auto;font-family:var(--font-mono);font-size:13px;line-height:1.5}
+pre code{background:none;color:inherit;padding:0}
+
+/* ===== PHỄU HÀNH TRÌNH NGƯỜI CHƠI (1.1) — rộng & lớn, là xương sống cốt lõi ===== */
+.funnel{margin:24px -36px;padding:26px 30px 22px;background:linear-gradient(180deg,#FFFFFF 0%,var(--neutral-50) 100%);
+  border:1px solid var(--neutral-200);border-radius:16px;box-shadow:0 6px 22px rgba(15,20,25,.06)}
+.funnel-scroll{overflow-x:auto;padding-bottom:4px}
+.funnel-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px 8px;min-width:720px}
+.funnel .band{grid-row:1;border-radius:10px;padding:9px 8px;color:#fff;text-align:center;
+  font-family:var(--font-heading);font-weight:700;font-size:13px;letter-spacing:.01em;line-height:1.25}
+.funnel .band small{display:block;font-family:var(--font-mono);font-weight:500;font-size:10.5px;opacity:.85;margin-top:2px;letter-spacing:.02em}
+.band-acq{grid-column:1 / span 4;background:var(--info)}
+.band-eng{grid-column:5 / span 3;background:var(--success)}
+.band-mon{grid-column:8 / span 1;background:var(--brand-accent)}
+.fstep{grid-row:2;position:relative;display:flex;flex-direction:column;justify-content:center;
+  background:#fff;border:1.5px solid var(--neutral-200);border-radius:12px;padding:14px 8px;text-align:center;min-height:74px}
+.fstep .lbl{font-family:var(--font-heading);font-weight:700;font-size:13.5px;color:var(--brand-dark);line-height:1.2}
+.fstep .met{font-family:var(--font-mono);font-size:10.5px;color:var(--neutral-500);margin-top:5px;letter-spacing:.01em}
+.fstep .num{position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;
+  background:var(--brand-dark);color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:600;
+  display:flex;align-items:center;justify-content:center}
+/* mũi tên nối các bước */
+.fstep + .fstep::before{content:"›";position:absolute;left:-9px;top:50%;transform:translateY(-50%);
+  font-family:var(--font-heading);font-weight:700;font-size:18px;color:var(--brand-accent);line-height:1}
+.funnel .legend{margin-top:14px;font-size:12.5px;color:var(--neutral-600)}
+.funnel .legend b{color:var(--brand-dark)}
+@media (max-width:900px){ .funnel{margin:22px 0} }
+
+/* ===== BẢNG 3.3 (bản đồ đào sâu) — click-to-reveal (giảng viên bấm để lộ đáp án khi thuyết giảng) ===== */
+.quiz-tools{display:flex;gap:8px;align-items:center;margin:8px 0 10px;flex-wrap:wrap}
+.quiz-tools .qbtn{font-family:var(--font-heading);font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:8px;
+  border:1px solid var(--neutral-300);background:#fff;color:var(--neutral-700);cursor:pointer;transition:.12s}
+.quiz-tools .qbtn:hover{border-color:var(--brand-accent);color:var(--brand-accent-hover)}
+.quiz-tools .qnote{font-size:12px;color:var(--neutral-500)}
+td.quiz{cursor:pointer;position:relative;transition:background .12s}
+td.quiz .ans{display:none}
+td.quiz .ph{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:11.5px;font-weight:600;
+  color:var(--brand-accent-hover);background:var(--brand-accent-soft);padding:4px 10px;border-radius:8px;
+  border:1px dashed var(--brand-accent);user-select:none;white-space:nowrap}
+td.quiz:hover .ph{background:#FFDCCB}
+td.quiz.show{cursor:default}
+td.quiz.show .ans{display:inline}
+td.quiz.show .ph{display:none}
+/* đang ở chế độ SỬA → lộ hết để chỉnh nội dung */
+body.editing td.quiz .ans{display:inline}
+body.editing td.quiz .ph{display:none}
+body.editing td.quiz{cursor:text}
+
+/* tables */
+.tablewrap{overflow-x:auto;margin:16px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff;border:1px solid var(--neutral-200);border-radius:8px;overflow:hidden}
+th{background:var(--brand-dark);color:#fff;font-family:var(--font-heading);font-weight:600;text-align:left;padding:10px 12px;font-size:12.5px}
+td{padding:9px 12px;border-top:1px solid var(--neutral-200);vertical-align:top}
+tbody tr:nth-child(even){background:var(--neutral-50)}
+
+/* callouts */
+blockquote{margin:16px 0;padding:12px 16px;border-radius:8px;border-left:4px solid var(--neutral-300);background:var(--neutral-100);font-size:14px}
+blockquote p{margin:6px 0}
+.cl-task{border-left-color:var(--warning);background:#FFFBEB}
+.cl-ok{border-left-color:var(--success);background:#ECFDF5}
+.cl-case{border-left-color:var(--brand-accent);background:var(--brand-accent-soft)}
+.cl-pin{border-left-color:var(--brand-dark);background:#fff;border:1px solid var(--neutral-200);border-left:4px solid var(--brand-dark)}
+
+/* ===== HIGHLIGHT ĐOẠN BỊ SỬA ===== */
+[data-edited="1"]{background:#FFF6D6 !important;box-shadow:inset 4px 0 0 var(--warning);border-radius:4px}
+[data-edited="1"]::after{content:" ✍️ " attr(data-editor);font-family:var(--font-mono);font-size:10.5px;
+  font-weight:600;color:#92670A;background:#FDE68A;padding:1px 7px;border-radius:10px;margin-left:8px;white-space:nowrap;vertical-align:middle}
+td[data-edited="1"]::after,th[data-edited="1"]::after{display:block;margin:6px 0 0;width:fit-content}
+.editing [contenteditable="true"]:hover{outline:1px dashed var(--neutral-300);outline-offset:2px}
+.editing [contenteditable="true"]:focus{outline:2px solid var(--brand-accent);outline-offset:2px;background:#fff}
+
+footer{background:var(--brand-dark);color:var(--neutral-400);text-align:center;padding:22px;font-size:12px;font-family:var(--font-mono)}
+
+@media (max-width:900px){
+  .layout{flex-direction:column}
+  .sidebar{position:static;width:100%;flex:none;max-height:none;border-right:none;border-bottom:1px solid var(--neutral-200)}
+  main{padding:24px 18px 60px;max-width:100%}
+  .editbar input[type=text]{min-width:120px}
+}
+@media (max-width:640px){
+  .hero{padding:28px 18px} .hero h1{font-size:22px}
+  table{display:block;overflow-x:auto}
+  img,svg,canvas{max-width:100%;height:auto}
+}
+
+/* ===== LỘ TRÌNH 3 BUỔI (card tóm tắt) ===== */
+.roadmap-sessions{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.rs-card{border:1px solid var(--neutral-200);border-radius:14px;padding:16px 16px 14px;background:linear-gradient(180deg,#fff,var(--neutral-50));box-shadow:0 4px 16px rgba(15,20,25,.05)}
+.rs-card .rs-no{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--brand-accent-hover);text-transform:uppercase}
+.rs-card h4{margin:6px 0 8px;padding:0;border:none;font-size:15px}
+.rs-card .rs-mods{font-size:12.5px;color:var(--neutral-600);margin:0}
+.rs-card .rs-dur{display:inline-block;margin-top:10px;font-family:var(--font-mono);font-size:11px;color:var(--neutral-500);background:var(--neutral-100);padding:3px 9px;border-radius:8px}
+@media(max-width:760px){.roadmap-sessions{grid-template-columns:1fr}}
+
+/* ===== KHỐI BUỔI HỌC (khóa/mở) ===== */
+.session{margin:34px 0;scroll-margin-top:90px}
+.session-head{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;
+  background:var(--brand-dark);color:#fff;border-left:7px solid var(--brand-accent);border-radius:14px;
+  padding:16px 20px;box-shadow:0 6px 22px rgba(15,20,25,.10);scroll-margin-top:96px}
+.session-head .s-no{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.1em;color:var(--brand-accent);text-transform:uppercase}
+.session-head .s-title{font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1.2;margin:2px 0 0}
+.session-head .s-sub{font-size:12.5px;color:var(--neutral-300);margin:2px 0 0;flex-basis:100%}
+.session-head .s-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.session-head .s-lock{font-family:var(--font-mono);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.12);color:var(--neutral-300);white-space:nowrap}
+.session.open .session-head .s-lock{background:rgba(16,185,129,.22);color:#A7F3D0}
+.btn-unlock{font-family:var(--font-heading);font-weight:700;font-size:13px;padding:8px 15px;border-radius:9px;border:none;cursor:pointer;
+  background:var(--brand-accent);color:#fff;transition:.15s;white-space:nowrap}
+.btn-unlock:hover{background:var(--brand-accent-hover)}
+.session.open .btn-unlock{background:rgba(255,255,255,.14);color:#fff}
+.session.open .btn-unlock:hover{background:rgba(255,255,255,.26)}
+
+/* thân buổi — khóa thì mờ + chặn tương tác + cắt ngắn */
+.session-body{transition:filter .25s}
+.session:not(.open) .session-body{filter:blur(7px) grayscale(.25);pointer-events:none;user-select:none;max-height:300px;overflow:hidden;position:relative}
+.session:not(.open) .session-body::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(249,250,251,0) 35%,var(--neutral-50) 92%);z-index:1}
+.session-locknote{display:none;align-items:center;gap:10px;position:relative;z-index:3;margin:-40px auto 6px;width:fit-content;
+  background:#fff;border:1px solid var(--neutral-200);border-radius:30px;box-shadow:0 8px 24px rgba(15,20,25,.14);
+  padding:10px 18px;font-family:var(--font-heading);font-weight:600;font-size:13px;color:var(--neutral-700)}
+.session:not(.open) .session-locknote{display:flex}
+.session-locknote .ln-ic{font-size:16px}
+.session-locknote .btn-unlock{padding:6px 14px;font-size:12.5px}
+
+/* công cụ mở/khóa tất cả (cho giảng viên / lúc soạn) */
+.session-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 2px}
+.session-tools .sbtn{font-family:var(--font-heading);font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:8px;
+  border:1px solid var(--neutral-300);background:#fff;color:var(--neutral-700);cursor:pointer;transition:.12s}
+.session-tools .sbtn:hover{border-color:var(--brand-accent);color:var(--brand-accent-hover)}
+.session-tools .snote{font-size:12px;color:var(--neutral-500)}
+
+/* đang ở chế độ SỬA → mở hết để chỉnh nội dung */
+body.editing .session:not(.open) .session-body{filter:none;pointer-events:auto;user-select:auto;max-height:none;overflow:visible}
+body.editing .session:not(.open) .session-body::after{display:none}
+body.editing .session-locknote{display:none !important}
+
+/* ===== PHÂN TẦNG CHỈ SỐ (lõi vs tham khảo) ===== */
+.tier-tag{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.04em;
+  padding:2px 7px;border-radius:6px;vertical-align:middle;margin-left:2px}
+.tier-core{background:var(--brand-accent-soft);color:var(--brand-accent-hover);border:1px solid var(--brand-accent)}
+.tier-ref{background:var(--neutral-100);color:var(--neutral-500);border:1px solid var(--neutral-300)}
+tr.metric-core td:first-child{box-shadow:inset 4px 0 0 var(--brand-accent)}
+
+/* CHUỖI VÀNG — sơ đồ băng ngang */
+.goldchain{margin:16px 0;padding:16px;border-radius:12px;background:var(--brand-accent-soft);border:1px solid var(--brand-accent)}
+.goldchain .gc-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-family:var(--font-mono);font-size:12.5px}
+.goldchain .gc-node{background:#fff;border:1px solid var(--brand-accent);color:var(--brand-accent-hover);font-weight:600;padding:4px 9px;border-radius:7px;white-space:nowrap}
+.goldchain .gc-ar{color:var(--brand-accent);font-weight:700}
+.goldchain .gc-cap{font-size:12.5px;color:var(--neutral-700);margin:10px 0 0}
+</style>
+</head>
+<body>
+
+<!-- ===== THANH CÔNG CỤ — KHÔNG sửa được, là phần điều khiển ===== -->
+<div class="editbar" contenteditable="false">
+  <div class="grp">
+    <label for="editorName">✍️ Tên người sửa:</label>
+    <input type="text" id="editorName" placeholder="VD: Huy ND, team Ingame...">
+  </div>
+  <div class="grp">
+    <button class="btn btn-ghost" id="btnToggle" type="button">✏️ Bật chế độ sửa</button>
+    <button class="btn btn-save" id="btnSave" type="button">💾 Lưu bản của tôi</button>
+    <button class="btn btn-ghost" id="btnClear" type="button" title="Xóa toàn bộ highlight đang có">↺ Bỏ đánh dấu</button>
+  </div>
+  <span class="count">Đã sửa: <b id="editCount">0</b> đoạn</span>
+  <p class="hint">Nhập <b>tên của bạn</b> → bấm <b>Bật chế độ sửa</b> → sửa thẳng vào nội dung (đoạn nào sửa sẽ tự <b>tô vàng + gắn tên</b>) → bấm <b>Lưu bản của tôi</b> để tải file HTML mới kèm tên bạn. Gửi file đó lại cho TuanQG để gộp.</p>
+</div>
+
+<header class="hero">
+  <p class="eyebrow">Giáo trình đào tạo Fresher · Bản review nội bộ</p>
+  <h1>Giám sát &amp; Ổn định Game — Mục tiêu L2 (Developing)</h1>
+  <p><span class="ncv-brand-mark"><span class="nc">NC</span><span class="v">V</span><span class="games">GAMES</span></span> · Năng lực Vận hành – Phát hành Game</p>
+  <p>Phiên bản v0.4 · 2026-06-10 · Nội dung gốc: TuanQG · Nguồn chỉ số: TSN Metrics Wiki</p>
+  <span class="badge-draft">BẢN NHÁP — DÙNG NỘI BỘ ĐỂ GÓP Ý</span>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" contenteditable="false">
+    <p class="nav-title">Mục lục</p>
+    <nav>
+      <ul>
+        <li><a href="#m-co-che">📋 Cơ chế góp ý</a></li>
+        <li><a href="#m-dinh-vi">📌 Định vị năng lực</a></li>
+        <li><a href="#m-bando">🗺️ Bản đồ &amp; Lộ trình 3 buổi</a></li>
+        <li><a href="#buoi-1"><b>BUỔI 1 — Hiểu nghề &amp; Đọc chỉ số</b></a>
+          <ul>
+            <li><a href="#m0">M0 — Ngành game &amp; Phát hành</a></li>
+            <li><a href="#m1">M1 — Hành trình người chơi</a></li>
+            <li><a href="#m2">M2 — Chỉ số tầng mặt</a></li>
+          </ul>
+        </li>
+        <li><a href="#buoi-2"><b>BUỔI 2 — Đào sâu &amp; Truy vết</b></a>
+          <ul>
+            <li><a href="#m3">M3 — Tầng sâu &amp; Bản đồ truy vết</a></li>
+          </ul>
+        </li>
+        <li><a href="#buoi-3"><b>BUỔI 3 — Vận hành &amp; Đánh giá L2</b></a>
+          <ul>
+            <li><a href="#m4">M4 — Sức khỏe &amp; Kế hoạch giám sát</a></li>
+            <li><a href="#m5">M5 — Bị động → Chủ động</a></li>
+            <li><a href="#m6">M6 — Thang đánh giá L2</a></li>
+            <li><a href="#phu-luc">📎 Phụ lục &amp; Bảng đăng ký</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main id="doc">
+
+<section class="modcard">
+<h2 id="m-co-che">📋 Cơ chế góp ý (đọc trước khi sửa)</h2>
+<p>Đây là <b>bản làm việc cộng tác</b>. File này vừa là bản để <b>đọc</b>, vừa là nơi <b>các bên góp ý trực tiếp</b> trước khi giáo trình được chuẩn hóa. Quy trình gọn trong 4 bước:</p>
+<ol>
+  <li><b>Nhập tên bạn</b> vào ô "Tên người sửa" trên thanh công cụ đầu trang.</li>
+  <li>Bấm <b>"Bật chế độ sửa"</b> rồi sửa thẳng vào bất kỳ nội dung nào bạn muốn (thêm, bớt, ghi chú). Mỗi đoạn bạn động vào sẽ <b>tự tô vàng và gắn tên bạn</b> để dễ nhận ra.</li>
+  <li>Bấm <b>"Lưu bản của tôi"</b> — trình duyệt sẽ tải về một file HTML mới <b>có tên bạn ở cuối tên file</b> (ví dụ: <code>...v04_HuyND.html</code>).</li>
+  <li>Gửi file đó lại cho TuanQG. Khi nhiều người gửi về nhiều bản, TuanQG cùng trợ lý sẽ <b>đối chiếu các bản, thống nhất, rồi chốt một bản cuối</b>.</li>
+</ol>
+<blockquote class="cl-pin"><p><b>Lưu ý:</b> mỗi người nên bắt đầu từ <b>cùng một bản gốc</b> do TuanQG phát ra, sửa song song rồi gửi lại — như vậy phần tô vàng luôn phản ánh đúng "bạn đã đổi gì so với bản gốc". Không cần biết Markdown hay công cụ gì khác: chỉ cần trình duyệt.</p></blockquote>
+
+</section>
+
+<section class="modcard">
+<h2 id="m-dinh-vi">📌 Định vị năng lực (đọc trước khi học)</h2>
+<p><b>Giám sát &amp; Ổn định Game</b> — <i>"Liên tục theo dõi một game đang vận hành để phát hiện sớm các vấn đề về máy chủ (server), hiệu năng, hoặc vận hành."</i></p>
+<div class="tablewrap"><table>
+<thead><tr><th>Cấp</th><th>Mô tả (theo Khung năng lực)</th></tr></thead>
+<tbody>
+<tr><td><b>L1 — Basic (Cơ bản)</b></td><td>Đọc và theo dõi các bảng giám sát (dashboard) cơ bản hằng ngày (Dữ liệu game, Crash Rate, Trạng thái server, Appsflyer); nhận ra dấu hiệu cảnh báo và báo lại.</td></tr>
+<tr><td><b>L2 — Developing (Đang phát triển)</b> <i>(mục tiêu)</i></td><td><b>Chủ động</b> theo dõi các chỉ số sức khỏe game quan trọng; phát hiện bất thường và <b>đề xuất hướng xử lý</b> cho leader.</td></tr>
+<tr><td>L3 — Proficient (Thành thạo)</td><td>Tự thiết kế dashboard &amp; hệ thống cảnh báo; tìm nguyên nhân gốc; phối hợp đội phát triển xử lý và điều phối phản ứng của nhóm.</td></tr>
+<tr><td>L4 — Expert (Chuyên gia)</td><td>Xây quy trình giám sát 24/7; đặt chuẩn cam kết dịch vụ (SLA); chủ động cải tiến cách đo; điều phối ứng phó sự cố lớn.</td></tr>
+</tbody></table></div>
+<p><b>Cách hiểu mục tiêu khóa học: nền tảng Basic là cái DẠY, còn L2 là cái ĐO.</b> Fresher đạt L2 khi <i>tự chạy được cả chuỗi</i>: thấy bất thường ở chỉ số bề mặt → soi xuống chỉ số kỹ thuật/nhật ký (log) → chỉ ra nguyên nhân → báo cáo kèm đề xuất, mà <b>không cần ai nhắc</b>.</p>
+
+<h3>🎯 Trọng số theo Tiêu chí đầu ra Fresher (định hướng TuanQG)</h3>
+<p>Đây là kim chỉ nam phân bổ trọng tâm của toàn khóa:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>#</th><th>Tiêu chí đầu ra</th><th>Trọng số</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Nắm được ngành công nghiệp game</td><td>🔹 Phụ</td></tr>
+<tr><td>2</td><td>Hiểu được ý nghĩa của chỉ số bề mặt</td><td>🔸 Quan trọng</td></tr>
+<tr><td>3</td><td><b>Lập được kế hoạch giám sát chỉ số + phát hiện vấn đề + có đề xuất đào sâu để tìm nguyên nhân</b></td><td>🔴 <b>QUAN TRỌNG NHẤT</b></td></tr>
+<tr><td>4</td><td>Đề xuất được cách giải quyết</td><td>🔹 Phụ</td></tr>
+</tbody></table></div>
+
+</section>
+
+<section class="modcard">
+<h2 id="m-bando">🗺️ Bản đồ giáo trình &amp; Lộ trình 3 buổi</h2>
+<p>Toàn bộ giáo trình (7 module) được gói trong <b>3 buổi training</b>, nằm trong khung <b>3 tháng</b> học viên thực tập tại một project. Mỗi buổi trang bị một lớp năng lực; <b>giữa các buổi, học viên áp dụng ngay trên project thực chiến</b> — đó mới là nơi mài kỹ năng. Buổi học cho <i>khung</i>, project cho <i>phản xạ</i>.</p>
+
+<div class="roadmap-sessions">
+  <div class="rs-card">
+    <span class="rs-no">Buổi 1</span>
+    <h4>Hiểu nghề &amp; Đọc chỉ số</h4>
+    <p class="rs-mods"><b>M0</b> Ngành game · <b>M1</b> Phễu người chơi · <b>M2</b> Chỉ số tầng mặt (lõi)</p>
+    <span class="rs-dur">≈ 3h · nền tảng &amp; ngôn ngữ chỉ số</span>
+  </div>
+  <div class="rs-card">
+    <span class="rs-no">Buổi 2</span>
+    <h4>Đào sâu &amp; Truy vết</h4>
+    <p class="rs-mods"><b>M3</b> Chỉ số tầng sâu (2 nguồn log) + Bản đồ đào sâu → truy đúng nhật ký</p>
+    <span class="rs-dur">≈ 2.5h · tư duy chẩn đoán (cốt lõi)</span>
+  </div>
+  <div class="rs-card">
+    <span class="rs-no">Buổi 3</span>
+    <h4>Vận hành thực &amp; Đánh giá L2</h4>
+    <p class="rs-mods"><b>M4</b> Kế hoạch giám sát + tình huống · <b>M5</b> Chủ động &amp; báo cáo · <b>M6</b> Đánh giá</p>
+    <span class="rs-dur">≈ 3h · thực hành &amp; chấm L2</span>
+  </div>
+</div>
+
+<blockquote class="cl-pin"><p><b>Vì sao chia thế này:</b> Buổi 1 dạy <i>cái gì cần nhìn</i> (phễu + chỉ số lõi); Buổi 2 dạy <i>thấy bất thường thì soi xuống đâu</i> (tầng sâu + truy vết); Buổi 3 <i>ráp tất cả thành quy trình làm thật</i> và đo theo tiêu chí L2. Phần chỉ số mở rộng &amp; gốc so sánh (baseline) giao cho học viên tự đào trong lúc thực tập (xem M2).</p></blockquote>
+
+<blockquote class="cl-case" contenteditable="false"><p>🔒 <b>Cơ chế khóa buổi:</b> các buổi <b>chưa tới</b> được <b>làm mờ + khóa</b> — chỉ thấy tiêu đề. Giảng viên bấm <b>"Mở buổi"</b> để hé nội dung đúng lúc dạy (bấm lại để khóa). Thanh dưới có <b>Mở hết / Khóa hết</b> tiện lúc soạn. Khi bật <b>chế độ sửa</b>, mọi buổi tự mở để chỉnh nội dung.</p></blockquote>
+<div class="session-tools" contenteditable="false">
+  <button class="sbtn" id="sessOpenAll" type="button">🔓 Mở hết các buổi</button>
+  <button class="sbtn" id="sessCloseAll" type="button">🔒 Khóa hết</button>
+  <span class="snote">Trạng thái khóa không lưu khi tải lại trang — mở tới đâu giảng tới đó.</span>
+</div>
+
+</section>
+
+<section class="session open" id="buoi-1" data-session="1">
+  <div class="session-head" contenteditable="false">
+    <div>
+      <div class="s-no">Buổi 1</div>
+      <div class="s-title">Hiểu nghề &amp; Đọc chỉ số</div>
+    </div>
+    <div class="s-right">
+      <span class="s-lock">🔓 Đang mở</span>
+      <button class="btn-unlock" type="button">🔒 Khóa buổi 1</button>
+    </div>
+    <div class="s-sub">M0 Ngành game · M1 Phễu người chơi · M2 Chỉ số tầng mặt · ≈ 3h</div>
+  </div>
+  <div class="session-body">
+
+<section class="modcard">
+<h2 id="m0">Module 0 — Ngành game &amp; Phát hành game <i>(🔹 Trọng số: Phụ)</i></h2>
+<blockquote class="cl-pin"><p><b>Mục tiêu module:</b> Fresher hiểu mình đang đứng ở đâu trong bức tranh ngành — game là sản phẩm gì, ai làm ra, ai phát hành, và tiền đến từ đâu. Đây là nền để mọi chỉ số phía sau "có nghĩa".</p></blockquote>
+
+<h3>0.1 Tổng quan ngành game</h3>
+<ul>
+<li>Game là một ngành <b>sản phẩm giải trí số</b> có vòng đời dài: không bán một lần rồi thôi, mà <b>vận hành liên tục</b> — cập nhật nội dung, sự kiện, và giữ người chơi quay lại.</li>
+<li>Mảng di động (mobile) lớn nhất theo số lượng người chơi, với mô hình chủ đạo là <b>Miễn phí chơi (F2P)</b>: tải miễn phí, doanh thu đến từ <b>mua hàng trong game (IAP)</b> và/hoặc quảng cáo.</li>
+<li>Hệ quả quan trọng cho người làm vận hành: <b>người chơi vào miễn phí</b>, nên mọi đồng doanh thu đều phụ thuộc vào việc <i>giữ họ ở lại và khiến họ sẵn lòng chi tiền</i> → đó là lý do ta phải giám sát sức khỏe game mỗi ngày.</li>
+</ul>
+
+<h3>0.2 Phân loại game — các khái niệm cơ bản</h3>
+<ul>
+<li><b>Thể loại (genre):</b> RPG, MMORPG, Chiến thuật (SLG), Giải trí nhẹ (Casual), Giải đố (Puzzle), Hành động, Mô phỏng, Thẻ bài (Card/TCG)... Mỗi thể loại có hành vi người chơi và "nhịp" doanh thu khác nhau.</li>
+<li><b>Chủ đề/bối cảnh (theme):</b> Giả tưởng (Fantasy), Kiếm hiệp/Tiên hiệp, Lịch sử, Viễn tưởng (Sci-fi), Anime... — quyết định tệp người chơi và thông điệp marketing.</li>
+<li><b>Lối chơi (play style):</b> Đấu với máy (PvE) hay đấu người (PvP), nhẹ nhàng (Casual) hay nặng đô (Hardcore), chơi một mình hay theo bang/cộng đồng, phiên ngắn hay cày dài.</li>
+</ul>
+<blockquote class="cl-task"><p>📝 <b>BÀI TẬP 0.1 — Phân loại game:</b> Giảng viên đưa cho học viên một <b>danh sách game thực tế</b>; sau khi học xong module, học viên tự <b>phân loại từng game</b> theo thể loại / chủ đề / lối chơi.<br><i>(Giảng viên chuẩn bị danh sách game trước buổi học.)</i></p></blockquote>
+
+<h3>0.3 Nhà sản xuất và Nhà phát hành — ai làm gì</h3>
+<ul>
+<li><b>Nhà sản xuất (NSX / Studio):</b> làm ra game — lập trình, đồ họa, lối chơi, nội dung.</li>
+<li><b>Nhà phát hành (NPH):</b> đưa game đến người chơi tại thị trường và vận hành nó. Các vai trò điển hình của nhà phát hành:
+  <ul>
+  <li><b>Kéo người chơi mới (User Acquisition – UA) / Marketing</b> — đưa người chơi mới về (nguồn của nhóm chỉ số Acquisition).</li>
+  <li><b>Bản địa hóa</b> — chuyển đổi ngôn ngữ / văn hóa cho phù hợp thị trường.</li>
+  <li><b>Thanh toán &amp; Cửa hàng</b> — tích hợp thanh toán, phát hành trên Google Play / App Store.</li>
+  <li><b>Chăm sóc khách hàng (CS)</b> — hỗ trợ người chơi.</li>
+  <li><b>Vận hành sự kiện (LiveOps)</b> — vận hành sự kiện, cập nhật, gói bán.</li>
+  <li><b>Cộng đồng</b> — quản lý cộng đồng người chơi.</li>
+  <li><b>Dữ liệu / Giám sát</b> — <i>(vị trí của fresher trong khóa này)</i> — theo dõi sức khỏe game và cảnh báo sớm.</li>
+  </ul>
+</li>
+</ul>
+
+<h3>0.4 Tiền đến từ đâu (F2P + IAP) — và vì sao phải giám sát</h3>
+<ul>
+<li>Doanh thu = số người chơi × tỷ lệ chịu chi × số tiền mỗi người chi. Mỗi yếu tố đều có thể "rò rỉ" nếu game gặp sự cố (server sập, văng app, lỗi thanh toán).</li>
+<li><b>Một sự cố không phát hiện sớm = mất tiền và mất người chơi cùng lúc.</b> Vai trò giám sát là "hệ thần kinh cảm giác" của vận hành: phát hiện cơn đau sớm trước khi thành bệnh nặng.</li>
+</ul>
+<blockquote class="cl-task"><p>📝 <b>BÀI TẬP 0.2 — Thảo luận:</b> Học viên tự đoán <b>các thể loại game thành công nhất trên thị trường Việt Nam</b> hiện nay và <b>mô hình doanh thu</b> của chúng là gì. (Rèn tư duy "game sống bằng cách nào".)</p></blockquote>
+<blockquote class="cl-pin"><p><b>Chốt M0:</b> Sau module này fresher trả lời được — Game sống bằng cách nào? Nhà phát hành làm gì? Vì sao việc tôi giám sát mỗi ngày lại quan trọng với doanh thu?</p></blockquote>
+
+</section>
+
+<section class="modcard">
+<h2 id="m1">Module 1 — Hành trình người chơi (Phễu)</h2>
+<blockquote class="cl-pin"><p><b>Mục tiêu module:</b> Fresher hình dung được người chơi đi qua những bước nào, từ lúc <i>thấy quảng cáo</i> đến lúc <i>trả tiền</i> — và hiểu rằng <b>mỗi bước là một chặng có thể đo được và có thể rơi rớt người</b>.</p></blockquote>
+
+<h3>1.1 Phễu cơ bản</h3>
+<p>Hành trình của một người chơi đi từ trái sang phải, rơi rớt dần ở mỗi bước:</p>
+<div class="funnel" contenteditable="false" aria-label="Phễu hành trình người chơi">
+  <div class="funnel-scroll">
+    <div class="funnel-grid">
+      <div class="band band-acq">Acquisition<small>Thấy QC → Mở app lần đầu</small></div>
+      <div class="band band-eng">Engagement<small>NRU → Quay lại</small></div>
+      <div class="band band-mon">Monetization<small>Trả tiền</small></div>
+
+      <div class="fstep"><span class="num">1</span><span class="lbl">Thấy QC</span><span class="met">Impression</span></div>
+      <div class="fstep"><span class="num">2</span><span class="lbl">Bấm</span><span class="met">Click</span></div>
+      <div class="fstep"><span class="num">3</span><span class="lbl">Cài đặt</span><span class="met">tải app</span></div>
+      <div class="fstep"><span class="num">4</span><span class="lbl">Mở game</span><span class="met">Install (lần đầu)</span></div>
+      <div class="fstep"><span class="num">5</span><span class="lbl">Tạo TK + nhân vật</span><span class="met">NRU</span></div>
+      <div class="fstep"><span class="num">6</span><span class="lbl">Chơi</span><span class="met">DAU</span></div>
+      <div class="fstep"><span class="num">7</span><span class="lbl">Quay lại</span><span class="met">Retention</span></div>
+      <div class="fstep"><span class="num">8</span><span class="lbl">Trả tiền</span><span class="met">PU/Revenue</span></div>
+    </div>
+  </div>
+  <div class="legend">Mỗi bước là một <b>"van"</b> — người chơi rơi rớt dần qua từng bước; gom lại thành <b>3 chặng</b> (màu) tương ứng 3 bộ chỉ số ở mục 1.2. <b>Lưu ý:</b> một lượt <b>Install</b> chỉ tính là thành công khi user <b>mở app lần đầu</b> (bước 4 — nên Acquisition kéo tới bước này); <b>NRU</b> = tạo tài khoản <b>và</b> tạo ít nhất 1 nhân vật (Role).</div>
+</div>
+
+<h3>1.2 Ba chặng lớn = Ba bộ chỉ số</h3>
+<p>Phễu trên gom thành <b>3 chặng</b>, và đây cũng chính là 3 bộ chỉ số tầng mặt ở Module 2:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Chặng</th><th>Câu hỏi cốt lõi</th><th>Bộ chỉ số tương ứng</th></tr></thead>
+<tbody>
+<tr><td><b>Acquisition</b> (Thấy QC → Mở app lần đầu)</td><td>"Ta kéo được bao nhiêu người mới về, tốn bao nhiêu tiền?" <i>(Install chỉ tính khi user mở app lần đầu)</i></td><td>Chỉ số Acquisition</td></tr>
+<tr><td><b>Engagement</b> (NRU → Chơi → Quay lại)</td><td>"Người tải về có tạo nhân vật, thật sự chơi và ở lại không?"</td><td>Chỉ số Engagement</td></tr>
+<tr><td><b>Monetization</b> (Trả tiền)</td><td>"Người chơi có chịu chi không, chi bao nhiêu?"</td><td>Chỉ số Monetization</td></tr>
+</tbody></table></div>
+
+<h3>1.3 Vì sao nhà phát hành nhìn game qua cái phễu</h3>
+<ul>
+<li>Phễu giúp <b>định vị vấn đề</b>: khi doanh thu giảm, phễu cho biết <i>rơi ở chặng nào</i> — kéo người về ít (Acquisition)? về nhưng không ở lại (Engagement)? ở lại nhưng không chi (Monetization)?</li>
+<li>Đây là tiền đề cho kỹ năng cốt lõi của khóa: <b>một chỉ số ở chặng sau bất thường → truy ngược về chặng trước và xuống tầng kỹ thuật để tìm nguyên nhân</b> (Module 3–4).</li>
+</ul>
+<blockquote class="cl-ok"><p>✅ <i>Phễu này đã được TuanQG xác nhận: đầy đủ, không cần thay đổi.</i></p></blockquote>
+<blockquote class="cl-pin"><p><b>Chốt M1:</b> Fresher vẽ lại được phễu và gọi tên 3 chặng + bộ chỉ số tương ứng; giải thích được "rơi người ở mỗi bước nghĩa là gì".</p></blockquote>
+
+</section>
+
+<section class="modcard">
+<h2 id="m2">Module 2 — Chỉ số TẦNG MẶT (Acquisition / Engagement / Monetization) <i>(🔸 Trọng số: Quan trọng)</i></h2>
+<blockquote class="cl-pin"><p><b>Mục tiêu module:</b> Fresher <b>định nghĩa đúng, đọc đúng, và tính được</b> các chỉ số nền tảng của từng chặng phễu. Đây là "bảng chữ cái" của nghề — phải thuộc.<br><i>(Định nghĩa &amp; công thức bám sát TSN Metrics Wiki.)</i></p></blockquote>
+
+<h3>2.0 ⭐ Chuỗi vàng — học cái này TRƯỚC</h3>
+<p>Trước khi sa vào từng chỉ số rời, hãy nắm <b>chuỗi vàng</b>: cách các chỉ số nối nhau dọc theo phễu. Mỗi mũi tên là một <b>"van"</b> — nghẽn ở van nào thì doanh thu cuối phễu giảm. Đây vừa là <b>nhóm chỉ số phải thuộc nằm lòng trước tiên</b>, vừa là <b>bản đồ để truy vết ở M3–M4</b>.</p>
+<div class="goldchain" contenteditable="false">
+  <div class="gc-flow">
+    <span class="gc-node">Install</span><span class="gc-ar">→</span>
+    <span class="gc-node">%NRU</span><span class="gc-ar">→</span>
+    <span class="gc-node">NRU</span><span class="gc-ar">→</span>
+    <span class="gc-node">DAU / Retention</span><span class="gc-ar">→</span>
+    <span class="gc-node">%PU</span><span class="gc-ar">→</span>
+    <span class="gc-node">PU</span><span class="gc-ar">→</span>
+    <span class="gc-node">ARPPU</span><span class="gc-ar">→</span>
+    <span class="gc-node">GrossRev</span>
+  </div>
+  <p class="gc-cap">Đọc xuôi: kéo người về (Install) → bao nhiêu % tạo nhân vật (%NRU) → người mới thật (NRU) → có ở lại &amp; quay lại không (DAU/Retention) → bao nhiêu % chịu chi (%PU) → số người trả tiền (PU) → mỗi người trả bao nhiêu (ARPPU) → doanh thu (GrossRev).</p>
+</div>
+<p>Các chỉ số trên (gắn nhãn <span class="tier-tag tier-core">LÕI</span> trong những bảng dưới) là nhóm <b>bắt buộc thuộc</b>. Các chỉ số còn lại (không gắn nhãn) là <span class="tier-tag tier-ref">bổ trợ</span> — cần <i>hiểu để đọc</i>, học viên <b>tự đào sâu thêm trong lúc thực tập</b>, chưa cần thuộc lòng ngay.</p>
+
+<h3>2A — Chỉ số ACQUISITION (Thấy QC → Mở app lần đầu)</h3>
+<blockquote class="cl-pin"><p>Nguồn đo chính: <b>Appsflyer</b> (quy gán – attribution) + nền tảng quảng cáo (Facebook, Google, TikTok, Apple Search Ads).</p></blockquote>
+<p>Với vai trò <b>giám sát</b>, chỉ số Acquisition cốt lõi là <b>Install</b> và mắt xích bàn giao <b>Install → %NRU</b> (sang Engagement). Phần còn lại (CTR, CVR, IPM, CPM, CPI, ROAS…) do <b>UA/Marketing</b> tối ưu — fresher cần <i>hiểu để đọc</i>, chưa cần thuộc.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Chỉ số</th><th>Định nghĩa</th><th>Công thức / Ghi chú</th></tr></thead>
+<tbody>
+<tr><td><b>Cost</b></td><td>Tổng tiền chi cho quảng cáo trực tuyến (gồm chiến dịch UA + chiến dịch Branding). UA tập trung tạo chuyển đổi; Branding tập trung tạo nhận biết.</td><td>Tính theo lượt hiển thị (impression) hoặc lượt bấm (click) tùy loại.</td></tr>
+<tr><td><b>Impression</b></td><td>Số lần quảng cáo/nội dung hiển thị trên màn hình người dùng (bất kể họ có tương tác hay không).</td><td>—</td></tr>
+<tr><td><b>Click</b></td><td>Số lần quảng cáo được người dùng bấm vào.</td><td>—</td></tr>
+<tr><td><b>CTR</b></td><td>Tỷ lệ người thấy quảng cáo rồi bấm vào.</td><td><code>CTR = Clicks / Impressions</code></td></tr>
+<tr><td><b>CVR</b></td><td>Tỷ lệ người bấm quảng cáo rồi cài game. Phản ánh hiệu quả của trang cửa hàng (store).</td><td><code>CVR = Installs / Clicks</code></td></tr>
+<tr><td><b>IPM</b></td><td>Số lượt cài thu được trên mỗi 1.000 lượt hiển thị. Đo độ hiệu quả của mẫu quảng cáo.</td><td><code>IPM = (Installs / Impressions) × 1000</code></td></tr>
+<tr><td><b>CPM</b></td><td>Chi phí để hiển thị quảng cáo 1.000 lần.</td><td><code>CPM = (Cost / Impressions) × 1000</code></td></tr>
+<tr class="metric-core"><td><b>Installs</b> <span class="tier-tag tier-core">LÕI</span></td><td>Một lượt cài được ghi nhận khi tài khoản tải &amp; <b>mở app lần đầu</b> (trong Appsflyer, mốc cài = lần mở đầu tiên). Bị ảnh hưởng bởi cửa sổ quy gán lại (re-attribution window), iOS ATT, Protect360.</td><td>Lưu ý cửa sổ quy gán lại (ví dụ 90 ngày).</td></tr>
+<tr><td><b>CPI</b></td><td>Chi phí trung bình để có 1 lượt cài.</td><td><b>eCPI</b> = (chi phí Online+Offline)/(lượt cài tự nhiên + trả phí); <b>pCPI</b> = chi phí UA online / lượt cài trả phí.</td></tr>
+<tr><td><b>Conversed Install(n)</b></td><td>Tỷ lệ tài khoản đăng ký mới tính từ ngày cài (chỉ số lý thuyết).</td><td>VD: 5 lượt cài ngày 1/1, 3 người đăng nhập ngày 2/1 → Conversed Install(1) = 60%.</td></tr>
+<tr><td><b>ROAS(n)</b></td><td>Doanh thu sinh ra từ chiến dịch UA so với tiền quảng cáo. ROAS &gt; 100% = thu quảng cáo vượt chi quảng cáo (gross — chưa trừ phí cửa hàng ~30% &amp; chi phí vận hành).</td><td><code>ROAS(n) = GrossRPI(n) / Cost</code></td></tr>
+</tbody></table></div>
+
+<h3>2B — Chỉ số ENGAGEMENT (Cài → Chơi → Quay lại)</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Chỉ số</th><th>Định nghĩa</th><th>Công thức / Ghi chú</th></tr></thead>
+<tbody>
+<tr class="metric-core"><td><b>DAU</b> <span class="tier-tag tier-core">LÕI</span></td><td>Số tài khoản phân biệt đăng nhập trong ngày (sau khi đã chọn nhân vật).</td><td><code>DAU = A(1)</code></td></tr>
+<tr><td><b>A(n)</b></td><td>Số tài khoản phân biệt đăng nhập trong <b>n ngày gần nhất</b>.</td><td>VD: A30 = active trong 30 ngày.</td></tr>
+<tr><td><b>NRA</b></td><td>Tài khoản mới hoàn tất đăng nhập (SDK Login) lần đầu.</td><td>—</td></tr>
+<tr class="metric-core"><td><b>NRU</b> <span class="tier-tag tier-core">LÕI</span></td><td>NRA đã <b>tạo ít nhất 1 nhân vật (Role)</b> trong game — tức tài khoản mới + có nhân vật. Đây là mốc tính "người chơi mới thật sự".</td><td>NRU ≤ NRA (một người có thể có nhiều tài khoản).</td></tr>
+<tr class="metric-core"><td><b>%NRU</b> <span class="tier-tag tier-core">LÕI</span></td><td>Tỷ lệ lượt cài chuyển thành NRU.</td><td><code>%NRU = NRU / Installs</code> ⭐ <i>(chỉ số cầu nối Acquisition↔Engagement — xuất hiện nhiều ở M3)</i></td></tr>
+<tr><td><b>Stickiness</b></td><td>Mức độ người chơi quay lại trong 30 ngày (độ gắn bó).</td><td><code>Stickiness = DAU / A30</code></td></tr>
+<tr><td><b>rUser(n)</b></td><td>Số tài khoản phân biệt đăng nhập lại sau n ngày kể từ ngày đăng ký.</td><td>—</td></tr>
+<tr class="metric-core"><td><b>RR(n)</b> <span class="tier-tag tier-core">LÕI</span></td><td>Tỷ lệ người chơi quay lại sau n ngày/tuần/tháng.</td><td><code>RR(n) = rUser(n) / NRU</code></td></tr>
+<tr><td><b>Online Time</b></td><td>Thời gian trực tuyến của tài khoản (mặc định tính bằng giây).</td><td>—</td></tr>
+<tr><td><b>Churn(n)</b></td><td>Số tài khoản <b>không</b> active trong n ngày gần nhất (so lần đăng nhập cuối với hiện tại).</td><td>Ngược với retention (tỷ lệ ở lại).</td></tr>
+</tbody></table></div>
+
+<h3>2C — Chỉ số MONETIZATION (Chơi → Trả tiền)</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Chỉ số</th><th>Định nghĩa</th><th>Công thức / Ghi chú</th></tr></thead>
+<tbody>
+<tr class="metric-core"><td><b>GrossRev</b> <span class="tier-tag tier-core">LÕI</span></td><td>Tổng doanh thu theo số tiền giao dịch (billing).</td><td>—</td></tr>
+<tr class="metric-core"><td><b>PU</b> <span class="tier-tag tier-core">LÕI</span></td><td>Số tài khoản phân biệt có trả tiền.</td><td>—</td></tr>
+<tr><td><b>NPU</b></td><td>Số tài khoản trả tiền <b>lần đầu tiên trong đời</b> (ở game này).</td><td>—</td></tr>
+<tr><td><b>NNPU</b></td><td>Tài khoản trả tiền lần đầu <b>ngay trong ngày đăng ký</b>.</td><td>NNPU ⊆ NPU</td></tr>
+<tr><td><b>OPU</b></td><td>Người trả tiền cũ (Old Paying User).</td><td><code>OPU = PU − NPU</code></td></tr>
+<tr><td><b>ARPU</b></td><td>Doanh thu trung bình trên mỗi active user (gồm cả người không trả).</td><td><code>ARPU = GrossRev / DAU</code></td></tr>
+<tr class="metric-core"><td><b>ARPPU</b> <span class="tier-tag tier-core">LÕI</span></td><td>Doanh thu trung bình trên mỗi người trả tiền.</td><td><code>ARPPU = GrossRev / PU</code></td></tr>
+<tr><td><b>ARPNPU / ARPOPU</b></td><td>Doanh thu trung bình trên NPU / OPU.</td><td><code>= GrossNPU/NPU</code> ; <code>= GrossOPU/OPU</code></td></tr>
+<tr><td><b>LTV(n)</b></td><td>Doanh thu trung bình của 1 user trong n ngày kể từ ngày đăng ký (giá trị vòng đời).</td><td><code>LTV(n) = GrossNRU(n) / NRU</code></td></tr>
+<tr class="metric-core"><td><b>%PU</b> <span class="tier-tag tier-core">LÕI</span></td><td>Tỷ lệ người trả tiền trong tổng active.</td><td><code>%PU = PU / DAU</code></td></tr>
+<tr><td><b>ROI</b></td><td>Tỷ suất hoàn vốn.</td><td><code>ROI = GrossRev / Cost</code></td></tr>
+<tr><td><b>rpUser(n) / pRR(n)</b></td><td>Người đã trả tiền có quay lại sau n ngày không.</td><td>Đo "độ dính" của khách trả tiền.</td></tr>
+</tbody></table></div>
+
+<blockquote class="cl-pin"><p><b>Nhắc lại chuỗi vàng (mục 2.0):</b> <code>Install → %NRU → NRU → DAU/Retention → %PU → PU → ARPPU → GrossRev</code> — đây chính là bản đồ ta sẽ dùng để <b>truy vết</b> ở M3 và <b>chẩn đoán</b> ở M4: nghẽn ở van nào, soi xuống tầng sâu ngay dưới van đó.</p></blockquote>
+<blockquote class="cl-task"><p>🧪 <b>NHIỆM VỤ THỰC TẬP (thay cho "ngưỡng chuẩn cứng"):</b> Giáo trình <b>không</b> đưa ngưỡng "bình thường" cố định cho từng chỉ số. Thay vào đó, <b>khuyến khích học viên tự tìm hiểu kỹ gốc so sánh (baseline) thực tế của từng chỉ số ngay trong quá trình thực tập tại dự án</b> — vì mỗi game/thị trường có ngưỡng khác nhau. Đây cũng là cách rèn phản xạ "đọc số phải có gốc so sánh". 👉 Vì vậy khi nói một chỉ số "cao/thấp", luôn ngầm hiểu là <b>so với gốc so sánh + bối cảnh</b>, không có con số tuyệt đối "đúng" — tiêu chí #2 ở M6 cũng chấm theo nghĩa này.</p></blockquote>
+<blockquote class="cl-pin"><p><b>Chốt M2:</b> Fresher đọc một bảng số bất kỳ và (1) gọi đúng tên chỉ số, (2) nói nó thuộc chặng nào, (3) tính được khi cho dữ liệu thô, (4) giải thích "chỉ số này cao/thấp nghĩa là gì".</p></blockquote>
+
+</section>
+
+  </div>
+  <div class="session-locknote" contenteditable="false"><span class="ln-ic">🔒</span> Buổi 1 chưa mở — <button class="btn-unlock" type="button">🔓 Mở buổi 1</button></div>
+</section><!-- /buổi 1 -->
+
+<section class="session" id="buoi-2" data-session="2">
+  <div class="session-head" contenteditable="false">
+    <div>
+      <div class="s-no">Buổi 2</div>
+      <div class="s-title">Đào sâu &amp; Truy vết</div>
+    </div>
+    <div class="s-right">
+      <span class="s-lock">🔒 Đang khóa</span>
+      <button class="btn-unlock" type="button">🔓 Mở buổi 2</button>
+    </div>
+    <div class="s-sub">M3 Chỉ số tầng sâu (2 nguồn log) + Bản đồ đào sâu → truy vết · ≈ 2.5h</div>
+  </div>
+  <div class="session-body">
+
+<section class="modcard">
+<h2 id="m3">Module 3 — Chỉ số TẦNG SÂU (Ingame Log + Platform Log) + Bản đồ Đào sâu &amp; Truy vết</h2>
+<blockquote class="cl-pin"><p><b>Mục tiêu module:</b> Fresher hiểu rằng chỉ số tầng sâu <b>không đứng riêng</b> — chúng là <b>tầng chẩn đoán nằm dưới</b> 3 bộ chỉ số mặt. Khi một chỉ số mặt bất thường, ta <i>soi xuống</i> tầng sâu và <b>truy đúng loại nhật ký (log)</b> để tìm "thủ phạm".</p></blockquote>
+
+<h3>3.1 Tư duy hai tầng (cốt lõi của toàn khóa)</h3>
+<ul>
+<li><b>Tầng mặt (triệu chứng):</b> Acquisition / Engagement / Monetization — "đèn báo" nhìn hằng ngày, cho biết <i>có gì đó đang sai</i>.</li>
+<li><b>Tầng sâu (chẩn đoán):</b> chỉ số <b>trong game</b> + tín hiệu <b>kỹ thuật</b>, lấy từ <b>2 nguồn dữ liệu</b> — <b>Ingame Log</b> &amp; <b>Platform Log</b> — trả lời <i>vì sao</i> đèn báo sáng.</li>
+</ul>
+<blockquote class="cl-pin"><p>Ví dụ kinh điển: <b>Install vẫn ổn nhưng %NRU (Install→NRU) thấp</b> → "người cài về nhưng không tạo được nhân vật" → soi tầng sâu → có thể là văng app (crash) ngay lần mở đầu, lỗi SDK login, máy chủ phân phối nội dung (CDN) tải tài nguyên chậm/lỗi, đoạn phim mở đầu (cinematic) quá dài, hoặc server đăng ký nghẽn.</p></blockquote>
+
+<h3>3.2 Chỉ số tầng sâu — lấy từ đâu? (2 nguồn: Ingame Log &amp; Platform Log)</h3>
+<blockquote class="cl-pin"><p>Mọi chỉ số tầng sâu đều đến từ <b>2 nguồn dữ liệu</b> — biết "chỉ số này soi ở nguồn nào" chính là kỹ năng truy vết cốt lõi:</p>
+<ul>
+<li><b>① Ingame Log</b> — hành vi người chơi <i>bên trong</i> game (qua Ingame Dashboard).</li>
+<li><b>② Platform Log</b> — tín hiệu kỹ thuật từ nền tảng: <b>External</b> (console của store) + <b>Internal</b> (in-house SDK &amp; Server Log).</li>
+</ul></blockquote>
+
+<h4>① Ingame Log — hành vi trong game <i>(input TuanQG — qua Ingame Dashboard)</i></h4>
+<p>Phản ánh <b>hành vi người chơi bên trong game</b> — cực kỳ hữu ích để giải thích vì sao chỉ số mặt (đặc biệt NRU &amp; Retention) bất thường.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Chỉ số</th><th>Đo cái gì / đèn báo</th><th>Liên quan chỉ số mặt</th></tr></thead>
+<tbody>
+<tr><td><b>Quests Completion</b></td><td>Tỷ lệ hoàn thành nhiệm vụ (đặc biệt nhiệm vụ đầu game / hướng dẫn) — kẹt thì rớt sớm.</td><td>NRU, RR.</td></tr>
+<tr><td><b>Level Completion</b></td><td>Tiến độ vượt qua từng màn (level) — nghẽn level → chán → bỏ.</td><td>RR, Engagement.</td></tr>
+<tr><td><b>1st Purchase Time</b></td><td>Thời điểm/khoảng thời gian đến lần mua đầu tiên.</td><td>%PU, NPU, Monetization.</td></tr>
+<tr><td><i>(bổ sung thêm theo Ingame Dashboard thực tế)</i></td><td></td><td></td></tr>
+</tbody></table></div>
+<blockquote class="cl-task"><p>✍️ <i>Chỗ này mở để team Ingame/Dữ liệu bổ sung thêm chỉ số dashboard thật.</i></p></blockquote>
+
+<h4>② Platform Log — tín hiệu kỹ thuật</h4>
+<p><b>②a · External Platform</b> — console của store (Android: <b>Google Play Console</b>; iOS: <b>App Store Connect</b>):</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Chỉ số</th><th>Đo cái gì / đèn báo</th><th>Nguồn cụ thể</th></tr></thead>
+<tbody>
+<tr><td><b>Crash Rate</b></td><td>Tỷ lệ phiên/người dùng bị văng app — không ổn định trên thiết bị/phiên bản nào.</td><td>Play Console / App Store Connect <i>(crash cũng lấy được ở SDK crash log nội bộ — xuyên nền tảng)</i>.</td></tr>
+<tr><td><b>ANR Rate</b></td><td>App treo/đơ, không phản hồi.</td><td>Google Play Console <i>(chỉ Android — iOS không có ANR)</i>.</td></tr>
+<tr><td><b>Error Rate</b></td><td>Tỷ lệ lỗi (API/SDK/logic) ghi nhận được — lỗi backend/tích hợp.</td><td>Console store / báo cáo lỗi nền tảng.</td></tr>
+</tbody></table></div>
+<p><b>②b · Internal Platform</b> — <b>in-house SDK</b> &amp; <b>Server Log</b>:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Chỉ số</th><th>Đo cái gì / đèn báo</th><th>Nguồn cụ thể</th></tr></thead>
+<tbody>
+<tr><td><b>Server Status / Uptime</b></td><td>Trạng thái server (chạy/sập), tỷ lệ thời gian hoạt động — server sập/bảo trì lỗi/nghẽn.</td><td>Server Log.</td></tr>
+<tr><td><b>Latency / Ping</b></td><td>Độ trễ phản hồi giữa máy người chơi và server — lag, giật, phản hồi chậm.</td><td>Server Log.</td></tr>
+<tr><td><b>Disconnect Rate</b></td><td>Tỷ lệ rớt kết nối khi đang chơi — mạng/server bất ổn.</td><td>Server Log.</td></tr>
+<tr><td><b>Login Success Rate</b></td><td>Tỷ lệ đăng nhập thành công / tổng số lần thử — cổng/SDK login lỗi.</td><td>In-house SDK.</td></tr>
+<tr><td><b>Payment Success Rate</b></td><td>Tỷ lệ giao dịch thanh toán thành công — cổng thanh toán/IAP/cửa hàng lỗi.</td><td>In-house SDK.</td></tr>
+<tr><td><b>Loading Time</b></td><td>Thời gian tải vào game / tải tài nguyên (ảnh hưởng bởi CDN) — tải lâu thì rơi người.</td><td>In-house SDK.</td></tr>
+<tr><td><b>Custom Events</b></td><td>Lần theo người chơi rơi ở <b>bước nào</b> trong một luồng (mở đầu, hướng dẫn, mua hàng).</td><td>In-house SDK.</td></tr>
+</tbody></table></div>
+
+<h3>3.3 ⭐ BẢN ĐỒ ĐÀO SÂU &amp; TRUY VẾT (tài sản cốt lõi)</h3>
+<p>Đọc theo chiều: <i>thấy <b>triệu chứng</b> (trái) → nghĩ đến <b>nghi phạm</b> (giữa) → <b>truy đúng nhật ký</b> (phải)</i>. <b>Phần ⭐ là input thực tế của TuanQG.</b></p>
+<blockquote class="cl-case" contenteditable="false"><p>🎤 <b>Bảng tương tác (dùng khi thuyết giảng):</b> hàng đầu (<b>NRU thấp</b>) mở sẵn làm <b>mẫu</b> để giải thích cách đào sâu → truy vết. Từ hàng 2 trở đi, cột "nghi phạm" và "cách truy vết" được <b>che lại</b> — <b>bấm vào ô</b> để lộ đáp án (cho học viên đoán trước rồi mới mở). Bấm lại để đóng.</p></blockquote>
+<div class="quiz-tools" contenteditable="false">
+  <button class="qbtn" id="quizOpenAll" type="button">👁 Mở hết</button>
+  <button class="qbtn" id="quizCloseAll" type="button">🙈 Đóng hết</button>
+  <span class="qnote">Mẹo: trong lúc giảng, bấm trực tiếp vào từng ô để mở/đóng đúng chỗ đang nói.</span>
+</div>
+<div class="tablewrap"><table>
+<thead><tr><th>Triệu chứng (chỉ số mặt)</th><th>Nghi phạm tầng sâu</th><th>Cách truy vết (loại nhật ký)</th></tr></thead>
+<tbody>
+<tr><td>⭐ <b>NRU thấp</b> <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--success);font-weight:600">(mẫu — mở sẵn)</span></td><td>Vấn đề <b>CDN</b> (tải tài nguyên chậm/lỗi) · <b>văng app trước khi kịp tạo nhân vật</b> · <b>đoạn phim mở đầu quá dài</b></td><td>Truy <b>Custom Events</b> (lần theo bước rơi trong luồng mở đầu).</td></tr>
+<tr><td>⭐ <b>RR1 / RR3 / RR7 thấp</b></td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans"><b>Kẹt nhiệm vụ hướng dẫn</b> · <b>văng app (crash)</b></span></td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Kẹt nhiệm vụ → truy <b>Ingame log</b> · Văng app → truy <b>Crash log</b>.</span></td></tr>
+<tr><td>⭐ <b>DAU / CCU rớt thất thường</b></td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans"><b>Sự cố server</b></span></td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Truy <b>Server log</b>.</span></td></tr>
+<tr><td>Install ổn nhưng %NRU thấp</td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Văng app lần mở đầu · lỗi SDK Login · tải/CDN chậm · server đăng ký nghẽn</span></td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Custom Events + Crash log.</span></td></tr>
+<tr><td>%PU / GrossRev tụt</td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Payment Success Rate giảm · lỗi SDK thanh toán/IAP · cửa hàng gián đoạn</span></td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Payment log + Error log.</span></td></tr>
+<tr><td>Online Time / Stickiness giảm</td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Disconnect cao · server bất ổn · ANR · lag giờ cao điểm</span></td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Server log + Crash/ANR log.</span></td></tr>
+<tr><td>CVR / Install giảm (Cost không đổi)</td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Trang cửa hàng lỗi · bản build bị từ chối/gỡ · lỗi quy gán Appsflyer</span></td><td class="quiz"><span class="ph">🔍 Bấm để mở</span><span class="ans">Appsflyer + bảng điều khiển cửa hàng.</span></td></tr>
+</tbody></table></div>
+
+<blockquote class="cl-pin"><p><b>Chốt M3:</b> Fresher (1) định nghĩa được chỉ số kỹ thuật + trong game; (2) khi cho 1 triệu chứng tầng mặt, liệt kê được nghi phạm hợp lý; (3) <b>chọn đúng loại nhật ký để truy vết</b> cho từng nghi phạm.</p></blockquote>
+
+</section>
+
+  </div>
+  <div class="session-locknote" contenteditable="false"><span class="ln-ic">🔒</span> Buổi 2 chưa mở — <button class="btn-unlock" type="button">🔓 Mở buổi 2</button></div>
+</section><!-- /buổi 2 -->
+
+<section class="session" id="buoi-3" data-session="3">
+  <div class="session-head" contenteditable="false">
+    <div>
+      <div class="s-no">Buổi 3</div>
+      <div class="s-title">Vận hành thực &amp; Đánh giá L2</div>
+    </div>
+    <div class="s-right">
+      <span class="s-lock">🔒 Đang khóa</span>
+      <button class="btn-unlock" type="button">🔓 Mở buổi 3</button>
+    </div>
+    <div class="s-sub">M4 Kế hoạch giám sát + tình huống · M5 Chủ động &amp; báo cáo · M6 Đánh giá · ≈ 3h</div>
+  </div>
+  <div class="session-body">
+
+<section class="modcard">
+<h2 id="m4">Module 4 — Tình huống: Theo dõi sức khỏe + Kế hoạch giám sát <i>(🔴 Trọng số: QUAN TRỌNG NHẤT)</i></h2>
+<blockquote class="cl-pin"><p><b>Mục tiêu module:</b> Gắn mọi thứ lại thành <b>một quy trình lặp được hằng ngày</b> + <b>lập được kế hoạch giám sát</b>. Đây là bước được TuanQG xác định <b>quan trọng nhất</b> trong tiêu chí đầu ra: <i>lập kế hoạch giám sát + phát hiện vấn đề + có đề xuất đào sâu để tìm nguyên nhân.</i></p></blockquote>
+
+<h3>4.1 Xây dựng KẾ HOẠCH GIÁM SÁT</h3>
+<p>Một kế hoạch giám sát tối thiểu trả lời 5 câu hỏi — fresher cần tự lập được:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Thành phần</th><th>Câu hỏi</th><th>Ví dụ</th></tr></thead>
+<tbody>
+<tr><td><b>Theo dõi gì</b></td><td>Chỉ số nào vào danh sách theo dõi?</td><td>Install, %NRU, DAU/CCU, RR1/3/7, %PU, GrossRev, Crash Rate, Server Status.</td></tr>
+<tr><td><b>Tần suất</b></td><td>Bao lâu nhìn một lần?</td><td>Hằng ngày; theo thời gian thực vào ngày ra bản build/sự kiện/sau bảo trì.</td></tr>
+<tr><td><b>Gốc so sánh</b></td><td>Lấy mốc chuẩn ở đâu?</td><td>Hôm qua / tuần trước / cùng kỳ / trung bình 7–30 ngày.</td></tr>
+<tr><td><b>Ngưỡng cảnh báo</b></td><td>Lệch bao nhiêu thì báo động?</td><td>(tự xác định trong quá trình thực tập — xem M2).</td></tr>
+<tr><td><b>Hành động</b></td><td>Lệch thì làm gì, báo ai?</td><td>Đào sâu → truy nhật ký → báo cáo + đề xuất (M5).</td></tr>
+</tbody></table></div>
+
+<h3>4.2 Nhịp giám sát hằng ngày (Kiểm tra sức khỏe hằng ngày)</h3>
+<ol>
+<li><b>Mở dashboard</b> theo thứ tự phễu: Acquisition → Engagement → Monetization + bảng kỹ thuật + trong game.</li>
+<li><b>So với gốc so sánh:</b> con số hôm nay <i>bình thường hay lệch</i>?</li>
+<li><b>Khoanh vùng bất thường:</b> chỉ số nào lệch, lệch bao nhiêu %, từ khi nào.</li>
+<li><b>Phân biệt nhiễu với tín hiệu:</b> lệch nhỏ theo mùa/cuối tuần (nhiễu) ≠ lệch mạnh/đột ngột (tín hiệu).</li>
+<li><b>Đào sâu + truy vết:</b> dùng bản đồ M3 → chọn đúng nhật ký → khoanh nghi phạm.</li>
+<li><b>Báo cáo + đề xuất</b> (chi tiết ở M5).</li>
+</ol>
+
+<h3>4.3 Phân biệt NHIỄU với TÍN HIỆU (đọc số phải có gốc so sánh)</h3>
+<p>Đây là phản xạ khó nhất và quan trọng nhất của L2: <b>không phải mọi dao động đều là sự cố</b>. Trước khi báo động, hỏi 3 câu:</p>
+<ol>
+<li><b>So với cái gì?</b> Một con số chỉ "cao/thấp" khi đặt cạnh <b>gốc so sánh</b> phù hợp: hôm qua, cùng thứ trong tuần trước, cùng kỳ, hoặc trung bình 7–30 ngày. (Gốc so sánh cụ thể của từng game, học viên tự lập trong lúc thực tập — xem M2.)</li>
+<li><b>Có bối cảnh nào giải thích được không?</b> Các yếu tố gây <b>nhiễu</b> hợp lý: cuối tuần/ngày lễ, đang chạy hoặc vừa kết thúc sự kiện, ngày ra bản build, vừa bảo trì, đổi giá/đổi gói, mùa vụ, hay <b>dữ liệu về trễ</b> (số hôm nay chưa chốt đủ).</li>
+<li><b>Dao động có khớp mẫu hình bình thường không?</b> Lệch <b>nhỏ &amp; theo chu kỳ</b> (vd luôn giảm cuối tuần) = nhiễu; lệch <b>mạnh, đột ngột, lệch khỏi chu kỳ, hoặc kéo dài nhiều ngày</b> = tín hiệu cần đào sâu.</li>
+</ol>
+<blockquote class="cl-task"><p>🧠 <b>Bẫy thường gặp:</b> báo động vì DAU giảm sáng thứ Hai (thực ra tuần nào cũng vậy), hoặc vì doanh thu hôm nay "tụt" trong khi dữ liệu ngày chưa chốt. Luôn <b>loại nhiễu trước</b> rồi mới gọi tên sự cố.</p></blockquote>
+
+<h3>4.4 Quy trình chẩn đoán (chuỗi đào sâu chuẩn)</h3>
+<pre><code>Phát hiện chỉ số mặt lệch
+        │
+        ▼
+Đặt giả thuyết: "rơi ở chặng nào? van nào nghẽn?"
+        │
+        ▼
+Chọn &amp; truy đúng loại nhật ký (Custom Events / Ingame / Crash / Server)
+        │
+        ▼
+Khoanh vùng nguyên nhân (nền tảng? phiên bản? server? khung giờ? bước nào?)
+        │
+        ▼
+Báo cáo leader: triệu chứng + bằng chứng (nhật ký) + nghi phạm + đề xuất bước đào sâu tiếp</code></pre>
+
+<h3>4.5 Phân loại mức độ nghiêm trọng</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Mức</th><th>Dấu hiệu</th><th>Phản ứng kỳ vọng</th></tr></thead>
+<tbody>
+<tr><td>🔴 Cao</td><td>Ảnh hưởng diện rộng, mất doanh thu/người chơi ngay (server sập, thanh toán lỗi hàng loạt).</td><td>Báo ngay lập tức, đẩy lên cấp trên.</td></tr>
+<tr><td>🟠 Trung bình</td><td>Một phân khúc/nền tảng bị ảnh hưởng, xu hướng xấu đi.</td><td>Báo trong ngày kèm theo dõi.</td></tr>
+<tr><td>🟡 Thấp</td><td>Lệch nhẹ, chưa rõ tác động.</td><td>Ghi nhận, theo dõi thêm.</td></tr>
+</tbody></table></div>
+
+<h3>4.6 TÌNH HUỐNG THỰC HÀNH (dựng từ bản đồ đào sâu thực tế của TuanQG)</h3>
+<blockquote class="cl-case"><p><b>TÌNH HUỐNG 1 — NRU thấp bất thường</b></p>
+<ul>
+<li><b>Triệu chứng:</b> Install giữ mức bình thường, nhưng <b>NRU (và %NRU) thấp</b> — người cài về nhưng không tạo được/không tạo nhân vật.</li>
+<li><b>Giả thuyết:</b> rơi ngay trong luồng mở đầu (cài → mở lần đầu → tạo nhân vật).</li>
+<li><b>Đào sâu / truy vết:</b> truy <b>Custom Events</b> để xem người chơi rớt ở bước nào. Các nghi phạm thường gặp: <b>CDN</b> tải tài nguyên chậm/lỗi · <b>văng app</b> ngay trước bước tạo nhân vật · <b>đoạn phim mở đầu quá dài</b> khiến người chơi thoát.</li>
+<li><b>Kết luận mẫu:</b> phần lớn rớt tại bước tải tài nguyên đầu game → nghi vấn CDN ở khu vực X.</li>
+<li><b>Đề xuất (L2):</b> báo leader + nêu nghi phạm CDN, đề xuất đào sâu cùng đội phát triển/hạ tầng để kiểm CDN khu vực X; nếu do đoạn phim mở đầu → đề xuất cho phép bỏ qua (skip).</li>
+</ul></blockquote>
+<blockquote class="cl-case"><p><b>TÌNH HUỐNG 2 — Retention RR1/RR3/RR7 thấp</b></p>
+<ul>
+<li><b>Triệu chứng:</b> người chơi mới không quay lại sau ngày 1/3/7.</li>
+<li><b>Giả thuyết:</b> trải nghiệm sớm có rào cản (kẹt nội dung hoặc app lỗi).</li>
+<li><b>Đào sâu / truy vết:</b> nếu nghi <b>kẹt nhiệm vụ hướng dẫn</b> → truy <b>Ingame log</b> (xem đông người dừng ở nhiệm vụ nào). Nếu nghi <b>văng app</b> → truy <b>Crash log</b> (văng theo phiên bản/thiết bị).</li>
+<li><b>Kết luận mẫu:</b> một tỷ lệ lớn người chơi dừng đúng tại một nhiệm vụ hướng dẫn → nhiệm vụ này đang chặn tiến độ.</li>
+<li><b>Đề xuất (L2):</b> báo leader + đội Thiết kế game, đề xuất xem lại độ khó/điều kiện hoàn thành nhiệm vụ đó.</li>
+</ul></blockquote>
+<blockquote class="cl-case"><p><b>TÌNH HUỐNG 3 — DAU / CCU rớt thất thường</b></p>
+<ul>
+<li><b>Triệu chứng:</b> DAU/CCU tụt đột ngột, không theo quy luật ngày thường.</li>
+<li><b>Giả thuyết:</b> sự cố hạ tầng/server.</li>
+<li><b>Đào sâu / truy vết:</b> truy <b>Server log</b> quanh mốc thời gian tụt (lỗi, nghẽn, thời gian sập, độ trễ tăng).</li>
+<li><b>Kết luận mẫu:</b> có khoảng server lỗi/nghẽn trùng đúng thời điểm DAU/CCU rơi.</li>
+<li><b>Đề xuất (L2):</b> báo ngay (mức cao nếu diện rộng), đề xuất đào sâu cùng đội server/hạ tầng.</li>
+</ul></blockquote>
+<blockquote class="cl-task"><p>📝 <b>BÀI TẬP M4:</b> Cho học viên một bộ số liệu có "bệnh" (giả định) → yêu cầu chạy đủ chuỗi: phát hiện triệu chứng → giả thuyết → chọn đúng nhật ký để truy vết → kết luận nghi phạm → viết đề xuất.</p></blockquote>
+<blockquote class="cl-pin"><p><b>Chốt M4:</b> Fresher (1) tự lập được một kế hoạch giám sát; (2) chạy được nhịp kiểm tra sức khỏe hằng ngày; (3) hoàn thành một bài đào sâu từ triệu chứng → truy nhật ký → đề xuất đào sâu tiếp.</p></blockquote>
+
+</section>
+
+<section class="modcard">
+<h2 id="m5">Module 5 — Từ bị động sang chủ động + cách đề xuất cho leader</h2>
+<blockquote class="cl-pin"><p><b>Mục tiêu module:</b> Đây là <b>ranh giới L1 → L2</b>. Cùng một kiến thức Basic, nhưng L2 là biết <i>tự dùng</i> nó một cách chủ động và biết <i>đề xuất</i>.<br><b>Lưu ý trọng số (theo tiêu chí đầu ra):</b> <b>đề xuất hướng đào sâu để tìm nguyên nhân = quan trọng nhất</b>; còn <b>đề xuất cách giải quyết cuối cùng = phụ</b> (L2 chưa cần tự sửa như L3).</p></blockquote>
+
+<h3>5.1 L1 và L2 — khác nhau ở hành vi, không ở kiến thức</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Tình huống</th><th>L1 (Basic — bị động)</th><th>L2 (Developing — chủ động)</th></tr></thead>
+<tbody>
+<tr><td>Theo dõi chỉ số</td><td>Đọc dashboard khi được giao/nhắc.</td><td>Tự lập nhịp kiểm tra hằng ngày, không cần nhắc.</td></tr>
+<tr><td>Khi thấy bất thường</td><td>Báo "chỉ số X đang giảm".</td><td>Báo X giảm <b>+ đã truy nhật ký + nghi phạm Y + đề xuất hướng đào sâu Z</b>.</td></tr>
+<tr><td>Phạm vi nhìn</td><td>Nhìn từng chỉ số rời rạc.</td><td>Nhìn theo phễu, nối triệu chứng ↔ nguyên nhân.</td></tr>
+<tr><td>Sau khi báo</td><td>Dừng ở báo cáo.</td><td>Theo dõi tiếp đến khi rõ kết quả.</td></tr>
+</tbody></table></div>
+
+<h3>5.2 Thói quen chủ động cần xây</h3>
+<ul>
+<li><b>Danh sách theo dõi cá nhân:</b> danh sách chỉ số ưu tiên + gốc so sánh của chúng, kiểm mỗi ngày.</li>
+<li><b>Giám sát tăng cường</b> vào các thời điểm rủi ro: ra mắt/cập nhật bản build, sự kiện lớn, sau bảo trì, giờ cao điểm.</li>
+<li><b>Ghi nhật ký bất thường:</b> lệch gì, khi nào, đã truy nhật ký nào, đã báo ai — để học mẫu hình theo thời gian.</li>
+</ul>
+
+<h3>5.3 Cách viết một cảnh báo / báo cáo tốt cho leader</h3>
+<p>Một báo cáo đạt L2 nên có đủ <b>5 phần</b>:</p>
+<ol>
+<li><b>Cái gì</b> — chỉ số gì đang bất thường (kèm con số + so gốc).</li>
+<li><b>Khi nào / Ở đâu</b> — từ khi nào, ở nền tảng/phiên bản/server/khung giờ nào.</li>
+<li><b>Bằng chứng</b> — bằng chứng đã truy (nhật ký gì cho thấy gì).</li>
+<li><b>Mức độ nghiêm trọng</b> — (🔴/🟠/🟡) + tác động ước tính.</li>
+<li><b>Đề xuất</b> — <b>đề xuất hướng đào sâu tiếp theo</b> <i>(phần quan trọng nhất)</i> + (tùy chọn) gợi ý cách xử lý.</li>
+</ol>
+<blockquote class="cl-pin"><p><b>Mẫu câu báo cáo:</b> <i>"%NRU hôm nay giảm từ 62% → 48% (gốc so sánh ~60%), bắt đầu từ bản build 1.2.3 trên Android. Truy Custom Events thấy phần lớn rớt ở bước tải tài nguyên đầu game; Crash log cho thấy văng app lần mở đầu tăng 3 lần cùng phiên bản. Mức độ 🟠. Đề xuất: đào sâu cùng đội phát triển kiểm bản build 1.2.3 + CDN khu vực, cân nhắc tạm dừng triển khai."</i></p></blockquote>
+<blockquote class="cl-pin"><p><b>Chốt M5:</b> Fresher viết được một báo cáo bất thường đủ 5 phần (nhấn vào đề xuất hướng đào sâu) và phân biệt rõ hành vi L1 với L2 của chính mình.</p></blockquote>
+
+</section>
+
+<section class="modcard">
+<h2 id="m6">Module 6 — Thang đánh giá L2 (theo Tiêu chí đầu ra Fresher)</h2>
+<blockquote class="cl-pin"><p><b>Mục tiêu module:</b> Cụ thể hóa "đạt L2 nghĩa là gì" thành <b>tiêu chí quan sát được</b>, <b>gắn trọng số đúng theo định hướng TuanQG</b> — đo <i>mức độ ứng dụng Basic</i>.</p></blockquote>
+
+<h3>6.1 Ma trận đánh giá theo Tiêu chí đầu ra (có trọng số)</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>#</th><th>Tiêu chí đầu ra</th><th>Trọng số</th><th>Hành vi L2 cần chứng minh</th><th>Đánh giá qua</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Nắm ngành công nghiệp game</td><td>🔹 Phụ</td><td>Phân loại được game (thể loại/chủ đề/lối chơi), hiểu mô hình doanh thu.</td><td>Bài tập M0</td></tr>
+<tr><td>2</td><td>Hiểu ý nghĩa <b>chỉ số bề mặt</b></td><td>🔸 Quan trọng</td><td>Đọc đúng, tính được, giải thích "cao/thấp nghĩa là gì" (luôn so với gốc so sánh + bối cảnh).</td><td>Bài kiểm tra M2</td></tr>
+<tr><td>3</td><td><b>Lập kế hoạch giám sát + phát hiện vấn đề + đề xuất đào sâu tìm nguyên nhân</b></td><td>🔴 <b>QUAN TRỌNG NHẤT</b></td><td>Tự lập danh sách theo dõi/kế hoạch · chủ động phát hiện bất thường · chọn đúng nhật ký để truy vết · đề xuất hướng đào sâu.</td><td><b>Tình huống giả định M4</b> (trọng tâm chấm)</td></tr>
+<tr><td>4</td><td>Đề xuất cách giải quyết</td><td>🔹 Phụ</td><td>Gợi ý hướng xử lý hợp lý (chưa cần tự sửa).</td><td>Phần đề xuất trong báo cáo</td></tr>
+</tbody></table></div>
+
+<h3>6.2 Thang chấm (mỗi tiêu chí 0–3 điểm)</h3>
+<ul>
+<li><b>0 — Chưa đạt:</b> chưa đọc đúng chỉ số / không nhận ra bất thường.</li>
+<li><b>1 — L1 (Basic):</b> đọc đúng &amp; báo được khi được nhắc, nhưng bị động, chưa đào sâu.</li>
+<li><b>2 — L2 (Developing) ✅:</b> chủ động phát hiện + truy đúng nhật ký ra nghi phạm + đề xuất hướng đào sâu.</li>
+<li><b>3 — Vượt kỳ vọng (chạm L3):</b> tự tìm nguyên nhân gốc sâu, phối hợp xử lý.</li>
+</ul>
+<blockquote class="cl-pin"><p><b>Điều kiện đạt L2:</b> <b>Tiêu chí #3 (trọng tâm) phải đạt ≥ mức 2</b>; #2 đạt ≥ mức 2; #1 và #4 đạt ≥ mức 1; không tiêu chí nào ở mức 0.</p></blockquote>
+
+<h3>6.3 Bài đánh giá cuối khóa</h3>
+<ul>
+<li><b>Phần 1 — Kiến thức Basic (#1, #2):</b> định nghĩa/tính chỉ số, phân loại chặng phễu, phân loại game.</li>
+<li><b>Phần 2 — Đào sâu &amp; truy vết (#3):</b> cho triệu chứng → liệt kê nghi phạm + chọn đúng loại nhật ký.</li>
+<li><b>Phần 3 — Tình huống giả định (#3, #4) ⭐ trọng tâm:</b> cho một bộ số liệu có "bệnh" → fresher lập kế hoạch nhìn, chạy chuỗi đào sâu + truy vết + viết báo cáo 5 phần + đề xuất đào sâu.</li>
+</ul>
+<blockquote class="cl-pin"><p><b>Chốt M6:</b> Đánh giá đặt trọng tâm vào năng lực <b>lập kế hoạch giám sát + đào sâu tìm nguyên nhân</b> — đúng tiêu chí đầu ra quan trọng nhất.</p></blockquote>
+
+</section>
+
+  </div>
+  <div class="session-locknote" contenteditable="false"><span class="ln-ic">🔒</span> Buổi 3 chưa mở — <button class="btn-unlock" type="button">🔓 Mở buổi 3</button></div>
+</section><!-- /buổi 3 -->
+
+<section class="modcard">
+<h1 id="phu-luc">📎 Phụ lục &amp; Bảng đăng ký đóng góp</h1>
+
+<h3>Phụ lục A — Trạng thái nội dung</h3>
+<p>Phần lớn điểm cần input đã được TuanQG xử lý (xem Bảng đăng ký). Còn mở để các bên bổ sung:</p>
+<ul>
+<li><b>(M3.2b)</b> Chỉ số trong game thực tế bổ sung từ Ingame Dashboard.</li>
+<li><b>(M4)</b> Số liệu giả định thật cho bài tập tình huống (nếu muốn sát thực tế hơn).</li>
+<li>Mọi góp ý khác từ các bên → theo cơ chế ở đầu file.</li>
+</ul>
+
+<h3>🗂️ Bảng đăng ký đóng góp &amp; Changelog</h3>
+<blockquote class="cl-task" contenteditable="false"><p>⏳ <b>Đang trong giai đoạn TuanQG tự hoàn thiện bản nháp.</b> Phần ghi nhận đóng góp chi tiết &amp; lịch sử phiên bản tạm <b>chưa hiển thị</b>. Khi bản được chốt để gửi ra các bên, dòng đầu tiên sẽ ghi nhận <b>bản gốc của TuanQG (chưa qua align với các bên)</b>, rồi mới mở bảng theo dõi đóng góp cho từng bên.</p></blockquote>
+
+<!-- ===== TẠM ẨN theo yêu cầu TuanQG (2026-06-10): giữ nguyên data, chỉ ẩn hiển thị cho tới khi bản ready gửi ra. Khi ready → bỏ comment + thêm dòng "bản gốc TuanQG, chưa align". =====
+<blockquote class="cl-pin"><p>Mỗi đóng góp = 1 dòng. Trạng thái: 🆕 Mới · 🔄 Đang bàn · ✅ Đã gộp · ❌ Không nhận.</p></blockquote>
+<div class="tablewrap"><table>
+<thead><tr><th>ID</th><th>Người / Bộ phận</th><th>Mục</th><th>Tóm tắt input</th><th>Trạng thái</th><th>Ghi chú gộp</th></tr></thead>
+<tbody>
+<tr><td>G-01</td><td>TuanQG (gốc)</td><td>M0.2</td><td>Thêm bài tập phân loại game cho học viên</td><td>✅ Đã gộp</td><td>→ Bài tập 0.1</td></tr>
+<tr><td>G-02</td><td>TuanQG (gốc)</td><td>M0.4</td><td>Bài tập đoán thể loại thành công ở VN + mô hình doanh thu</td><td>✅ Đã gộp</td><td>→ Bài tập 0.2</td></tr>
+<tr><td>G-03</td><td>TuanQG (gốc)</td><td>M1</td><td>Phễu đầy đủ, không đổi</td><td>✅ Đã gộp</td><td>Ghi nhận xác nhận</td></tr>
+<tr><td>G-04</td><td>TuanQG (gốc)</td><td>M2</td><td>Gốc so sánh → để học viên tự tìm hiểu khi thực tập</td><td>✅ Đã gộp</td><td>→ Nhiệm vụ thực tập</td></tr>
+<tr><td>G-05</td><td>TuanQG (gốc)</td><td>M3.2</td><td>Thêm nhóm chỉ số trong game (Quests/Level Completion, 1st Purchase Time)</td><td>✅ Đã gộp</td><td>→ §3.2b</td></tr>
+<tr><td>G-06</td><td>TuanQG (gốc)</td><td>M3.3</td><td>Bản đồ đào sâu thật + khái niệm truy vết (Custom Events/Ingame/Crash/Server log)</td><td>✅ Đã gộp</td><td>→ §3.3 + §3.4</td></tr>
+<tr><td>G-07</td><td>TuanQG (gốc)</td><td>M4</td><td>Dựng tình huống từ bản đồ đào sâu thật</td><td>✅ Đã gộp</td><td>→ §4.5 (3 tình huống)</td></tr>
+<tr><td>G-08</td><td>TuanQG (gốc)</td><td>M5</td><td>Phần đẩy cấp trên/mẫu báo cáo chưa cần</td><td>✅ Đã gộp</td><td>Giữ nội dung</td></tr>
+<tr><td>G-09</td><td>TuanQG (gốc)</td><td>M6</td><td>Tiêu chí đầu ra + trọng số (bước 3 quan trọng nhất)</td><td>✅ Đã gộp</td><td>→ Thang đánh giá §6.1 + trọng số toàn khóa</td></tr>
+<tr><td><i>(trống)</i></td><td><i>(bên input điền)</i></td><td></td><td></td><td>🆕</td><td></td></tr>
+</tbody></table></div>
+<h3>Changelog</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Ngày</th><th>Phiên bản</th><th>Thay đổi</th></tr></thead>
+<tbody>
+<tr><td>2026-06-10</td><td>v0.1</td><td>Bản nháp đầu — 7 module, khung + nội dung Basic, chỉ số bám TSN wiki, bản đồ đào sâu.</td></tr>
+<tr><td>2026-06-10</td><td>v0.2</td><td>Gộp 9 input TuanQG: bài tập M0, baseline→tự nghiên cứu, thêm chỉ số trong game, đào sâu+truy vết thật (4 loại nhật ký), 3 tình huống M4, kế hoạch giám sát, thang đánh giá theo tiêu chí đầu ra có trọng số. Thêm cơ chế ghi nhận đóng góp + Bảng đăng ký.</td></tr>
+<tr><td>2026-06-10</td><td>v0.3</td><td>Đổi cơ chế góp ý: bỏ input qua file .md → chỉnh sửa trực tiếp ngay trên file HTML (tô vàng + gắn tên người sửa, nút Lưu xuất bản kèm tên). Việt hóa toàn bộ nội dung, chỉ giữ tiếng Anh ở tên chỉ số/thuật ngữ kỹ thuật.</td></tr>
+<tr><td>2026-06-10</td><td>v0.4</td><td>Tái cấu trúc thành lộ trình 3 buổi (khóa/mở từng buổi khi giảng). Cải tiến nội dung: đưa "chuỗi vàng" lên đầu M2 + phân tầng chỉ số LÕI/tham khảo; thêm mục "Phân biệt nhiễu với tín hiệu" ở M4; gỡ mâu thuẫn baseline M2↔M6; thêm caveat ROAS gross. (Đề xuất bởi trợ lý, chờ TuanQG review.)</td></tr>
+</tbody></table></div>
+===== HẾT PHẦN TẠM ẨN ===== -->
+</section>
+
+  </main>
+</div>
+
+<footer>
+  NCV GAMES · Giáo trình nội bộ · Giám sát &amp; Ổn định Game (L2) · v0.4 · Cập nhật 2026-06-10
+</footer>
+
+<script>
+(function(){
+  // ===== Cấu hình =====
+  var BASE_NAME = "2026-06-10_giao-trinh-game-stability-monitoring_L2-draft-v04";
+  // các thẻ được phép sửa trong khung nội dung
+  var EDITABLE = "p,li,td,th,h1,h2,h3,h4,blockquote,pre";
+  var doc = document.getElementById('doc');
+  var nameInput = document.getElementById('editorName');
+  var btnToggle = document.getElementById('btnToggle');
+  var btnSave = document.getElementById('btnSave');
+  var btnClear = document.getElementById('btnClear');
+  var countEl = document.getElementById('editCount');
+  var editing = false;
+
+  // Bỏ các thuộc tính động trước khi so sánh "đã đổi hay chưa" (chuẩn cả với khối lồng nhau)
+  function cleanHTML(el){
+    var c = el.cloneNode(true);
+    c.querySelectorAll('[contenteditable],[data-edited],[data-editor],[data-orig]').forEach(function(n){
+      n.removeAttribute('contenteditable'); n.removeAttribute('data-edited');
+      n.removeAttribute('data-editor'); n.removeAttribute('data-orig');
+    });
+    return c.innerHTML;
+  }
+
+  // Gắn data-orig cho mỗi block (chỉ nếu chưa có — để bản gốc làm chuẩn so sánh)
+  var blocks = doc.querySelectorAll(EDITABLE);
+  blocks.forEach(function(el){
+    if(el.getAttribute('data-orig') === null){
+      el.setAttribute('data-orig', cleanHTML(el));
+    }
+  });
+
+  function updateCount(){
+    countEl.textContent = doc.querySelectorAll('[data-edited="1"]').length;
+  }
+
+  function markEdited(el){
+    if(!el) return;
+    var name = (nameInput.value || '').trim() || '(chưa nhập tên)';
+    var orig = el.getAttribute('data-orig');
+    if(orig !== null && cleanHTML(el) === orig){
+      // quay về giống gốc → bỏ đánh dấu
+      el.removeAttribute('data-edited');
+      el.removeAttribute('data-editor');
+    }else{
+      el.setAttribute('data-edited','1');
+      el.setAttribute('data-editor', name);
+    }
+    updateCount();
+  }
+
+  function nearestBlock(node){
+    while(node && node !== doc){
+      if(node.nodeType === 1 && node.matches && node.matches(EDITABLE)) return node;
+      node = node.parentNode;
+    }
+    return null;
+  }
+
+  function setEditing(on){
+    editing = on;
+    document.body.classList.toggle('editing', on);
+    blocks = doc.querySelectorAll(EDITABLE);
+    blocks.forEach(function(el){ el.setAttribute('contenteditable', on ? 'true' : 'false'); });
+    btnToggle.textContent = on ? '🔒 Tắt chế độ sửa' : '✏️ Bật chế độ sửa';
+    btnToggle.classList.toggle('btn-save', on);
+  }
+
+  doc.addEventListener('input', function(e){
+    var b = nearestBlock(e.target);
+    markEdited(b);
+  });
+
+  btnToggle.addEventListener('click', function(){ setEditing(!editing); });
+
+  btnClear.addEventListener('click', function(){
+    if(!confirm('Bỏ toàn bộ highlight đang có? (Nội dung bạn đã sửa vẫn giữ nguyên, chỉ gỡ đánh dấu vàng.)')) return;
+    doc.querySelectorAll('[data-edited="1"]').forEach(function(el){
+      el.removeAttribute('data-edited'); el.removeAttribute('data-editor');
+    });
+    updateCount();
+  });
+
+  function sanitize(s){
+    return (s||'').trim().replace(/[^\p{L}\p{N}]+/gu,'-').replace(/^-+|-+$/g,'') || 'Khuyet-danh';
+  }
+
+  btnSave.addEventListener('click', function(){
+    var name = (nameInput.value || '').trim();
+    if(!name){
+      alert('Vui lòng nhập TÊN của bạn vào ô "Tên người sửa" trước khi lưu.');
+      nameInput.focus();
+      return;
+    }
+    // đồng bộ lại tên cho mọi đoạn đã sửa (một file = một người sửa)
+    doc.querySelectorAll('[data-edited="1"]').forEach(function(el){ el.setAttribute('data-editor', name); });
+    // tắt chế độ sửa để file tải về ở trạng thái sạch, người sau mở vẫn bật lại được
+    setEditing(false);
+    // ghi dấu người sửa + thời gian vào thẻ body
+    document.body.setAttribute('data-last-editor', name);
+    document.body.setAttribute('data-last-edited', new Date().toISOString().slice(0,16).replace('T',' '));
+    nameInput.value = name;
+    nameInput.setAttribute('value', name);
+
+    // dọn trạng thái "đã mở" của bảng quiz → file tải về luôn ở trạng thái CHE sẵn (sạch cho người sau)
+    doc.querySelectorAll('td.quiz.show').forEach(function(el){ el.classList.remove('show'); });
+    // reset trạng thái khóa buổi về mặc định (buổi 1 mở, còn lại khóa) cho file tải về
+    doc.querySelectorAll('.session').forEach(function(s,i){ s.classList.toggle('open', i===0); syncSession(s); });
+
+    var html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    var blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = BASE_NAME + '_' + sanitize(name) + '.html';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    var n = doc.querySelectorAll('[data-edited="1"]').length;
+    alert('Đã lưu bản của "' + name + '" (' + n + ' đoạn được đánh dấu).\nGửi file vừa tải về cho TuanQG để gộp nhé!');
+  });
+
+  // ===== Bảng 3.3: click-to-reveal (giảng viên bấm vào ô để lộ/đóng đáp án) =====
+  doc.querySelectorAll('td.quiz').forEach(function(td){
+    td.addEventListener('click', function(){
+      if(document.body.classList.contains('editing')) return; // đang sửa → để con trỏ vào, không toggle
+      td.classList.toggle('show');
+    });
+  });
+  var qOpen = document.getElementById('quizOpenAll');
+  var qClose = document.getElementById('quizCloseAll');
+  if(qOpen) qOpen.addEventListener('click', function(){ doc.querySelectorAll('td.quiz').forEach(function(td){ td.classList.add('show'); }); });
+  if(qClose) qClose.addEventListener('click', function(){ doc.querySelectorAll('td.quiz').forEach(function(td){ td.classList.remove('show'); }); });
+
+  // ===== Khóa/mở BUỔI HỌC (giảng viên bấm mở từng buổi) =====
+  function syncSession(sec){
+    var open = sec.classList.contains('open');
+    var n = sec.getAttribute('data-session') || '';
+    var lock = sec.querySelector('.s-lock');
+    if(lock) lock.textContent = open ? '🔓 Đang mở' : '🔒 Đang khóa';
+    sec.querySelectorAll('.btn-unlock').forEach(function(b){
+      b.textContent = open ? ('🔒 Khóa buổi ' + n) : ('🔓 Mở buổi ' + n);
+    });
+  }
+  document.querySelectorAll('.session').forEach(function(sec){
+    sec.querySelectorAll('.btn-unlock').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        sec.classList.toggle('open');
+        syncSession(sec);
+        if(sec.classList.contains('open')){ sec.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+    syncSession(sec);
+  });
+  var sessOpen = document.getElementById('sessOpenAll');
+  var sessClose = document.getElementById('sessCloseAll');
+  if(sessOpen) sessOpen.addEventListener('click', function(){
+    document.querySelectorAll('.session').forEach(function(s){ s.classList.add('open'); syncSession(s); });
+  });
+  if(sessClose) sessClose.addEventListener('click', function(){
+    document.querySelectorAll('.session').forEach(function(s){ s.classList.remove('open'); syncSession(s); });
+  });
+
+  // khôi phục ô tên nếu mở lại file đã từng lưu
+  var prev = document.body.getAttribute('data-last-editor');
+  if(prev && !nameInput.value){ nameInput.value = prev; }
+  updateCount();
+})();
+</script>
+</body>
+</html>
