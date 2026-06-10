@@ -261,6 +261,8 @@ async function send(text){
       if(r.status===401){
         tb.innerHTML=md("🔒 Sai mật khẩu. Đăng xuất và nhập lại.");
         sessionStorage.removeItem(PW_KEY);
+      } else if(r.status===503||data.overloaded){
+        tb.innerHTML=md("⏳ Hệ thống đang bận (quá tải tạm thời). Vui lòng thử lại sau vài giây — bấm gửi lại câu hỏi.");
       } else {
         tb.innerHTML=md("❌ Lỗi: "+(data.error||r.status)+(data.detail?("\n\n`"+String(data.detail).slice(0,300)+"`"):""));
       }
