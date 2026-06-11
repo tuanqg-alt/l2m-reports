@@ -217,6 +217,9 @@
   .fm-dates { font-size: 10px; color: #64748b; width: 170px; flex-shrink: 0; line-height: 1.5; }
   .fm-dates b.kr { color: #f59e0b; }
   .fm-dates b.vn { color: #3B82F6; }
+  .fm-tn { font-size: 10px; color: #64748b; width: 90px; flex-shrink: 0; line-height: 1.5; }
+  .fm-tn b.kr { color: #f59e0b; }
+  .fm-tn b.vn { color: #3B82F6; }
   .fm-gap { font-size: 11px; font-weight: 700; width: 92px; flex-shrink: 0; text-align: right; }
   .fm-status { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 5px; width: 88px; flex-shrink: 0; text-align: center; }
   .fm-status.both { background: rgba(59,130,246,0.15); color: #60a5fa; }
@@ -239,7 +242,7 @@
   @media (max-width: 720px) {
     .fm-row { flex-wrap: wrap; }
     .fm-name { width: 100%; }
-    .fm-dates, .fm-gap, .fm-status, .fm-steps { width: auto; }
+    .fm-dates, .fm-tn, .fm-gap, .fm-status, .fm-steps { width: auto; }
     .fm-steps-cols { grid-template-columns: 1fr; }
   }
 
@@ -905,6 +908,8 @@ function renderFeatureMaster() {
       const gapTxt = f.gap_label ? f.gap_label : (f.status === 'vn_pending' ? 'VN pending' : '—');
       const statusTxt = { both: 'Ra cả 2', vn_pending: 'VN pending', kr_pending: 'VN riêng', unmatched: 'Review' }[f.status] || f.status;
       const rowCls = 'fm-row' + (f.status === 'vn_pending' || f.status === 'unmatched' ? ' pending' : (f.watch ? ' watch' : ''));
+      const tnKr = tPlusN(f.kr_first, KR_LAUNCH);
+      const tnVn = tPlusN(f.vn_first, VN_LAUNCH);
       rowsHtml +=
         '<div class="' + rowCls + '" data-fmid="' + f.id + '" onclick="toggleFmDetail(this.dataset.fmid)">'
         + '<div class="fm-name">' + (f.watch ? '👁 ' : '') + fmEsc(f.name_vn)
@@ -912,6 +917,9 @@ function renderFeatureMaster() {
         + track
         + '<div class="fm-dates"><b class="kr">KR</b> ' + (f.kr_first || '—')
         +   '<br><b class="vn">VN</b> ' + (f.vn_first || '—') + '</div>'
+        + '<div class="fm-tn" title="T+N = số tháng kể từ OB mỗi vùng (KR Eden ' + KR_LAUNCH + ' · VN ' + VN_LAUNCH + ')">'
+        +   '<b class="kr">KR</b> ' + (tnKr !== null ? 'T+' + tnKr : '—')
+        +   '<br><b class="vn">VN</b> ' + (tnVn !== null ? 'T+' + tnVn : '—') + '</div>'
         + '<div class="fm-gap" style="color:' + gapColor + '">' + gapTxt + '</div>'
         + '<div class="fm-status ' + f.status + '">' + statusTxt + '</div>'
         + '<div class="fm-steps">KR ' + f.kr_step_count + ' · VN ' + f.vn_step_count + '</div>'
