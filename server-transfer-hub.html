@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Server Transfer Hub — L2M VN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg:      #0F1419;
@@ -21,6 +21,7 @@
     --blue:    #60A5FA;
     --fh: 'Sora', system-ui, sans-serif;
     --fb: 'Inter', system-ui, sans-serif;
+    --fm: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: var(--fb); background: var(--bg); color: var(--text); min-height: 100vh; }
@@ -38,8 +39,13 @@
           font: 800 18px/1 var(--fh); color: #fff; flex-shrink: 0; }
   .brand-text h1 { font: 700 20px/1.2 var(--fh); }
   .brand-text p { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .eyebrow { font: 600 10px/1 var(--fm); color: var(--accent); text-transform: uppercase; letter-spacing: .14em; margin-bottom: 8px; }
+  .ncv-brand-mark { font-family: var(--fh); font-weight: 800; letter-spacing: .02em; }
+  .ncv-brand-mark .nc { color: var(--text); }
+  .ncv-brand-mark .v { color: var(--accent); }
+  .ncv-brand-mark .games { color: var(--muted); font-weight: 700; margin-left: 4px; }
   .hdr-stats { display: flex; gap: 28px; }
-  .hstat .n { font: 700 24px var(--fh); color: var(--accent2); text-align: right; }
+  .hstat .n { font: 700 24px var(--fm); color: var(--accent2); text-align: right; }
   .hstat .l { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
 
   .back-link {
@@ -95,7 +101,7 @@
     background: var(--bg3); border-radius: 6px; padding: 5px 10px;
     font-size: 12px; display: flex; align-items: center; gap: 5px;
   }
-  .estat .ev { font-weight: 600; color: var(--text); }
+  .estat .ev { font-weight: 600; color: var(--text); font-family: var(--fm); }
   .estat .el { color: var(--muted); }
   .world-gains { display: flex; flex-wrap: wrap; gap: 6px; }
   .wgain {
@@ -135,7 +141,7 @@
   .xcard-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
   .xcard-item:last-child { border-bottom: none; }
   .xcard-item .xi-name { color: var(--text); }
-  .xcard-item .xi-val { font-weight: 600; color: var(--muted); }
+  .xcard-item .xi-val { font-weight: 600; color: var(--muted); font-family: var(--fm); }
   .xi-green { color: var(--green) !important; }
   .xi-red   { color: var(--red) !important; }
   .xi-blue  { color: var(--blue) !important; }
@@ -170,6 +176,7 @@
     <div class="brand">
       <div class="logo">🔀</div>
       <div class="brand-text">
+        <div class="eyebrow">NCV GAMES · L2M ANALYTICS</div>
         <h1>Server Transfer Hub</h1>
         <p>L2M VN · Lịch sử & phân tích các đợt Server Transfer</p>
       </div>
@@ -218,7 +225,7 @@
 
 </div>
 
-<footer>L2M Server Transfer Hub · NCV Games · Cập nhật thủ công sau mỗi đợt transfer</footer>
+<footer>L2M Server Transfer Hub · <span class="ncv-brand-mark"><span class="nc">NC</span><span class="v">V</span><span class="games">GAMES</span></span> · Cập nhật thủ công sau mỗi đợt transfer</footer>
 
 <script>
 // =====================================================
