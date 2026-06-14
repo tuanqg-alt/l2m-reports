@@ -98,8 +98,8 @@
   <div class="sub">Trung tâm báo cáo nội bộ — Analytics &amp; Intelligence cho Lineage2M SEA. Chọn area ở thanh lọc hoặc gõ tìm kiếm để mở report.</div>
   <div class="banner">
     <span class="chip">📊 <b id="vis-count">28</b> reports</span>
-    <span class="chip">📌 <b>6</b> pinned</span>
-    <span class="chip">🔄 Updated: <b>2026-06-14 06:46 UTC</b></span>
+    <span class="chip">📌 <b>7</b> pinned</span>
+    <span class="chip">🔄 Updated: <b>2026-06-14 08:16 UTC</b></span>
   </div>
 </div></header>
 <div class="ctrl">
@@ -144,6 +144,21 @@ const REPORTS = [
     "pinned": true
   },
   {
+    "filename": "mkt-combined-report.html",
+    "title": "MKT Combined Report (All Channels)",
+    "date": "",
+    "date_display": "",
+    "area_id": "area_mkt",
+    "area_num": "MKT",
+    "area_label": "Marketing",
+    "area_color": "#F97316",
+    "area_bg": "#2D1200",
+    "area_icon": "📣",
+    "scope_id": "combined",
+    "scope_label": "Combined — All Channels",
+    "pinned": true
+  },
+  {
     "filename": "2026_pum-report_L2M-AllSea_reviewed.html",
     "title": "PUM Report L2M Allsea Reviewed",
     "date": "2026",
@@ -163,14 +178,14 @@ const REPORTS = [
     "title": "Server Transfer — Hub & History",
     "date": "",
     "date_display": "",
-    "area_id": "area_sv",
-    "area_num": "SV",
-    "area_label": "Server Transfer",
-    "area_color": "#F59E0B",
-    "area_bg": "#2D1F00",
-    "area_icon": "🔀",
-    "scope_id": "",
-    "scope_label": "",
+    "area_id": "area10",
+    "area_num": "10",
+    "area_label": "GameOps Analytics",
+    "area_color": "#3B82F6",
+    "area_bg": "#1E3A5F",
+    "area_icon": "📊",
+    "scope_id": "sv",
+    "scope_label": "Server Transfer — Hub",
     "pinned": true
   },
   {
@@ -178,14 +193,14 @@ const REPORTS = [
     "title": "CMM Report 2026",
     "date": "",
     "date_display": "",
-    "area_id": "area13",
-    "area_num": "13",
-    "area_label": "PUM Report",
-    "area_color": "#F87171",
-    "area_bg": "#2D1010",
-    "area_icon": "📋",
-    "scope_id": "",
-    "scope_label": "",
+    "area_id": "area_mkt",
+    "area_num": "MKT",
+    "area_label": "Marketing",
+    "area_color": "#F97316",
+    "area_bg": "#2D1200",
+    "area_icon": "📣",
+    "scope_id": "cmm",
+    "scope_label": "Community Management",
     "pinned": true
   },
   {
@@ -448,14 +463,14 @@ const REPORTS = [
     "title": "L2M Mkt Spend Tracker",
     "date": "",
     "date_display": "",
-    "area_id": "other",
-    "area_num": "",
-    "area_label": "Other",
-    "area_color": "#9CA3AF",
-    "area_bg": "#1F2937",
-    "area_icon": "📁",
-    "scope_id": "",
-    "scope_label": "",
+    "area_id": "area_mkt",
+    "area_num": "MKT",
+    "area_label": "Marketing",
+    "area_color": "#F97316",
+    "area_bg": "#2D1200",
+    "area_icon": "📣",
+    "scope_id": "tracker",
+    "scope_label": "Spend Tracker",
     "pinned": false
   },
   {
@@ -476,21 +491,6 @@ const REPORTS = [
   {
     "filename": "lw-dashboard.html",
     "title": "LineageW Dashboard",
-    "date": "",
-    "date_display": "",
-    "area_id": "other",
-    "area_num": "",
-    "area_label": "Other",
-    "area_color": "#9CA3AF",
-    "area_bg": "#1F2937",
-    "area_icon": "📁",
-    "scope_id": "",
-    "scope_label": "",
-    "pinned": false
-  },
-  {
-    "filename": "mkt-combined-report.html",
-    "title": "Mkt Combined Report",
     "date": "",
     "date_display": "",
     "area_id": "other",
@@ -534,7 +534,7 @@ const REPORTS = [
     "pinned": false
   }
 ];
-const AREAS   = [{"id": "all", "label": "Master", "icon": "📌", "num": ""}, {"id": "area10", "label": "GameOps Analytics", "icon": "📊", "num": "10", "scopes": [{"id": "combined", "label": "Combined — All Scopes"}, {"id": "a", "label": "Scope A — Liveops & Forecast"}, {"id": "b", "label": "Scope B — VIP & Communities"}]}, {"id": "area08", "label": "Content Release Analytics", "icon": "📦", "num": "08", "scopes": [{"id": "a", "label": "Scope A — Content Roadmap"}, {"id": "b1", "label": "Scope B1 — Webshop BM"}, {"id": "b2", "label": "Scope B2 — Ingame BM"}]}, {"id": "area04", "label": "Social Listening", "icon": "📡", "num": "04", "scopes": [{"id": "live", "label": "Live Dashboard"}, {"id": "b", "label": "Scope B — Facebook Groups"}, {"id": "d", "label": "Scope D — Purple Chat / Clan Intel"}, {"id": "e", "label": "Scope E — Discord"}]}, {"id": "area13", "label": "PUM Report", "icon": "📋", "num": "13", "scopes": []}, {"id": "area05", "label": "Streamer Research", "icon": "🎮", "num": "05", "scopes": []}, {"id": "area_sv", "label": "Server Transfer", "icon": "🔀", "num": "SV", "scopes": []}, {"id": "other", "label": "Other", "icon": "📁", "num": "", "scopes": []}];
+const AREAS   = [{"id": "all", "label": "Master", "icon": "📌", "num": ""}, {"id": "area10", "label": "GameOps Analytics", "icon": "📊", "num": "10", "scopes": [{"id": "combined", "label": "Combined — All Scopes"}, {"id": "a", "label": "Scope A — Liveops & Forecast"}, {"id": "b", "label": "Scope B — VIP & Communities"}, {"id": "sv", "label": "Server Transfer — Hub"}]}, {"id": "area08", "label": "Content Release Analytics", "icon": "📦", "num": "08", "scopes": [{"id": "a", "label": "Scope A — Content Roadmap"}, {"id": "b1", "label": "Scope B1 — Webshop BM"}, {"id": "b2", "label": "Scope B2 — Ingame BM"}]}, {"id": "area04", "label": "Social Listening", "icon": "📡", "num": "04", "scopes": [{"id": "live", "label": "Live Dashboard"}, {"id": "b", "label": "Scope B — Facebook Groups"}, {"id": "d", "label": "Scope D — Purple Chat / Clan Intel"}, {"id": "e", "label": "Scope E — Discord"}]}, {"id": "area_mkt", "label": "Marketing", "icon": "📣", "num": "MKT", "scopes": [{"id": "combined", "label": "Combined — All Channels"}, {"id": "cmm", "label": "Community Management"}, {"id": "tracker", "label": "Spend Tracker"}]}, {"id": "area13", "label": "PUM Report", "icon": "📋", "num": "13", "scopes": []}, {"id": "area05", "label": "Streamer Research", "icon": "🎮", "num": "05", "scopes": []}, {"id": "area_sv", "label": "Server Transfer", "icon": "🔀", "num": "SV", "scopes": []}, {"id": "other", "label": "Other", "icon": "📁", "num": "", "scopes": []}];
 let activeArea = 'all', query = '';
 
 function renderTabs() {
