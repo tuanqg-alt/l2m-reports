@@ -169,6 +169,21 @@ const PW_KEY = "ncv_kb_pw";
 const $ = (id) => document.getElementById(id);
 let history = [];   // {role, content}
 
+/* ---- fetch có auto-retry khi RỚT MẠNG (Failed to fetch) ----
+   Chỉ retry khi fetch() THROW (đứt kết nối / network / CORS). KHÔNG retry khi
+   server đã trả response (kể cả 4xx/5xx) → giữ nguyên xử lý status sẵn có. */
+async function fetchRetry(url, opts, tries=2, delay=1200, onRetry){
+  let lastErr;
+  for(let i=0;i<=tries;i++){
+    try{ return await fetch(url, opts); }
+    catch(e){
+      lastErr=e;
+      if(i<tries){ if(onRetry) onRetry(i+1); await new Promise(r=>setTimeout(r,delay)); }
+    }
+  }
+  throw lastErr;
+}
+
 /* ---- tiny markdown renderer (an toàn, escape trước) ----
    Ho tro: code, bold, link, list, heading (#..###) va bang GitHub-style. */
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
@@ -243,10 +258,10 @@ async function tryEnter(){
   $("pwErr").textContent="Đang kiểm tra…"; $("pwBtn").disabled=true;
   try{
     // Xác thực mật khẩu với worker TRƯỚC khi vào (probe nhẹ, không gọi LLM).
-    const r=await fetch(WORKER_URL,{
+    const r=await fetchRetry(WORKER_URL,{
       method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({password:pw,auth:true})
-    });
+    },2,1200,(n)=>{$("pwErr").textContent="Kết nối chậm, đang thử lại… ("+n+")";});
     if(r.status===401){$("pwErr").textContent="Sai mật khẩu.";$("pwInput").select();return;}
     if(r.status===500){const d=await r.json().catch(()=>({}));$("pwErr").textContent="Lỗi cấu hình server: "+(d.error||500);return;}
     // 200 = worker mới xác nhận OK; 400 = worker cũ (chưa redeploy) báo thiếu messages → mật khẩu đã ĐÚNG.
@@ -275,11 +290,11 @@ async function send(text){
   $("sendBtn").disabled=true;
   const tb=typingBubble();
   try{
-    const r=await fetch(WORKER_URL,{
+    const r=await fetchRetry(WORKER_URL,{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({password:pw,messages:history})
-    });
+    },2,1200,(n)=>{tb.innerHTML=md("⏳ Kết nối chậm, đang thử lại… ("+n+")");});
     const data=await r.json();
     if(!r.ok){
       if(r.status===401){
