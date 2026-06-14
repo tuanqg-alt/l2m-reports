@@ -1623,6 +1623,38 @@ const CAMPAIGNS = [
       }
     ]
   }
+  ,{
+    id: "C4",
+    name: "VIP Merch — SVIP Keycap Bạc (Helios VN)",
+    plans: [
+      {
+        code: "HELIOS-D1",
+        type: "giftcard",
+        market: "VN",
+        beforeTax: 16342.56,
+        afterTax: 16342.56,
+        actual: 16342.56,
+        period: "Apr 2026",
+        status: "paid",
+        approvedBy: "Hennessy (NLH)",
+        approvedDate: "14/04/2026",
+        notes: "Dot 1 — Design fee + 60% san xuat. Paid 15/04/2026. Vendor: Helios VN (pr@helios.vn). SVIP Keycap bac 3-key, 150 bo (100 SVIP custom name + 50 spare). Payment request 14/04 tu Helios. Contract: L2M x Helios Viet Nam Keycap SVIP."
+      },
+      {
+        code: "HELIOS-D2",
+        type: "giftcard",
+        market: "VN",
+        beforeTax: 10247.04,
+        afterTax: 10247.04,
+        actual: 10247.04,
+        period: "Jun 2026",
+        status: "approved",
+        approvedBy: "Hennessy (NLH)",
+        approvedDate: "01/06/2026",
+        notes: "Dot 2 — Remaining balance. Due 15/06/2026 (extended tu 28/05 per Amendment Agreement ca 2 ben da ky). Invoice chinh thuc Helios (Sunrock Studio) gui 12/06/2026. Tong hop dong USD26,589.60 (VAT 8%) - Da thanh toan D1 USD16,342.56 = Con lai USD10,247.04. Subtotal before VAT: USD24,620. Vendor tax code: 0111155418 (Sunrock Studio). Invoice so: 1C26TAH-1."
+      }
+    ]
+  }
 ];
 
 /* ================================================================
@@ -1646,6 +1678,22 @@ function planYear(p) {
   const m = (p.period || '').match(/20\d\d/) || (p.approvedDate || '').match(/20\d\d/);
   return m ? m[0] : null;
 }
+
+/* ── Attribute a plan to a YYYY-MM month from its period (for the monthly table) ──
+   "09/02 – 22/02/2026" → 2026-02 (start month) · "Apr 2026" → 2026-04
+   Unparseable (e.g. "2025 M0-M1") → null → shown in the aggregate row, never dropped. */
+const MONTH_ABBR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTH_NUM  = { jan:'01',feb:'02',mar:'03',apr:'04',may:'05',jun:'06',jul:'07',aug:'08',sep:'09',oct:'10',nov:'11',dec:'12' };
+function planMonth(p) {
+  const per = p.period || '';
+  let m = per.match(/(\d{1,2})\/(\d{1,2}).*?(20\d\d)/);          // DD/MM ... YYYY → start month
+  if (m) return m[3] + '-' + m[2].padStart(2, '0');
+  m = per.match(/([A-Za-z]{3,})\s*(20\d\d)/);                    // MonthName YYYY
+  if (m) { const k = m[1].slice(0,3).toLowerCase(); if (MONTH_NUM[k]) return m[2] + '-' + MONTH_NUM[k]; }
+  return null;
+}
+function monthLabel(key) { const [y, mm] = key.split('-'); return (MONTH_ABBR[+mm-1] || mm) + ' ' + y; }
+function shortMon(key)  { return MONTH_ABBR[+key.split('-')[1] - 1] || key; }
 
 function filteredCampaigns() {
   const fv = $('fView').value;
@@ -1682,14 +1730,8 @@ const GROSS_REVENUE = {
   '2026-05': { usd: 1907345, label: 'May 2026', bvnd: 48.17 },
 };
 
-/* ── MKT spend by month (derived from CAMPAIGNS above) ── */
-const MONTHLY_MKT = {
-  '2026-01': { paid: 0,       approved: 0        },
-  '2026-02': { paid: 9253.15, approved: 9253.15  }, // Payback paid
-  '2026-03': { paid: 9066.40, approved: 9066.40  }, // Server Transfer paid 22/04 (Meta $5,970.74 + Google $3,095.66)
-  '2026-04': { paid: 0,       approved: 0        },
-  '2026-05': { paid: 0,       approved: 3013.26  }, // 1Y UCG + Digital UGC
-};
+/* ── MKT spend by month is now derived live from CAMPAIGNS inside renderMonthly()
+   (single source of truth — no hand-maintained table to drift out of sync). ── */
 
 function renderSummary(campaigns) {
   const fv = $('fView').value;
@@ -1819,32 +1861,61 @@ function renderTable(campaigns) {
 
 function renderMonthly() {
   const fv = $('fView').value;
-  const months = Object.keys(GROSS_REVENUE).filter(m => fv === 'all' || m.startsWith(fv)).sort();
+  // Per-month paid/approved derived straight from CAMPAIGNS → columns always foot to Total.
+  const vp = CAMPAIGNS.flatMap(c => c.plans).filter(p => fv === 'all' || planYear(p) === fv);
+  const paidByM = {}, apprByM = {};
+  vp.forEach(p => {
+    const mo = planMonth(p);
+    if (!mo) return; // unattributable (e.g. 2025 M0–M1 aggregate) → goes to the aggregate row
+    if (p.status === 'paid') paidByM[mo] = (paidByM[mo] || 0) + (p.actual || 0);
+    if (['approved','paid','running'].includes(p.status)) apprByM[mo] = (apprByM[mo] || 0) + (p.afterTax || 0);
+  });
+
+  // Full totals (incl. unattributable) — every visible row must add up to these
+  const totPaid = vp.filter(p => p.status === 'paid').reduce((s,p) => s + (p.actual||0), 0);
+  const totAppr = vp.filter(p => ['approved','paid','running'].includes(p.status)).reduce((s,p) => s + (p.afterTax||0), 0);
+  const lumpPaid = totPaid - Object.values(paidByM).reduce((s,v) => s + v, 0);
+  const lumpAppr = totAppr - Object.values(apprByM).reduce((s,v) => s + v, 0);
+
+  // Months shown = revenue months ∪ months with MKT activity (so e.g. Jun keycap appears)
+  const months = [...new Set([
+    ...Object.keys(GROSS_REVENUE).filter(m => fv === 'all' || m.startsWith(fv)),
+    ...Object.keys(paidByM), ...Object.keys(apprByM)
+  ])].filter(m => fv === 'all' || m.startsWith(fv)).sort();
+
   const fmtK = n => n >= 1000000
     ? '$' + (n/1000000).toFixed(2) + 'M'
     : n > 0 ? '$' + n.toLocaleString('en-US', {minimumFractionDigits:0}) : '—';
-
-  const totRev = months.reduce((s,m) => s + GROSS_REVENUE[m].usd, 0);
-  // Total MKT from CAMPAIGNS (2025 spend is lumped M0–M1, not attributed per-month)
-  const vp = CAMPAIGNS.flatMap(c => c.plans).filter(p => fv === 'all' || planYear(p) === fv);
-  const totPaid = vp.filter(p => p.status === 'paid').reduce((s,p) => s + (p.actual||0), 0);
-  const totAppr = vp.filter(p => ['approved','paid','running'].includes(p.status)).reduce((s,p) => s + (p.afterTax||0), 0);
+  const totRev = months.reduce((s,m) => s + (GROSS_REVENUE[m] ? GROSS_REVENUE[m].usd : 0), 0);
 
   let rows = months.map(m => {
-    const rev = GROSS_REVENUE[m].usd;
-    const paid = MONTHLY_MKT[m]?.paid || 0;
-    const appr = MONTHLY_MKT[m]?.approved || 0;
-    const paidRatio = rev > 0 && paid > 0 ? (paid/rev*100).toFixed(3)+'%' : null;
-    const apprRatio = rev > 0 && appr > 0 && appr !== paid ? (appr/rev*100).toFixed(3)+'%' : null;
+    const gr = GROSS_REVENUE[m];
+    const rev = gr ? gr.usd : null;
+    const paid = paidByM[m] || 0;
+    const appr = apprByM[m] || 0;
+    const paidRatio = rev && paid > 0 ? (paid/rev*100).toFixed(3)+'%' : null;
+    const apprRatio = rev && appr > 0 && appr !== paid ? (appr/rev*100).toFixed(3)+'%' : null;
     return `<tr>
-      <td style="font-weight:600;white-space:nowrap">${GROSS_REVENUE[m].label}</td>
-      <td style="font-variant-numeric:tabular-nums"><span style="color:var(--blue);font-weight:600">${fmtK(rev)}</span> <span style="font-size:11px;color:var(--text-muted)">(${GROSS_REVENUE[m].bvnd}B VND)</span></td>
+      <td style="font-weight:600;white-space:nowrap">${gr ? gr.label : monthLabel(m)}</td>
+      <td style="font-variant-numeric:tabular-nums">${rev != null ? '<span style="color:var(--blue);font-weight:600">'+fmtK(rev)+'</span> <span style="font-size:11px;color:var(--text-muted)">('+gr.bvnd+'B VND)</span>' : '<span class="mkt-zero">—</span> <span style="font-size:11px;color:var(--text-muted)">(rev chưa có)</span>'}</td>
       <td class="num">${paid > 0 ? '<span class="mkt-paid">'+fmtK(paid)+'</span>' : '<span class="mkt-zero">—</span>'}</td>
       <td class="num">${appr > 0 && appr !== paid ? '<span class="mkt-appr">'+fmtK(appr)+'</span>' : (paid > 0 ? '<span style="color:var(--text-muted);font-size:11px">(same)</span>' : '<span class="mkt-zero">—</span>')}</td>
       <td class="num">${paidRatio ? '<span class="ratio-pill paid">'+paidRatio+'</span>' : '<span class="ratio-pill zero">—</span>'}</td>
       <td class="num">${apprRatio ? '<span class="ratio-pill appr">'+apprRatio+'</span>' : (paidRatio ? '<span class="ratio-pill appr">'+paidRatio+'</span>' : '<span class="ratio-pill zero">—</span>')}</td>
     </tr>`;
   }).join('');
+
+  // Aggregate row: spend not attributable to one month (2025 M0–M1 UA, etc.) — keeps Total footing
+  if (lumpPaid > 0.5 || lumpAppr > 0.5) {
+    rows += `<tr>
+      <td style="font-weight:600;white-space:nowrap;color:var(--text-secondary)">M0–M1 / aggregate <span style="font-size:11px;color:var(--text-muted)">(chưa tách tháng)</span></td>
+      <td><span class="mkt-zero">—</span></td>
+      <td class="num">${lumpPaid > 0 ? '<span class="mkt-paid">'+fmtK(lumpPaid)+'</span>' : '<span class="mkt-zero">—</span>'}</td>
+      <td class="num">${lumpAppr > 0 && lumpAppr !== lumpPaid ? '<span class="mkt-appr">'+fmtK(lumpAppr)+'</span>' : (lumpPaid > 0 ? '<span style="color:var(--text-muted);font-size:11px">(same)</span>' : '<span class="mkt-zero">—</span>')}</td>
+      <td class="num"><span class="ratio-pill zero">—</span></td>
+      <td class="num"><span class="ratio-pill zero">—</span></td>
+    </tr>`;
+  }
 
   const totPaidRatio = totRev > 0 && totPaid > 0 ? (totPaid/totRev*100).toFixed(3)+'%' : '—';
   const totApprRatio = totRev > 0 && totAppr > 0 ? (totAppr/totRev*100).toFixed(3)+'%' : '—';
@@ -1857,9 +1928,11 @@ function renderMonthly() {
     <td class="num"><span class="ratio-pill appr">${totApprRatio}</span></td>
   </tr>`;
 
-  const hdr = fv === '2025' ? 'May → Dec 2025' : fv === '2026' ? 'Jan → May 2026' : 'OB → nay (2025–2026)';
-  const noteExtra = (fv === 'all' || fv === '2025')
-    ? ' · ⚠️ MKT 2025 gộp M0–M1 (chưa tách theo tháng) — chỉ phản ánh ở dòng Total'
+  const hdr = fv === '2025' ? 'May → Dec 2025'
+            : fv === '2026' ? (months.length ? shortMon(months[0]) + ' → ' + shortMon(months[months.length-1]) + ' 2026' : 'Jan 2026')
+            : 'OB → nay (2025–2026)';
+  const noteExtra = (lumpPaid > 0.5 || lumpAppr > 0.5)
+    ? ' · ⚠️ MKT M0–M1 gộp ở dòng “aggregate” (chưa tách theo tháng)'
     : '';
   $('monthlySection').innerHTML = `
     <div class="monthly-section">
