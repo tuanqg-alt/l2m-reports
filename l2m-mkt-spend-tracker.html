@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>L2M Marketing Spend Tracker — NCV Games</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* NCV Design System — Ingame BM light theme */
@@ -165,7 +166,7 @@ tr.subtotal-row td { background:var(--orange-dim); font-size:12px; font-weight:7
 .section-title{display:flex;align-items:baseline;gap:12px;margin:26px 0 12px;flex-wrap:wrap;}
 .section-title h2{font-family:var(--font-heading);font-size:16px;font-weight:800;color:var(--text-primary);letter-spacing:-.01em;}
 .section-title span{font-size:12px;color:var(--text-muted);}
-#summaryGrid{margin-bottom:20px;}
+#summaryGrid{display:block;margin-bottom:20px;}
 .kpi-row{display:grid;gap:12px;}
 .kpi-row.primary{grid-template-columns:repeat(3,1fr);margin-bottom:10px;}
 .kpi-row.secondary{grid-template-columns:repeat(4,1fr);}
@@ -187,8 +188,8 @@ tr.month-header .mh-meta{font-size:11.5px;color:var(--text-secondary);}
 .cell-plan .cell-camp{font-size:11px;color:var(--text-muted);margin-bottom:3px;line-height:1.25;}
 .cell-plan .cell-period{font-size:10.5px;color:var(--text-muted);font-family:var(--font-mono);margin-left:5px;white-space:nowrap;}
 .cell-budget{min-width:118px;}
-.spend-mini{height:4px;background:var(--n100);border-radius:3px;overflow:hidden;margin-top:5px;}
-.spend-mini-fill{height:100%;background:var(--green);border-radius:3px;}
+.spend-mini{height:3px;background:var(--n100);border-radius:3px;overflow:hidden;margin-top:6px;max-width:120px;margin-left:auto;}
+.spend-mini-fill{height:100%;background:var(--green);border-radius:3px;opacity:.75;}
 .cell-appr div{font-size:11.5px;color:var(--text-secondary);} .cell-appr .cell-date{font-size:10.5px;color:var(--text-muted);font-family:var(--font-mono);}
 tr.subtotal-row .sub-lab{text-align:right;padding-right:14px;}
 .row-bar{height:5px;background:var(--n100);border-radius:3px;overflow:hidden;margin-top:5px;}
@@ -1797,7 +1798,7 @@ function renderMonthly() {
       <td style="font-weight:600;white-space:nowrap">${gr ? gr.label : monthLabel(m)}</td>
       <td style="font-variant-numeric:tabular-nums">${rev != null ? '<span style="color:var(--blue);font-weight:600">'+fmtK(rev)+'</span> <span style="font-size:11px;color:var(--text-muted)">('+gr.bvnd+'B VND)</span>' : '<span class="mkt-zero">—</span> <span style="font-size:11px;color:var(--text-muted)">(rev chưa có)</span>'}</td>
       <td class="num">${paid > 0 ? '<span class="mkt-paid">'+fmtK(paid)+'</span>' : '<span class="mkt-zero">—</span>'}</td>
-      <td class="num">${appr > 0 && appr !== paid ? '<span class="mkt-appr">'+fmtK(appr)+'</span>' : (paid > 0 ? '<span style="color:var(--text-muted);font-size:11px">(same)</span>' : '<span class="mkt-zero">—</span>')}<div class="row-bar"><div class="row-bar-fill" style="width:${barW}%"></div></div></td>
+      <td class="num">${appr > 0 && appr !== paid ? '<span class="mkt-appr">'+fmtK(appr)+'</span>' : (paid > 0 ? '<span style="color:var(--text-muted);font-size:11px">(same)</span>' : '<span class="mkt-zero">—</span>')}</td>
       <td class="num">${paidRatio ? '<span class="ratio-pill paid">'+paidRatio+'</span>' : '<span class="ratio-pill zero">—</span>'}</td>
       <td class="num">${apprRatio ? '<span class="ratio-pill appr">'+apprRatio+'</span>' : (paidRatio ? '<span class="ratio-pill appr">'+paidRatio+'</span>' : '<span class="ratio-pill zero">—</span>')}</td>
     </tr>`;
@@ -1871,7 +1872,7 @@ function renderTable(campaigns) {
         <td class="cell-plan"><div class="cell-camp">${p._camp}</div><span class="plan-code">${p.code}</span>${period}</td>
         <td><span class="type-badge t-${p.type}">${TYPE_META[p.type]||p.type}</span></td>
         <td><span class="market-badge m-${p.market}">${p.market}</span></td>
-        <td class="num cell-budget" ${beforeTip}>${fmt(p.afterTax)}<div class="spend-mini"><div class="spend-mini-fill" style="width:${spentPct}%"></div></div></td>
+        <td class="num cell-budget" ${beforeTip}>${fmt(p.afterTax)}</td>
         <td class="num c-green">${p.actual != null ? fmt(p.actual) : '<span class="c-muted">—</span>'}</td>
         <td class="num">${varHtml}</td>
         <td><span class="status-badge ${sm.cls}">${sm.label}</span> ${note}</td>
