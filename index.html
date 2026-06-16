@@ -99,7 +99,7 @@
   <div class="banner">
     <span class="chip">📊 <b id="vis-count">29</b> reports</span>
     <span class="chip">📌 <b>6</b> pinned</span>
-    <span class="chip">🔄 Updated: <b>2026-06-16 14:58 UTC</b></span>
+    <span class="chip">🔄 Updated: <b>2026-06-16 15:17 UTC</b></span>
   </div>
 </div></header>
 <div class="ctrl">
@@ -615,17 +615,7 @@ function renderMain() {
       <div class="pins-row">${pinned.map(pcardHTML).join('')}</div></section>`;
     return;
   }
-  const area = AREAS.find(a => a.id===activeArea);
-  if (query || !area || !area.scopes || !area.scopes.length) {
-    main.innerHTML=`<div class="grid">${list.map(cardHTML).join('')}</div>`; return;
-  }
-  const byScope = {};
-  list.forEach(r => { const k=r.scope_id||'_'; (byScope[k]=byScope[k]||[]).push(r); });
-  let html = area.scopes.map(s=>s.id).filter(id=>byScope[id]&&byScope[id].length)
-    .map(id => { const s=area.scopes.find(x=>x.id===id);
-      return sectionHTML(scopeTag(s.label),scopeTitle(s.label),byScope[id]); }).join('');
-  if (byScope['_']&&byScope['_'].length) html+=sectionHTML('•','Khác / Ungrouped',byScope['_']);
-  main.innerHTML=html;
+  main.innerHTML=`<div class="grid">${list.map(cardHTML).join('')}</div>`;
 }
 
 function render() { renderTabs(); renderMain(); }
