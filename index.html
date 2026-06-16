@@ -97,9 +97,9 @@
   <h1>L2M Report Hub</h1>
   <div class="sub">Trung tâm báo cáo nội bộ — Analytics &amp; Intelligence cho Lineage2M SEA. Chọn area ở thanh lọc hoặc gõ tìm kiếm để mở report.</div>
   <div class="banner">
-    <span class="chip">📊 <b id="vis-count">28</b> reports</span>
-    <span class="chip">📌 <b>5</b> pinned</span>
-    <span class="chip">🔄 Updated: <b>2026-06-16 11:23 UTC</b></span>
+    <span class="chip">📊 <b id="vis-count">29</b> reports</span>
+    <span class="chip">📌 <b>6</b> pinned</span>
+    <span class="chip">🔄 Updated: <b>2026-06-16 14:58 UTC</b></span>
   </div>
 </div></header>
 <div class="ctrl">
@@ -186,6 +186,21 @@ const REPORTS = [
     "area_icon": "📦",
     "scope_id": "a",
     "scope_label": "Scope A — Content Roadmap",
+    "pinned": true
+  },
+  {
+    "filename": "area11-combined-report.html",
+    "title": "Market Intelligence Combined Report",
+    "date": "",
+    "date_display": "",
+    "area_id": "area11",
+    "area_num": "11",
+    "area_label": "Market Intelligence",
+    "area_color": "#34D399",
+    "area_bg": "#0D2B1F",
+    "area_icon": "🌍",
+    "scope_id": "",
+    "scope_label": "",
     "pinned": true
   },
   {
@@ -328,14 +343,14 @@ const REPORTS = [
     "title": "Clan Narrative Dashboard",
     "date": "",
     "date_display": "",
-    "area_id": "area04",
-    "area_num": "04",
-    "area_label": "Social Listening",
-    "area_color": "#FBBF24",
-    "area_bg": "#2E2208",
-    "area_icon": "📡",
-    "scope_id": "d",
-    "scope_label": "Scope D — Purple Chat / Clan Intel",
+    "area_id": "area_mkt",
+    "area_num": "MKT",
+    "area_label": "Marketing",
+    "area_color": "#F97316",
+    "area_bg": "#2D1200",
+    "area_icon": "📣",
+    "scope_id": "social_clan",
+    "scope_label": "Social — Clan Intel",
     "pinned": false
   },
   {
@@ -388,14 +403,14 @@ const REPORTS = [
     "title": "Discord Intel Wuxia Gaming Latest",
     "date": "",
     "date_display": "",
-    "area_id": "area04",
-    "area_num": "04",
-    "area_label": "Social Listening",
-    "area_color": "#FBBF24",
-    "area_bg": "#2E2208",
-    "area_icon": "📡",
-    "scope_id": "e",
-    "scope_label": "Scope E — Discord",
+    "area_id": "area_mkt",
+    "area_num": "MKT",
+    "area_label": "Marketing",
+    "area_color": "#F97316",
+    "area_bg": "#2D1200",
+    "area_icon": "📣",
+    "scope_id": "social_discord",
+    "scope_label": "Social — Discord",
     "pinned": false
   },
   {
@@ -433,14 +448,14 @@ const REPORTS = [
     "title": "L2M Live Dashboard",
     "date": "",
     "date_display": "",
-    "area_id": "area04",
-    "area_num": "04",
-    "area_label": "Social Listening",
-    "area_color": "#FBBF24",
-    "area_bg": "#2E2208",
-    "area_icon": "📡",
-    "scope_id": "live",
-    "scope_label": "Live Dashboard",
+    "area_id": "area_mkt",
+    "area_num": "MKT",
+    "area_label": "Marketing",
+    "area_color": "#F97316",
+    "area_bg": "#2D1200",
+    "area_icon": "📣",
+    "scope_id": "social_live",
+    "scope_label": "Social — Live Dashboard",
     "pinned": false
   },
   {
@@ -508,14 +523,14 @@ const REPORTS = [
     "title": "Streamer Research L2M SEA Master",
     "date": "",
     "date_display": "",
-    "area_id": "area05",
-    "area_num": "05",
-    "area_label": "Streamer Research",
-    "area_color": "#F472B6",
-    "area_bg": "#2D1020",
-    "area_icon": "🎮",
-    "scope_id": "",
-    "scope_label": "",
+    "area_id": "area_mkt",
+    "area_num": "MKT",
+    "area_label": "Marketing",
+    "area_color": "#F97316",
+    "area_bg": "#2D1200",
+    "area_icon": "📣",
+    "scope_id": "streamer",
+    "scope_label": "Streamer Research",
     "pinned": false
   },
   {
@@ -534,7 +549,7 @@ const REPORTS = [
     "pinned": false
   }
 ];
-const AREAS   = [{"id": "all", "label": "Master", "icon": "📌", "num": ""}, {"id": "area10", "label": "GameOps Analytics", "icon": "📊", "num": "10", "scopes": [{"id": "combined", "label": "Combined — All Scopes"}, {"id": "a", "label": "Scope A — Liveops & Forecast"}, {"id": "b", "label": "Scope B — VIP & Communities"}, {"id": "sv", "label": "Server Transfer — Hub"}]}, {"id": "area08", "label": "Content Release Analytics", "icon": "📦", "num": "08", "scopes": [{"id": "a", "label": "Scope A — Content Roadmap"}, {"id": "b1", "label": "Scope B1 — Webshop BM"}, {"id": "b2", "label": "Scope B2 — Ingame BM"}]}, {"id": "area04", "label": "Social Listening", "icon": "📡", "num": "04", "scopes": [{"id": "live", "label": "Live Dashboard"}, {"id": "b", "label": "Scope B — Facebook Groups"}, {"id": "d", "label": "Scope D — Purple Chat / Clan Intel"}, {"id": "e", "label": "Scope E — Discord"}]}, {"id": "area_mkt", "label": "Marketing", "icon": "📣", "num": "MKT", "scopes": [{"id": "combined", "label": "Combined — All Channels"}, {"id": "cmm", "label": "Community Management"}, {"id": "tracker", "label": "Spend Tracker"}]}, {"id": "area13", "label": "PUM Report", "icon": "📋", "num": "13", "scopes": []}, {"id": "area05", "label": "Streamer Research", "icon": "🎮", "num": "05", "scopes": []}, {"id": "area_sv", "label": "Server Transfer", "icon": "🔀", "num": "SV", "scopes": []}, {"id": "other", "label": "Other", "icon": "📁", "num": "", "scopes": []}];
+const AREAS   = [{"id": "all", "label": "Master", "icon": "📌", "num": ""}, {"id": "area10", "label": "GameOps Analytics", "icon": "📊", "num": "10", "scopes": [{"id": "combined", "label": "Combined — All Scopes"}, {"id": "a", "label": "Scope A — Liveops & Forecast"}, {"id": "b", "label": "Scope B — VIP & Communities"}, {"id": "sv", "label": "Server Transfer — Hub"}]}, {"id": "area08", "label": "Content Release Analytics", "icon": "📦", "num": "08", "scopes": [{"id": "a", "label": "Scope A — Content Roadmap"}, {"id": "b1", "label": "Scope B1 — Webshop BM"}, {"id": "b2", "label": "Scope B2 — Ingame BM"}]}, {"id": "area_mkt", "label": "Marketing", "icon": "📣", "num": "MKT", "scopes": [{"id": "combined", "label": "Combined — All Channels"}, {"id": "cmm", "label": "Community Management"}, {"id": "tracker", "label": "Spend Tracker"}, {"id": "social_live", "label": "Social — Live Dashboard"}, {"id": "social_fb", "label": "Social — Facebook Groups"}, {"id": "social_clan", "label": "Social — Clan Intel"}, {"id": "social_discord", "label": "Social — Discord"}, {"id": "streamer", "label": "Streamer Research"}]}, {"id": "area13", "label": "PUM Report", "icon": "📋", "num": "13", "scopes": []}, {"id": "area11", "label": "Market Intelligence", "icon": "🌍", "num": "11", "scopes": []}, {"id": "area_sv", "label": "Server Transfer", "icon": "🔀", "num": "SV", "scopes": []}, {"id": "other", "label": "Other", "icon": "📁", "num": "", "scopes": []}];
 let activeArea = 'all', query = '';
 
 function renderTabs() {
