@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Competitor Ad Intelligence — KR-MMO × SEA 2025–2026 | NCV Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0F1419; --panel:#161d26; --panel2:#1c2530; --border:#242f3c;
+  --text:#e6edf3; --muted:#7d8fa0; --accent:#EE5524; --accent-d:#c8401a;
+  --accent-soft:rgba(238,85,36,.12);
+  --sora:'Sora',system-ui,sans-serif; --inter:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--inter);font-size:14px;line-height:1.6}
+h1,h2,h3,h4{font-family:var(--sora);font-weight:700;letter-spacing:-.01em}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.accent{color:var(--accent)}
+
+/* ── Header ── */
+header{background:linear-gradient(135deg,#090d11 0%,#0d1820 60%,#101e2a 100%);
+  border-bottom:2px solid var(--accent);padding:28px 0 22px}
+.wrap{max-width:1300px;margin:0 auto;padding:0 24px}
+.eyebrow{font-family:var(--mono);font-size:10.5px;color:var(--accent);text-transform:uppercase;
+  letter-spacing:.14em;margin-bottom:8px}
+.brand{font-family:var(--sora);font-weight:800;font-size:13px;color:var(--muted);letter-spacing:.06em}
+.brand .v{color:var(--accent)}
+h1{font-size:28px;line-height:1.15;margin:6px 0 4px;color:#fff}
+.subtitle{color:var(--muted);font-size:13px;margin-top:4px}
+.meta-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pill{background:var(--panel2);border:1px solid var(--border);border-radius:20px;
+  padding:4px 12px;font-size:11.5px;color:var(--muted);font-family:var(--mono)}
+.pill.hot{border-color:var(--accent);color:var(--accent)}
+
+/* ── Nav ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(15,20,25,.97);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap}
+nav .wrap{display:flex;gap:0}
+.tab{padding:13px 16px;color:var(--muted);font-weight:600;font-size:12.5px;cursor:pointer;
+  border:none;border-bottom:2px solid transparent;background:none;transition:.15s;
+  font-family:var(--sora)}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ── Sections ── */
+section{display:none;padding:28px 0 60px}
+section.active{display:block}
+.sec-head{margin-bottom:22px}
+.sec-head h2{font-size:20px;margin-bottom:3px}
+.sec-head p{color:var(--muted);font-size:13px;max-width:780px}
+
+/* ── KPI grid ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;
+  position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent-color,var(--accent))}
+.kpi .v{font-size:30px;font-weight:800;font-family:var(--mono);color:#fff;line-height:1}
+.kpi .l{color:var(--muted);font-size:11px;margin-top:6px;text-transform:uppercase;letter-spacing:.04em;font-family:var(--sora)}
+.kpi .s{color:var(--muted);font-size:11px;margin-top:2px;font-family:var(--mono)}
+.kpi .badge{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:4px;margin-top:4px;font-family:var(--sora)}
+
+/* ── Panels ── */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.panel-title{font-size:14px;font-weight:700;font-family:var(--sora);margin-bottom:14px;color:#fff}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:768px){.two-col,.three-col{grid-template-columns:1fr}}
+
+/* ── Bar rows ── */
+.brow{display:grid;grid-template-columns:130px 1fr 100px;align-items:center;gap:10px;
+  margin-bottom:10px;font-size:13px}
+.bname{font-weight:600;font-family:var(--sora);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bbar{background:var(--panel2);border-radius:4px;height:8px;overflow:hidden}
+.bfill{height:100%;background:var(--c);border-radius:4px;transition:width .4s}
+.bpct{text-align:right;font-size:12px}
+
+/* ── Bucket cards ── */
+.bucket-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.bucket-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;
+  padding:16px;position:relative;overflow:hidden;transition:.15s}
+.bucket-card:hover{border-color:var(--bc);background:var(--panel2)}
+.bucket-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--bc)}
+.bc-num{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:4px}
+.bc-name{font-family:var(--sora);font-weight:700;font-size:15px;margin-bottom:4px;color:#fff}
+.bc-vi{font-size:11.5px;color:var(--muted);margin-bottom:8px}
+.bc-cnt{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--bc)}
+.bc-pct{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.bc-desc{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.5;border-top:1px solid var(--border);padding-top:8px}
+.bc-rank{position:absolute;top:12px;right:14px;font-family:var(--mono);font-size:12px;
+  color:var(--muted);font-weight:700}
+
+/* ── Sample messages ── */
+.sample-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;
+  padding:10px 14px;margin-bottom:8px}
+.sample-msg{font-style:italic;font-size:12.5px;color:var(--text);margin-bottom:3px}
+.sample-meta{font-size:11px;color:var(--muted);font-family:var(--mono)}
+
+/* ── Game table ── */
+.gtable{width:100%;border-collapse:collapse;font-size:12.5px}
+.gtable th{background:var(--panel2);padding:9px 12px;text-align:left;font-family:var(--sora);
+  font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
+  border-bottom:1px solid var(--border);white-space:nowrap}
+.gtable td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.gtable tr:last-child td{border-bottom:none}
+.gtable tr:hover td{background:var(--panel2)}
+.top-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10.5px;
+  font-weight:700;font-family:var(--sora);white-space:nowrap}
+.mini-bar{height:4px;border-radius:2px;background:var(--bc);min-width:2px;display:inline-block}
+.subgenre-tag{font-size:10px;padding:1px 6px;border-radius:3px;border:1px solid var(--border);color:var(--muted)}
+.dark{border-color:#5b3d8a;color:#a78bfa}
+.anime{border-color:#2a5a8a;color:#60a5fa}
+
+/* ── Canvas containers ── */
+.chart-wrap{position:relative;height:280px}
+.chart-wrap.tall{height:340px}
+.chart-wrap.sm{height:200px}
+
+/* ── Insight box ── */
+.insight{background:var(--accent-soft);border:1px solid rgba(238,85,36,.25);border-radius:10px;
+  padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.7}
+.insight strong{color:var(--accent);font-family:var(--sora)}
+
+/* ── Divider ── */
+.divider{height:1px;background:var(--border);margin:20px 0}
+
+/* ── Franchise table ── */
+.fr-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.fr-row:last-child{border-bottom:none}
+.fr-name{font-weight:700;font-family:var(--sora);min-width:130px;font-size:13px}
+.fr-n{font-family:var(--mono);font-size:12px;color:var(--muted);min-width:50px}
+.fr-bars{flex:1;display:flex;gap:3px;align-items:center}
+.fr-seg{height:16px;border-radius:3px;cursor:default;position:relative}
+.fr-seg:hover::after{content:attr(title);position:absolute;bottom:22px;left:0;background:#1a1a2e;
+  color:#fff;padding:4px 8px;border-radius:4px;font-size:11px;white-space:nowrap;z-index:50;
+  font-family:var(--mono)}
+
+/* ── Country dist ── */
+.cty-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12.5px}
+.cty-flag{font-size:18px;min-width:26px}
+.cty-name{min-width:40px;color:var(--muted);font-family:var(--mono)}
+.cty-bar{flex:1;background:var(--panel2);border-radius:3px;height:8px;overflow:hidden}
+.cty-fill{height:100%;background:var(--accent);border-radius:3px}
+.cty-n{font-family:var(--mono);font-size:11.5px;color:var(--muted);min-width:50px;text-align:right}
+
+/* ── Footer ── */
+footer{background:var(--panel);border-top:1px solid var(--border);padding:20px 0;margin-top:0}
+footer .inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+footer .fl{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* ── L2M vs Field ── */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.compare-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="wrap">
+  <div class="eyebrow">NCV Games · Market Intelligence · Area 11</div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+    <span class="brand"><span class="v">N</span>C<span class="v">V</span> GAMES</span>
+    <span style="color:var(--border)">·</span>
+    <span style="font-size:11px;color:var(--muted);font-family:var(--mono)">INTERNAL · CONFIDENTIAL</span>
+  </div>
+  <h1>Competitor Ad Intelligence<br><span style="color:var(--accent)">KR-MMO × SEA</span></h1>
+  <p class="subtitle">Phân tích 2,276 creatives · 36 games · 10 motivation buckets · 2025Q1–2026Q2</p>
+  <div class="meta-pills">
+    <span class="pill hot">2,276 creatives tagged</span>
+    <span class="pill">SEA: VN · TH · ID · SG · MY · PH</span>
+    <span class="pill">Sources: Sensor Tower 6Q</span>
+    <span class="pill">Updated: 2026-06-25</span>
+  </div>
+</div>
+</header>
+
+<nav>
+<div class="wrap">
+  <button class="tab active" onclick="showTab('overview')">📊 Overview</button>
+  <button class="tab" onclick="showTab('motivation')">🧠 Motivation Buckets</button>
+  <button class="tab" onclick="showTab('games')">🎮 Per-Game</button>
+  <button class="tab" onclick="showTab('l2m')">⚔️ L2M vs Field</button>
+  <button class="tab" onclick="showTab('media')">📡 Media Mix</button>
+</div>
+</nav>
+
+<!-- ══════ TAB: OVERVIEW ══════ -->
+<section id="sec-overview" class="active">
+<div class="wrap">
+  <div class="sec-head">
+    <h2>Overview</h2>
+    <p>Tổng quan 2,276 quảng cáo từ 36 KR-MMO games trên thị trường SEA — đã phân loại theo 10 motivation buckets.</p>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi" style="--accent-color:var(--accent)">
+      <div class="v num">2,276</div>
+      <div class="l">Creatives Tagged</div>
+      <div class="s">100% complete (CP1–CP130)</div>
+    </div>
+    <div class="kpi" style="--accent-color:#f97316">
+      <div class="v num">5,196</div>
+      <div class="l">Total KR Creatives</div>
+      <div class="s">6 quý 2025Q1–2026Q2</div>
+    </div>
+    <div class="kpi" style="--accent-color:#22c55e">
+      <div class="v num">36</div>
+      <div class="l">Games Tracked</div>
+      <div class="s">20 franchises</div>
+    </div>
+    <div class="kpi" style="--accent-color:#EE5524">
+      <div class="v num">24.3%</div>
+      <div class="l">FOMO Dominant</div>
+      <div class="badge">#1 Bucket</div>
+    </div>
+    <div class="kpi" style="--accent-color:#f97316">
+      <div class="v num">18.4%</div>
+      <div class="l">Class & Skill</div>
+      <div class="s">#2 bucket overall</div>
+    </div>
+    <div class="kpi" style="--accent-color:#eab308">
+      <div class="v num">14.6%</div>
+      <div class="l">Nostalgia / IP</div>
+      <div class="s">#3 bucket overall</div>
+    </div>
+    <div class="kpi" style="--accent-color:#3b82f6">
+      <div class="v num">12.1%</div>
+      <div class="l">Progression</div>
+      <div class="s">#4 bucket overall</div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <strong>Key Finding:</strong> FOMO (#9) chiếm 24.3% — gần 1/4 toàn bộ quảng cáo KR-MMO tại SEA đều dùng cơ chế khan hiếm, launch offer, gift code. Class &amp; Skill (#4) đứng thứ 2 với 18.4%, cho thấy content creator showcase class mới là tín hiệu mạnh trong thị trường dark-fantasy &amp; anime-MMO.
+  </div>
+
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title">Primary Motivation — Phân bố tổng thể</div>
+      <div class="chart-wrap"><canvas id="chartOverviewDonut"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Primary vs Secondary — So sánh heatmap</div>
+      <div class="chart-wrap"><canvas id="chartPrimSec"></canvas></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Ranked Bar — 2,276 creatives theo motivation bucket</div>
+    <div class="brow" style="--c:#EE5524">
+  <div class="bname">FOMO</div>
+  <div class="bbar"><div class="bfill" style="width:24.3%"></div></div>
+  <div class="bpct"><span class="num">552</span> <span class="muted">(24.3%)</span></div>
+</div><div class="brow" style="--c:#f97316">
+  <div class="bname">Class & Skill</div>
+  <div class="bbar"><div class="bfill" style="width:18.4%"></div></div>
+  <div class="bpct"><span class="num">418</span> <span class="muted">(18.4%)</span></div>
+</div><div class="brow" style="--c:#eab308">
+  <div class="bname">Nostalgia / IP</div>
+  <div class="bbar"><div class="bfill" style="width:14.6%"></div></div>
+  <div class="bpct"><span class="num">333</span> <span class="muted">(14.6%)</span></div>
+</div><div class="brow" style="--c:#3b82f6">
+  <div class="bname">Progression</div>
+  <div class="bbar"><div class="bfill" style="width:12.1%"></div></div>
+  <div class="bpct"><span class="num">276</span> <span class="muted">(12.1%)</span></div>
+</div><div class="brow" style="--c:#22c55e">
+  <div class="bname">Community</div>
+  <div class="bbar"><div class="bfill" style="width:7.0%"></div></div>
+  <div class="bpct"><span class="num">159</span> <span class="muted">(7.0%)</span></div>
+</div><div class="brow" style="--c:#ef4444">
+  <div class="bname">PvP/Raid</div>
+  <div class="bbar"><div class="bfill" style="width:6.5%"></div></div>
+  <div class="bpct"><span class="num">149</span> <span class="muted">(6.5%)</span></div>
+</div><div class="brow" style="--c:#8b5cf6">
+  <div class="bname">Cinematic</div>
+  <div class="bbar"><div class="bfill" style="width:5.6%"></div></div>
+  <div class="bpct"><span class="num">127</span> <span class="muted">(5.6%)</span></div>
+</div><div class="brow" style="--c:#ec4899">
+  <div class="bname">Waifu / KOL</div>
+  <div class="bbar"><div class="bfill" style="width:4.9%"></div></div>
+  <div class="bpct"><span class="num">111</span> <span class="muted">(4.9%)</span></div>
+</div><div class="brow" style="--c:#64748b">
+  <div class="bname">Auto / Idle</div>
+  <div class="bbar"><div class="bfill" style="width:3.8%"></div></div>
+  <div class="bpct"><span class="num">87</span> <span class="muted">(3.8%)</span></div>
+</div><div class="brow" style="--c:#a855f7">
+  <div class="bname">Power Fantasy</div>
+  <div class="bbar"><div class="bfill" style="width:2.8%"></div></div>
+  <div class="bpct"><span class="num">64</span> <span class="muted">(2.8%)</span></div>
+</div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ TAB: MOTIVATION BUCKETS ══════ -->
+<section id="sec-motivation">
+<div class="wrap">
+  <div class="sec-head">
+    <h2>10 Motivation Buckets</h2>
+    <p>Chi tiết từng bucket — phân bố, ví dụ creative thực tế, và vai trò secondary.</p>
+  </div>
+
+  <div class="bucket-grid">
+
+    <div class="bucket-card" style="--bc:#EE5524">
+      <div class="bc-rank">#1</div>
+      <div class="bc-num">BUCKET 09</div>
+      <div class="bc-name">FOMO</div>
+      <div class="bc-vi">Ưu đãi / FOMO</div>
+      <div class="bc-cnt num">552</div>
+      <div class="bc-pct">24.3% of all creatives</div>
+      <div class="bc-desc">Launch offer, limited time, 'đừng bỏ lỡ', gift code</div>
+      <div class="sample-card"><div class="sample-msg">"THE WAIT IS OVER — Erel Light&#x27;s Grand Debut"</div><div class="sample-meta">MapleStory M: Fantasy MMORPG</div></div><div class="sample-card"><div class="sample-msg">"GRAND LAUNCH NOW — Embark on epic Open World adventure"</div><div class="sample-meta">Ragnarok V : Returns</div></div>
+    </div>
+    <div class="bucket-card" style="--bc:#f97316">
+      <div class="bc-rank">#2</div>
+      <div class="bc-num">BUCKET 04</div>
+      <div class="bc-name">Class & Skill</div>
+      <div class="bc-vi">Class & Skill mới</div>
+      <div class="bc-cnt num">418</div>
+      <div class="bc-pct">18.4% of all creatives</div>
+      <div class="bc-desc">Ra class mới, demo kỹ năng độc đáo, class showcase</div>
+      <div class="sample-card"><div class="sample-msg">"Experience the Original Class, EreL Light"</div><div class="sample-meta">MapleStory M: Fantasy MMORPG</div></div><div class="sample-card"><div class="sample-msg">"Archon Has Arrived! Embrace the Shadow, Unleash the Strength!"</div><div class="sample-meta">MapleStory M: Fantasy MMORPG</div></div>
+    </div>
+    <div class="bucket-card" style="--bc:#eab308">
+      <div class="bc-rank">#3</div>
+      <div class="bc-num">BUCKET 06</div>
+      <div class="bc-name">Nostalgia / IP</div>
+      <div class="bc-vi">Nostalgia / IP</div>
+      <div class="bc-cnt num">333</div>
+      <div class="bc-pct">14.6% of all creatives</div>
+      <div class="bc-desc">Brand recognition, khai thác IP gốc, nostalgia trigger</div>
+      <div class="sample-card"><div class="sample-msg">"a New World Beckons — EREL LIGHT"</div><div class="sample-meta">MapleStory M: Fantasy MMORPG</div></div><div class="sample-card"><div class="sample-msg">"Chuẩn MU Nguyên Bản Đã Trở Lại"</div><div class="sample-meta">MU Monarch</div></div>
+    </div>
+    <div class="bucket-card" style="--bc:#3b82f6">
+      <div class="bc-rank">#4</div>
+      <div class="bc-num">BUCKET 02</div>
+      <div class="bc-name">Progression</div>
+      <div class="bc-vi">Lên đời / Progression</div>
+      <div class="bc-cnt num">276</div>
+      <div class="bc-pct">12.1% of all creatives</div>
+      <div class="bc-desc">Lên level, mở đồ mới, tiến trình nhân vật rõ ràng</div>
+      <div class="sample-card"><div class="sample-msg">"Capai Lv.35 Dapatkan Full Set Equipment Rare!"</div><div class="sample-meta">레전드 오브 이미르</div></div><div class="sample-card"><div class="sample-msg">"60x the Fun! To Level 60!"</div><div class="sample-meta">레전드 오브 이미르</div></div>
+    </div>
+    <div class="bucket-card" style="--bc:#22c55e">
+      <div class="bc-rank">#5</div>
+      <div class="bc-num">BUCKET 07</div>
+      <div class="bc-name">Community</div>
+      <div class="bc-vi">Cộng đồng / Clan</div>
+      <div class="bc-cnt num">159</div>
+      <div class="bc-pct">7.0% of all creatives</div>
+      <div class="bc-desc">Clan event, offline meetup, cộng đồng gắn kết</div>
+      <div class="sample-card"><div class="sample-msg">"ออนไลน์วันนี้ (Online Today)"</div><div class="sample-meta">Tree of Savior: Neverland</div></div><div class="sample-card"><div class="sample-msg">"Thailand Grand Showcase — Sofitel Bangkok 29 Maret"</div><div class="sample-meta">Lineage2M</div></div>
+    </div>
+    <div class="bucket-card" style="--bc:#ef4444">
+      <div class="bc-rank">#6</div>
+      <div class="bc-num">BUCKET 03</div>
+      <div class="bc-name">PvP/Raid</div>
+      <div class="bc-vi">PvP / Công thành</div>
+      <div class="bc-cnt num">149</div>
+      <div class="bc-pct">6.5% of all creatives</div>
+      <div class="bc-desc">Siege, đua rank, chiến tranh guild/clan</div>
+      <div class="sample-card"><div class="sample-msg">"Raih Tahtamu Dengan Event Ranking"</div><div class="sample-meta">Lineage2M</div></div><div class="sample-card"><div class="sample-msg">"Huyết Chiến Tối Thượng"</div><div class="sample-meta">Lineage W</div></div>
+    </div>
+    <div class="bucket-card" style="--bc:#8b5cf6">
+      <div class="bc-rank">#7</div>
+      <div class="bc-num">BUCKET 05</div>
+      <div class="bc-name">Cinematic</div>
+      <div class="bc-vi">Đồ hoạ / Cinematic</div>
+      <div class="bc-cnt num">127</div>
+      <div class="bc-pct">5.6% of all creatives</div>
+      <div class="bc-desc">CGI/cinematic chất lượng cao, visual impact</div>
+      <div class="sample-card"><div class="sample-msg">"MU Blood Blade — 2021 vs 2025 graphics upgrade"</div><div class="sample-meta">MU: Blood Blade</div></div><div class="sample-card"><div class="sample-msg">"The Ruthless Steel — Sci-Fi MMORPG Pre-register Now"</div><div class="sample-meta">RF 온라인 넥스트</div></div>
+    </div>
+    <div class="bucket-card" style="--bc:#ec4899">
+      <div class="bc-rank">#8</div>
+      <div class="bc-num">BUCKET 10</div>
+      <div class="bc-name">Waifu / KOL</div>
+      <div class="bc-vi">Waifu / KOL</div>
+      <div class="bc-cnt num">111</div>
+      <div class="bc-pct">4.9% of all creatives</div>
+      <div class="bc-desc">KOL/idol, character waifu, fan service</div>
+      <div class="sample-card"><div class="sample-msg">"CHÍNH THỨC RA MẮT — GIFT CODE: HELLOMUTIZEN"</div><div class="sample-meta">MU Monarch</div></div><div class="sample-card"><div class="sample-msg">"Tái Hiện Nguyên Bản MU Webzen — Chiến Ngay"</div><div class="sample-meta">MU Monarch</div></div>
+    </div>
+    <div class="bucket-card" style="--bc:#64748b">
+      <div class="bc-rank">#9</div>
+      <div class="bc-num">BUCKET 08</div>
+      <div class="bc-name">Auto / Idle</div>
+      <div class="bc-vi">Auto / Idle / Tiện lợi</div>
+      <div class="bc-cnt num">87</div>
+      <div class="bc-pct">3.8% of all creatives</div>
+      <div class="bc-desc">Idle farming, AFK, gameplay nhẹ nhàng</div>
+      <div class="sample-card"><div class="sample-msg">"A True Idle Experience with Ragnarok Iconic Character — Play Now For Free"</div><div class="sample-meta">Ragnarok Idle Adventure Plus</div></div><div class="sample-card"><div class="sample-msg">"อัตโนมัติ (ตัวร้าย)"</div><div class="sample-meta">MU: Dark Epoch</div></div>
+    </div>
+    <div class="bucket-card" style="--bc:#a855f7">
+      <div class="bc-rank">#10</div>
+      <div class="bc-num">BUCKET 01</div>
+      <div class="bc-name">Power Fantasy</div>
+      <div class="bc-vi">Bá đạo / Mạnh nhất</div>
+      <div class="bc-cnt num">64</div>
+      <div class="bc-pct">2.8% of all creatives</div>
+      <div class="bc-desc">Quảng cáo về sức mạnh tuyệt đối, cảm giác 'crush all'</div>
+      <div class="sample-card"><div class="sample-msg">"MU Dark Epoch"</div><div class="sample-meta">MU: Dark Epoch</div></div><div class="sample-card"><div class="sample-msg">"Rise as a Lord — Grand Open"</div><div class="sample-meta">로드나인</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="panel">
+    <div class="panel-title">Secondary Motivation Distribution — "Back-up angle" của từng creative</div>
+    <div class="chart-wrap"><canvas id="chartSecBar"></canvas></div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ TAB: PER-GAME ══════ -->
+<section id="sec-games">
+<div class="wrap">
+  <div class="sec-head">
+    <h2>Per-Game Breakdown</h2>
+    <p>Top 15 games theo số lượng creative đã phân tích. Hover cột Buckets để xem chi tiết.</p>
+  </div>
+
+  <div class="panel">
+    <div class="chart-wrap tall"><canvas id="chartGameStack"></canvas></div>
+  </div>
+
+  <div class="panel" style="overflow-x:auto">
+    <div class="panel-title">Top 15 Games — Chi tiết bucket</div>
+    <table class="gtable">
+    <thead><tr>
+      <th>#</th><th>Game</th><th>Creatives</th><th>Top Bucket</th><th>Bucket Split</th>
+    </tr></thead>
+    <tbody>
+<tr>
+      <td class="muted num">1</td>
+      <td style="font-weight:600">MapleStory M</td>
+      <td class="num">195</td>
+      <td><span class="top-badge" style="background:#f9731622;color:#f97316;border:1px solid #f9731644">Class & Skill</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#f97316;width:32px;background:#f97316" title="Class & Skill: 79"></span><span class="mini-bar" style="--bc:#3b82f6;width:13px;background:#3b82f6" title="Progression: 32"></span><span class="mini-bar" style="--bc:#22c55e;width:9px;background:#22c55e" title="Community: 23"></span><span class="mini-bar" style="--bc:#EE5524;width:8px;background:#EE5524" title="FOMO: 20"></span><span class="mini-bar" style="--bc:#eab308;width:6px;background:#eab308" title="Nostalgia / IP: 14"></span><span class="mini-bar" style="--bc:#ef4444;width:4px;background:#ef4444" title="PvP/Raid: 10"></span><span class="mini-bar" style="--bc:#64748b;width:3px;background:#64748b" title="Auto / Idle: 8"></span><span class="mini-bar" style="--bc:#ec4899;width:2px;background:#ec4899" title="Waifu / KOL: 5"></span><span class="mini-bar" style="--bc:#a855f7;width:2px;background:#a855f7" title="Power Fantasy: 4"></span></td>
+    </tr><tr>
+      <td class="muted num">2</td>
+      <td style="font-weight:600">MapleStory M: Fantasy MMORPG</td>
+      <td class="num">112</td>
+      <td><span class="top-badge" style="background:#f9731622;color:#f97316;border:1px solid #f9731644">Class & Skill</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#f97316;width:24px;background:#f97316" title="Class & Skill: 34"></span><span class="mini-bar" style="--bc:#3b82f6;width:16px;background:#3b82f6" title="Progression: 22"></span><span class="mini-bar" style="--bc:#EE5524;width:13px;background:#EE5524" title="FOMO: 18"></span><span class="mini-bar" style="--bc:#eab308;width:6px;background:#eab308" title="Nostalgia / IP: 9"></span><span class="mini-bar" style="--bc:#22c55e;width:6px;background:#22c55e" title="Community: 8"></span><span class="mini-bar" style="--bc:#ef4444;width:5px;background:#ef4444" title="PvP/Raid: 7"></span><span class="mini-bar" style="--bc:#ec4899;width:4px;background:#ec4899" title="Waifu / KOL: 5"></span><span class="mini-bar" style="--bc:#8b5cf6;width:3px;background:#8b5cf6" title="Cinematic: 4"></span><span class="mini-bar" style="--bc:#a855f7;width:2px;background:#a855f7" title="Power Fantasy: 3"></span><span class="mini-bar" style="--bc:#64748b;width:1px;background:#64748b" title="Auto / Idle: 2"></span></td>
+    </tr><tr>
+      <td class="muted num">3</td>
+      <td style="font-weight:600">MU: Dark Epoch</td>
+      <td class="num">76</td>
+      <td><span class="top-badge" style="background:#eab30822;color:#eab308;border:1px solid #eab30844">Nostalgia / IP</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#eab308;width:25px;background:#eab308" title="Nostalgia / IP: 24"></span><span class="mini-bar" style="--bc:#EE5524;width:20px;background:#EE5524" title="FOMO: 19"></span><span class="mini-bar" style="--bc:#8b5cf6;width:12px;background:#8b5cf6" title="Cinematic: 11"></span><span class="mini-bar" style="--bc:#3b82f6;width:9px;background:#3b82f6" title="Progression: 9"></span><span class="mini-bar" style="--bc:#f97316;width:5px;background:#f97316" title="Class & Skill: 5"></span><span class="mini-bar" style="--bc:#ef4444;width:3px;background:#ef4444" title="PvP/Raid: 3"></span><span class="mini-bar" style="--bc:#a855f7;width:2px;background:#a855f7" title="Power Fantasy: 2"></span><span class="mini-bar" style="--bc:#64748b;width:1px;background:#64748b" title="Auto / Idle: 1"></span><span class="mini-bar" style="--bc:#22c55e;width:1px;background:#22c55e" title="Community: 1"></span><span class="mini-bar" style="--bc:#ec4899;width:1px;background:#ec4899" title="Waifu / KOL: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">4</td>
+      <td style="font-weight:600">Lineage2M</td>
+      <td class="num">50</td>
+      <td><span class="top-badge" style="background:#EE552422;color:#EE5524;border:1px solid #EE552444">FOMO</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#EE5524;width:21px;background:#EE5524" title="FOMO: 13"></span><span class="mini-bar" style="--bc:#f97316;width:13px;background:#f97316" title="Class & Skill: 8"></span><span class="mini-bar" style="--bc:#ef4444;width:11px;background:#ef4444" title="PvP/Raid: 7"></span><span class="mini-bar" style="--bc:#22c55e;width:11px;background:#22c55e" title="Community: 7"></span><span class="mini-bar" style="--bc:#8b5cf6;width:8px;background:#8b5cf6" title="Cinematic: 5"></span><span class="mini-bar" style="--bc:#eab308;width:8px;background:#eab308" title="Nostalgia / IP: 5"></span><span class="mini-bar" style="--bc:#64748b;width:3px;background:#64748b" title="Auto / Idle: 2"></span><span class="mini-bar" style="--bc:#ec4899;width:2px;background:#ec4899" title="Waifu / KOL: 1"></span><span class="mini-bar" style="--bc:#3b82f6;width:2px;background:#3b82f6" title="Progression: 1"></span><span class="mini-bar" style="--bc:#a855f7;width:2px;background:#a855f7" title="Power Fantasy: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">5</td>
+      <td style="font-weight:600">Ragnarok Idle Adventure Plus</td>
+      <td class="num">50</td>
+      <td><span class="top-badge" style="background:#64748b22;color:#64748b;border:1px solid #64748b44">Auto / Idle</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#64748b;width:32px;background:#64748b" title="Auto / Idle: 20"></span><span class="mini-bar" style="--bc:#EE5524;width:24px;background:#EE5524" title="FOMO: 15"></span><span class="mini-bar" style="--bc:#eab308;width:18px;background:#eab308" title="Nostalgia / IP: 11"></span><span class="mini-bar" style="--bc:#8b5cf6;width:3px;background:#8b5cf6" title="Cinematic: 2"></span><span class="mini-bar" style="--bc:#22c55e;width:2px;background:#22c55e" title="Community: 1"></span><span class="mini-bar" style="--bc:#ec4899;width:2px;background:#ec4899" title="Waifu / KOL: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">6</td>
+      <td style="font-weight:600">Ragnarok V: Returns</td>
+      <td class="num">48</td>
+      <td><span class="top-badge" style="background:#eab30822;color:#eab308;border:1px solid #eab30844">Nostalgia / IP</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#eab308;width:33px;background:#eab308" title="Nostalgia / IP: 20"></span><span class="mini-bar" style="--bc:#EE5524;width:17px;background:#EE5524" title="FOMO: 10"></span><span class="mini-bar" style="--bc:#f97316;width:13px;background:#f97316" title="Class & Skill: 8"></span><span class="mini-bar" style="--bc:#ec4899;width:5px;background:#ec4899" title="Waifu / KOL: 3"></span><span class="mini-bar" style="--bc:#22c55e;width:5px;background:#22c55e" title="Community: 3"></span><span class="mini-bar" style="--bc:#64748b;width:3px;background:#64748b" title="Auto / Idle: 2"></span><span class="mini-bar" style="--bc:#8b5cf6;width:2px;background:#8b5cf6" title="Cinematic: 1"></span><span class="mini-bar" style="--bc:#a855f7;width:2px;background:#a855f7" title="Power Fantasy: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">7</td>
+      <td style="font-weight:600">Lineage W</td>
+      <td class="num">41</td>
+      <td><span class="top-badge" style="background:#EE552422;color:#EE5524;border:1px solid #EE552444">FOMO</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#EE5524;width:23px;background:#EE5524" title="FOMO: 12"></span><span class="mini-bar" style="--bc:#22c55e;width:16px;background:#22c55e" title="Community: 8"></span><span class="mini-bar" style="--bc:#ef4444;width:12px;background:#ef4444" title="PvP/Raid: 6"></span><span class="mini-bar" style="--bc:#8b5cf6;width:12px;background:#8b5cf6" title="Cinematic: 6"></span><span class="mini-bar" style="--bc:#eab308;width:6px;background:#eab308" title="Nostalgia / IP: 3"></span><span class="mini-bar" style="--bc:#a855f7;width:6px;background:#a855f7" title="Power Fantasy: 3"></span><span class="mini-bar" style="--bc:#64748b;width:4px;background:#64748b" title="Auto / Idle: 2"></span><span class="mini-bar" style="--bc:#ec4899;width:2px;background:#ec4899" title="Waifu / KOL: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">8</td>
+      <td style="font-weight:600">Ragnarok V : Returns</td>
+      <td class="num">25</td>
+      <td><span class="top-badge" style="background:#EE552422;color:#EE5524;border:1px solid #EE552444">FOMO</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#EE5524;width:35px;background:#EE5524" title="FOMO: 11"></span><span class="mini-bar" style="--bc:#eab308;width:29px;background:#eab308" title="Nostalgia / IP: 9"></span><span class="mini-bar" style="--bc:#8b5cf6;width:6px;background:#8b5cf6" title="Cinematic: 2"></span><span class="mini-bar" style="--bc:#22c55e;width:6px;background:#22c55e" title="Community: 2"></span><span class="mini-bar" style="--bc:#f97316;width:3px;background:#f97316" title="Class & Skill: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">9</td>
+      <td style="font-weight:600">Tree of Savior: Neverland</td>
+      <td class="num">23</td>
+      <td><span class="top-badge" style="background:#EE552422;color:#EE5524;border:1px solid #EE552444">FOMO</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#EE5524;width:38px;background:#EE5524" title="FOMO: 11"></span><span class="mini-bar" style="--bc:#eab308;width:21px;background:#eab308" title="Nostalgia / IP: 6"></span><span class="mini-bar" style="--bc:#22c55e;width:17px;background:#22c55e" title="Community: 5"></span><span class="mini-bar" style="--bc:#3b82f6;width:3px;background:#3b82f6" title="Progression: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">10</td>
+      <td style="font-weight:600">THE 라그나로크</td>
+      <td class="num">20</td>
+      <td><span class="top-badge" style="background:#eab30822;color:#eab308;border:1px solid #eab30844">Nostalgia / IP</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#eab308;width:36px;background:#eab308" title="Nostalgia / IP: 9"></span><span class="mini-bar" style="--bc:#f97316;width:20px;background:#f97316" title="Class & Skill: 5"></span><span class="mini-bar" style="--bc:#22c55e;width:12px;background:#22c55e" title="Community: 3"></span><span class="mini-bar" style="--bc:#EE5524;width:8px;background:#EE5524" title="FOMO: 2"></span><span class="mini-bar" style="--bc:#ec4899;width:4px;background:#ec4899" title="Waifu / KOL: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">11</td>
+      <td style="font-weight:600">The Ragnarok</td>
+      <td class="num">20</td>
+      <td><span class="top-badge" style="background:#eab30822;color:#eab308;border:1px solid #eab30844">Nostalgia / IP</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#eab308;width:40px;background:#eab308" title="Nostalgia / IP: 10"></span><span class="mini-bar" style="--bc:#EE5524;width:28px;background:#EE5524" title="FOMO: 7"></span><span class="mini-bar" style="--bc:#ef4444;width:8px;background:#ef4444" title="PvP/Raid: 2"></span><span class="mini-bar" style="--bc:#f97316;width:4px;background:#f97316" title="Class & Skill: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">12</td>
+      <td style="font-weight:600">MU Monarch</td>
+      <td class="num">16</td>
+      <td><span class="top-badge" style="background:#ef444422;color:#ef4444;border:1px solid #ef444444">PvP/Raid</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#ef4444;width:20px;background:#ef4444" title="PvP/Raid: 4"></span><span class="mini-bar" style="--bc:#ec4899;width:15px;background:#ec4899" title="Waifu / KOL: 3"></span><span class="mini-bar" style="--bc:#eab308;width:15px;background:#eab308" title="Nostalgia / IP: 3"></span><span class="mini-bar" style="--bc:#3b82f6;width:10px;background:#3b82f6" title="Progression: 2"></span><span class="mini-bar" style="--bc:#a855f7;width:10px;background:#a855f7" title="Power Fantasy: 2"></span><span class="mini-bar" style="--bc:#f97316;width:5px;background:#f97316" title="Class & Skill: 1"></span><span class="mini-bar" style="--bc:#EE5524;width:5px;background:#EE5524" title="FOMO: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">13</td>
+      <td style="font-weight:600">MU Dark Epoch</td>
+      <td class="num">15</td>
+      <td><span class="top-badge" style="background:#EE552422;color:#EE5524;border:1px solid #EE552444">FOMO</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#EE5524;width:21px;background:#EE5524" title="FOMO: 4"></span><span class="mini-bar" style="--bc:#f97316;width:16px;background:#f97316" title="Class & Skill: 3"></span><span class="mini-bar" style="--bc:#eab308;width:16px;background:#eab308" title="Nostalgia / IP: 3"></span><span class="mini-bar" style="--bc:#a855f7;width:11px;background:#a855f7" title="Power Fantasy: 2"></span><span class="mini-bar" style="--bc:#ef4444;width:11px;background:#ef4444" title="PvP/Raid: 2"></span><span class="mini-bar" style="--bc:#8b5cf6;width:5px;background:#8b5cf6" title="Cinematic: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">14</td>
+      <td style="font-weight:600">Ragnarok: Back to Glory</td>
+      <td class="num">10</td>
+      <td><span class="top-badge" style="background:#eab30822;color:#eab308;border:1px solid #eab30844">Nostalgia / IP</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#eab308;width:32px;background:#eab308" title="Nostalgia / IP: 4"></span><span class="mini-bar" style="--bc:#22c55e;width:24px;background:#22c55e" title="Community: 3"></span><span class="mini-bar" style="--bc:#ef4444;width:16px;background:#ef4444" title="PvP/Raid: 2"></span><span class="mini-bar" style="--bc:#3b82f6;width:8px;background:#3b82f6" title="Progression: 1"></span></td>
+    </tr><tr>
+      <td class="muted num">15</td>
+      <td style="font-weight:600">Lineage2M VN</td>
+      <td class="num">8</td>
+      <td><span class="top-badge" style="background:#EE552422;color:#EE5524;border:1px solid #EE552444">FOMO</span></td>
+      <td style="display:flex;gap:3px;align-items:center;padding:6px 12px"><span class="mini-bar" style="--bc:#EE5524;width:20px;background:#EE5524" title="FOMO: 2"></span><span class="mini-bar" style="--bc:#8b5cf6;width:20px;background:#8b5cf6" title="Cinematic: 2"></span><span class="mini-bar" style="--bc:#ef4444;width:10px;background:#ef4444" title="PvP/Raid: 1"></span><span class="mini-bar" style="--bc:#eab308;width:10px;background:#eab308" title="Nostalgia / IP: 1"></span><span class="mini-bar" style="--bc:#ec4899;width:10px;background:#ec4899" title="Waifu / KOL: 1"></span><span class="mini-bar" style="--bc:#22c55e;width:10px;background:#22c55e" title="Community: 1"></span></td>
+    </tr>
+    </tbody></table>
+  </div>
+</div>
+</section>
+
+<!-- ══════ TAB: L2M vs FIELD ══════ -->
+<section id="sec-l2m">
+<div class="wrap">
+  <div class="sec-head">
+    <h2>Lineage vs Field — L2M Ad Strategy</h2>
+    <p>So sánh motivation profile của Lineage franchise (L2M + LineageW + L2M VN) với trung bình thị trường.</p>
+  </div>
+
+  <div class="insight">
+    <strong>L2M positioning:</strong> Lineage franchise ưu tiên <strong style="color:#EE5524">FOMO</strong> + <strong style="color:#8b5cf6">Cinematic</strong> + <strong style="color:#22c55e">Community</strong> — khác với field leader Class&amp;Skill. Đây phù hợp với identity hardcore PvP/Siege của Lineage, nhưng có thể thiếu creative về class showcase so với MapleStory M (Class&amp;Skill 40%+).
+  </div>
+
+  <div class="compare-grid">
+    <div class="panel">
+      <div class="panel-title">🌐 Field Average (all 2,276 creatives)</div>
+      <div class="chart-wrap sm"><canvas id="chartFieldRadar"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">⚔️ Lineage Franchise Only</div>
+      <div class="chart-wrap sm"><canvas id="chartL2MRadar"></canvas></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Lineage Franchise — Bucket breakdown</div>
+<div class="brow" style="--c:#EE5524">
+  <div class="bname">FOMO</div>
+  <div class="bbar"><div class="bfill" style="width:31.2%"></div></div>
+  <div class="bpct"><span class="num">35</span> <span class="muted">(31.2%)</span></div>
+</div><div class="brow" style="--c:#22c55e">
+  <div class="bname">Community</div>
+  <div class="bbar"><div class="bfill" style="width:16.1%"></div></div>
+  <div class="bpct"><span class="num">18</span> <span class="muted">(16.1%)</span></div>
+</div><div class="brow" style="--c:#ef4444">
+  <div class="bname">PvP/Raid</div>
+  <div class="bbar"><div class="bfill" style="width:13.4%"></div></div>
+  <div class="bpct"><span class="num">15</span> <span class="muted">(13.4%)</span></div>
+</div><div class="brow" style="--c:#8b5cf6">
+  <div class="bname">Cinematic</div>
+  <div class="bbar"><div class="bfill" style="width:11.6%"></div></div>
+  <div class="bpct"><span class="num">13</span> <span class="muted">(11.6%)</span></div>
+</div><div class="brow" style="--c:#eab308">
+  <div class="bname">Nostalgia / IP</div>
+  <div class="bbar"><div class="bfill" style="width:8.9%"></div></div>
+  <div class="bpct"><span class="num">10</span> <span class="muted">(8.9%)</span></div>
+</div><div class="brow" style="--c:#f97316">
+  <div class="bname">Class & Skill</div>
+  <div class="bbar"><div class="bfill" style="width:7.1%"></div></div>
+  <div class="bpct"><span class="num">8</span> <span class="muted">(7.1%)</span></div>
+</div><div class="brow" style="--c:#64748b">
+  <div class="bname">Auto / Idle</div>
+  <div class="bbar"><div class="bfill" style="width:4.5%"></div></div>
+  <div class="bpct"><span class="num">5</span> <span class="muted">(4.5%)</span></div>
+</div><div class="brow" style="--c:#a855f7">
+  <div class="bname">Power Fantasy</div>
+  <div class="bbar"><div class="bfill" style="width:3.6%"></div></div>
+  <div class="bpct"><span class="num">4</span> <span class="muted">(3.6%)</span></div>
+</div><div class="brow" style="--c:#ec4899">
+  <div class="bname">Waifu / KOL</div>
+  <div class="bbar"><div class="bfill" style="width:2.7%"></div></div>
+  <div class="bpct"><span class="num">3</span> <span class="muted">(2.7%)</span></div>
+</div><div class="brow" style="--c:#3b82f6">
+  <div class="bname">Progression</div>
+  <div class="bbar"><div class="bfill" style="width:0.9%"></div></div>
+  <div class="bpct"><span class="num">1</span> <span class="muted">(0.9%)</span></div>
+</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Franchise Intelligence — Top franchises</div>
+<div class="fr-row">
+  <div class="fr-name">MU</div>
+  <div><span class="subgenre-tag dark">dark-fantasy</span></div>
+  <div class="fr-n">1,602 cr.</div>
+  <div class="fr-bars"><span class="fr-seg" style="background:#eab308;width:58px" title="Nostalgia / IP: 29 (29%)"></span><span class="fr-seg" style="background:#EE5524;width:40px" title="FOMO: 20 (20%)"></span><span class="fr-seg" style="background:#8b5cf6;width:28px" title="Cinematic: 14 (14%)"></span><span class="fr-seg" style="background:#3b82f6;width:26px" title="Progression: 13 (13%)"></span><span class="fr-seg" style="background:#ef4444;width:14px" title="PvP/Raid: 7 (7%)"></span><span class="fr-seg" style="background:#f97316;width:12px" title="Class & Skill: 6 (6%)"></span><span class="fr-seg" style="background:#a855f7;width:10px" title="Power Fantasy: 5 (5%)"></span><span class="fr-seg" style="background:#ec4899;width:8px" title="Waifu / KOL: 4 (4%)"></span><span class="fr-seg" style="background:#64748b;width:2px" title="Auto / Idle: 1 (1%)"></span><span class="fr-seg" style="background:#22c55e;width:2px" title="Community: 1 (1%)"></span></div>
+</div><div class="fr-row">
+  <div class="fr-name">MapleStory</div>
+  <div><span class="subgenre-tag anime">anime-casual</span></div>
+  <div class="fr-n">1,163 cr.</div>
+  <div class="fr-bars"><span class="fr-seg" style="background:#f97316;width:61px" title="Class & Skill: 34 (30%)"></span><span class="fr-seg" style="background:#3b82f6;width:39px" title="Progression: 22 (20%)"></span><span class="fr-seg" style="background:#EE5524;width:32px" title="FOMO: 18 (16%)"></span><span class="fr-seg" style="background:#eab308;width:16px" title="Nostalgia / IP: 9 (8%)"></span><span class="fr-seg" style="background:#22c55e;width:14px" title="Community: 8 (7%)"></span><span class="fr-seg" style="background:#ef4444;width:12px" title="PvP/Raid: 7 (6%)"></span><span class="fr-seg" style="background:#ec4899;width:9px" title="Waifu / KOL: 5 (4%)"></span><span class="fr-seg" style="background:#8b5cf6;width:7px" title="Cinematic: 4 (4%)"></span><span class="fr-seg" style="background:#a855f7;width:5px" title="Power Fantasy: 3 (3%)"></span><span class="fr-seg" style="background:#64748b;width:4px" title="Auto / Idle: 2 (2%)"></span></div>
+</div><div class="fr-row">
+  <div class="fr-name">Ragnarok</div>
+  <div><span class="subgenre-tag anime">anime-casual</span></div>
+  <div class="fr-n">979 cr.</div>
+  <div class="fr-bars"><span class="fr-seg" style="background:#eab308;width:61px" title="Nostalgia / IP: 34 (30%)"></span><span class="fr-seg" style="background:#EE5524;width:55px" title="FOMO: 31 (28%)"></span><span class="fr-seg" style="background:#64748b;width:41px" title="Auto / Idle: 23 (21%)"></span><span class="fr-seg" style="background:#22c55e;width:16px" title="Community: 9 (8%)"></span><span class="fr-seg" style="background:#f97316;width:11px" title="Class & Skill: 6 (5%)"></span><span class="fr-seg" style="background:#8b5cf6;width:7px" title="Cinematic: 4 (4%)"></span><span class="fr-seg" style="background:#ef4444;width:4px" title="PvP/Raid: 2 (2%)"></span><span class="fr-seg" style="background:#ec4899;width:4px" title="Waifu / KOL: 2 (2%)"></span><span class="fr-seg" style="background:#3b82f6;width:2px" title="Progression: 1 (1%)"></span></div>
+</div><div class="fr-row">
+  <div class="fr-name">Lineage</div>
+  <div><span class="subgenre-tag dark">dark-fantasy</span></div>
+  <div class="fr-n">513 cr.</div>
+  <div class="fr-bars"><span class="fr-seg" style="background:#EE5524;width:53px" title="FOMO: 25 (26%)"></span><span class="fr-seg" style="background:#22c55e;width:32px" title="Community: 15 (16%)"></span><span class="fr-seg" style="background:#8b5cf6;width:32px" title="Cinematic: 15 (16%)"></span><span class="fr-seg" style="background:#ef4444;width:27px" title="PvP/Raid: 13 (14%)"></span><span class="fr-seg" style="background:#f97316;width:17px" title="Class & Skill: 8 (8%)"></span><span class="fr-seg" style="background:#eab308;width:17px" title="Nostalgia / IP: 8 (8%)"></span><span class="fr-seg" style="background:#64748b;width:8px" title="Auto / Idle: 4 (4%)"></span><span class="fr-seg" style="background:#a855f7;width:8px" title="Power Fantasy: 4 (4%)"></span><span class="fr-seg" style="background:#ec4899;width:4px" title="Waifu / KOL: 2 (2%)"></span><span class="fr-seg" style="background:#3b82f6;width:2px" title="Progression: 1 (1%)"></span></div>
+</div><div class="fr-row">
+  <div class="fr-name">Yulgang</div>
+  <div><span class="subgenre-tag anime">anime-casual</span></div>
+  <div class="fr-n">257 cr.</div>
+  <div class="fr-bars"><span class="fr-seg" style="background:#eab308;width:100px" title="Nostalgia / IP: 1 (50%)"></span><span class="fr-seg" style="background:#EE5524;width:100px" title="FOMO: 1 (50%)"></span></div>
+</div><div class="fr-row">
+  <div class="fr-name">Dragon Nest</div>
+  <div><span class="subgenre-tag anime">anime-casual</span></div>
+  <div class="fr-n">231 cr.</div>
+  <div class="fr-bars"><span class="fr-seg" style="background:#f97316;width:133px" title="Class & Skill: 2 (67%)"></span><span class="fr-seg" style="background:#EE5524;width:67px" title="FOMO: 1 (33%)"></span></div>
+</div><div class="fr-row">
+  <div class="fr-name">Tree of Savior</div>
+  <div><span class="subgenre-tag anime">anime-casual</span></div>
+  <div class="fr-n">99 cr.</div>
+  <div class="fr-bars"><span class="fr-seg" style="background:#EE5524;width:96px" title="FOMO: 11 (48%)"></span><span class="fr-seg" style="background:#eab308;width:52px" title="Nostalgia / IP: 6 (26%)"></span><span class="fr-seg" style="background:#22c55e;width:43px" title="Community: 5 (22%)"></span><span class="fr-seg" style="background:#3b82f6;width:9px" title="Progression: 1 (4%)"></span></div>
+</div><div class="fr-row">
+  <div class="fr-name">Raven</div>
+  <div><span class="subgenre-tag dark">dark-fantasy</span></div>
+  <div class="fr-n">70 cr.</div>
+  <div class="fr-bars"><span class="fr-seg" style="background:#f97316;width:86px" title="Class & Skill: 3 (43%)"></span><span class="fr-seg" style="background:#a855f7;width:29px" title="Power Fantasy: 1 (14%)"></span><span class="fr-seg" style="background:#eab308;width:29px" title="Nostalgia / IP: 1 (14%)"></span><span class="fr-seg" style="background:#8b5cf6;width:29px" title="Cinematic: 1 (14%)"></span><span class="fr-seg" style="background:#ec4899;width:29px" title="Waifu / KOL: 1 (14%)"></span></div>
+</div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ TAB: MEDIA MIX ══════ -->
+<section id="sec-media">
+<div class="wrap">
+  <div class="sec-head">
+    <h2>Media Mix — Country · Network · Format</h2>
+    <p>Phân bố địa lý, kênh phân phối, và format creative trên toàn bộ dataset KR-MMO SEA.</p>
+  </div>
+
+  <div class="three-col">
+    <div class="panel">
+      <div class="panel-title">Country Distribution</div>
+<div class="cty-row">
+  <div class="cty-flag">🇸🇬</div>
+  <div class="cty-name">SG</div>
+  <div class="cty-bar"><div class="cty-fill" style="width:26%"></div></div>
+  <div class="cty-n">1,629</div>
+</div><div class="cty-row">
+  <div class="cty-flag">🇹🇭</div>
+  <div class="cty-name">TH</div>
+  <div class="cty-bar"><div class="cty-fill" style="width:21%"></div></div>
+  <div class="cty-n">1,282</div>
+</div><div class="cty-row">
+  <div class="cty-flag">🇮🇩</div>
+  <div class="cty-name">ID</div>
+  <div class="cty-bar"><div class="cty-fill" style="width:15%"></div></div>
+  <div class="cty-n">923</div>
+</div><div class="cty-row">
+  <div class="cty-flag">🇻🇳</div>
+  <div class="cty-name">VN</div>
+  <div class="cty-bar"><div class="cty-fill" style="width:15%"></div></div>
+  <div class="cty-n">908</div>
+</div><div class="cty-row">
+  <div class="cty-flag">🇲🇾</div>
+  <div class="cty-name">MY</div>
+  <div class="cty-bar"><div class="cty-fill" style="width:14%"></div></div>
+  <div class="cty-n">843</div>
+</div><div class="cty-row">
+  <div class="cty-flag">🇵🇭</div>
+  <div class="cty-name">PH</div>
+  <div class="cty-bar"><div class="cty-fill" style="width:9%"></div></div>
+  <div class="cty-n">575</div>
+</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Network Distribution</div>
+      <div class="chart-wrap sm"><canvas id="chartNet"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Creative Format</div>
+      <div class="chart-wrap sm"><canvas id="chartType"></canvas></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Monthly Volume — Timeline (2023–2026)</div>
+    <div class="chart-wrap"><canvas id="chartTimeline"></canvas></div>
+  </div>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+  <div class="inner">
+    <span class="fl">NCV Games · Competitor Ad Intelligence · KR-MMO × SEA · 2025Q1–2026Q2</span>
+    <span class="fl">2,276 creatives · 36 games · Sensor Tower · Updated 2026-06-25</span>
+  </div>
+</div>
+</footer>
+
+<script>
+const D = {"prim": {"1": 64, "2": 276, "3": 149, "4": 418, "5": 127, "6": 333, "7": 159, "8": 87, "9": 552, "10": 111}, "sec": {"1": 54, "2": 51, "3": 28, "4": 60, "5": 102, "6": 227, "7": 42, "8": 48, "9": 140, "10": 82}, "bucket_labels": ["Power Fantasy", "Progression", "PvP/Raid", "Class & Skill", "Cinematic", "Nostalgia / IP", "Community", "Auto / Idle", "FOMO", "Waifu / KOL"], "bucket_colors": ["#a855f7", "#3b82f6", "#ef4444", "#f97316", "#8b5cf6", "#eab308", "#22c55e", "#64748b", "#EE5524", "#ec4899"], "top_games": [{"game": "MapleStory M", "total": 195, "b": {"1": 4, "2": 32, "3": 10, "4": 79, "5": 0, "6": 14, "7": 23, "8": 8, "9": 20, "10": 5}, "top_b": 4}, {"game": "MapleStory M: Fantasy MMORPG", "total": 112, "b": {"1": 3, "2": 22, "3": 7, "4": 34, "5": 4, "6": 9, "7": 8, "8": 2, "9": 18, "10": 5}, "top_b": 4}, {"game": "MU: Dark Epoch", "total": 76, "b": {"1": 2, "2": 9, "3": 3, "4": 5, "5": 11, "6": 24, "7": 1, "8": 1, "9": 19, "10": 1}, "top_b": 6}, {"game": "Lineage2M", "total": 50, "b": {"1": 1, "2": 1, "3": 7, "4": 8, "5": 5, "6": 5, "7": 7, "8": 2, "9": 13, "10": 1}, "top_b": 9}, {"game": "Ragnarok Idle Adventure Plus", "total": 50, "b": {"1": 0, "2": 0, "3": 0, "4": 0, "5": 2, "6": 11, "7": 1, "8": 20, "9": 15, "10": 1}, "top_b": 8}, {"game": "Ragnarok V: Returns", "total": 48, "b": {"1": 1, "2": 0, "3": 0, "4": 8, "5": 1, "6": 20, "7": 3, "8": 2, "9": 10, "10": 3}, "top_b": 6}, {"game": "Lineage W", "total": 41, "b": {"1": 3, "2": 0, "3": 6, "4": 0, "5": 6, "6": 3, "7": 8, "8": 2, "9": 12, "10": 1}, "top_b": 9}, {"game": "Ragnarok V : Returns", "total": 25, "b": {"1": 0, "2": 0, "3": 0, "4": 1, "5": 2, "6": 9, "7": 2, "8": 0, "9": 11, "10": 0}, "top_b": 9}, {"game": "Tree of Savior: Neverland", "total": 23, "b": {"1": 0, "2": 1, "3": 0, "4": 0, "5": 0, "6": 6, "7": 5, "8": 0, "9": 11, "10": 0}, "top_b": 9}, {"game": "THE 라그나로크", "total": 20, "b": {"1": 0, "2": 0, "3": 0, "4": 5, "5": 0, "6": 9, "7": 3, "8": 0, "9": 2, "10": 1}, "top_b": 6}, {"game": "The Ragnarok", "total": 20, "b": {"1": 0, "2": 0, "3": 2, "4": 1, "5": 0, "6": 10, "7": 0, "8": 0, "9": 7, "10": 0}, "top_b": 6}, {"game": "MU Monarch", "total": 16, "b": {"1": 2, "2": 2, "3": 4, "4": 1, "5": 0, "6": 3, "7": 0, "8": 0, "9": 1, "10": 3}, "top_b": 3}, {"game": "MU Dark Epoch", "total": 15, "b": {"1": 2, "2": 0, "3": 2, "4": 3, "5": 1, "6": 3, "7": 0, "8": 0, "9": 4, "10": 0}, "top_b": 9}, {"game": "Ragnarok: Back to Glory", "total": 10, "b": {"1": 0, "2": 1, "3": 2, "4": 0, "5": 0, "6": 4, "7": 3, "8": 0, "9": 0, "10": 0}, "top_b": 6}, {"game": "Lineage2M VN", "total": 8, "b": {"1": 0, "2": 0, "3": 1, "4": 0, "5": 2, "6": 1, "7": 1, "8": 0, "9": 2, "10": 1}, "top_b": 9}], "cty": {"VN": 908, "TH": 1282, "ID": 923, "SG": 1629, "MY": 843, "PH": 575}, "net": {"Youtube": 1899, "Facebook": 849, "Admob": 694, "Applovin": 541, "InMobi": 441, "Instagram": 354, "Unity": 306, "Vungle": 269}, "types": {"image": 2266, "video": 2920, "playable": 10}, "timeline": [{"month": "2023-12", "n": 2}, {"month": "2024-06", "n": 4}, {"month": "2024-08", "n": 35}, {"month": "2024-09", "n": 21}, {"month": "2024-10", "n": 26}, {"month": "2024-11", "n": 57}, {"month": "2024-12", "n": 126}, {"month": "2025-01", "n": 245}, {"month": "2025-02", "n": 427}, {"month": "2025-03", "n": 597}, {"month": "2025-04", "n": 725}, {"month": "2025-05", "n": 605}, {"month": "2025-06", "n": 445}, {"month": "2025-07", "n": 215}, {"month": "2025-08", "n": 119}, {"month": "2025-09", "n": 181}, {"month": "2025-10", "n": 171}, {"month": "2025-11", "n": 244}, {"month": "2025-12", "n": 125}, {"month": "2026-01", "n": 287}, {"month": "2026-02", "n": 148}, {"month": "2026-03", "n": 108}, {"month": "2026-04", "n": 110}, {"month": "2026-05", "n": 62}, {"month": "2026-06", "n": 111}], "l2m": {"1": 4, "2": 1, "3": 13, "4": 8, "5": 15, "6": 8, "7": 15, "8": 4, "9": 25, "10": 2}};
+const B = D.bucket_labels; // ["Power Fantasy", ..., "Waifu/KOL"]
+const BC = D.bucket_colors;
+const PRIM = Array.from({length:10},(_,i)=>D.prim[String(i+1)]||0);
+const SEC = Array.from({length:10},(_,i)=>D.sec[String(i+1)]||0);
+
+// ── Tab switching ──
+function showTab(id) {
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── Chart defaults ──
+Chart.defaults.color = '#7d8fa0';
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.plugins.legend.labels.boxWidth = 12;
+Chart.defaults.plugins.legend.labels.padding = 16;
+
+// ── 1. Overview Donut ──
+new Chart(document.getElementById('chartOverviewDonut'), {
+  type:'doughnut',
+  data:{labels:B, datasets:[{data:PRIM, backgroundColor:BC, borderWidth:2, borderColor:'#0F1419', hoverOffset:8}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+    plugins:{legend:{position:'right',labels:{font:{size:11},color:'#9CA3AF'}},
+      tooltip:{callbacks:{label:ctx=>{const t=PRIM.reduce((a,b)=>a+b,0);return ` ${ctx.label}: ${ctx.parsed} (${(ctx.parsed/t*100).toFixed(1)}%)`}}}}}
+});
+
+// ── 2. Primary vs Secondary grouped bar ──
+new Chart(document.getElementById('chartPrimSec'), {
+  type:'bar',
+  data:{labels:B,datasets:[
+    {label:'Primary',data:PRIM,backgroundColor:BC.map(c=>c+'cc'),borderRadius:4},
+    {label:'Secondary',data:SEC,backgroundColor:BC.map(c=>c+'55'),borderRadius:4,borderColor:BC,borderWidth:1}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'}},
+    scales:{x:{ticks:{font:{size:10},maxRotation:45},grid:{color:'#242f3c'}},
+      y:{grid:{color:'#242f3c'},ticks:{font:{size:11}}}}}
+});
+
+// ── 3. Secondary bar (motivation tab) ──
+new Chart(document.getElementById('chartSecBar'), {
+  type:'bar',
+  data:{labels:B,datasets:[{label:'As Secondary',data:SEC,backgroundColor:BC.map(c=>c+'99'),borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'#242f3c'}},y:{grid:{color:'#242f3c'},ticks:{font:{size:11}}}}}
+});
+
+// ── 4. Game stacked bar ──
+const games = D.top_games.slice(0,12);
+const gLabels = games.map(g=>g.game.replace('MapleStory M: Fantasy MMORPG','MapleStory M:FMMO').replace('Ragnarok Idle Adventure Plus','RO Idle+').slice(0,22));
+const gDatasets = Array.from({length:10},(_,i)=>({
+  label:B[i], data:games.map(g=>g.b[String(i+1)]||0),
+  backgroundColor:BC[i]+'cc', borderRadius:2
+}));
+new Chart(document.getElementById('chartGameStack'), {
+  type:'bar',
+  data:{labels:gLabels, datasets:gDatasets},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:10}}},
+    scales:{x:{stacked:true,ticks:{font:{size:11}},grid:{color:'#242f3c'}},
+      y:{stacked:true,grid:{color:'#242f3c'},ticks:{font:{size:11}}}}}
+});
+
+// ── 5. Radar: Field vs L2M ──
+const L2M_RAW = Array.from({length:10},(_,i)=>D.l2m[String(i+1)]||0);
+const L2M_TOT = L2M_RAW.reduce((a,b)=>a+b,0)||1;
+const PRIM_TOT = PRIM.reduce((a,b)=>a+b,0)||1;
+const radarCfg = (data,color,label)=>({
+  type:'radar',
+  data:{labels:B.map(l=>l.split(' ')[0]),datasets:[{label,data,fill:true,
+    backgroundColor:color+'33',borderColor:color,pointBackgroundColor:color,pointRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},title:{display:true,text:label,color:'#e6edf3',font:{size:12,family:"'Sora',sans-serif"}}},
+    scales:{r:{ticks:{display:false},grid:{color:'#242f3c'},pointLabels:{font:{size:9},color:'#7d8fa0'}}}}
+});
+new Chart(document.getElementById('chartFieldRadar'), radarCfg(PRIM.map(v=>v/PRIM_TOT*100),'#EE5524','Field Average'));
+new Chart(document.getElementById('chartL2MRadar'), radarCfg(L2M_RAW.map(v=>v/L2M_TOT*100),'#60a5fa','Lineage Franchise'));
+
+// ── 6. Network bar ──
+const nets = D.net;
+new Chart(document.getElementById('chartNet'), {
+  type:'bar',
+  data:{labels:Object.keys(nets),datasets:[{label:'Creatives',data:Object.values(nets),
+    backgroundColor:'#EE5524aa',borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'#242f3c'}},y:{ticks:{font:{size:10}},grid:{color:'#242f3c'}}}}
+});
+
+// ── 7. Type pie ──
+new Chart(document.getElementById('chartType'), {
+  type:'pie',
+  data:{labels:Object.keys(D.types),datasets:[{data:Object.values(D.types),
+    backgroundColor:['#60a5fa','#EE5524','#22c55e'],borderColor:'#0F1419',borderWidth:2}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}
+});
+
+// ── 8. Timeline ──
+const tl = D.timeline;
+new Chart(document.getElementById('chartTimeline'), {
+  type:'line',
+  data:{labels:tl.map(t=>t.month),datasets:[{label:'Creatives/month',data:tl.map(t=>t.n),
+    fill:true,backgroundColor:'rgba(238,85,36,.12)',borderColor:'#EE5524',tension:.4,pointRadius:2}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{x:{grid:{color:'#242f3c'},ticks:{font:{size:10},maxTicksLimit:16}},
+      y:{grid:{color:'#242f3c'},ticks:{font:{size:11}}}}}
+});
+</script>
+</body>
+</html>

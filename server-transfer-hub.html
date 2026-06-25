@@ -183,8 +183,8 @@
     </div>
     <div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px;">
       <div class="hdr-stats">
-        <div class="hstat"><div class="n" id="total-events">1</div><div class="l">Đợt Transfer</div></div>
-        <div class="hstat"><div class="n" id="total-clans-moved">97</div><div class="l">Clan Di Chuyển</div></div>
+        <div class="hstat"><div class="n" id="total-events">2</div><div class="l">Đợt Transfer</div></div>
+        <div class="hstat"><div class="n" id="total-clans-moved">244</div><div class="l">Clan Di Chuyển</div></div>
       </div>
       <a href="index.html" class="back-link">← Report Hub</a>
     </div>
@@ -219,7 +219,7 @@
     </div>
     <div class="xevent-grid" id="xevent-grid"></div>
     <div class="note">
-      ⚠ Phân tích xuyên đợt sẽ có ý nghĩa hơn khi có từ 2 đợt trở lên. Dữ liệu hiện tại chỉ có 1 đợt (May 2026).
+      📈 Hiện có 2 đợt transfer (May & June 2026). Xu hướng nổi bật: Teon từ world hút mạnh nhất (đợt T5) chuyển thành nơi bị rút top clan nhiều nhất (đợt T6) — dòng whale clan dịch sang Bartz & Kain.
     </div>
   </section>
 
@@ -241,7 +241,7 @@ const EVENTS = [
     snapshot_before: "06/05/2026",
     snapshot_after:  "14/05/2026",
     report_file:  "2026-05-06_server-transfer-report.html",
-    latest:       true,
+    latest:       false,
 
     // Key stats
     total_clans_moved: 97,
@@ -265,6 +265,42 @@ const EVENTS = [
       "Teon là world hút mạnh nhất: +162.9% revenue, tiếp nhận phần lớn top clan từ Kain, Leona, Erica.",
       "42/200 top clan đã chuyển server; 13 clan mới lọt vào top 200 sau transfer.",
       "82 lượt di chuyển inter-world, 15 lượt intra-world (đổi server trong cùng world).",
+    ],
+  },
+
+  {
+    id:           "2026-06",
+    label:        "June 2026",
+    month:        "JUN",
+    year:         "2026",
+    transfer_date:"24/06/2026",
+    snapshot_before: "14/05/2026",
+    snapshot_after:  "24/06/2026",
+    report_file:  "2026-06-24_server-transfer-report.html",
+    latest:       true,
+
+    // Key stats
+    total_clans_moved: 147,
+    inter_world_moves: 121,
+    intra_world_moves: 26,
+    top200_moved:      75,
+    top200_new:        30,
+
+    // World all-time-rev delta (%) — driven by top-clan reassignment between worlds
+    worlds: [
+      { name: "Kain",  rev_pct: +333.87, clan_delta: +21 },
+      { name: "Bartz", rev_pct: +203.23, clan_delta: +34 },
+      { name: "Erica", rev_pct: +19.09,  clan_delta: +3  },
+      { name: "Aria",  rev_pct: +9.5,    clan_delta: -3  },
+      { name: "Leona", rev_pct: +4.62,   clan_delta: -7  },
+      { name: "Teon",  rev_pct: -88.37,  clan_delta: -48 },
+    ],
+
+    // Notable insights (free text)
+    insights: [
+      "Đảo chiều so với đợt tháng 5: Teon (world dẫn đầu trước đây) bị rút mạnh — 36/75 top clan rời đi (gồm VoltZ #1 ~120 tỷ, ELITE, DAZE, SENTINEL), kéo all-time rev giảm 88.4% và top100 clan từ 37 → 15.",
+      "Bartz và Kain hút top clan mạnh nhất — nhận 31 và 18 top clan (net flow +34 và +21), all-time rev tăng 203.2% và 333.9%.",
+      "147 clan di chuyển (121 inter-world, 26 intra-world); 75/200 top clan đổi server, 30 clan mới lọt top 200.",
     ],
   },
 
