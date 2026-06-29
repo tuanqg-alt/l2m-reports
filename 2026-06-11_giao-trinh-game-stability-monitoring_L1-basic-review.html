@@ -223,9 +223,45 @@ tr.metric-core td:first-child{box-shadow:inset 4px 0 0 var(--brand-accent)}
 .exercise.show .ex-a{display:block}
 .exercise.show .reveal-btn{background:var(--neutral-200);color:var(--neutral-700)}
 body.editing .exercise .ex-a{display:block}
+
+/* ===== UX POLISH (added 2026-06-29) — navigation, reading aids, print. Content text unchanged. ===== */
+html{scroll-behavior:smooth}
+#readingProgress{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;
+  background:linear-gradient(90deg,var(--brand-accent),var(--brand-accent-hover));transition:width .1s ease-out}
+.sidebar nav a.active{color:var(--brand-accent-hover);font-weight:700}
+.sidebar nav a.active::before{content:"";position:absolute;left:-11px;top:50%;transform:translateY(-50%);
+  width:3px;height:14px;background:var(--brand-accent);border-radius:2px}
+.sidebar nav a{position:relative}
+.toc-toggle{display:none}
+#backToTop{position:fixed;right:20px;bottom:20px;z-index:55;width:44px;height:44px;border-radius:50%;
+  border:none;cursor:pointer;background:var(--brand-accent);color:#fff;font-size:20px;line-height:1;
+  box-shadow:0 6px 18px rgba(238,85,36,.4);opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity .2s,transform .2s,visibility .2s}
+#backToTop.show{opacity:1;visibility:visible;transform:translateY(0)}
+#backToTop:hover{background:var(--brand-accent-hover)}
+@media (max-width:900px){
+  .sidebar .nav-title{display:none}
+  .toc-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;cursor:pointer;
+    font-family:var(--font-heading);font-weight:700;font-size:13px;color:var(--brand-dark);
+    background:var(--neutral-100);border:1px solid var(--neutral-200);border-radius:8px;padding:9px 13px}
+  .toc-toggle .chev{transition:transform .2s;color:var(--brand-accent);font-size:12px}
+  .sidebar.nav-open .toc-toggle .chev{transform:rotate(180deg)}
+  .sidebar nav{display:none;margin-top:10px}
+  .sidebar.nav-open nav{display:block}
+}
+@media print{
+  #readingProgress,#backToTop,.editbar,.sidebar,footer,.exset-tools,.reveal-btn{display:none!important}
+  .layout{display:block;max-width:100%}
+  main{max-width:100%;padding:0 0 8px}
+  .hero{padding:18px 0}
+  .modcard{break-inside:avoid;box-shadow:none;border:1px solid #ddd}
+  body{background:#fff}
+  a{color:inherit;text-decoration:none}
+}
 </style>
 </head>
 <body>
+<div id="readingProgress" aria-hidden="true"></div>
 
 <!-- ===== THANH CÔNG CỤ — KHÔNG sửa được ===== -->
 <div class="editbar">
@@ -254,6 +290,7 @@ body.editing .exercise .ex-a{display:block}
 <div class="layout">
   <aside class="sidebar">
     <p class="nav-title">Mục lục</p>
+    <button class="toc-toggle" type="button" id="tocToggle" aria-expanded="false"><span>📑 Mục lục</span><span class="chev">▾</span></button>
     <nav>
       <ul>
         <li><a href="#m-dinh-vi">📌 Định vị &amp; phạm vi bản Basic</a></li>
@@ -327,7 +364,6 @@ body.editing .exercise .ex-a{display:block}
 <li><b>Chủ đề:</b> Fantasy, Kiếm hiệp/Tiên hiệp, Lịch sử, Sci-fi, Anime… — quyết định tệp người chơi.</li>
 <li><b>Lối chơi:</b> PvE/PvP · Casual/Hardcore · một mình/theo bang · phiên ngắn/cày dài.</li>
 </ul>
-<blockquote class="cl-task"><p>📝 <b>Bài tập 0.1:</b> cho danh sách game thực tế → học viên phân loại theo thể loại / chủ đề / lối chơi. <i>(GV chuẩn bị danh sách trước.)</i></p></blockquote>
 
 <h3>0.3 Nhà sản xuất và Nhà phát hành — ai làm gì</h3>
 <ul>
@@ -350,7 +386,6 @@ body.editing .exercise .ex-a{display:block}
 <li><b>Doanh thu = số người chơi × tỷ lệ chịu chi × tiền mỗi người.</b> Yếu tố nào cũng "rò rỉ" khi game lỗi (server sập, văng app, lỗi thanh toán).</li>
 <li>Sự cố không phát hiện sớm = <b>mất tiền + mất người cùng lúc</b>. Giám sát = bắt sớm trước khi thành chuyện lớn.</li>
 </ul>
-<blockquote class="cl-task"><p>📝 <b>Bài tập 0.2:</b> đoán các thể loại game thành công nhất ở VN + mô hình doanh thu của chúng.</p></blockquote>
 
 
 </section>
@@ -767,4 +802,36 @@ body.editing .exercise .ex-a{display:block}
 </script>
 
 
+<button id="backToTop" type="button" title="Lên đầu trang" aria-label="Lên đầu trang">↑</button>
+<script>
+/* UX polish: scrollspy, reading progress, back-to-top, mobile TOC toggle */
+(function(){
+  var bar=document.getElementById('readingProgress');
+  var btt=document.getElementById('backToTop');
+  var sb=document.querySelector('.sidebar');
+  var tocBtn=document.getElementById('tocToggle');
+  var navLinks=[].slice.call(document.querySelectorAll('.sidebar nav a[href^="#"]'));
+  var sections=navLinks.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  function progress(){ if(!bar)return; var h=document.documentElement; var max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(window.scrollY/max*100):0).toFixed(2)+'%'; }
+  function spy(){ if(!sections.length)return; var cur=null;
+    sections.forEach(function(s){ if(s.getBoundingClientRect().top<=140) cur=s; });
+    navLinks.forEach(function(a){ a.classList.toggle('active', !!cur && a.getAttribute('href')==='#'+cur.id); }); }
+  function backTop(){ if(btt) btt.classList.toggle('show', window.scrollY>400); }
+  var ticking=false;
+  function onScroll(){ if(ticking)return; ticking=true;
+    requestAnimationFrame(function(){ progress(); spy(); backTop(); ticking=false; }); }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  if(btt) btt.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+  if(tocBtn && sb){
+    tocBtn.addEventListener('click',function(){ var open=sb.classList.toggle('nav-open');
+      tocBtn.setAttribute('aria-expanded', open?'true':'false'); });
+    sb.querySelectorAll('nav a').forEach(function(a){ a.addEventListener('click',function(){
+      if(window.matchMedia('(max-width:900px)').matches){ sb.classList.remove('nav-open');
+        tocBtn.setAttribute('aria-expanded','false'); } }); });
+  }
+  onScroll();
+})();
+</script>
 </body></html>
