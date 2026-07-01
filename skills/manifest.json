@@ -1,0 +1,14 @@
+[
+  {
+    "id": "layout-infographic",
+    "title": "Layout Banner — ChatGPT Prompt Builder",
+    "area": "01",
+    "area_label": "Layout Banner",
+    "icon": "🎨",
+    "description": "Biến brief event (docx/xlsx/text) thành MỘT prompt ChatGPT để tạo banner key-art hi-fi cho Lineage2M: tự phân loại Education/Sales, chọn mẫu layout, viết copy tiếng Anh chuẩn game-term, kèm bảng handoff VN cho designer. Có sẵn đường low-fi (PPTX zone-map) khi chưa có asset.",
+    "version": "7.0",
+    "updated": "2026-06-27",
+    "zip": "skills/layout-infographic.zip",
+    "size_kb": 29.9
+  }
+]
