@@ -80,6 +80,21 @@
                color:var(--n600);background:var(--n100);padding:2px 6px;border-radius:4px;font-family:var(--fb)}
     .copn{font-size:11px;color:var(--accent);font-weight:700;opacity:0;transition:opacity .15s}
     .card:hover .copn{opacity:1}
+    /* skill cards */
+    .scard{background:#fff;border:1px solid var(--n200);border-radius:12px;padding:15px 17px;
+            display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:all .18s}
+    .scard:hover{border-color:var(--accent);box-shadow:0 4px 18px rgba(238,85,36,.13);transform:translateY(-2px)}
+    .scard-top{display:flex;align-items:flex-start;gap:11px}
+    .scard-icon{font-size:18px;flex-shrink:0;width:38px;height:38px;display:flex;align-items:center;
+                 justify-content:center;background:var(--accent-soft);border-radius:9px}
+    .scard-title{font:700 13px/1.3 var(--fh);color:var(--n900)}
+    .scard-meta{font-size:10.5px;color:var(--n500);margin-top:3px;font-family:var(--fm)}
+    .scard-desc{font-size:12px;color:var(--n600);line-height:1.5}
+    .scard-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:2px}
+    .scard-size{font-size:11px;color:var(--n400);font-family:var(--fm)}
+    .dl{background:var(--accent);color:#fff;font:700 12px var(--fb);text-decoration:none;
+         padding:8px 15px;border-radius:8px;transition:background .15s;white-space:nowrap}
+    .dl:hover{background:var(--accent-h)}
     .empty{text-align:center;padding:60px 20px;color:var(--n500)}
     .empty .ei{font-size:44px;margin-bottom:10px}
     @media(max-width:768px){
@@ -99,7 +114,7 @@
   <div class="banner">
     <span class="chip">📊 <b id="vis-count">28</b> reports</span>
     <span class="chip">📌 <b>7</b> pinned</span>
-    <span class="chip">🔄 Updated: <b>2026-07-01 10:13 UTC</b></span>
+    <span class="chip">🔄 Updated: <b>2026-07-01 10:46 UTC</b></span>
   </div>
 </div></header>
 <div class="ctrl">
@@ -534,6 +549,7 @@ const REPORTS = [
     "pinned": false
   }
 ];
+const SKILLS = [];
 let activeArea = 'all', query = '';
 
 function renderTabs() {
@@ -543,6 +559,7 @@ function renderTabs() {
     {id:'all',   label:`📌 Master (${pinCount})`},
     {id:'other', label:`📁 Other (${otherCount})`},
   ];
+  if (SKILLS.length) tabs.push({id:'skills', label:`🧩 Skills (${SKILLS.length})`});
   document.getElementById('tabs').innerHTML = tabs
     .map(t => `<button class="tab${activeArea===t.id?' active':''}" data-id="${t.id}">${t.label}</button>`)
     .join('');
@@ -587,9 +604,10 @@ function sectionHTML(tag, title, cards) {
 }
 
 function renderMain() {
+  const main = document.getElementById('main');
+  if (activeArea === 'skills') { renderSkills(main); return; }
   const list = getFiltered();
   document.getElementById('vis-count').textContent = list.length;
-  const main = document.getElementById('main');
   if (!list.length) {
     main.innerHTML = `<div class="empty"><div class="ei">${activeArea==='all'?'📌':'🔍'}</div><p>${activeArea==='all'?'No pinned reports yet.':'No reports found.'}</p></div>`;
     return;
@@ -602,6 +620,31 @@ function renderMain() {
     return;
   }
   main.innerHTML = `<div class="grid">${list.map(cardHTML).join('')}</div>`;
+}
+
+function skillCardHTML(s) {
+  return `<div class="scard">
+    <div class="scard-top"><div class="scard-icon">${s.icon||'🧩'}</div>
+      <div><div class="scard-title">${s.title}</div>
+        <div class="scard-meta">Area ${s.area} · ${s.area_label} · v${s.version} · ${s.updated}</div></div></div>
+    <div class="scard-desc">${s.description||''}</div>
+    <div class="scard-foot"><span class="scard-size">${s.size_kb?s.size_kb+' KB':''}</span>
+      <a class="dl" href="${s.zip}" download>⬇ Tải skill</a></div>
+  </div>`;
+}
+
+function renderSkills(main) {
+  const q = query.toLowerCase();
+  const list = q ? SKILLS.filter(s => (s.title+' '+s.description+' '+s.area_label).toLowerCase().includes(q)) : SKILLS;
+  document.getElementById('vis-count').textContent = list.length;
+  if (!list.length) {
+    main.innerHTML = `<div class="empty"><div class="ei">🧩</div><p>No skills found.</p></div>`;
+    return;
+  }
+  main.innerHTML = `<section class="sec">
+    <div class="sec-hdr"><span class="sec-num">🧩 SKILLS</span>
+      <span class="sec-title">Tải về &amp; dùng lại</span><span class="sec-cnt">${list.length}</span></div>
+    <div class="grid">${list.map(skillCardHTML).join('')}</div></section>`;
 }
 
 function render() { renderTabs(); renderMain(); }
