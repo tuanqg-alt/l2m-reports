@@ -18,11 +18,11 @@
     "area": "03",
     "area_label": "Glossary & Termbase",
     "icon": "📖",
-    "description": "Tra cứu thuật ngữ chính thức Lineage2M — Hàn ↔ Việt, Anh, Thái, Indo (17.338 từ, có sẵn trong skill, không cần workspace). Cứ hỏi Claude 'từ X tiếng Việt là gì' là ra ngay.",
-    "description_en": "Official Lineage2M term lookup — Korean ↔ Vietnamese, English, Thai, Indonesian (17,338 terms built into the skill, no workspace needed). Just ask Claude what the Vietnamese/English for a term is and get the answer instantly.",
-    "version": "1.1",
+    "description": "Tra cứu thuật ngữ chính thức Lineage2M — Hàn ↔ Việt, Anh, Thái, Indo (44.225 từ, có sẵn trong skill, không cần workspace). Cứ hỏi Claude 'từ X tiếng Việt là gì' là ra ngay.",
+    "description_en": "Official Lineage2M term lookup — Korean ↔ Vietnamese, English, Thai, Indonesian (44,225 terms built into the skill, no workspace needed). Just ask Claude what the Vietnamese/English for a term is and get the answer instantly.",
+    "version": "1.2",
     "updated": "2026-07-02",
     "zip": "skills/localization-glossary.zip",
-    "size_kb": 2752.1
+    "size_kb": 2752.3
   }
 ]
