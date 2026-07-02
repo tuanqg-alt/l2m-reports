@@ -114,7 +114,7 @@
   <div class="banner">
     <span class="chip">📊 <b id="vis-count">28</b> reports</span>
     <span class="chip">📌 <b>7</b> pinned</span>
-    <span class="chip">🔄 Updated: <b>2026-07-02 03:20 UTC</b></span>
+    <span class="chip">🔄 Updated: <b>2026-07-02 03:30 UTC</b></span>
   </div>
 </div></header>
 <div class="ctrl">
@@ -557,9 +557,9 @@ function renderTabs() {
   const otherCount = REPORTS.filter(r => !r.pinned).length;
   const tabs = [
     {id:'all',   label:`📌 Master (${pinCount})`},
-    {id:'other', label:`📁 Other (${otherCount})`},
   ];
   if (SKILLS.length) tabs.push({id:'skills', label:`🧩 Skills (${SKILLS.length})`});
+  tabs.push({id:'other', label:`📁 Other (${otherCount})`});
   document.getElementById('tabs').innerHTML = tabs
     .map(t => `<button class="tab${activeArea===t.id?' active':''}" data-id="${t.id}">${t.label}</button>`)
     .join('');
