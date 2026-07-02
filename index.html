@@ -45,6 +45,14 @@
           cursor:pointer;transition:all .15s;white-space:nowrap}
     .tab:hover{border-color:var(--n300);color:var(--n800);background:var(--n50)}
     .tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    /* language switch */
+    .langsw{display:inline-flex;margin-left:auto;border:1px solid var(--n200);
+             border-radius:8px;overflow:hidden;flex-shrink:0}
+    .langbtn{padding:7px 12px;background:#fff;border:0;color:var(--n500);
+              font:700 12px var(--fm);cursor:pointer;transition:all .15s}
+    .langbtn+.langbtn{border-left:1px solid var(--n200)}
+    .langbtn:hover{background:var(--n50);color:var(--n800)}
+    .langbtn.active{background:var(--accent);color:#fff}
     /* main */
     .main{max-width:1200px;margin:0 auto;padding:28px 40px 70px}
     .sec{margin-bottom:34px}
@@ -100,6 +108,7 @@
     @media(max-width:768px){
       .wrap,.ctrl-in,.main{padding-left:20px;padding-right:20px}
       .hero h1{font-size:24px}
+      .langsw{margin-left:0}
     }
   </style>
 </head>
@@ -110,19 +119,23 @@
     <span class="ncv-brand-mark">NC<span class="v">V</span><span class="games">GAMES</span></span>
   </div>
   <h1>L2M Report Hub</h1>
-  <div class="sub">Trung tâm báo cáo nội bộ — Analytics &amp; Intelligence cho Lineage2M SEA. Chọn area ở thanh lọc hoặc gõ tìm kiếm để mở report.</div>
+  <div class="sub" id="hero-sub">Trung tâm báo cáo nội bộ — Analytics &amp; Intelligence cho Lineage2M SEA. Chọn khu vực ở thanh lọc hoặc gõ tìm kiếm để mở báo cáo.</div>
   <div class="banner">
-    <span class="chip">📊 <b id="vis-count">29</b> reports</span>
-    <span class="chip">📌 <b>7</b> pinned</span>
-    <span class="chip">🔄 Updated: <b>2026-07-02 09:24 UTC</b></span>
+    <span class="chip">📊 <b id="vis-count">29</b> <span id="chip-reports">báo cáo</span></span>
+    <span class="chip">📌 <b>7</b> <span id="chip-pinned">nổi bật</span></span>
+    <span class="chip">🔄 <span id="chip-updated">Cập nhật:</span> <b>2026-07-02 10:53 UTC</b></span>
   </div>
 </div></header>
 <div class="ctrl">
   <div class="ctrl-in">
     <div class="sw"><span class="si">🔍</span>
-      <input type="text" id="q" placeholder="Tìm report…" autocomplete="off">
+      <input type="text" id="q" placeholder="Tìm báo cáo…" autocomplete="off">
     </div>
     <div class="tabs" id="tabs"></div>
+    <div class="langsw" id="langsw">
+      <button class="langbtn" data-lang="vi">VN</button>
+      <button class="langbtn" data-lang="en">EN</button>
+    </div>
   </div>
 </div>
 <main class="main" id="main"></main>
@@ -571,7 +584,8 @@ const SKILLS = [
     "area": "01",
     "area_label": "Layout Banner",
     "icon": "🎨",
-    "description": "Biến brief event (docx/xlsx/text) thành MỘT prompt ChatGPT để tạo banner key-art hi-fi cho Lineage2M: tự phân loại Education/Sales, chọn mẫu layout, viết copy tiếng Anh chuẩn game-term, kèm bảng handoff VN cho designer. Có sẵn đường low-fi (PPTX zone-map) khi chưa có asset.",
+    "description": "Biến brief sự kiện (docx/xlsx) thành 1 prompt ChatGPT để vẽ banner Lineage2M — tự chọn mẫu, viết copy tiếng Anh, kèm bản Việt cho designer. Chưa có ảnh mẫu vẫn tạo được layout tạm (PPTX).",
+    "description_en": "Turns an event brief (docx/xlsx/text) into one ChatGPT prompt that generates Lineage2M banner art — auto-picks the template, writes the English copy, and includes a Vietnamese handoff for designers. No art yet? It can still build a quick placeholder layout (PPTX).",
     "version": "7.0",
     "updated": "2026-06-27",
     "zip": "skills/layout-infographic.zip",
@@ -583,25 +597,79 @@ const SKILLS = [
     "area": "03",
     "area_label": "Glossary & Termbase",
     "icon": "📖",
-    "description": "Bộ tra cứu thuật ngữ chính thức Lineage2M 4 ngôn ngữ (Hàn↔Việt · EN · Thái · Indo) — 17.338 term đóng kèm ngay trong skill: VN chuẩn hóa từ bản central, EN official từ NC Termbase, thêm TH/ID cho team regional. Hỏi Claude 'term X dịch là gì', 'tiếng Anh của Y là gì' hoặc dịch/kiểm tra content L2M là tra được, không cần workspace. Tra bằng script hoặc grep nên nhẹ và nhanh.",
+    "description": "Tra cứu thuật ngữ chính thức Lineage2M — Hàn ↔ Việt, Anh, Thái, Indo (17.338 từ, có sẵn trong skill, không cần workspace). Cứ hỏi Claude 'từ X tiếng Việt là gì' là ra ngay.",
+    "description_en": "Official Lineage2M term lookup — Korean ↔ Vietnamese, English, Thai, Indonesian (17,338 terms built into the skill, no workspace needed). Just ask Claude what the Vietnamese/English for a term is and get the answer instantly.",
     "version": "1.1",
     "updated": "2026-07-02",
     "zip": "skills/localization-glossary.zip",
     "size_kb": 688.6
   }
 ];
+const I18N = {
+  "vi": {
+    "heroSub": "Trung tâm báo cáo nội bộ — Analytics & Intelligence cho Lineage2M SEA. Chọn khu vực ở thanh lọc hoặc gõ tìm kiếm để mở báo cáo.",
+    "searchPh": "Tìm báo cáo…",
+    "tabMaster": "Nổi bật",
+    "tabSkills": "Kỹ năng",
+    "tabOther": "Khác",
+    "chipReports": "báo cáo",
+    "chipPinned": "nổi bật",
+    "chipUpdated": "Cập nhật:",
+    "secPinned": "Báo cáo nổi bật",
+    "secSkills": "Tải về & dùng lại",
+    "open": "Mở →",
+    "download": "⬇ Tải skill",
+    "area": "Khu vực",
+    "emptyPinned": "Chưa có báo cáo nổi bật.",
+    "emptyReports": "Không tìm thấy báo cáo.",
+    "emptySkills": "Không tìm thấy skill."
+  },
+  "en": {
+    "heroSub": "Internal report hub — Analytics & Intelligence for Lineage2M SEA. Pick an area from the filter bar or type to search for a report.",
+    "searchPh": "Search reports…",
+    "tabMaster": "Master",
+    "tabSkills": "Skills",
+    "tabOther": "Other",
+    "chipReports": "reports",
+    "chipPinned": "pinned",
+    "chipUpdated": "Updated:",
+    "secPinned": "Pinned Reports",
+    "secSkills": "Download & reuse",
+    "open": "Open →",
+    "download": "⬇ Download skill",
+    "area": "Area",
+    "emptyPinned": "No pinned reports yet.",
+    "emptyReports": "No reports found.",
+    "emptySkills": "No skills found."
+  }
+};
 let activeArea = 'all', query = '';
+let lang = 'vi';
+try { lang = localStorage.getItem('hubLang') || 'vi'; } catch (e) { lang = 'vi'; }
+if (!I18N[lang]) lang = 'vi';
+
+function t(key) { return (I18N[lang] && I18N[lang][key]) || I18N.vi[key] || key; }
+
+function applyStaticText() {
+  document.documentElement.lang = lang;
+  const q  = document.getElementById('q');            if (q)  q.placeholder = t('searchPh');
+  const hs = document.getElementById('hero-sub');     if (hs) hs.textContent = t('heroSub');
+  const cr = document.getElementById('chip-reports'); if (cr) cr.textContent = t('chipReports');
+  const cp = document.getElementById('chip-pinned');  if (cp) cp.textContent = t('chipPinned');
+  const cu = document.getElementById('chip-updated'); if (cu) cu.textContent = t('chipUpdated');
+  document.querySelectorAll('.langbtn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+}
 
 function renderTabs() {
   const pinCount   = REPORTS.filter(r => r.pinned).length;
   const otherCount = REPORTS.filter(r => !r.pinned).length;
   const tabs = [
-    {id:'all',   label:`📌 Master (${pinCount})`},
+    {id:'all', label:`📌 ${t('tabMaster')} (${pinCount})`},
   ];
-  if (SKILLS.length) tabs.push({id:'skills', label:`🧩 Skills (${SKILLS.length})`});
-  tabs.push({id:'other', label:`📁 Other (${otherCount})`});
+  if (SKILLS.length) tabs.push({id:'skills', label:`🧩 ${t('tabSkills')} (${SKILLS.length})`});
+  tabs.push({id:'other', label:`📁 ${t('tabOther')} (${otherCount})`});
   document.getElementById('tabs').innerHTML = tabs
-    .map(t => `<button class="tab${activeArea===t.id?' active':''}" data-id="${t.id}">${t.label}</button>`)
+    .map(tb => `<button class="tab${activeArea===tb.id?' active':''}" data-id="${tb.id}">${tb.label}</button>`)
     .join('');
   document.querySelectorAll('.tab').forEach(b =>
     b.addEventListener('click', () => { activeArea = b.dataset.id; render(); }));
@@ -624,7 +692,7 @@ function cardHTML(r) {
   return `<a class="card" href="${r.filename}" target="_blank" rel="noopener">
     <div class="ct"><div class="ctitle">${r.title}</div>
       <span class="bdg" style="background:${r.area_bg};color:${r.area_color}">${r.area_icon} ${r.area_num||r.area_label}</span></div>
-    <div class="cf"><span class="cdate">${sb}${r.date_display||'—'}</span><span class="copn">Open →</span></div>
+    <div class="cf"><span class="cdate">${sb}${r.date_display||'—'}</span><span class="copn">${t('open')}</span></div>
   </a>`;
 }
 
@@ -632,7 +700,7 @@ function pcardHTML(r) {
   return `<a class="pcard" href="${r.filename}" target="_blank" rel="noopener">
     <div class="pcard-icon">${r.area_icon}</div>
     <div><div class="pcard-title">${r.title}</div>
-      <div class="pcard-area">${r.area_num?'Area '+r.area_num+' · ':''}${r.area_label}${r.scope_label?' · '+scopeTag(r.scope_label):''}</div>
+      <div class="pcard-area">${r.area_num? t('area')+' '+r.area_num+' · ':''}${r.area_label}${r.scope_label?' · '+scopeTag(r.scope_label):''}</div>
     </div></a>`;
 }
 
@@ -649,13 +717,13 @@ function renderMain() {
   const list = getFiltered();
   document.getElementById('vis-count').textContent = list.length;
   if (!list.length) {
-    main.innerHTML = `<div class="empty"><div class="ei">${activeArea==='all'?'📌':'🔍'}</div><p>${activeArea==='all'?'No pinned reports yet.':'No reports found.'}</p></div>`;
+    main.innerHTML = `<div class="empty"><div class="ei">${activeArea==='all'?'📌':'🔍'}</div><p>${activeArea==='all'?t('emptyPinned'):t('emptyReports')}</p></div>`;
     return;
   }
   if (activeArea === 'all' && !query) {
     main.innerHTML = `<section class="sec">
       <div class="sec-hdr"><span class="sec-num">📌 MASTER</span>
-        <span class="sec-title">Pinned Reports</span><span class="sec-cnt">${list.length}</span></div>
+        <span class="sec-title">${t('secPinned')}</span><span class="sec-cnt">${list.length}</span></div>
       <div class="pins-row">${list.map(pcardHTML).join('')}</div></section>`;
     return;
   }
@@ -663,32 +731,40 @@ function renderMain() {
 }
 
 function skillCardHTML(s) {
+  const desc = (lang === 'en' && s.description_en) ? s.description_en : s.description;
   return `<div class="scard">
     <div class="scard-top"><div class="scard-icon">${s.icon||'🧩'}</div>
       <div><div class="scard-title">${s.title}</div>
-        <div class="scard-meta">Area ${s.area} · ${s.area_label} · v${s.version} · ${s.updated}</div></div></div>
-    <div class="scard-desc">${s.description||''}</div>
+        <div class="scard-meta">${t('area')} ${s.area} · ${s.area_label} · v${s.version} · ${s.updated}</div></div></div>
+    <div class="scard-desc">${desc||''}</div>
     <div class="scard-foot"><span class="scard-size">${s.size_kb?s.size_kb+' KB':''}</span>
-      <a class="dl" href="${s.zip}" download>⬇ Tải skill</a></div>
+      <a class="dl" href="${s.zip}" download>${t('download')}</a></div>
   </div>`;
 }
 
 function renderSkills(main) {
   const q = query.toLowerCase();
-  const list = q ? SKILLS.filter(s => (s.title+' '+s.description+' '+s.area_label).toLowerCase().includes(q)) : SKILLS;
+  const list = q ? SKILLS.filter(s => (s.title+' '+s.description+' '+(s.description_en||'')+' '+s.area_label).toLowerCase().includes(q)) : SKILLS;
   document.getElementById('vis-count').textContent = list.length;
   if (!list.length) {
-    main.innerHTML = `<div class="empty"><div class="ei">🧩</div><p>No skills found.</p></div>`;
+    main.innerHTML = `<div class="empty"><div class="ei">🧩</div><p>${t('emptySkills')}</p></div>`;
     return;
   }
   main.innerHTML = `<section class="sec">
     <div class="sec-hdr"><span class="sec-num">🧩 SKILLS</span>
-      <span class="sec-title">Tải về &amp; dùng lại</span><span class="sec-cnt">${list.length}</span></div>
+      <span class="sec-title">${t('secSkills')}</span><span class="sec-cnt">${list.length}</span></div>
     <div class="grid">${list.map(skillCardHTML).join('')}</div></section>`;
 }
 
 function render() { renderTabs(); renderMain(); }
+
+applyStaticText();
 document.getElementById('q').addEventListener('input', e => { query=e.target.value.trim(); render(); });
+document.querySelectorAll('.langbtn').forEach(b => b.addEventListener('click', () => {
+  lang = b.dataset.lang;
+  try { localStorage.setItem('hubLang', lang); } catch (e) {}
+  applyStaticText(); render();
+}));
 render();
 </script>
 </body>
