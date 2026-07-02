@@ -5,7 +5,8 @@
     "area": "01",
     "area_label": "Layout Banner",
     "icon": "🎨",
-    "description": "Biến brief event (docx/xlsx/text) thành MỘT prompt ChatGPT để tạo banner key-art hi-fi cho Lineage2M: tự phân loại Education/Sales, chọn mẫu layout, viết copy tiếng Anh chuẩn game-term, kèm bảng handoff VN cho designer. Có sẵn đường low-fi (PPTX zone-map) khi chưa có asset.",
+    "description": "Biến brief sự kiện (docx/xlsx) thành 1 prompt ChatGPT để vẽ banner Lineage2M — tự chọn mẫu, viết copy tiếng Anh, kèm bản Việt cho designer. Chưa có ảnh mẫu vẫn tạo được layout tạm (PPTX).",
+    "description_en": "Turns an event brief (docx/xlsx/text) into one ChatGPT prompt that generates Lineage2M banner art — auto-picks the template, writes the English copy, and includes a Vietnamese handoff for designers. No art yet? It can still build a quick placeholder layout (PPTX).",
     "version": "7.0",
     "updated": "2026-06-27",
     "zip": "skills/layout-infographic.zip",
@@ -17,10 +18,11 @@
     "area": "03",
     "area_label": "Glossary & Termbase",
     "icon": "📖",
-    "description": "Bộ tra cứu thuật ngữ chính thức Lineage2M 4 ngôn ngữ (Hàn↔Việt · EN · Thái · Indo) — 17.338 term đóng kèm ngay trong skill: VN chuẩn hóa từ bản central, EN official từ NC Termbase, thêm TH/ID cho team regional. Hỏi Claude 'term X dịch là gì', 'tiếng Anh của Y là gì' hoặc dịch/kiểm tra content L2M là tra được, không cần workspace. Tra bằng script hoặc grep nên nhẹ và nhanh.",
+    "description": "Tra cứu thuật ngữ chính thức Lineage2M — Hàn ↔ Việt, Anh, Thái, Indo (17.338 từ, có sẵn trong skill, không cần workspace). Cứ hỏi Claude 'từ X tiếng Việt là gì' là ra ngay.",
+    "description_en": "Official Lineage2M term lookup — Korean ↔ Vietnamese, English, Thai, Indonesian (17,338 terms built into the skill, no workspace needed). Just ask Claude what the Vietnamese/English for a term is and get the answer instantly.",
     "version": "1.1",
     "updated": "2026-07-02",
     "zip": "skills/localization-glossary.zip",
-    "size_kb": 687.3
+    "size_kb": 2752.1
   }
 ]
