@@ -114,7 +114,7 @@
   <div class="banner">
     <span class="chip">📊 <b id="vis-count">28</b> reports</span>
     <span class="chip">📌 <b>7</b> pinned</span>
-    <span class="chip">🔄 Updated: <b>2026-07-02 03:20 UTC</b></span>
+    <span class="chip">🔄 Updated: <b>2026-07-02 03:21 UTC</b></span>
   </div>
 </div></header>
 <div class="ctrl">
@@ -399,6 +399,21 @@ const REPORTS = [
     "pinned": false
   },
   {
+    "filename": "Lineage2M_Project_Brief_for_NextGen_290526.html",
+    "title": "Lineage2M Project Brief — NextGen",
+    "date": "",
+    "date_display": "",
+    "area_id": "other",
+    "area_num": "",
+    "area_label": "Other",
+    "area_color": "#9CA3AF",
+    "area_bg": "#1F2937",
+    "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
     "filename": "clan-narrative-dashboard.html",
     "title": "Clan Narrative Dashboard",
     "date": "",
@@ -504,21 +519,6 @@ const REPORTS = [
     "pinned": false
   },
   {
-    "filename": "Lineage2M_Project_Brief_for_NextGen_290526.html",
-    "title": "Lineage2M Project Brief — NextGen",
-    "date": "",
-    "date_display": "",
-    "area_id": "other",
-    "area_num": "",
-    "area_label": "Other",
-    "area_color": "#9CA3AF",
-    "area_bg": "#1F2937",
-    "area_icon": "📁",
-    "scope_id": "",
-    "scope_label": "",
-    "pinned": false
-  },
-  {
     "filename": "lw-dashboard.html",
     "title": "LineageW Dashboard",
     "date": "",
@@ -549,7 +549,32 @@ const REPORTS = [
     "pinned": false
   }
 ];
-const SKILLS = [];
+const SKILLS = [
+  {
+    "id": "layout-infographic",
+    "title": "Layout Banner — ChatGPT Prompt Builder",
+    "area": "01",
+    "area_label": "Layout Banner",
+    "icon": "🎨",
+    "description": "Biến brief event (docx/xlsx/text) thành MỘT prompt ChatGPT để tạo banner key-art hi-fi cho Lineage2M: tự phân loại Education/Sales, chọn mẫu layout, viết copy tiếng Anh chuẩn game-term, kèm bảng handoff VN cho designer. Có sẵn đường low-fi (PPTX zone-map) khi chưa có asset.",
+    "version": "7.0",
+    "updated": "2026-06-27",
+    "zip": "skills/layout-infographic.zip",
+    "size_kb": 29.9
+  },
+  {
+    "id": "localization-glossary",
+    "title": "L2M Glossary — Tra cứu thuật ngữ KR↔VN",
+    "area": "03",
+    "area_label": "Glossary & Termbase",
+    "icon": "📖",
+    "description": "Bộ tra cứu thuật ngữ chính thức Lineage2M (Hàn↔Việt) — 13.000+ cặp term đã chuẩn hóa 1 KR = 1 VN, đóng kèm ngay trong skill. Hỏi Claude 'term X dịch là gì' hoặc dịch/kiểm tra content L2M là tra được, không cần workspace. Tra bằng script hoặc grep nên nhẹ và nhanh.",
+    "version": "1.0",
+    "updated": "2026-07-02",
+    "zip": "skills/localization-glossary.zip",
+    "size_kb": 198.5
+  }
+];
 let activeArea = 'all', query = '';
 
 function renderTabs() {

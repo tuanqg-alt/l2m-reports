@@ -10,5 +10,17 @@
     "updated": "2026-06-27",
     "zip": "skills/layout-infographic.zip",
     "size_kb": 29.9
+  },
+  {
+    "id": "localization-glossary",
+    "title": "L2M Glossary — Tra cứu thuật ngữ KR↔VN",
+    "area": "03",
+    "area_label": "Glossary & Termbase",
+    "icon": "📖",
+    "description": "Bộ tra cứu thuật ngữ chính thức Lineage2M (Hàn↔Việt) — 13.000+ cặp term đã chuẩn hóa 1 KR = 1 VN, đóng kèm ngay trong skill. Hỏi Claude 'term X dịch là gì' hoặc dịch/kiểm tra content L2M là tra được, không cần workspace. Tra bằng script hoặc grep nên nhẹ và nhanh.",
+    "version": "1.0",
+    "updated": "2026-07-02",
+    "zip": "skills/localization-glossary.zip",
+    "size_kb": 198.5
   }
 ]
