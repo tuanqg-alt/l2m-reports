@@ -74,7 +74,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .bullet-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
 .bullet-list li{display:flex;gap:10px;color:var(--n700);font-size:14px;line-height:1.7;}
 .bullet-list li::before{content:'▸';color:var(--accent);flex-shrink:0;margin-top:2px;}
-.bullet-list li strong{color:var(--accent2);}
+.bullet-list li strong{color:var(--accent2);white-space:nowrap;flex-shrink:0;}
 .action-list{display:flex;flex-direction:column;gap:10px;}
 .action-item{display:flex;gap:14px;background:var(--n50);border:1px solid var(--border);border-radius:8px;padding:14px 18px;align-items:flex-start;}
 .action-num{background:var(--accent);color:#fff;font-weight:800;font-size:13px;min-width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--font-mono);}
@@ -149,19 +149,19 @@ body.lang-en .vn{display:none;}
     </div>
   </div>
   <nav class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('t01')">Tháng 01</button>
+    <button class="tab-btn" onclick="switchTab('t01')">Tháng 01</button>
     <button class="tab-btn" onclick="switchTab('t02')">Tháng 02</button>
     <button class="tab-btn" onclick="switchTab('t03')">Tháng 03</button>
     <button class="tab-btn" onclick="switchTab('t04')">Tháng 04</button>
     <button class="tab-btn" onclick="switchTab('t05')">Tháng 05</button>
-    <button class="tab-btn" onclick="switchTab('t06')">Tháng 06</button>
+    <button class="tab-btn active" onclick="switchTab('t06')">Tháng 06</button>
   </nav>
 </header>
 
 <main class="main">
 
   <!-- ═══════════════════════════════════════════════ THÁNG 01 ═══ -->
-  <div id="t01" class="tab-panel active">
+  <div id="t01" class="tab-panel">
     <div class="report-header">
       <h2><span class="vn">Báo Cáo Tháng 01/2026</span><span class="en">January 2026 Report</span></h2>
       <div class="period"><span class="vn">Phân tích cộng đồng và vận hành game · Tháng 01 năm 2026</span><span class="en">Community analysis &amp; game operations · January 2026</span></div>
@@ -1149,16 +1149,16 @@ body.lang-en .vn{display:none;}
       </div>
     </div>
   </div>
-  <!-- ═══════════════════════════════════════════════ THÁNG 06 ═══ -->
-  <div id="t06" class="tab-panel">
+  <!-- ═════════════════════════════════════════════════ THÁNG 06 ═══ -->
+  <div id="t06" class="tab-panel active">
     <div class="report-header">
       <h2><span class="vn">Báo Cáo Tháng 06/2026</span><span class="en">June 2026 Report</span></h2>
-      <div class="period"><span class="vn">Phân tích cộng đồng &amp; vận hành game · 18/06 – 26/06/2026</span><span class="en">Community analysis &amp; game operations · 18/06 – 26/06/2026</span></div>
+      <div class="period"><span class="vn">Phân tích cộng đồng &amp; vận hành game · 25/06 – 01/07/2026</span><span class="en">Community analysis &amp; game operations · 25/06 – 01/07/2026</span></div>
       <div style="margin-top:10px;padding:8px 14px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:6px;font-size:12.5px;color:#F59E0B;display:inline-flex;align-items:center;gap:8px;">
         <span>&#9888;&#65039;</span>
         <span>
-          <span class="vn"><strong>Lưu ý:</strong> Đây là <strong>Weekly Briefing</strong> — snapshot tuần 18–26/06/2026, <em>chưa phải</em> báo cáo tổng kết cả tháng 6. Dữ liệu phản ánh quan sát cộng đồng và vận hành trong giai đoạn này.</span>
-          <span class="en"><strong>Note:</strong> This is a <strong>Weekly Briefing</strong> — a snapshot covering June 18–26, 2026 only. <em>This is NOT a full June month report.</em> Data reflects community observations and operations for this specific period only.</span>
+          <span class="vn"><strong>Lưu ý:</strong> Đây là <strong>Weekly Briefing</strong> — snapshot <strong>tuần cuối cùng của tháng 6</strong> (25/06–01/07/2026), <em>không đại diện</em> cho báo cáo tổng kết cả tháng 6. Dữ liệu chỉ phản ánh quan sát cộng đồng và vận hành trong giai đoạn này.</span>
+          <span class="en"><strong>Note:</strong> This is a <strong>Weekly Briefing</strong> — a snapshot covering the <strong>final week of June</strong> (June 25 – July 1, 2026) only. <em>This does not represent</em> a full June month report. Data reflects community observations and operations for this specific period only.</span>
         </span>
       </div>
     </div>
@@ -1166,119 +1166,153 @@ body.lang-en .vn{display:none;}
     <div class="exec-summary">
       <h3><span class="vn">Tóm lược điều hành</span><span class="en">Executive Summary</span></h3>
       <p>
-        <span class="vn">Giai đoạn báo cáo từ 18/06 đến 26/06/2026 được định hình bởi mức độ tương tác cao với các cập nhật nội dung mới, nhưng đồng thời bị kéo ngược bởi sự thất vọng ngày càng tăng của người chơi về tính minh bạch trong vận hành. Bản cập nhật <strong>Song Kiếm (Dual Blades)</strong> nổi lên như một thành công đáng kể, tạo ra tâm lý tích cực và thảo luận sôi nổi về lối chơi trên tất cả các khu vực. Tuy nhiên, "khoảng trống lộ trình" dai dẳng liên quan đến <strong>sự kiện Đổi Lớp (Class Change)</strong> và <strong>Chuyển Server</strong> đang tạo ra ma sát, đặc biệt với người chơi VIP — những người yêu cầu lịch trình có thể dự đoán được. Về mặt chiến lược, bức tranh quyền lực đang thay đổi. Lực lượng <strong>Wuxia</strong> đã chính thức chia rẽ, dẫn đến sự phi tập trung hóa của liên minh <strong>Stormblood</strong>, trong khi liên minh <strong>Garuda</strong> đã củng cố sức mạnh trong cụm <strong>Kain</strong>. Hơn nữa, thông tin rò rỉ về <strong>hệ thống Union</strong> đã kích hoạt làn sóng chuẩn bị chủ động trong cộng đồng, báo hiệu nhu cầu mạnh mẽ của người chơi đối với hệ thống tiến trình dài hạn và nội dung World-vs-World trong tương lai.</span>
-        <span class="en">The reporting period of June 18 to June 26, 2026, was defined by high engagement with new content updates tempered by growing player frustration regarding operational transparency. The <strong>Dual Blades update</strong> emerged as a significant success, driving positive sentiment and active gameplay discussions across all major regions. However, a persistent "roadmap vacuum" regarding <strong>Class Change events</strong> and <strong>Server Transfers</strong> is creating friction, particularly among VIP players who demand more predictable schedules. Strategically, the power landscape is shifting. The <strong>Wuxia</strong> force has officially split, leading to a decentralization of the <strong>Stormblood</strong> alliance, while the <strong>Garuda</strong> alliance has consolidated its strength in the <strong>Kain</strong> cluster. Furthermore, a leaked <strong>Union system</strong> has triggered a wave of proactive community preparation, signaling strong player appetite for long-term progression systems and future World-vs-World content.</span>
+        <span class="vn">Giai đoạn báo cáo từ 25/06 đến 01/07/2026 ghi nhận mức độ tương tác cộng đồng ở mức vừa phải tại hầu hết các khu vực, trong đó Việt Nam (VN) tiếp tục dẫn đầu về khối lượng thảo luận. Việc ra mắt <strong>hệ thống Union Growth</strong> đã thành công trong việc chuyển hướng sự tập trung của người chơi từ phát triển cá nhân sang xây dựng liên minh dài hạn, làm tăng đáng kể hoạt động hàng ngày thông qua việc quyên góp bắt buộc cho clan và cày cuốc (farming) chiến lược. Trong khi các cập nhật gameplay như <strong>Agathion Update</strong>, <strong>HAVEN OF DUSK</strong> và <strong>KICK OFF FESTIVAL</strong> nhận được phản hồi tích cực, vẫn tồn tại ma sát ngày càng tăng liên quan đến tính minh bạch trong vận hành. Người chơi, đặc biệt là VIP, đang yêu cầu lịch trình xác nhận cho các đợt <strong>Chuyển Server</strong> và sự kiện <strong>Đổi Lớp</strong>. Hơn nữa, bối cảnh cạnh tranh trong nội dung <strong>World-vs-World (WvW)</strong> đang cho thấy khoảng cách cạnh tranh ngày càng lớn, khi <strong>cụm Kain</strong> hiện đang thống trị <strong>Đảo Cổ Đại</strong>, gây khó khăn cho việc tuyển quân của các liên minh đang gặp bất lợi.</span>
+        <span class="en">The reporting period of June 25 to July 1, 2026, was characterized by moderate community engagement across most regions, with Vietnam (VN) remaining the primary driver of discussion volume. The introduction of the <strong>Union Growth System</strong> has successfully shifted player focus from individual progression to long-term alliance development, significantly increasing daily activity through mandatory clan donations and strategic farming. While gameplay updates like the <strong>Agathion Update</strong>, <strong>HAVEN OF DUSK</strong>, and <strong>KICK OFF FESTIVAL</strong> were met with positive reception, there is rising friction regarding operational transparency. Players, particularly VIPs, are requesting confirmed schedules for <strong>Server Transfers</strong> and <strong>Class Change</strong> events. Furthermore, the competitive landscape in <strong>World-vs-World (WvW)</strong> content is showing a growing competitive gap, with the <strong>Kain cluster</strong> currently dominating <strong>Ancient Island</strong>, leading to recruitment difficulties for struggling alliances.</span>
       </p>
     </div>
 
     <!-- Section 1 -->
     <div class="section">
-      <div class="section-title"><span class="num">1</span> <span class="vn">Tương Tác Cộng Đồng và Tâm Lý Theo Khu Vực</span><span class="en">Community Engagement and Regional Sentiment</span></div>
-      <p class="body-text"><span class="vn">Mức độ tương tác thay đổi theo khu vực, với Việt Nam (VN) và Thái Lan (TH) tiếp tục là các trung tâm thảo luận sôi nổi nhất. Trong khi tâm lý nhìn chung tích cực về cơ chế gameplay, tổng thể vẫn ở mức hỗn hợp do lo ngại về tiến trình và truyền thông.</span><span class="en">Engagement levels varied by region, with Vietnam (VN) and Thailand (TH) remaining the most active hubs of discussion. While sentiment is generally positive regarding gameplay mechanics, it remains mixed overall due to concerns over progression and communication.</span></p>
-      <div class="subsection-title"><span class="vn">1.1. Tổng quan tâm lý theo khu vực</span><span class="en">1.1. Regional Sentiment Overview</span></div>
+      <div class="section-title"><span class="num">1</span> <span class="vn">Tương Tác và Tâm Lý Cộng Đồng Theo Khu Vực</span><span class="en">Regional Community Engagement &amp; Sentiment</span></div>
+      <p class="body-text"><span class="vn">Mức độ hoạt động của cộng đồng có sự khác biệt đáng kể theo từng khu vực, dao động từ mức thảo luận tự nhiên cao tại Việt Nam đến mức tham gia tối thiểu tại SGMY.</span><span class="en">Community activity levels varied significantly by region, ranging from high organic discussion in Vietnam to minimal participation in SGMY.</span></p>
       <table class="market-table">
         <thead>
           <tr>
             <th><span class="vn">Khu vực</span><span class="en">Region</span></th>
             <th><span class="vn">Mức độ tương tác</span><span class="en">Engagement Level</span></th>
-            <th><span class="vn">Yếu tố thúc đẩy chính</span><span class="en">Primary Drivers</span></th>
-            <th><span class="vn">Tâm lý chủ đạo</span><span class="en">Key Sentiment</span></th>
+            <th><span class="vn">Yếu tố thảo luận chính</span><span class="en">Key Discussion Drivers</span></th>
+            <th><span class="vn">Xu hướng tâm lý</span><span class="en">Sentiment Trend</span></th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Việt Nam (VN)</strong></td>
             <td><span class="market-tag tag-positive"><span class="vn">Cao</span><span class="en">High</span></span></td>
-            <td><span class="vn">Song Kiếm, Mã Quà Sinh Nhật, Chuyển Server</span><span class="en">Dual Blades, Anniversary Gift Codes, Server Transfers</span></td>
-            <td><span class="vn">Hỗn hợp; quan tâm gameplay mạnh vs. lo ngại về tiến trình.</span><span class="en">Mixed; strong gameplay interest vs. progression concerns.</span></td>
+            <td><span class="vn">Union Growth, World Boss, Haven of Dusk, Xác minh tài khoản.</span><span class="en">Union Growth, World Boss, Haven of Dusk, Account Verification.</span></td>
+            <td><span class="vn">Hỗn hợp; tương tác cao nhưng vẫn còn lo ngại về quy trình.</span><span class="en">Mixed; high engagement tempered by procedural concerns.</span></td>
           </tr>
           <tr>
             <td><strong>Thái Lan (TH)</strong></td>
-            <td><span class="market-tag tag-positive"><span class="vn">Cao</span><span class="en">High</span></span></td>
-            <td><span class="vn">Song Kiếm, Hoạt động Kỷ niệm 1 năm</span><span class="en">Dual Blades, 1st Anniversary Activities</span></td>
-            <td><span class="vn">Tích cực; tham gia tích cực vào các sự kiện phần thưởng.</span><span class="en">Positive; active participation in reward events.</span></td>
+            <td><span class="market-tag tag-mixed"><span class="vn">Trung bình</span><span class="en">Moderate</span></span></td>
+            <td><span class="vn">Agathion Update, Kick Off Festival, Nhịp độ nội dung.</span><span class="en">Agathion Update, Kick Off Festival, Content Pacing.</span></td>
+            <td><span class="vn">Tích cực về nội dung; tiêu cực về tốc độ ra mắt.</span><span class="en">Positive toward content; negative regarding release speed.</span></td>
           </tr>
           <tr>
             <td><strong>Indonesia (ID)</strong></td>
-            <td><span class="market-tag tag-mixed"><span class="vn">Trung bình</span><span class="en">Moderate</span></span></td>
-            <td><span class="vn">Hướng dẫn gameplay, Thời điểm Chuyển Server</span><span class="en">Gameplay guides, Server Transfer timing</span></td>
-            <td><span class="vn">Hỗn hợp; quan tâm chiến thuật nhưng muốn thêm nội dung PvP.</span><span class="en">Mixed; interest in strategy but requesting more PvP content.</span></td>
-          </tr>
-          <tr>
-            <td><strong>SGMY</strong></td>
-            <td><span class="market-tag tag-mixed"><span class="vn">Thấp / Trung bình</span><span class="en">Low / Moderate</span></span></td>
-            <td><span class="vn">Hiệu năng lớp, Yêu cầu Đổi Lớp</span><span class="en">Class performance, Class Change requests</span></td>
-            <td><span class="vn">Trung tính; nhu cầu thiết thực về tiến trình.</span><span class="en">Neutral; driven by utility and progression needs.</span></td>
+            <td><span class="market-tag tag-mixed"><span class="vn">Ổn định / Thấp</span><span class="en">Stable/Low</span></span></td>
+            <td><span class="vn">Hướng dẫn gameplay, PvP, Tuyển quân Guild.</span><span class="en">Gameplay guides, PvP, Guild Recruitment.</span></td>
+            <td><span class="vn">Nhìn chung ổn định; mong muốn có thêm nội dung PvP.</span><span class="en">Generally stable; requests for more PvP content.</span></td>
           </tr>
           <tr>
             <td><strong>Philippines (PH)</strong></td>
-            <td><span class="market-tag tag-negative"><span class="vn">Thấp</span><span class="en">Low</span></span></td>
-            <td><span class="vn">Phần thưởng Sinh Nhật, Cân bằng PvP</span><span class="en">Anniversary rewards, PvP balance</span></td>
-            <td><span class="vn">Trung tính/Thấp; hoạt động chủ yếu xoay quanh phần thưởng.</span><span class="en">Neutral/Low; activity is mostly reward-centric.</span></td>
+            <td><span class="market-tag tag-positive"><span class="vn">Đang cải thiện</span><span class="en">Improving</span></span></td>
+            <td><span class="vn">Phần thưởng Offline Mode, Yêu cầu Server Boost.</span><span class="en">Offline Mode rewards, Server Boost requests.</span></td>
+            <td><span class="vn">Tích cực; nhờ tỷ lệ rơi đồ cải thiện trong Offline Mode.</span><span class="en">Positive; driven by improved drop rates in Offline Mode.</span></td>
+          </tr>
+          <tr>
+            <td><strong>SGMY</strong></td>
+            <td><span class="market-tag tag-negative"><span class="vn">Tối thiểu</span><span class="en">Minimal</span></span></td>
+            <td><span class="vn">Mốc thời gian ra mắt nội dung.</span><span class="en">Content availability timelines.</span></td>
+            <td><span class="vn">Trung tính/Không hoạt động; vẫn còn thắc mắc về một số vật phẩm cụ thể.</span><span class="en">Neutral/Inactive; lingering inquiries on specific items.</span></td>
           </tr>
         </tbody>
       </table>
-      <div class="subsection-title"><span class="vn">1.2. Yếu tố tương tác chính</span><span class="en">1.2. Major Engagement Drivers</span></div>
+      <div class="subsection-title"><span class="vn">1.1. Yếu Tố Tích Cực</span><span class="en">1.1. Positive Drivers</span></div>
       <ul class="bullet-list">
-        <li><span class="vn"><strong>Bản cập nhật Song Kiếm:</strong> Đây là yếu tố tạo phản hồi tích cực mạnh nhất. Người chơi ở tất cả thị trường khen ngợi hiệu năng PvE được cải thiện, khả năng sinh tồn, cơ động và tiềm năng PvP quy mô lớn của lớp nhân vật.</span><span class="en"><strong>Dual Blades Update:</strong> This was the strongest driver of positive feedback. Players across all markets praised the class's improved PvE performance, survivability, mobility, and potential for large-scale PvP.</span></li>
-        <li><span class="vn"><strong>Hoạt động Kỷ niệm 1 năm:</strong> Đổi mã quà và thảo luận phần thưởng duy trì mức quan tâm cơ bản, đặc biệt ở thị trường PH và VN.</span><span class="en"><strong>1st Anniversary Activities:</strong> Gift code redemptions and reward discussions maintained baseline interest, particularly in the PH and VN markets.</span></li>
-        <li><span class="vn"><strong>Chiến thuật Gameplay:</strong> Người chơi tập trung nhiều vào tối ưu lớp nhân vật, chia sẻ mẹo PvP, tổ hợp kỹ năng và chiến thuật định vị.</span><span class="en"><strong>Gameplay Strategy:</strong> Players are heavily focused on class optimization, sharing PvP tips, skill combinations, and positioning strategies.</span></li>
+        <li><strong><span class="vn">Gameplay và Tiến Trình:</span><span class="en">Gameplay and Progression:</span></strong> <span class="vn">Các cập nhật cho hệ thống Agathion và phần thưởng Offline Mode (đặc biệt tại PH) đã khuyến khích cộng đồng chia sẻ và tương tác nhiều hơn.</span><span class="en">Updates to the Agathion system and Offline Mode rewards (specifically in PH) have encouraged community sharing and interaction.</span></li>
+        <li><strong><span class="vn">Tham Gia Sự Kiện:</span><span class="en">Event Participation:</span></strong> <span class="vn">HAVEN OF DUSK và KICK OFF FESTIVAL đã duy trì sự quan tâm đối với các thảo luận về PvP và chiến thuật.</span><span class="en">The HAVEN OF DUSK and KICK OFF FESTIVAL have sustained interest in PvP and strategy-related discussions.</span></li>
+        <li><strong><span class="vn">Cố Vấn Cộng Đồng:</span><span class="en">Community Mentorship:</span></strong> <span class="vn">Tại VN, người chơi kỳ cựu và VIP đang tích cực hỗ trợ cộng đồng rộng hơn về các câu hỏi gameplay và mốc thời gian nhận thưởng.</span><span class="en">In VN, experienced players and VIPs are actively assisting the broader community with gameplay questions and reward timelines.</span></li>
+      </ul>
+      <div class="subsection-title"><span class="vn">1.2. Yếu Tố Tiêu Cực và Rủi Ro</span><span class="en">1.2. Negative Drivers and Risks</span></div>
+      <ul class="bullet-list">
+        <li><strong><span class="vn">Truyền Thông Vận Hành:</span><span class="en">Operational Communication:</span></strong> <span class="vn">Nhu cầu về lộ trình vận hành rõ ràng hơn đang gia tăng, đặc biệt liên quan đến xác minh tài khoản tại VN và lịch trình sự kiện tại TH.</span><span class="en">There is a growing demand for clearer operational roadmaps, specifically regarding account verification in VN and event schedules in TH.</span></li>
+        <li><strong><span class="vn">Nhịp Độ Nội Dung:</span><span class="en">Content Pacing:</span></strong> <span class="vn">Một số người chơi Thái Lan bày tỏ lo ngại rằng nội dung mới được ra mắt trước khi họ kịp hoàn thành các mục tiêu tiến trình trước đó.</span><span class="en">A few Thai players have expressed concerns that new content is being released before they can complete previous progression objectives.</span></li>
+        <li><strong><span class="vn">Phân Phối Phần Thưởng:</span><span class="en">Reward Distribution:</span></strong> <span class="vn">Các khiếu nại lặp lại về việc chậm trễ phân phối phần thưởng và lịch trình không rõ ràng cho các sự kiện giá trị cao (Chuyển Server/Đổi Lớp) đang tạo rủi ro cho niềm tin dài hạn của người chơi.</span><span class="en">Recurring complaints regarding delayed reward distribution and unclear schedules for high-value events (Server Transfer/Class Change) pose a risk to long-term player confidence.</span></li>
       </ul>
     </div>
 
     <!-- Section 2 -->
     <div class="section">
-      <div class="section-title"><span class="num">2</span> <span class="vn">Các Điểm Đau Chính của Cộng Đồng và VIP</span><span class="en">Key Community and VIP Pain Points</span></div>
-      <p class="body-text"><span class="vn">Bất chấp thành công của bản cập nhật Song Kiếm, một số vấn đề lặp đi lặp lại đang ảnh hưởng đến niềm tin dài hạn của người chơi. Các vấn đề này nổi bật nhất trong các kênh phản hồi VIP.</span><span class="en">Despite the success of the Dual Blades update, several recurring issues are impacting long-term player confidence. These issues are most prominent in VIP feedback channels.</span></p>
-      <div class="subsection-title"><span class="vn">2.1. Thiếu minh bạch về lộ trình</span><span class="en">2.1. Lack of Roadmap Clarity</span></div>
-      <p class="body-text"><span class="vn">Có nhu cầu phổ quát về truyền thông rõ ràng hơn liên quan đến nội dung tương lai.</span><span class="en">There is a universal demand for clearer communication regarding future content.</span></p>
+      <div class="section-title"><span class="num">2</span> <span class="vn">Phân Tích Chuyên Sâu: Hệ Thống và Cập Nhật Sản Phẩm Chính</span><span class="en">Deep Dive: Key Systems and Product Updates</span></div>
+      <div class="subsection-title"><span class="vn">2.1. Hệ Thống Union Growth</span><span class="en">2.1. Union Growth System</span></div>
+      <p class="body-text"><span class="vn">Hệ thống Union Growth đã trở thành trụ cột trung tâm của hoạt động cộng đồng tuần này. Hệ thống này đã thay đổi căn bản động lực của nhóm người chơi hàng đầu:</span><span class="en">The Union Growth System has emerged as the central pillar of community activity this week. It has fundamentally altered the motivation of top-tier players:</span></p>
       <ul class="bullet-list">
-        <li><span class="vn"><strong>Sự kiện Đổi Lớp:</strong> Người chơi SGMY, VN và TH liên tục hỏi về lịch "Đổi Lớp Toàn bộ" tiếp theo. Người chơi TH đề xuất tổ chức định kỳ hàng tháng hoặc tạo cơ hội miễn phí thường xuyên.</span><span class="en"><strong>Class Change Events:</strong> SGMY, VN, and TH players are repeatedly asking for the next "All Class Change" schedule. TH players have suggested making these events a monthly or recurring free opportunity.</span></li>
-        <li><span class="vn"><strong>Nhịp độ Chuyển Server:</strong> VIP tại ID cho rằng các đợt chuyển server gần đây diễn ra quá nhanh và thiếu nội dung War/PvP kèm theo, dẫn đến nhàm chán. Có yêu cầu mạnh về lịch cố định (mỗi 30 hoặc 45 ngày).</span><span class="en"><strong>Server Transfer Cadence:</strong> ID VIPs expressed that recent transfers occurred too rapidly and lacked sufficient accompanying War/PvP content, leading to boredom. There is a strong request for a fixed schedule (e.g., every 30 or 45 days).</span></li>
+        <li><strong><span class="vn">Yêu Cầu Của Clan:</span><span class="en">Clan Requirements:</span></strong> <span class="vn">Hầu hết các liên minh hàng đầu hiện yêu cầu mức đóng góp tối thiểu hàng ngày là 10 triệu Adena, một số thành viên chọn đóng góp bằng Diamond để đẩy nhanh tiến độ.</span><span class="en">Most top alliances now mandate a minimum daily contribution of 10 million Adena, with some members opting for Diamond contributions to accelerate progress.</span></li>
+        <li><strong><span class="vn">Tăng Vọt Hoạt Động:</span><span class="en">Activity Spike:</span></strong> <span class="vn">Để đạt mục tiêu quyên góp này, người chơi đã tăng cường hoạt động farming hàng ngày.</span><span class="en">To meet these donation targets, players have increased their daily farming activity.</span></li>
+        <li><strong><span class="vn">Triển Vọng Chiến Lược:</span><span class="en">Strategic Outlook:</span></strong> <span class="vn">Cộng đồng xem hệ thống Union là nền tảng cho nội dung quy mô lớn cấp World được kỳ vọng trong tương lai.</span><span class="en">The community views the Union system as a foundational element for anticipated large-scale World-level content.</span></li>
       </ul>
-      <div class="subsection-title"><span class="vn">2.2. Các vấn đề trải nghiệm trong game</span><span class="en">2.2. In-Game Experience Issues</span></div>
+      <div class="subsection-title"><span class="vn">2.2. Agathion và Hầm Ngục</span><span class="en">2.2. Agathions and Dungeons</span></div>
       <ul class="bullet-list">
-        <li><span class="vn"><strong>Mất cân bằng PvP:</strong> Người chơi PH báo cáo lo ngại về cân bằng PvP và sự khó khăn của người chơi free-to-play khi duy trì tính cạnh tranh.</span><span class="en"><strong>PvP Imbalance:</strong> PH players reported concerns regarding PvP balance and the difficulty for free-to-play users to remain competitive.</span></li>
-        <li><span class="vn"><strong>Tính "Có ý nghĩa" của Nội dung:</strong> Tại ID, việc chuyển server được xem là ít tác động hơn khi không gắn với các cột mốc cạnh tranh như Công Thành Chiến hay sự kiện PvP quan trọng.</span><span class="en"><strong>Content "Meaningfulness":</strong> In ID, transfers are viewed as less impactful when they are not aligned with competitive milestones like Castle Siege or significant PvP events.</span></li>
+        <li><strong><span class="vn">Agathion Update:</span><span class="en">Agathion Update:</span></strong> <span class="vn">Được đón nhận tích cực như một cơ hội tăng sức mạnh có ý nghĩa. Tuy nhiên, nhóm chi tiêu cao đã tích trữ sẵn thẻ triệu hồi nên hoàn thành bộ sưu tập mới chỉ trong 48 giờ, khiến sự hào hứng của nhóm này giảm nhanh chóng.</span><span class="en">Received positively as a meaningful power progression opportunity. However, top spenders who stockpiled summon cards completed new collections within 48 hours, leading to a rapid decline in excitement for that specific segment.</span></li>
+        <li><strong><span class="vn">Haven of Dusk:</span><span class="en">Haven of Dusk:</span></strong> <span class="vn">Hầm ngục mới được đánh giá cao nhờ boss cuối có độ khó thử thách. Người chơi đang tích cực trao đổi chiến thuật và mẹo chơi.</span><span class="en">The new dungeon is well-regarded for its challenging final boss. Strategies and gameplay tips are being actively traded among players.</span></li>
+        <li><strong><span class="vn">Sự Kiện Catacomb x2:</span><span class="en">Catacomb x2 Event:</span></strong> <span class="vn">Đây đã trở thành điểm nhấn của hoạt động cuối tuần, thúc đẩy thành công sự tham gia đầy đủ của clan.</span><span class="en">This has become a highlight of weekend activity, successfully driving full clan participation.</span></li>
       </ul>
+      <div class="subsection-title"><span class="vn">2.3. Offline Mode (Philippines)</span><span class="en">2.3. Offline Mode (Philippines)</span></div>
+      <p class="body-text"><span class="vn">Khu vực PH ghi nhận tâm lý tích cực tăng đáng kể sau khi phần thưởng Offline Mode được cải thiện. Người chơi đang tích cực chia sẻ ảnh chụp màn hình các vật phẩm rơi giá trị, tạo ra một khoảnh khắc động lực tích cực hiếm có cho cộng đồng này.</span><span class="en">The PH region saw a notable boost in sentiment following improvements to Offline Mode rewards. Players are actively sharing screenshots of valuable drops, which has generated a rare moment of positive momentum for this community.</span></p>
     </div>
 
     <!-- Section 3 -->
     <div class="section">
-      <div class="section-title"><span class="num">3</span> <span class="vn">Báo Cáo Sản Phẩm: Động Lực Liên Minh và Trạng Thái Thế Giới</span><span class="en">Product Report: Alliance Dynamics and World Status</span></div>
-      <p class="body-text"><span class="vn">Bức tranh chiến lược đang trải qua giai đoạn tái cân bằng đáng kể sau các đợt Chuyển Server gần đây nhất.</span><span class="en">The strategic landscape is undergoing a period of significant realignment following the latest Server Transfers.</span></p>
-      <div class="subsection-title"><span class="vn">3.1. Sự chia rẽ Wuxia và phi tập trung hóa Stormblood</span><span class="en">3.1. The Wuxia Split and Stormblood Decentralization</span></div>
-      <p class="body-text"><span class="vn">Lực lượng Wuxia đã chia rẽ thành hai thực thể riêng biệt, làm suy yếu đáng kể sự gắn kết của liên minh Stormblood:</span><span class="en">The Wuxia force has fragmented into two distinct entities, significantly weakening the cohesion of the Stormblood alliance:</span></p>
+      <div class="section-title"><span class="num">3</span> <span class="vn">Nhận Định VIP và Các Vấn Đề Cần Hành Động</span><span class="en">VIP Insights and Actionable Pain Points</span></div>
+      <p class="body-text"><span class="vn">Phản hồi của VIP vẫn tập trung vào lịch trình và các yêu cầu tính năng cụ thể. VIP tại VN đặc biệt lên tiếng mạnh mẽ về việc thiếu cơ hội Đổi Lớp gần đây.</span><span class="en">VIP feedback remains concentrated on scheduling and specific feature requests. VN VIPs are particularly vocal regarding the lack of recent Class Change opportunities.</span></p>
+      <div class="subsection-title"><span class="vn">3.1. Yêu Cầu Ưu Tiên Của VIP</span><span class="en">3.1. Priority VIP Requests</span></div>
       <ul class="bullet-list">
-        <li><span class="vn"><strong>Bartz03 (60%):</strong> Dẫn đầu bởi Arktoshi và Adachi, nhóm này tiếp tục hoạt động dưới ngọn cờ Stormblood.</span><span class="en"><strong>Bartz03 (60%):</strong> Led by Arktoshi and Adachi, this group continues to operate under the Stormblood banner.</span></li>
-        <li><span class="vn"><strong>Leona08 (40%):</strong> Dẫn đầu bởi Bidi và nhóm Thientai, nhóm này đã thành lập lực lượng độc lập liên kết với phe "New World", định vị chống lại Stormblood và Cibal.</span><span class="en"><strong>Leona08 (40%):</strong> Led by Bidi and the Thientai team, this group has established an independent force aligned with the "New World" faction, positioning themselves against Stormblood and Cibal.</span></li>
+        <li><strong><span class="vn">Chuyển Server và Đổi Lớp:</span><span class="en">Server and Class Transfers:</span></strong> <span class="vn">VIP tại VN nhấn mạnh rằng đã "rất lâu" kể từ sự kiện Đổi Lớp Toàn Bộ (All-Class Change) gần nhất. Họ đang yêu cầu một ngày cụ thể để hỗ trợ lên kế hoạch chiến lược và mua sắm vật phẩm.</span><span class="en">VN VIPs emphasize that it has been a "very long time" since the last All-Class Change event. They are requesting a confirmed date to assist with strategic planning and item purchasing.</span></li>
+        <li><strong><span class="vn">Xác Minh Tài Khoản (VN):</span><span class="en">Account Verification (VN):</span></strong> <span class="vn">Người chơi yêu cầu hướng dẫn chi tiết cho các quy định mới có hiệu lực từ ngày 1/7.</span><span class="en">Detailed guidelines are requested for the new regulations taking effect July 1st.</span></li>
+        <li>
+          <div style="flex:1">
+            <strong><span class="vn">Nâng Cấp Cửa Hàng:</span><span class="en">Shop Enhancements:</span></strong>
+            <ul class="bullet-list" style="margin-top:6px;">
+              <li><span class="vn"><strong>TH:</strong> Mở Đổi Lớp hàng tháng và bổ sung Sách Kỹ Năng cấp Huyền Thoại vào Guild Shop.</span><span class="en"><strong>TH:</strong> Monthly class change availability and the addition of Legend-grade Skill Books to the Guild Shop.</span></li>
+              <li><span class="vn"><strong>ID:</strong> Rương Bracelet of Influence và Bracelet of Holy Protection có thể mua bằng Mileage.</span><span class="en"><strong>ID:</strong> Bracelet of Influence and Bracelet of Holy Protection chests to be purchasable with Mileage.</span></li>
+              <li><span class="vn"><strong>SGMY:</strong> Chốt thời gian phát hành cho 20M Medal Purple Book.</span><span class="en"><strong>SGMY:</strong> Resolution on the release timeline for the 20M Medal Purple Book.</span></li>
+            </ul>
+          </div>
+        </li>
       </ul>
-      <div class="subsection-title"><span class="vn">3.2. Sự củng cố của Garuda</span><span class="en">3.2. Garuda's Consolidation</span></div>
-      <p class="body-text"><span class="vn">Trái ngược với sự phân rã của Stormblood, liên minh <strong>Garuda</strong> đã tập trung sức mạnh trong cụm <strong>Kain</strong>. Chiến lược này đã tạo ra mức độ sẵn sàng chiến đấu cao, định vị Garuda là lực lượng thống trị hiện tại cho các nội dung cross-world sắp tới.</span><span class="en">In contrast to Stormblood's fragmentation, the <strong>Garuda</strong> alliance has centralized its strength within the <strong>Kain</strong> cluster. This strategy has resulted in high combat readiness, positioning Garuda as the current dominant force for upcoming cross-world content.</span></p>
-      <div class="subsection-title"><span class="vn">3.3. Trạng thái cụ thể từng thế giới</span><span class="en">3.3. World-Specific Status</span></div>
-      <ul class="bullet-list">
-        <li><span class="vn"><strong>Cụm Leona:</strong> Nhìn chung đã ổn định. Leona09 đã rời cụm để gia nhập Kduay tại Bartz08. Cibal đã giành lại quyền kiểm soát hầu hết các vị trí boss Veora, buộc New World vào vai trò quấy rối thay vì kiểm soát mục tiêu.</span><span class="en"><strong>Leona Cluster:</strong> Generally stabilized. Leona09 has exited the cluster to join Kduay in Bartz08. Cibal has regained control over almost all Veora boss allocations, forcing New World into a harassment role rather than objective control.</span></li>
-        <li><span class="vn"><strong>Cụm Bartz:</strong> Vẫn là khu vực PvP rất sôi động. Bartz03 đang trong xung đột liên tục với Daze, trong khi Bartz07 (ThanhBang) tiếp tục tranh giành Veora và Tháp Ngạo Mạn (TOI) với Stormblood.</span><span class="en"><strong>Bartz Cluster:</strong> Remains a highly active PvP zone. Bartz03 is in ongoing conflict with Daze, while Bartz07 (ThanhBang) continues to contest Veora and Tower of Insolence (TOI) against Stormblood.</span></li>
-      </ul>
+      <div class="subsection-title"><span class="vn">3.2. Đòn Bẩy Hành Động Đề Xuất</span><span class="en">3.2. Actionable Levers</span></div>
+      <div class="action-list">
+        <div class="action-item">
+          <div class="action-num">1</div>
+          <div class="action-body">
+            <strong><span class="vn">Minh Bạch</span><span class="en">Transparency</span></strong>
+            <p><span class="vn">Công bố ngày Chuyển Server chính thức hoặc một "khung thời gian dự kiến" cho sự kiện Đổi Lớp để quản lý kỳ vọng tại VN và ID.</span><span class="en">Publish a confirmed Server Transfer date or a "rough window" for Class Change events to manage expectations in VN and ID.</span></p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">2</div>
+          <div class="action-body">
+            <strong><span class="vn">Đánh Giá Cửa Hàng</span><span class="en">Shop Evaluation</span></strong>
+            <p><span class="vn">Đánh giá tính khả thi của việc bổ sung Sách Kỹ Năng cấp Huyền Thoại (TH) và rương đổi bằng Mileage (ID) để duy trì mức độ hài lòng của VIP.</span><span class="en">Assess the feasibility of adding Legend-grade Skill Books (TH) and Mileage-based chests (ID) to maintain VIP satisfaction.</span></p>
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">3</div>
+          <div class="action-body">
+            <strong><span class="vn">Điều Chỉnh Ghép Trận</span><span class="en">Matchmaking Adjustments</span></strong>
+            <p><span class="vn">VIP tại ID đề xuất cụ thể việc thay đổi hệ thống ghép nhóm đối thủ tại Đảo Cổ Đại để tránh việc gặp lại cùng đối thủ nhiều lần.</span><span class="en">ID VIPs have specifically requested a change to the Ancient Island enemy grouping system to avoid repetitive matchups against the same opponents.</span></p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Section 4 -->
     <div class="section">
-      <div class="section-title"><span class="num">4</span> <span class="vn">Xu Hướng Mới Nổi và Triển Vọng Tương Lai</span><span class="en">Emerging Trends and Future Outlook</span></div>
-      <div class="subsection-title"><span class="vn">4.1. Rò rỉ hệ thống Union</span><span class="en">4.1. The Union System Leak</span></div>
-      <p class="body-text"><span class="vn">Thông tin rò rỉ về hệ thống Union đã trở thành tâm điểm chính của cộng đồng.</span><span class="en">The leak of the Union system has become a primary focal point for the community.</span></p>
+      <div class="section-title"><span class="num">4</span> <span class="vn">Hệ Sinh Thái Cạnh Tranh và Bối Cảnh PvP</span><span class="en">Competitive Ecosystem and PvP Landscape</span></div>
+      <p class="body-text"><span class="vn">Môi trường PvP hiện đang chuyển dịch theo hướng thống trị dựa trên liên minh thay vì sức mạnh theo từng server.</span><span class="en">The PvP environment is currently experiencing a shift toward alliance-based dominance rather than server-based strength.</span></p>
+      <div class="subsection-title"><span class="vn">4.1. World-vs-World (Đảo Cổ Đại)</span><span class="en">4.1. World-vs-World (Ancient Island)</span></div>
+      <p class="body-text"><span class="vn">Cụm "Kain" hiện đang kiểm soát áp đảo nội dung World-vs-World.</span><span class="en">The "Kain" cluster currently holds overwhelming control over World-vs-World content.</span></p>
       <ul class="bullet-list">
-        <li><span class="vn"><strong>Chuẩn bị chủ động:</strong> Lãnh đạo clan đang hướng dẫn thành viên tăng cường đóng góp để mở khóa Union Buffs ngay khi tính năng ra mắt.</span><span class="en"><strong>Proactive Preparation:</strong> Clan leaders are already instructing members to increase donations to unlock Union Buffs immediately upon the feature's release.</span></li>
-        <li><span class="vn"><strong>Ý nghĩa chiến lược:</strong> Cộng đồng nhận thức hệ thống Union là bước nền tảng hướng đến nội dung Công Thành Chiến dựa trên World trong tương lai.</span><span class="en"><strong>Strategic Significance:</strong> The community perceives the Union system as a foundational step toward future World-based Castle Siege content.</span></li>
+        <li><strong><span class="vn">Mất Cân Bằng:</span><span class="en">Imbalance:</span></strong> <span class="vn">Liên minh Garuda + Lovehee + Kduay + New World đang thống trị chiến trường.</span><span class="en">The alliance of Garuda + Lovehee + Kduay + New World is dominating the field.</span></li>
+        <li><strong><span class="vn">Rút Lui:</span><span class="en">Retreat:</span></strong> <span class="vn">Liên minh Stormblood đang gặp khó khăn trong cạnh tranh và phần lớn đã rút về Tháp Ngạo Mạn (TOI) để farming, đồng thời phòng thủ trước các đợt tập kích thường xuyên từ liên minh Kduay.</span><span class="en">The Stormblood alliance is struggling to compete and has largely retreated to the Tower of Insolence (TOI) for farming, while defending against frequent raids from the Kduay alliance.</span></li>
+        <li><strong><span class="vn">Bế Tắc Tuyển Quân:</span><span class="en">Recruitment Stalemate:</span></strong> <span class="vn">Tăng trưởng tự nhiên của các liên minh đang chậm lại. Hầu hết người chơi kỳ cựu đã có phe phái cố định, trong khi người chơi tầm trung ngày càng gia nhập các phe mạnh để đảm bảo "môi trường farming ổn định" thay vì tranh giành lãnh thổ.</span><span class="en">Organic growth for alliances is slowing. Most veteran players have established allegiances, and mid-tier players are increasingly joining dominant factions to ensure "stable farming environments" rather than fighting for territory.</span></li>
       </ul>
-      <div class="subsection-title"><span class="vn">4.2. Nghiên cứu phiên bản nước ngoài</span><span class="en">4.2. Research into Foreign Versions</span></div>
-      <p class="body-text"><span class="vn">Người chơi đang tích cực nghiên cứu phiên bản Hàn Quốc và Đài Loan để đạt lợi thế cạnh tranh. Nghiên cứu hiện tập trung vào:</span><span class="en">Players are actively investigating the Korean and Taiwan versions of the game to gain a competitive edge. Current research is focused on:</span></p>
+      <div class="subsection-title"><span class="vn">4.2. Động Thái Khu Vực (Cụm Leona)</span><span class="en">4.2. Regional Dynamics (Leona Cluster)</span></div>
+      <p class="body-text"><span class="vn">Khác với môi trường WvW biến động, cụm Leona vẫn giữ được sự ổn định.</span><span class="en">Unlike the volatile WvW environment, the Leona cluster remains stable.</span></p>
       <ul class="bullet-list">
-        <li><span class="vn"><strong>Agathion Mới:</strong> Đánh giá chỉ số, bonus codex và giá trị dài hạn.</span><span class="en"><strong>New Agathions:</strong> Evaluating stats, codex bonuses, and long-term value.</span></li>
-        <li><span class="vn"><strong>Giá trị tiến trình:</strong> Đánh giá tác động của các tính năng sắp ra mắt lên meta-game.</span><span class="en"><strong>Progression Value:</strong> Assessing how these upcoming features will impact the meta-game.</span></li>
+        <li><strong><span class="vn">Sự Thống Trị Của Cibal:</span><span class="en">Cibal Dominance:</span></strong> <span class="vn">Liên minh Cibal tiếp tục kiểm soát Veora và toàn bộ các boss lớn.</span><span class="en">The Cibal alliance continues to control Veora and all major bosses.</span></li>
+        <li><strong><span class="vn">Chiến Thuật Du Kích:</span><span class="en">Guerrilla Tactics:</span></strong> <span class="vn">Liên minh "New World" đã chuyển từ cạnh tranh mục tiêu trực tiếp sang quấy phá kiểu du kích tại TOI và Đảo Cổ Đại.</span><span class="en">The "New World" alliance has shifted from direct objective competition to guerrilla-style harassment in TOI and Ancient Island.</span></li>
       </ul>
-      <div class="subsection-title"><span class="vn">4.3. Triển vọng chiến lược</span><span class="en">4.3. Strategic Outlook</span></div>
-      <p class="body-text"><span class="vn">Xu hướng phân cực dự kiến sẽ tiếp tục. Trong khi Stormblood hiện đang phân mảnh, mức độ tương tác cao của cộng đồng với hệ thống Union bị rò rỉ cho thấy người chơi đang chuyển sự tập trung sang tiến trình dài hạn và chuẩn bị cho giai đoạn tiếp theo của cuộc cạnh tranh World-vs-World. Thành công trong những tuần tới có thể phụ thuộc vào việc cung cấp một lộ trình minh bạch để đáp ứng nhu cầu của VIP về khả năng dự đoán.</span><span class="en">The trend toward polarization is expected to continue. While Stormblood is currently fragmented, the high level of community engagement with the leaked Union system suggests that players are shifting their focus toward long-term progression and preparing for the next phase of World-vs-World competition. Success in the coming weeks will likely depend on the delivery of a transparent roadmap to satisfy VIP demands for predictability.</span></p>
     </div>
   </div>
 
