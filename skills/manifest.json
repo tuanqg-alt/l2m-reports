@@ -27,15 +27,15 @@
   },
   {
     "id": "ai-localization-pipeline",
-    "title": "AI Localization Pipeline — Dịch + QA update note bằng AI có kiểm soát",
+    "title": "AI Localization Pipeline — Dịch + QA đa ngôn ngữ (EN→VI/TH/ID) bằng AI có kiểm soát",
     "area": "03",
     "area_label": "Glossary & Termbase",
     "icon": "🔄",
-    "description": "Quy trình 8 giai đoạn dịch update note/patch note game bằng AI có kiểm soát: Glossary-first Draft A → QA kỹ thuật → Style Audit A+ → QA cuối → Human Review → Final. Kèm sẵn checklist severity P0-P3 và 6 mẫu prompt tái sử dụng. (Không phải bảng tra từ — dùng skill Glossary cho việc đó.)",
-    "description_en": "An 8-stage controlled AI localization pipeline for game update notes/patch notes: Glossary-first Draft A → Technical QA → Controlled Style Audit A+ → Final QA → Human Review → Final. Includes P0-P3 severity checklists and 6 reusable prompt templates. (Not a term-lookup tool — see the Glossary skill for that.)",
-    "version": "1.0",
+    "description": "Quy trình 8 giai đoạn dịch game từ tiếng Anh sang Việt/Thái/Indonesia bằng AI có kiểm soát: Glossary-first Draft A → QA kỹ thuật → Style Audit A+ → QA cuối → Human Review → Final. Kèm checklist severity P0-P3, style guide riêng từng ngôn ngữ đích, và 6 mẫu prompt tái sử dụng. (Không phải bảng tra từ — dùng skill Glossary cho việc đó.)",
+    "description_en": "An 8-stage controlled AI localization pipeline translating game content from English into Vietnamese/Thai/Indonesian: Glossary-first Draft A → Technical QA → Controlled Style Audit A+ → Final QA → Human Review → Final. Includes P0-P3 severity checklists, per-language style guides, and 6 reusable prompt templates. (Not a term-lookup tool — see the Glossary skill for that.)",
+    "version": "2.0",
     "updated": "2026-07-05",
     "zip": "skills/ai-localization-pipeline.zip",
-    "size_kb": 24.7
+    "size_kb": 26.5
   }
 ]
