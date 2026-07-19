@@ -7,10 +7,10 @@
     "icon": "🎨",
     "description": "Biến brief sự kiện (docx/xlsx) thành 1 prompt ChatGPT để vẽ banner Lineage2M — tự chọn mẫu, viết copy tiếng Anh, kèm bản Việt cho designer. Chưa có ảnh mẫu vẫn tạo được layout tạm (PPTX).",
     "description_en": "Turns an event brief (docx/xlsx/text) into one ChatGPT prompt that generates Lineage2M banner art — auto-picks the template, writes the English copy, and includes a Vietnamese handoff for designers. No art yet? It can still build a quick placeholder layout (PPTX).",
-    "version": "7.5",
-    "updated": "2026-07-05",
+    "version": "7.6",
+    "updated": "2026-07-19",
     "zip": "skills/layout-infographic.zip",
-    "size_kb": 34.0
+    "size_kb": 35.3
   },
   {
     "id": "localization-glossary",
