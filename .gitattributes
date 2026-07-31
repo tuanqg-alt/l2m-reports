@@ -1,0 +1,54 @@
+# ============================================================
+# .gitattributes — chuẩn hoá line-ending, chặn CRLF churn
+# Tạo 2026-05-29. Sau khi thêm file này PHẢI renormalize 1 lần:
+#   git add --renormalize .
+#   git commit -m "normalize line endings (.gitattributes)"
+# ============================================================
+
+# Mặc định: git tự nhận diện text, lưu trong repo dạng LF
+* text=auto eol=lf
+
+# --- Text files: ép LF ---
+*.md    text eol=lf
+*.txt   text eol=lf
+*.py    text eol=lf
+*.js    text eol=lf
+*.ts    text eol=lf
+*.json  text eol=lf
+*.csv   text eol=lf
+*.tsv   text eol=lf
+*.html  text eol=lf
+*.htm   text eol=lf
+*.css   text eol=lf
+*.svg   text eol=lf
+*.xml   text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.sh    text eol=lf
+
+# --- Windows scripts: GIỮ CRLF (tránh lỗi khi chạy) ---
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+
+# --- Binary: KHÔNG normalize, KHÔNG diff ---
+*.xlsx  binary
+*.xls   binary
+*.xlsm  binary
+*.pptx  binary
+*.ppt   binary
+*.docx  binary
+*.doc   binary
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.webp  binary
+*.zip   binary
+*.7z    binary
+*.mp4   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
