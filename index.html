@@ -6,156 +6,130 @@
   <title>L2M Report Hub — NCV Games</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--brand-dark:#0F1419;--accent:#EE5524;--accent-h:#D44A1F;--accent-soft:#FFE8DD;
-      --n900:#0F1419;--n800:#1A1D24;--n700:#2A2E37;--n600:#4A4F5A;--n500:#6B7280;
-      --n400:#9CA3AF;--n300:#D1D5DB;--n200:#E5E7EB;--n100:#F3F4F6;--n50:#F9FAFB;
-      --diamond:#3FB6D4;--white:#fff;
-      --fh:'Sora',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif;--fm:'JetBrains Mono',Consolas,monospace}
+    :root{--accent:#EE5524;--accent-h:#D44A1F;--white:#fff;
+      --n900:#0F1419;--n800:#1A1D24;--n700:#2A2E37;
+      --n600:#4A4F5A;--n500:#6B7280;--n400:#9CA3AF;
+      --fh:'Sora',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:var(--fb);background:var(--n100);color:var(--n800);min-height:100vh;line-height:1.6}
-    .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
-    /* hero */
-    .hero{background:var(--brand-dark);color:#fff;padding:34px 0 30px}
-    .hero-top{display:flex;justify-content:space-between;align-items:center;gap:16px}
-    .eyebrow{font-family:var(--fm);color:var(--accent);text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:500}
-    .ncv-brand-mark{font-family:var(--fh);font-weight:800;letter-spacing:.02em;font-size:15px;color:#fff}
-    .ncv-brand-mark .v{color:var(--accent)}
-    .ncv-brand-mark .games{color:#fff;margin-left:4px;font-weight:600;letter-spacing:.16em;font-size:12px}
-    .hero h1{font-family:var(--fh);font-weight:800;font-size:30px;margin:12px 0 6px;letter-spacing:-.01em}
-    .sub{color:var(--n300);font-size:14px;max-width:760px}
-    .banner{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-    .chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:8px;padding:7px 13px;font-size:12.5px;color:#E5E7EB}
-    .chip b{color:#fff}
-    /* control bar */
-    .ctrl{background:#fff;border-bottom:1px solid var(--n200);padding:12px 0;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-    .ctrl-in{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+    body{font-family:var(--fb);background:var(--n900);color:var(--white);min-height:100vh}
+
+    .hdr{background:linear-gradient(135deg,#1A1D24 0%,#0F1419 60%,#1a0a04 100%);
+          border-bottom:1px solid var(--n700);padding:26px 40px 22px}
+    .hdr-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;
+             justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:42px;height:42px;background:var(--accent);border-radius:10px;
+           display:flex;align-items:center;justify-content:center;
+           font:800 20px/1 var(--fh);color:#fff;letter-spacing:-1px;flex-shrink:0}
+    .title h1{font:700 20px/1.2 var(--fh)}
+    .title p{font-size:12px;color:var(--n400);margin-top:2px}
+    .hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+    .stats{display:flex;gap:24px}
+    .stat .n{font:700 22px var(--fh);color:var(--accent);text-align:right}
+    .stat .l{font-size:11px;color:var(--n400);text-transform:uppercase;letter-spacing:.5px}
+    .upd{font-size:11px;color:var(--n500)}
+
+    .ctrl{background:#13161C;border-bottom:1px solid var(--n700);
+           padding:12px 40px;position:sticky;top:0;z-index:100}
+    .ctrl-in{max-width:1200px;margin:0 auto;display:flex;gap:12px;
+              align-items:center;flex-wrap:wrap}
     .sw{position:relative;flex:1;min-width:200px;max-width:340px}
-    .sw input{width:100%;background:var(--n50);border:1px solid var(--n200);
-               border-radius:8px;padding:8px 12px 8px 34px;font:14px var(--fb);
-               color:var(--n800);outline:none;transition:border-color .2s,background .2s}
-    .sw input::placeholder{color:var(--n400)}
-    .sw input:focus{border-color:var(--accent);background:#fff}
-    .si{position:absolute;left:11px;top:50%;transform:translateY(-50%);
-         color:var(--n400);font-size:14px;pointer-events:none}
-    .tabs{display:flex;gap:6px;flex-wrap:wrap}
-    .tab{padding:6px 14px;border-radius:20px;border:1px solid var(--n200);
-          background:#fff;color:var(--n500);font:600 12px var(--fb);
+    .sw input{width:100%;background:var(--n800);border:1px solid var(--n700);
+               border-radius:8px;padding:8px 12px 8px 34px;
+               font:14px var(--fb);color:var(--white);outline:none;
+               transition:border-color .2s}
+    .sw input::placeholder{color:var(--n500)}
+    .sw input:focus{border-color:var(--accent)}
+    .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);
+         color:var(--n500);font-size:14px;pointer-events:none}
+    .tabs{display:flex;gap:5px;flex-wrap:wrap}
+    .tab{padding:6px 13px;border-radius:20px;border:1px solid var(--n700);
+          background:transparent;color:var(--n400);font:500 12px var(--fb);
           cursor:pointer;transition:all .15s;white-space:nowrap}
-    .tab:hover{border-color:var(--n300);color:var(--n800);background:var(--n50)}
+    .tab:hover{border-color:var(--n500);color:var(--white)}
     .tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
-    /* language switch */
-    .langsw{display:inline-flex;margin-left:auto;border:1px solid var(--n200);
-             border-radius:8px;overflow:hidden;flex-shrink:0}
-    .langbtn{padding:7px 12px;background:#fff;border:0;color:var(--n500);
-              font:700 12px var(--fm);cursor:pointer;transition:all .15s}
-    .langbtn+.langbtn{border-left:1px solid var(--n200)}
-    .langbtn:hover{background:var(--n50);color:var(--n800)}
-    .langbtn.active{background:var(--accent);color:#fff}
-    /* main */
-    .main{max-width:1200px;margin:0 auto;padding:28px 40px 70px}
+
+    .pcard{background:#231208;border:1px solid #5A2D0C;border-radius:10px;
+            padding:12px 16px;cursor:pointer;text-decoration:none;
+            display:flex;align-items:center;gap:10px;transition:all .18s;min-width:180px}
+    .pcard:hover{border-color:var(--accent);background:#2D1A0A;
+                  box-shadow:0 3px 14px rgba(238,85,36,.2)}
+    .pcard-icon{font-size:20px;flex-shrink:0}
+    .pcard-title{font:600 13px/1.3 var(--fh);color:#fff}
+    .pcard-area{font-size:11px;color:var(--n400);margin-top:2px}
+    .pins-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+
+    .main{max-width:1200px;margin:0 auto;padding:26px 40px 60px}
     .sec{margin-bottom:34px}
-    .sec-hdr{display:flex;align-items:center;gap:9px;margin-bottom:14px;
-              padding-bottom:9px;border-bottom:1px solid var(--n200)}
-    .sec-num{font-family:var(--fm);font-weight:700;font-size:11px;color:var(--accent);
-              letter-spacing:.04em;background:var(--accent-soft);padding:3px 8px;border-radius:5px;flex-shrink:0}
-    .sec-title{font:700 14px var(--fh);color:var(--n900)}
-    .sec-cnt{font-size:12px;color:var(--n600);background:var(--n100);padding:2px 9px;border-radius:10px;font-weight:600}
-    /* pinned cards */
-    .pins-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-    .pcard{background:#fff;border:1px solid var(--n200);border-radius:12px;
-            padding:13px 15px;cursor:pointer;text-decoration:none;
-            display:flex;align-items:center;gap:12px;transition:all .18s;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-    .pcard:hover{border-color:var(--accent);box-shadow:0 4px 16px rgba(238,85,36,.15);transform:translateY(-1px)}
-    .pcard-icon{font-size:18px;flex-shrink:0;width:38px;height:38px;display:flex;
-                 align-items:center;justify-content:center;background:var(--accent-soft);border-radius:9px}
-    .pcard-title{font:700 13px/1.3 var(--fh);color:var(--n900)}
-    .pcard-area{font-size:11px;color:var(--n500);margin-top:2px}
-    /* report cards */
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-    .card{background:#fff;border:1px solid var(--n200);border-radius:12px;
-           padding:15px 17px;cursor:pointer;transition:all .18s;
-           display:flex;flex-direction:column;gap:10px;text-decoration:none;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-    .card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 18px rgba(238,85,36,.13)}
+    .sec-hdr{display:flex;align-items:center;gap:9px;margin-bottom:12px;
+              padding-bottom:9px;border-bottom:1px solid var(--n700)}
+    .sec-num{font:700 11px var(--fh);color:var(--accent);letter-spacing:.5px;
+              background:#2D1508;padding:2px 7px;border-radius:4px;flex-shrink:0}
+    .sec-title{font:600 14px var(--fh)}
+    .sec-cnt{font-size:12px;color:var(--n500);background:var(--n800);
+              padding:2px 8px;border-radius:10px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+    .card{background:var(--n800);border:1px solid var(--n700);border-radius:10px;
+           padding:14px 16px;cursor:pointer;transition:all .18s;
+           display:flex;flex-direction:column;gap:8px;text-decoration:none}
+    .card:hover{border-color:var(--accent);background:#1F2330;
+                 transform:translateY(-1px);box-shadow:0 3px 16px rgba(238,85,36,.1)}
     .ct{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-    .ctitle{font:700 13px/1.4 var(--fh);flex:1;color:var(--n900)}
-    .bdg{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
-          padding:3px 7px;border-radius:5px;white-space:nowrap;flex-shrink:0}
+    .ctitle{font:600 13px/1.4 var(--fh);flex:1;color:#fff}
+    .bdg{font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;
+          padding:2px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0}
     .cf{display:flex;align-items:center;justify-content:space-between}
-    .cdate{font-size:11px;color:var(--n500);display:flex;align-items:center;gap:7px;font-family:var(--fm)}
+    .cdate{font-size:11px;color:var(--n500);display:flex;align-items:center;gap:7px}
     .scopetag{font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
-               color:var(--n600);background:var(--n100);padding:2px 6px;border-radius:4px;font-family:var(--fb)}
-    .copn{font-size:11px;color:var(--accent);font-weight:700;opacity:0;transition:opacity .15s}
+               color:var(--n400);background:var(--n700);padding:1px 6px;border-radius:4px}
+    .copn{font-size:11px;color:var(--accent);font-weight:600;opacity:0;transition:opacity .15s}
     .card:hover .copn{opacity:1}
-    /* skill cards */
-    .scard{background:#fff;border:1px solid var(--n200);border-radius:12px;padding:15px 17px;
-            display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:all .18s}
-    .scard:hover{border-color:var(--accent);box-shadow:0 4px 18px rgba(238,85,36,.13);transform:translateY(-2px)}
-    .scard-top{display:flex;align-items:flex-start;gap:11px}
-    .scard-icon{font-size:18px;flex-shrink:0;width:38px;height:38px;display:flex;align-items:center;
-                 justify-content:center;background:var(--accent-soft);border-radius:9px}
-    .scard-title{font:700 13px/1.3 var(--fh);color:var(--n900)}
-    .scard-meta{font-size:10.5px;color:var(--n500);margin-top:3px;font-family:var(--fm)}
-    .scard-desc{font-size:12px;color:var(--n600);line-height:1.5}
-    .scard-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:2px}
-    .scard-size{font-size:11px;color:var(--n400);font-family:var(--fm)}
-    .dl{background:var(--accent);color:#fff;font:700 12px var(--fb);text-decoration:none;
-         padding:8px 15px;border-radius:8px;transition:background .15s;white-space:nowrap}
-    .dl:hover{background:var(--accent-h)}
     .empty{text-align:center;padding:60px 20px;color:var(--n500)}
     .empty .ei{font-size:44px;margin-bottom:10px}
+
     @media(max-width:768px){
-      .wrap,.ctrl-in,.main{padding-left:20px;padding-right:20px}
-      .hero h1{font-size:24px}
-      .langsw{margin-left:0}
+      .hdr,.ctrl,.main{padding-left:20px;padding-right:20px}
+      .stats{display:none}
     }
   </style>
 </head>
 <body>
-<header class="hero"><div class="wrap">
-  <div class="hero-top">
-    <span class="eyebrow">L2M · Internal Analytics Hub</span>
-    <span class="ncv-brand-mark">NC<span class="v">V</span><span class="games">GAMES</span></span>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="brand">
+      <div class="logo">N</div>
+      <div class="title">
+        <h1>L2M Report Hub</h1>
+        <p>NCV Games · Internal Analytics &amp; Intelligence</p>
+      </div>
+    </div>
+    <div class="hdr-r">
+      <div class="stats">
+        <div class="stat"><div class="n" id="vis-count">40</div><div class="l">Reports</div></div>
+        <div class="stat"><div class="n">4</div><div class="l">Pinned</div></div>
+      </div>
+      <div class="upd">Updated: 2026-08-08 08:30 UTC</div>
+    </div>
   </div>
-  <h1>L2M Report Hub</h1>
-  <div class="sub" id="hero-sub">Trung tâm báo cáo nội bộ — Analytics &amp; Intelligence cho Lineage2M SEA. Chọn khu vực ở thanh lọc hoặc gõ tìm kiếm để mở báo cáo.</div>
-  <div class="banner">
-    <span class="chip">📊 <b id="vis-count">30</b> <span id="chip-reports">báo cáo</span></span>
-    <span class="chip">📌 <b>8</b> <span id="chip-pinned">nổi bật</span></span>
-    <span class="chip">🔄 <span id="chip-updated">Cập nhật:</span> <b>2026-07-31 11:16 UTC</b></span>
-  </div>
-</div></header>
+</header>
+
 <div class="ctrl">
   <div class="ctrl-in">
-    <div class="sw"><span class="si">🔍</span>
-      <input type="text" id="q" placeholder="Tìm báo cáo…" autocomplete="off">
+    <div class="sw">
+      <span class="si">🔍</span>
+      <input type="text" id="q" placeholder="Search reports…" autocomplete="off">
     </div>
     <div class="tabs" id="tabs"></div>
-    <div class="langsw" id="langsw">
-      <button class="langbtn" data-lang="vi">VN</button>
-      <button class="langbtn" data-lang="en">EN</button>
-    </div>
   </div>
 </div>
+
 <main class="main" id="main"></main>
+
 <script>
 const REPORTS = [
-  {
-    "filename": "kb-chat.html",
-    "title": "Kb Chat",
-    "date": "",
-    "date_display": "",
-    "area_id": "other",
-    "area_num": "",
-    "area_label": "Other",
-    "area_color": "#9CA3AF",
-    "area_bg": "#1F2937",
-    "area_icon": "📁",
-    "scope_id": "",
-    "scope_label": "",
-    "pinned": true
-  },
   {
     "filename": "gameops-combined-report.html",
     "title": "GameOps Combined Report (All Scopes)",
@@ -172,48 +146,18 @@ const REPORTS = [
     "pinned": true
   },
   {
-    "filename": "gameops-reading.html",
-    "title": "GameOps Reading — Daily/Weekly/Monthly",
+    "filename": "l2m-dashboard.html",
+    "title": "L2M Live Dashboard",
     "date": "",
     "date_display": "",
-    "area_id": "area10",
-    "area_num": "10",
-    "area_label": "GameOps Analytics",
-    "area_color": "#3B82F6",
-    "area_bg": "#1E3A5F",
-    "area_icon": "📊",
-    "scope_id": "",
-    "scope_label": "",
-    "pinned": true
-  },
-  {
-    "filename": "mkt-combined-report.html",
-    "title": "MKT Combined Report (All Channels)",
-    "date": "",
-    "date_display": "",
-    "area_id": "area_mkt",
-    "area_num": "MKT",
-    "area_label": "Marketing",
-    "area_color": "#F97316",
-    "area_bg": "#2D1200",
-    "area_icon": "📣",
-    "scope_id": "combined",
-    "scope_label": "Combined — All Channels",
-    "pinned": true
-  },
-  {
-    "filename": "2026_pum-report_L2M-AllSea_reviewed.html",
-    "title": "PUM Report L2M Allsea Reviewed",
-    "date": "2026",
-    "date_display": "2026",
-    "area_id": "area13",
-    "area_num": "13",
-    "area_label": "PUM Report",
-    "area_color": "#F87171",
-    "area_bg": "#2D1010",
-    "area_icon": "📋",
-    "scope_id": "",
-    "scope_label": "",
+    "area_id": "area04",
+    "area_num": "04",
+    "area_label": "Social Listening",
+    "area_color": "#FBBF24",
+    "area_bg": "#2E2208",
+    "area_icon": "📡",
+    "scope_id": "live",
+    "scope_label": "Live Dashboard",
     "pinned": true
   },
   {
@@ -232,16 +176,16 @@ const REPORTS = [
     "pinned": true
   },
   {
-    "filename": "area11-combined-report.html",
-    "title": "Market Intelligence Combined Report",
+    "filename": "lw-dashboard.html",
+    "title": "LineageW Dashboard",
     "date": "",
     "date_display": "",
-    "area_id": "area11",
-    "area_num": "11",
-    "area_label": "Market Intelligence",
-    "area_color": "#34D399",
-    "area_bg": "#0D2B1F",
-    "area_icon": "🌍",
+    "area_id": "other",
+    "area_num": "",
+    "area_label": "Other",
+    "area_color": "#9CA3AF",
+    "area_bg": "#1F2937",
+    "area_icon": "📁",
     "scope_id": "",
     "scope_label": "",
     "pinned": true
@@ -259,7 +203,7 @@ const REPORTS = [
     "area_icon": "📁",
     "scope_id": "",
     "scope_label": "",
-    "pinned": true
+    "pinned": false
   },
   {
     "filename": "2026-06-25_competitor-ads-report_SEA.html",
@@ -281,12 +225,12 @@ const REPORTS = [
     "title": "Server Transfer Report",
     "date": "2026-06-24",
     "date_display": "24 Jun 2026",
-    "area_id": "area_sv",
-    "area_num": "SV",
-    "area_label": "Server Transfer",
-    "area_color": "#F59E0B",
-    "area_bg": "#2D1F00",
-    "area_icon": "🔀",
+    "area_id": "other",
+    "area_num": "",
+    "area_label": "Other",
+    "area_color": "#9CA3AF",
+    "area_bg": "#1F2937",
+    "area_icon": "📁",
     "scope_id": "",
     "scope_label": "",
     "pinned": false
@@ -397,16 +341,61 @@ const REPORTS = [
     "pinned": false
   },
   {
-    "filename": "2026-05-06_server-transfer-report.html",
-    "title": "Server Transfer Report",
-    "date": "2026-05-06",
-    "date_display": "06 May 2026",
-    "area_id": "area_sv",
-    "area_num": "SV",
-    "area_label": "Server Transfer",
-    "area_color": "#F59E0B",
-    "area_bg": "#2D1F00",
-    "area_icon": "🔀",
+    "filename": "2026-05-22_lag-3window-report_scope-d.html",
+    "title": "Lag 3window Report Scope D",
+    "date": "2026-05-22",
+    "date_display": "22 May 2026",
+    "area_id": "area04",
+    "area_num": "04",
+    "area_label": "Social Listening",
+    "area_color": "#FBBF24",
+    "area_bg": "#2E2208",
+    "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
+    "pinned": false
+  },
+  {
+    "filename": "2026-05-19_lag-complaint-scan_pre-post-update.html",
+    "title": "Lag Complaint Scan Pre Post Update",
+    "date": "2026-05-19",
+    "date_display": "19 May 2026",
+    "area_id": "area04",
+    "area_num": "04",
+    "area_label": "Social Listening",
+    "area_color": "#FBBF24",
+    "area_bg": "#2E2208",
+    "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
+    "pinned": false
+  },
+  {
+    "filename": "2026-all_pum-review_L2M-AllSea.html",
+    "title": "2026 All PUM Review L2M Allsea",
+    "date": "",
+    "date_display": "",
+    "area_id": "other",
+    "area_num": "",
+    "area_label": "Other",
+    "area_color": "#9CA3AF",
+    "area_bg": "#1F2937",
+    "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
+    "filename": "2026_pum-report_L2M-AllSea.html",
+    "title": "PUM Report L2M Allsea",
+    "date": "2026",
+    "date_display": "2026",
+    "area_id": "area13",
+    "area_num": "13",
+    "area_label": "PUM Report",
+    "area_color": "#F87171",
+    "area_bg": "#2D1010",
+    "area_icon": "📋",
     "scope_id": "",
     "scope_label": "",
     "pinned": false
@@ -427,18 +416,93 @@ const REPORTS = [
     "pinned": false
   },
   {
+    "filename": "2026_pum-report_L2M-AllSea_reviewed.html",
+    "title": "PUM Report L2M Allsea Reviewed",
+    "date": "2026",
+    "date_display": "2026",
+    "area_id": "area13",
+    "area_num": "13",
+    "area_label": "PUM Report",
+    "area_color": "#F87171",
+    "area_bg": "#2D1010",
+    "area_icon": "📋",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
+    "filename": "CMM-Report_2026.html",
+    "title": "CMM Report 2026",
+    "date": "",
+    "date_display": "",
+    "area_id": "area13",
+    "area_num": "13",
+    "area_label": "PUM Report",
+    "area_color": "#F87171",
+    "area_bg": "#2D1010",
+    "area_icon": "📋",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
+    "filename": "Lineage2M_Project_Brief_for_NextGen.html",
+    "title": "Lineage2M Project Brief — NextGen",
+    "date": "",
+    "date_display": "",
+    "area_id": "other",
+    "area_num": "",
+    "area_label": "Other",
+    "area_color": "#9CA3AF",
+    "area_bg": "#1F2937",
+    "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
+    "filename": "area11-combined-report.html",
+    "title": "Area11 Combined Report",
+    "date": "",
+    "date_display": "",
+    "area_id": "other",
+    "area_num": "",
+    "area_label": "Other",
+    "area_color": "#9CA3AF",
+    "area_bg": "#1F2937",
+    "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
+    "filename": "bm-distribution-dashboard.html",
+    "title": "BM Distribution Dashboard",
+    "date": "",
+    "date_display": "",
+    "area_id": "area08",
+    "area_num": "08",
+    "area_label": "Content Release Analytics",
+    "area_color": "#10B981",
+    "area_bg": "#0D2B1F",
+    "area_icon": "📦",
+    "scope_id": "b1",
+    "scope_label": "Scope B1 — Webshop BM",
+    "pinned": false
+  },
+  {
     "filename": "clan-narrative-dashboard.html",
     "title": "Clan Narrative Dashboard",
     "date": "",
     "date_display": "",
-    "area_id": "area_mkt",
-    "area_num": "MKT",
-    "area_label": "Marketing",
-    "area_color": "#F97316",
-    "area_bg": "#2D1200",
-    "area_icon": "📣",
-    "scope_id": "social_clan",
-    "scope_label": "Social — Clan Intel",
+    "area_id": "area04",
+    "area_num": "04",
+    "area_label": "Social Listening",
+    "area_color": "#FBBF24",
+    "area_bg": "#2E2208",
+    "area_icon": "📡",
+    "scope_id": "d",
+    "scope_label": "Scope D — Purple Chat / Clan Intel",
     "pinned": false
   },
   {
@@ -457,23 +521,23 @@ const REPORTS = [
     "pinned": false
   },
   {
-    "filename": "consistency-audit_for-LocTeam.html",
-    "title": "Consistency Audit For Locteam",
+    "filename": "conflicts_review_ui.html",
+    "title": "Conflicts Review UI",
     "date": "",
     "date_display": "",
-    "area_id": "other",
-    "area_num": "",
-    "area_label": "Other",
-    "area_color": "#9CA3AF",
-    "area_bg": "#1F2937",
-    "area_icon": "📁",
-    "scope_id": "",
-    "scope_label": "",
+    "area_id": "area03",
+    "area_num": "03",
+    "area_label": "Glossary & Termbase",
+    "area_color": "#A78BFA",
+    "area_bg": "#1E1040",
+    "area_icon": "📖",
+    "scope_id": "b",
+    "scope_label": "Scope B — Claude Pipeline",
     "pinned": false
   },
   {
-    "filename": "cs-chat.html",
-    "title": "Cs Chat",
+    "filename": "consistency-audit_for-LocTeam.html",
+    "title": "Consistency Audit For Locteam",
     "date": "",
     "date_display": "",
     "area_id": "other",
@@ -491,14 +555,44 @@ const REPORTS = [
     "title": "Discord Intel Wuxia Gaming Latest",
     "date": "",
     "date_display": "",
-    "area_id": "area_mkt",
-    "area_num": "MKT",
-    "area_label": "Marketing",
-    "area_color": "#F97316",
-    "area_bg": "#2D1200",
-    "area_icon": "📣",
-    "scope_id": "social_discord",
-    "scope_label": "Social — Discord",
+    "area_id": "area04",
+    "area_num": "04",
+    "area_label": "Social Listening",
+    "area_color": "#FBBF24",
+    "area_bg": "#2E2208",
+    "area_icon": "📡",
+    "scope_id": "e",
+    "scope_label": "Scope E — Discord",
+    "pinned": false
+  },
+  {
+    "filename": "gameops-reading.html",
+    "title": "Gameops Reading",
+    "date": "",
+    "date_display": "",
+    "area_id": "other",
+    "area_num": "",
+    "area_label": "Other",
+    "area_color": "#9CA3AF",
+    "area_bg": "#1F2937",
+    "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
+    "filename": "gameops-report.html",
+    "title": "Gameops Report",
+    "date": "",
+    "date_display": "",
+    "area_id": "area10",
+    "area_num": "10",
+    "area_label": "GameOps Analytics",
+    "area_color": "#3B82F6",
+    "area_bg": "#1E3A5F",
+    "area_icon": "📊",
+    "scope_id": "a",
+    "scope_label": "Scope A — Liveops & Forecast",
     "pinned": false
   },
   {
@@ -517,18 +611,18 @@ const REPORTS = [
     "pinned": false
   },
   {
-    "filename": "l2m-dashboard.html",
-    "title": "L2M Live Dashboard",
+    "filename": "ingame-bm-dashboard.html",
+    "title": "Ingame BM Dashboard",
     "date": "",
     "date_display": "",
-    "area_id": "area_mkt",
-    "area_num": "MKT",
-    "area_label": "Marketing",
-    "area_color": "#F97316",
-    "area_bg": "#2D1200",
-    "area_icon": "📣",
-    "scope_id": "social_live",
-    "scope_label": "Social — Live Dashboard",
+    "area_id": "area08",
+    "area_num": "08",
+    "area_label": "Content Release Analytics",
+    "area_color": "#10B981",
+    "area_bg": "#0D2B1F",
+    "area_icon": "📦",
+    "scope_id": "b2",
+    "scope_label": "Scope B2 — Ingame BM",
     "pinned": false
   },
   {
@@ -547,8 +641,8 @@ const REPORTS = [
     "pinned": false
   },
   {
-    "filename": "Lineage2M_Project_Brief_for_NextGen_290526.html",
-    "title": "Lineage2M Project Brief — NextGen",
+    "filename": "l2m-mkt-spend-tracker.html",
+    "title": "L2M Mkt Spend Tracker",
     "date": "",
     "date_display": "",
     "area_id": "other",
@@ -562,8 +656,38 @@ const REPORTS = [
     "pinned": false
   },
   {
-    "filename": "lw-dashboard.html",
-    "title": "LineageW Dashboard",
+    "filename": "mkt-combined-report.html",
+    "title": "Mkt Combined Report",
+    "date": "",
+    "date_display": "",
+    "area_id": "other",
+    "area_num": "",
+    "area_label": "Other",
+    "area_color": "#9CA3AF",
+    "area_bg": "#1F2937",
+    "area_icon": "📁",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
+    "filename": "pum-report.html",
+    "title": "PUM Report",
+    "date": "",
+    "date_display": "",
+    "area_id": "area13",
+    "area_num": "13",
+    "area_label": "PUM Report",
+    "area_color": "#F87171",
+    "area_bg": "#2D1010",
+    "area_icon": "📋",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
+    "filename": "server-transfer-hub.html",
+    "title": "Server Transfer Hub",
     "date": "",
     "date_display": "",
     "area_id": "other",
@@ -581,218 +705,144 @@ const REPORTS = [
     "title": "Streamer Research L2M SEA Master",
     "date": "",
     "date_display": "",
-    "area_id": "area_mkt",
-    "area_num": "MKT",
-    "area_label": "Marketing",
-    "area_color": "#F97316",
-    "area_bg": "#2D1200",
-    "area_icon": "📣",
-    "scope_id": "streamer",
-    "scope_label": "Streamer Research",
+    "area_id": "area05",
+    "area_num": "05",
+    "area_label": "Streamer Research",
+    "area_color": "#F472B6",
+    "area_bg": "#2D1020",
+    "area_icon": "🎮",
+    "scope_id": "",
+    "scope_label": "",
+    "pinned": false
+  },
+  {
+    "filename": "vip-community-report.html",
+    "title": "VIP Community Report",
+    "date": "",
+    "date_display": "",
+    "area_id": "area10",
+    "area_num": "10",
+    "area_label": "GameOps Analytics",
+    "area_color": "#3B82F6",
+    "area_bg": "#1E3A5F",
+    "area_icon": "📊",
+    "scope_id": "b",
+    "scope_label": "Scope B — VIP & Communities",
     "pinned": false
   }
 ];
-const SKILLS = [
-  {
-    "id": "layout-infographic",
-    "title": "Layout Banner — ChatGPT Prompt Builder",
-    "area": "01",
-    "area_label": "Layout Banner",
-    "icon": "🎨",
-    "description": "Biến brief sự kiện (docx/xlsx) thành 1 prompt ChatGPT để vẽ banner Lineage2M — tự chọn mẫu, viết copy tiếng Anh, kèm bản Việt cho designer. Chưa có ảnh mẫu vẫn tạo được layout tạm (PPTX).",
-    "description_en": "Turns an event brief (docx/xlsx/text) into one ChatGPT prompt that generates Lineage2M banner art — auto-picks the template, writes the English copy, and includes a Vietnamese handoff for designers. No art yet? It can still build a quick placeholder layout (PPTX).",
-    "version": "7.5",
-    "updated": "2026-07-05",
-    "zip": "skills/layout-infographic.zip",
-    "size_kb": 34.0
-  },
-  {
-    "id": "localization-glossary",
-    "title": "L2M Glossary — Tra cứu thuật ngữ KR↔VN·EN·TH·ID",
-    "area": "03",
-    "area_label": "Glossary & Termbase",
-    "icon": "📖",
-    "description": "Tra cứu thuật ngữ chính thức Lineage2M — Hàn ↔ Việt, Anh, Thái, Indo (44.225 từ, có sẵn trong skill, không cần workspace). Cứ hỏi Claude 'từ X tiếng Việt là gì' là ra ngay.",
-    "description_en": "Official Lineage2M term lookup — Korean ↔ Vietnamese, English, Thai, Indonesian (44,225 terms built into the skill, no workspace needed). Just ask Claude what the Vietnamese/English for a term is and get the answer instantly.",
-    "version": "1.2",
-    "updated": "2026-07-02",
-    "zip": "skills/localization-glossary.zip",
-    "size_kb": 2752.3
-  },
-  {
-    "id": "ai-localization-pipeline",
-    "title": "AI Localization Pipeline — Dịch + QA đa ngôn ngữ (EN→VI/TH/ID) bằng AI có kiểm soát",
-    "area": "03",
-    "area_label": "Glossary & Termbase",
-    "icon": "🔄",
-    "description": "⚠️ Cần cài THÊM skill 'L2M Glossary' (cùng Hub) để có dữ liệu thuật ngữ. Quy trình 8 giai đoạn dịch game từ tiếng Anh sang Việt/Thái/Indonesia bằng AI có kiểm soát: Glossary-first Draft A → QA kỹ thuật → Style Audit A+ → QA cuối → Human Review → Final. Kèm checklist severity P0-P3, style guide riêng từng ngôn ngữ đích, và 6 mẫu prompt tái sử dụng.",
-    "description_en": "⚠️ Requires the 'L2M Glossary' skill (same Hub) installed alongside it for terminology data. An 8-stage controlled AI localization pipeline translating game content from English into Vietnamese/Thai/Indonesian: Glossary-first Draft A → Technical QA → Controlled Style Audit A+ → Final QA → Human Review → Final. Includes P0-P3 severity checklists, per-language style guides, and 6 reusable prompt templates.",
-    "version": "2.1",
-    "updated": "2026-07-05",
-    "zip": "skills/ai-localization-pipeline.zip",
-    "size_kb": 27.3
-  }
-];
-const I18N = {
-  "vi": {
-    "heroSub": "Trung tâm báo cáo nội bộ — Analytics & Intelligence cho Lineage2M SEA. Chọn khu vực ở thanh lọc hoặc gõ tìm kiếm để mở báo cáo.",
-    "searchPh": "Tìm báo cáo…",
-    "tabMaster": "Nổi bật",
-    "tabSkills": "Kỹ năng",
-    "tabOther": "Khác",
-    "chipReports": "báo cáo",
-    "chipPinned": "nổi bật",
-    "chipUpdated": "Cập nhật:",
-    "secPinned": "Báo cáo nổi bật",
-    "secSkills": "Tải về & dùng lại",
-    "open": "Mở →",
-    "download": "⬇ Tải skill",
-    "area": "Khu vực",
-    "emptyPinned": "Chưa có báo cáo nổi bật.",
-    "emptyReports": "Không tìm thấy báo cáo.",
-    "emptySkills": "Không tìm thấy skill."
-  },
-  "en": {
-    "heroSub": "Internal report hub — Analytics & Intelligence for Lineage2M SEA. Pick an area from the filter bar or type to search for a report.",
-    "searchPh": "Search reports…",
-    "tabMaster": "Master",
-    "tabSkills": "Skills",
-    "tabOther": "Other",
-    "chipReports": "reports",
-    "chipPinned": "pinned",
-    "chipUpdated": "Updated:",
-    "secPinned": "Pinned Reports",
-    "secSkills": "Download & reuse",
-    "open": "Open →",
-    "download": "⬇ Download skill",
-    "area": "Area",
-    "emptyPinned": "No pinned reports yet.",
-    "emptyReports": "No reports found.",
-    "emptySkills": "No skills found."
-  }
-};
+const AREAS   = [{"id": "all", "label": "Master", "icon": "📌", "num": ""}, {"id": "area10", "label": "GameOps Analytics", "icon": "📊", "num": "10", "scopes": [{"id": "combined", "label": "Combined — All Scopes"}, {"id": "a", "label": "Scope A — Liveops & Forecast"}, {"id": "b", "label": "Scope B — VIP & Communities"}]}, {"id": "area08", "label": "Content Release Analytics", "icon": "📦", "num": "08", "scopes": [{"id": "a", "label": "Scope A — Content Roadmap"}, {"id": "b1", "label": "Scope B1 — Webshop BM"}, {"id": "b2", "label": "Scope B2 — Ingame BM"}]}, {"id": "area04", "label": "Social Listening", "icon": "📡", "num": "04", "scopes": [{"id": "live", "label": "Live Dashboard"}, {"id": "b", "label": "Scope B — Facebook Groups"}, {"id": "d", "label": "Scope D — Purple Chat / Clan Intel"}, {"id": "e", "label": "Scope E — Discord"}]}, {"id": "area13", "label": "PUM Report", "icon": "📋", "num": "13", "scopes": []}, {"id": "area03", "label": "Glossary & Termbase", "icon": "📖", "num": "03", "scopes": [{"id": "a", "label": "Scope A — CTS Manual Audit"}, {"id": "b", "label": "Scope B — Claude Pipeline"}]}, {"id": "area05", "label": "Streamer Research", "icon": "🎮", "num": "05", "scopes": []}, {"id": "other", "label": "Other", "icon": "📁", "num": "", "scopes": []}];
+
 let activeArea = 'all', query = '';
-let lang = 'vi';
-try { lang = localStorage.getItem('hubLang') || 'vi'; } catch (e) { lang = 'vi'; }
-if (!I18N[lang]) lang = 'vi';
-
-function t(key) { return (I18N[lang] && I18N[lang][key]) || I18N.vi[key] || key; }
-
-function applyStaticText() {
-  document.documentElement.lang = lang;
-  const q  = document.getElementById('q');            if (q)  q.placeholder = t('searchPh');
-  const hs = document.getElementById('hero-sub');     if (hs) hs.textContent = t('heroSub');
-  const cr = document.getElementById('chip-reports'); if (cr) cr.textContent = t('chipReports');
-  const cp = document.getElementById('chip-pinned');  if (cp) cp.textContent = t('chipPinned');
-  const cu = document.getElementById('chip-updated'); if (cu) cu.textContent = t('chipUpdated');
-  document.querySelectorAll('.langbtn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
-}
 
 function renderTabs() {
-  const pinCount   = REPORTS.filter(r => r.pinned).length;
-  const otherCount = REPORTS.filter(r => !r.pinned).length;
-  const tabs = [
-    {id:'all', label:`📌 ${t('tabMaster')} (${pinCount})`},
-  ];
-  if (SKILLS.length) tabs.push({id:'skills', label:`🧩 ${t('tabSkills')} (${SKILLS.length})`});
-  tabs.push({id:'other', label:`📁 ${t('tabOther')} (${otherCount})`});
-  document.getElementById('tabs').innerHTML = tabs
-    .map(tb => `<button class="tab${activeArea===tb.id?' active':''}" data-id="${tb.id}">${tb.label}</button>`)
-    .join('');
-  document.querySelectorAll('.tab').forEach(b =>
-    b.addEventListener('click', () => { activeArea = b.dataset.id; render(); }));
+  const counts = {};
+  REPORTS.forEach(r => { counts['all'] = (counts['all']||0)+1; counts[r.area_id] = (counts[r.area_id]||0)+1; });
+  document.getElementById('tabs').innerHTML = AREAS
+    .filter(a => a.id==='all' || counts[a.id])
+    .map(a => {
+      const n   = a.id==='all' ? REPORTS.filter(r=>r.pinned).length : (counts[a.id]||0);
+      const lbl = a.id==='all' ? `${a.icon} Master (${n})` : `${a.icon} ${a.num ? a.num+' · ':''}${a.label}`;
+      return `<button class="tab${activeArea===a.id?' active':''}" data-id="${a.id}">${lbl}</button>`;
+    }).join('');
+  document.querySelectorAll('.tab').forEach(b => b.addEventListener('click',()=>{activeArea=b.dataset.id;render();}));
 }
 
 function getFiltered() {
-  const q    = query.toLowerCase();
-  const pool = activeArea === 'all'
-    ? REPORTS.filter(r => r.pinned)
-    : REPORTS.filter(r => !r.pinned);
-  if (!q) return pool;
-  return pool.filter(r => r.title.toLowerCase().includes(q) || r.filename.toLowerCase().includes(q));
+  const q = query.toLowerCase();
+  return REPORTS.filter(r => {
+    const mA = activeArea==='all' || r.area_id===activeArea;
+    const mQ = !q || r.title.toLowerCase().includes(q) || r.filename.toLowerCase().includes(q);
+    return mA && mQ;
+  });
 }
 
-function scopeTag(label) { const p=label.split('—'); return p.length>1?p[0].trim():''; }
-function scopeTitle(label) { const p=label.split('—'); return p.length>1?p.slice(1).join('—').trim():label; }
+function scopeTag(label) { const p = label.split('—'); return p.length>1 ? p[0].trim() : ''; }
+function scopeTitle(label) { const p = label.split('—'); return p.length>1 ? p.slice(1).join('—').trim() : label; }
 
 function cardHTML(r) {
-  const sb = r.scope_label ? `<span class="scopetag">${scopeTag(r.scope_label)||r.scope_label}</span>` : '';
+  const scopeBadge = r.scope_label
+    ? `<span class="scopetag">${scopeTag(r.scope_label)||r.scope_label}</span>` : '';
   return `<a class="card" href="${r.filename}" target="_blank" rel="noopener">
-    <div class="ct"><div class="ctitle">${r.title}</div>
-      <span class="bdg" style="background:${r.area_bg};color:${r.area_color}">${r.area_icon} ${r.area_num||r.area_label}</span></div>
-    <div class="cf"><span class="cdate">${sb}${r.date_display||'—'}</span><span class="copn">${t('open')}</span></div>
+    <div class="ct">
+      <div class="ctitle">${r.title}</div>
+      <span class="bdg" style="background:${r.area_bg};color:${r.area_color}">${r.area_icon} ${r.area_num||r.area_label}</span>
+    </div>
+    <div class="cf">
+      <span class="cdate">${scopeBadge}${r.date_display||'—'}</span>
+      <span class="copn">Open →</span>
+    </div>
   </a>`;
 }
 
 function pcardHTML(r) {
   return `<a class="pcard" href="${r.filename}" target="_blank" rel="noopener">
     <div class="pcard-icon">${r.area_icon}</div>
-    <div><div class="pcard-title">${r.title}</div>
-      <div class="pcard-area">${r.area_num? t('area')+' '+r.area_num+' · ':''}${r.area_label}${r.scope_label?' · '+scopeTag(r.scope_label):''}</div>
-    </div></a>`;
+    <div>
+      <div class="pcard-title">${r.title}</div>
+      <div class="pcard-area">${r.area_num?'Area '+r.area_num+' · ':''}${r.area_label}${r.scope_label?' · '+scopeTag(r.scope_label):''}</div>
+    </div>
+  </a>`;
 }
 
 function sectionHTML(tag, title, cards) {
   return `<section class="sec">
-    <div class="sec-hdr">${tag?`<span class="sec-num">${tag}</span>`:''}
-      <span class="sec-title">${title}</span><span class="sec-cnt">${cards.length}</span></div>
-    <div class="grid">${cards.map(cardHTML).join('')}</div></section>`;
+    <div class="sec-hdr">
+      ${tag?`<span class="sec-num">${tag}</span>`:''}
+      <span class="sec-title">${title}</span>
+      <span class="sec-cnt">${cards.length}</span>
+    </div>
+    <div class="grid">${cards.map(cardHTML).join('')}</div>
+  </section>`;
 }
 
 function renderMain() {
-  const main = document.getElementById('main');
-  if (activeArea === 'skills') { renderSkills(main); return; }
   const list = getFiltered();
   document.getElementById('vis-count').textContent = list.length;
+  const main = document.getElementById('main');
+
   if (!list.length) {
-    main.innerHTML = `<div class="empty"><div class="ei">${activeArea==='all'?'📌':'🔍'}</div><p>${activeArea==='all'?t('emptyPinned'):t('emptyReports')}</p></div>`;
+    main.innerHTML = `<div class="empty"><div class="ei">🔍</div><p>No reports found.</p></div>`;
     return;
   }
+
+  // Master tab (no query) -> pinned reports only
   if (activeArea === 'all' && !query) {
+    const pinned = REPORTS.filter(r => r.pinned);
+    if (!pinned.length) {
+      main.innerHTML = `<div class="empty"><div class="ei">📌</div><p>No pinned reports yet.</p></div>`;
+      return;
+    }
     main.innerHTML = `<section class="sec">
       <div class="sec-hdr"><span class="sec-num">📌 MASTER</span>
-        <span class="sec-title">${t('secPinned')}</span><span class="sec-cnt">${list.length}</span></div>
-      <div class="pins-row">${list.map(pcardHTML).join('')}</div></section>`;
+        <span class="sec-title">Pinned Reports</span>
+        <span class="sec-cnt">${pinned.length}</span></div>
+      <div class="pins-row">${pinned.map(pcardHTML).join('')}</div>
+    </section>`;
     return;
   }
-  main.innerHTML = `<div class="grid">${list.map(cardHTML).join('')}</div>`;
-}
 
-function skillCardHTML(s) {
-  const desc = (lang === 'en' && s.description_en) ? s.description_en : s.description;
-  return `<div class="scard">
-    <div class="scard-top"><div class="scard-icon">${s.icon||'🧩'}</div>
-      <div><div class="scard-title">${s.title}</div>
-        <div class="scard-meta">${t('area')} ${s.area} · ${s.area_label} · v${s.version} · ${s.updated}</div></div></div>
-    <div class="scard-desc">${desc||''}</div>
-    <div class="scard-foot"><span class="scard-size">${s.size_kb?s.size_kb+' KB':''}</span>
-      <a class="dl" href="${s.zip}" download>${t('download')}</a></div>
-  </div>`;
-}
+  const area = AREAS.find(a => a.id === activeArea);
 
-function renderSkills(main) {
-  const q = query.toLowerCase();
-  const list = q ? SKILLS.filter(s => (s.title+' '+s.description+' '+(s.description_en||'')+' '+s.area_label).toLowerCase().includes(q)) : SKILLS;
-  document.getElementById('vis-count').textContent = list.length;
-  if (!list.length) {
-    main.innerHTML = `<div class="empty"><div class="ei">🧩</div><p>${t('emptySkills')}</p></div>`;
+  // Search, or area without scopes -> flat grid
+  if (query || !area || !area.scopes || !area.scopes.length) {
+    main.innerHTML = `<div class="grid">${list.map(cardHTML).join('')}</div>`;
     return;
   }
-  main.innerHTML = `<section class="sec">
-    <div class="sec-hdr"><span class="sec-num">🧩 SKILLS</span>
-      <span class="sec-title">${t('secSkills')}</span><span class="sec-cnt">${list.length}</span></div>
-    <div class="grid">${list.map(skillCardHTML).join('')}</div></section>`;
+
+  // Area with scopes -> scope sub-sections
+  const byScope = {};
+  list.forEach(r => { const k = r.scope_id || '_'; (byScope[k] = byScope[k] || []).push(r); });
+  let html = area.scopes.map(s => s.id).filter(id => byScope[id] && byScope[id].length)
+    .map(id => { const s = area.scopes.find(x => x.id === id);
+      return sectionHTML(scopeTag(s.label), scopeTitle(s.label), byScope[id]); }).join('');
+  if (byScope['_'] && byScope['_'].length) html += sectionHTML('•', 'Khác / Ungrouped', byScope['_']);
+  main.innerHTML = html;
 }
 
 function render() { renderTabs(); renderMain(); }
 
-applyStaticText();
 document.getElementById('q').addEventListener('input', e => { query=e.target.value.trim(); render(); });
-document.querySelectorAll('.langbtn').forEach(b => b.addEventListener('click', () => {
-  lang = b.dataset.lang;
-  try { localStorage.setItem('hubLang', lang); } catch (e) {}
-  applyStaticText(); render();
-}));
 render();
 </script>
 </body>
