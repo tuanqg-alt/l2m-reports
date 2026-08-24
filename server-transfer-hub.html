@@ -161,11 +161,49 @@
   /* Footer */
   footer { text-align: center; color: var(--muted); font-size: 11px; padding: 20px 0 32px; border-top: 1px solid var(--border); }
 
+  /* VIP-basis (đơn vị đo khác) */
+  .basis-warn { font-size: 12.5px; line-height: 1.7; color: var(--text); margin-bottom: 16px;
+                padding: 12px 14px; background: rgba(238,85,36,.07);
+                border-left: 3px solid var(--accent); border-radius: 6px; }
+  .vip-card { border-left: 3px solid var(--accent); }
+  .tag-basis { display: inline-block; margin-left: 8px; font-size: 10px; font-weight: 700;
+               letter-spacing: .04em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px;
+               background: rgba(238,85,36,.16); color: var(--accent); vertical-align: middle; }
+  .tag-official { display: inline-block; margin-left: 6px; font-size: 10px; font-weight: 700;
+                  letter-spacing: .04em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px;
+                  background: rgba(52,211,153,.14); color: var(--green); vertical-align: middle; }
+  .castle-box { margin: 4px 0 12px; padding: 10px 12px; background: rgba(255,255,255,.03);
+                border: 1px solid var(--border); border-radius: 6px; }
+  .castle-title { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .castle-grid { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); }
+  .castle-grid b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .no-report { font-size: 11.5px; color: var(--muted); padding: 8px 10px; border-radius: 6px;
+               background: rgba(255,255,255,.03); border: 1px dashed var(--border); line-height: 1.6; }
+  .no-report code { font-size: 10.5px; }
+  .caveat-box { margin-top: 12px; padding: 10px 12px; border-radius: 6px;
+                background: rgba(245,158,11,.07); border-left: 3px solid #F59E0B; }
+  .caveat-title { font-size: 11px; font-weight: 700; color: #F59E0B; margin-bottom: 6px; }
+  .caveat-box ul { margin: 0; padding-left: 16px; font-size: 11.5px; color: var(--muted); line-height: 1.75; }
+
+  /* Đợt chưa có số */
+  .gap-box { border: 1px dashed var(--border); border-radius: 8px; padding: 14px 16px; }
+  .gap-row { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline;
+             padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .gap-row:last-of-type { border-bottom: none; }
+  .gap-date { font-weight: 700; font-size: 13px; color: var(--text);
+              font-variant-numeric: tabular-nums; min-width: 96px; }
+  .gap-note { font-size: 12px; color: var(--muted); flex: 1; min-width: 200px; }
+  .gap-foot { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);
+              font-size: 11.5px; color: var(--muted); }
+
   @media (max-width: 720px) {
     .hdr, .main { padding-left: 20px; padding-right: 20px; }
     .hdr-stats { display: none; }
     .event-card { flex-direction: column; gap: 12px; }
     .xevent-grid { grid-template-columns: 1fr; }
+    .castle-grid { flex-direction: column; gap: 4px; }
+    .gap-date { min-width: 0; }
+    .basis-warn { font-size: 12px; }
   }
 </style>
 </head>
@@ -183,8 +221,8 @@
     </div>
     <div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px;">
       <div class="hdr-stats">
-        <div class="hstat"><div class="n" id="total-events">2</div><div class="l">Đợt Transfer</div></div>
-        <div class="hstat"><div class="n" id="total-clans-moved">244</div><div class="l">Clan Di Chuyển</div></div>
+        <div class="hstat"><div class="n" id="total-events">3</div><div class="l">Đợt Có Số Liệu</div></div>
+        <div class="hstat"><div class="n" id="total-clans-moved">244</div><div class="l">Clan Di Chuyển <span style="text-transform:none">(chỉ 2 đợt đo theo clan)</span></div></div>
       </div>
       <a href="index.html" class="back-link">← Report Hub</a>
     </div>
@@ -196,8 +234,12 @@
   <!-- How-to banner -->
   <div class="how-to">
     <strong>📋 Hướng dẫn thêm đợt mới:</strong> Mỗi khi có đợt Server Transfer mới, member tạo report riêng đặt tên theo format
-    <code>YYYY-MM-DD_server-transfer-report.html</code> → giao TuanQG → TuanQG drop vào <code>HTML/</code> và thêm 1 entry
-    vào mảng <code>EVENTS</code> trong file này → Claude rebuild <code>index.html</code>.
+    <code>YYYY-MM-DD_server-transfer-report.html</code> → giao TuanQG → TuanQG drop vào <code>HTML/</code> → thêm 1 entry
+    vào <strong>đúng mảng</strong> trong file này → Claude rebuild <code>index.html</code>.<br>
+    <strong style="color:var(--accent)">⚠️ Chọn mảng theo CÁCH ĐO, không phải theo thứ tự thời gian:</strong>
+    report có số <b>clan</b> di chuyển (nguồn Guild Info trước/sau) → <code>EVENTS</code>.
+    Report chỉ có <b>tài khoản VIP</b> (nguồn VIP Server Transfer Check) → <code>EVENTS_VIP</code>.
+    Nhét sai mảng ⇒ ô "Clan Di Chuyển" và "Phân tích xuyên đợt" sẽ cộng lẫn 2 đơn vị, ra số vô nghĩa mà <b>không báo lỗi</b>.
   </div>
 
   <!-- Timeline -->
@@ -210,16 +252,51 @@
     <div class="events-list" id="events-list"></div>
   </section>
 
+  <!-- VIP-basis events -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <span class="sec-icon">👤</span>
+      <span class="sec-title">Đợt đo theo tài khoản VIP</span>
+      <span class="sec-sub">Khác đơn vị với timeline trên — không so trực tiếp</span>
+    </div>
+    <div class="basis-warn">
+      <strong>⚠️ Hai cách đo khác nhau, đừng so trực tiếp.</strong>
+      Timeline phía trên đếm theo <b>clan</b> (nguồn: snapshot Guild Info trước/sau).
+      Mục này đếm theo <b>tài khoản VIP</b> (nguồn: VIP Server Transfer Check).
+      Một clan chuyển đi có thể mang theo nhiều tài khoản, và một tài khoản có thể chuyển nhiều lượt
+      ⇒ <b>không cộng chung, không tính tỷ lệ chéo</b>. Vì vậy đợt dưới đây <b>không</b> có mặt trong
+      "Phân tích xuyên đợt" và <b>không</b> cộng vào ô "Clan Di Chuyển" ở đầu trang.
+    </div>
+    <div class="events-list" id="events-vip-list"></div>
+  </section>
+
   <!-- Cross-event analysis -->
   <section class="sec">
     <div class="sec-hdr">
       <span class="sec-icon">📊</span>
       <span class="sec-title">Phân tích xuyên đợt</span>
-      <span class="sec-sub">Cập nhật tự động khi thêm đợt mới vào EVENTS[]</span>
+      <span class="sec-sub">Chỉ gộp các đợt đo theo CLAN (EVENTS[])</span>
     </div>
     <div class="xevent-grid" id="xevent-grid"></div>
     <div class="note">
-      📈 Hiện có 2 đợt transfer (May & June 2026). Xu hướng nổi bật: Teon từ world hút mạnh nhất (đợt T5) chuyển thành nơi bị rút top clan nhiều nhất (đợt T6) — dòng whale clan dịch sang Bartz & Kain.
+      📈 Phần này gộp <strong><span id="xevent-scope">2</span> đợt đo theo clan</strong> (May & June 2026);
+      đợt 02–06/08/2026 đo theo tài khoản VIP nên <strong>không</strong> được cộng vào đây.
+      Xu hướng nổi bật: Teon từ world hút mạnh nhất (đợt T5) chuyển thành nơi bị rút top clan nhiều nhất (đợt T6) — dòng whale clan dịch sang Bartz &amp; Kain.
+      Sang đợt 02–06/08, dòng tài khoản VIP <strong>đảo chiều lần nữa</strong>: Teon +92 trong khi Bartz −58 và Kain −54.
+    </div>
+  </section>
+
+  <!-- Đợt chưa có số liệu -->
+  <section class="sec">
+    <div class="sec-hdr">
+      <span class="sec-icon">🕳️</span>
+      <span class="sec-title">Đợt đã xảy ra nhưng hub chưa có số</span>
+      <span class="sec-sub">Ghi lại để không quên — chờ tìm lại snapshot nguồn</span>
+    </div>
+    <div class="gap-box">
+      <div class="gap-row"><span class="gap-date">26/11/2025</span><span class="gap-note">Đợt transfer đầu tiên — chưa có snapshot clan trước/sau trong workspace.</span></div>
+      <div class="gap-row"><span class="gap-date">25/03/2026</span><span class="gap-note">Đợt thứ 2 — chưa có snapshot clan trước/sau trong workspace.</span></div>
+      <div class="gap-foot">Tổng cộng L2M VN đã có <strong>5 đợt</strong> transfer; hub hiện dựng được số cho 3 đợt. Task đi tìm data: <code>T_SVTRANSFER_BACKFILL_1_2</code>.</div>
     </div>
   </section>
 
@@ -321,6 +398,86 @@ const EVENTS = [
 
 
 // =====================================================
+// EVENTS_VIP — ĐỢT ĐO THEO TÀI KHOẢN VIP (khác đơn vị với EVENTS[])
+// =====================================================
+// ⚠️ ĐỌC TRƯỚC KHI SỬA: mảng này CỐ TÌNH tách khỏi EVENTS[].
+// EVENTS[]     đếm theo CLAN  (nguồn: Guild Info snapshot trước/sau)
+// EVENTS_VIP[] đếm theo TÀI KHOẢN VIP (nguồn: VIP Server Transfer Check)
+// Hai đơn vị KHÔNG cộng chung, KHÔNG so trực tiếp. Vì vậy EVENTS_VIP
+// KHÔNG tham gia "Phân tích xuyên đợt" và KHÔNG cộng vào "Clan Di Chuyển".
+// Đợt nào về sau có đủ snapshot clan → dựng lại theo EVENTS[] rồi chuyển nhà.
+const EVENTS_VIP = [
+  {
+    id:           "2026-08",
+    label:        "Aug 2026",
+    month:        "AUG",
+    year:         "2026",
+    // ⚠️ NGUỒN CÓ 2 CÁCH GHI CỬA SỔ, cả hai đều giữ, KHÔNG tự chọn 1:
+    //    - Tiêu đề file nguồn:            "02–05/08/2026"
+    //    - TuanQG xác nhận 17/08/2026:    "~02–06/08/2026" (có dấu ~)
+    //    Data chỉ phủ tới 05/08 ⇒ ngày 06/08 CHƯA ĐO.
+    transfer_date:"~02–06/08/2026",
+    transfer_date_src:"tiêu đề file nguồn ghi 02–05/08 · TuanQG xác nhận ~02–06/08",
+    basis:        "vip-account",
+    official:     true,   // TuanQG xác nhận 17/08/2026 — dù trang tin game KHÔNG đăng đợt này
+    snapshots:    "02/08 · 03/08 · 05/08/2026",
+    report_file:  null,   // chưa mirror lên Pages — xem note cuối card
+    latest:       true,
+
+    // Tầm quan sát + số lượt (đo trên top 500 VIP theo doanh thu tại mỗi mốc)
+    // ⚠️ 624 = HỢP của top-500 ở 3 mốc, do Claude tự tính. Báo cáo nguồn có khái
+    //    niệm "cohort" RIÊNG = 785 (tập khớp của mốc 02/08) — ĐỪNG lẫn 2 số này.
+    cohort_accounts:      624,
+    cohort_note:          "hợp của top-500 ở 3 mốc (báo cáo nguồn gọi cohort = 785, khác định nghĩa)",
+    accounts_moved:       404,
+    moves_total:          510,
+    inter_world_moves:    402,
+    intra_world_moves:    108,
+    clan_changed_accounts:297,
+
+    // Net dòng tài khoản theo world (world đầu → world cuối của người CÓ chuyển)
+    worlds: [
+      { name: "Teon",  acc_delta: +92 },
+      { name: "Leona", acc_delta: +20 },
+      { name: "Erica", acc_delta: +10 },
+      { name: "Aria",  acc_delta: -10 },
+      { name: "Kain",  acc_delta: -54 },
+      { name: "Bartz", acc_delta: -58 },
+    ],
+
+    // Castle Siege 02/08 — phần EVENTS[] không có
+    // ⚠️ sieged = 62 LÂU ĐÀI (không phải server) — 35 held + 27 flip = 62, +58 none = 120.
+    //    62 lâu đài đó nằm ở 31/60 server.
+    castle: {
+      castles: 120, owned: 116, vacant: 4,
+      sieged: 62, sieged_servers: 31, servers: 60,
+      flip: 27, flip_from_vacant: 15, flip_takeover: 12, held: 35, none: 58,
+      flip_with_new_vip: 12, flip_new_vip_from_vacant: 4,
+      movers_in_holder: 103, castles_with_mover: 21,
+    },
+
+    insights: [
+      "404/624 tài khoản VIP trong tầm quan sát đã chuyển server ít nhất 1 lần, tạo 510 lượt chuyển qua 3 mốc (402 cross-world, 108 intra-world) — nhiều người chuyển nhiều lần, số lượt lớn hơn số người.",
+      "Teon là điểm đến mạnh nhất (+92 tài khoản), Bartz (−58) và Kain (−54) mất nhiều nhất — đảo chiều lần nữa so với đợt 24/06 (khi Bartz & Kain là nơi hút top clan).",
+      "297 tài khoản đổi clan trong cùng cửa sổ ⇒ đợt này gắn chặt với việc tái tổ chức lực lượng, không chỉ là đổi chỗ ở.",
+      "Castle Siege 02/08: 62/120 lâu đài có công thành (nằm ở 31/60 server) — 35 giữ được, 27 đổi chủ. Nhưng 15/27 lần đổi chủ là chiếm lâu đài đang TRỐNG, chỉ 12 là đánh chiếm thật từ clan khác — đừng đọc 27 như 27 trận thắng.",
+      "103 mover nằm trong clan đang giữ lâu đài và 12/27 lần đổi chủ có VIP mới chuyển đến trong clan thắng (4/12 trong đó là chiếm lâu đài trống) ⇒ có dòng \"lính đánh thuê\" chuyển server trước công thành 02/08.",
+      "Cơ cấu người chuyển: 262 tài khoản tier G (>$20K) + 142 tier F ($4K–20K) = 404. Theo thị trường: TH 175 · VN 100 · SG 56 · ID 40 · MY 15 · PH 3 · nhãn \"Other\" 15 = 404. Lưu ý \"Other\" là MỘT nhãn thật trong data, không phải \"phần còn lại\".",
+    ],
+
+    caveats: [
+      "Tầm quan sát = top 500 VIP theo doanh thu TẠI MỖI MỐC, không phải toàn bộ người chơi ⇒ mọi số ở đây là sàn dưới, không phải tổng thật của đợt.",
+      "624 là con số Claude tự tính (hợp của top-500 ở 3 mốc). Báo cáo nguồn có khái niệm \"cohort\" riêng = 785 (tập khớp mốc 02/08) — hai số này KHÁC định nghĩa, đừng dùng lẫn.",
+      "Mốc 02/08 có base khớp 785 dòng, còn 03/08 và 05/08 khớp ~9.993 dòng — hai base khác nhau, nên đừng so tỷ lệ % giữa các mốc.",
+      "Không có số clan di chuyển / top200 clan như 2 đợt trước ⇒ KHÔNG cộng vào tổng clan của hub.",
+      "Thiếu 2 ngày trong cửa sổ: không có snapshot 04/08 (nhảy 03/08 → 05/08) và không có 06/08 — lượt chuyển 2 ngày đó không đo được.",
+      "Cửa sổ đợt: tiêu đề file nguồn ghi 02–05/08, còn TuanQG xác nhận ~02–06/08. Giữ cả hai cách ghi, chưa có nguồn chính thức chốt ngày kết thúc (trang tin game không đăng đợt này).",
+    ],
+  },
+];
+
+
+// =====================================================
 // RENDER
 // =====================================================
 
@@ -374,6 +531,72 @@ function renderEvents() {
   `;
 }
 
+function renderVipEvents() {
+  const list = document.getElementById('events-vip-list');
+  if (!list) return;
+  list.innerHTML = EVENTS_VIP.slice().reverse().map(e => `
+    <div class="event-card vip-card${e.latest ? ' latest' : ''}">
+      <div class="event-badge">
+        <span class="month">${e.month}</span>
+        <span class="year">${e.year}</span>
+      </div>
+      <div class="event-body">
+        <div class="event-title">
+          Server Transfer — ${e.label}
+          <span class="tag-basis">đo theo TÀI KHOẢN VIP</span>
+          ${e.official ? '<span class="tag-official">chính thức</span>' : ''}
+        </div>
+        <div class="event-meta">
+          Cửa sổ transfer: <strong>${e.transfer_date}</strong> &nbsp;·&nbsp;
+          Mốc quan sát: ${e.snapshots}
+          ${e.transfer_date_src ? `<br><span style="font-size:11px">↳ ${e.transfer_date_src}</span>` : ''}
+        </div>
+        <div class="event-stats">
+          <div class="estat"><span class="ev">${e.accounts_moved}</span><span class="el">tài khoản đã chuyển</span></div>
+          <div class="estat"><span class="ev">${e.cohort_accounts}</span><span class="el">acc trong tầm quan sát</span></div>
+          <div class="estat"><span class="ev">${e.moves_total}</span><span class="el">tổng lượt chuyển</span></div>
+          <div class="estat"><span class="ev">${e.inter_world_moves}</span><span class="el">lượt inter-world</span></div>
+          <div class="estat"><span class="ev">${e.intra_world_moves}</span><span class="el">lượt intra-world</span></div>
+          <div class="estat"><span class="ev">${e.clan_changed_accounts}</span><span class="el">tài khoản đổi clan</span></div>
+        </div>
+        <div class="world-gains" style="margin-bottom:12px">
+          ${e.worlds.map(w => {
+            const cls = w.acc_delta >= 0 ? 'up' : 'down';
+            const sign = w.acc_delta >= 0 ? '▲' : '▼';
+            return `<span class="wgain ${cls} w-${w.name}">${w.name} ${sign}${Math.abs(w.acc_delta)} acc</span>`;
+          }).join('')}
+        </div>
+        ${e.castle ? `
+        <div class="castle-box">
+          <div class="castle-title">🏰 Castle Siege 02/08 — phần các đợt trước không có</div>
+          <div class="castle-grid">
+            <span><b>${e.castle.castles}</b> lâu đài (${e.castle.owned} có chủ · ${e.castle.vacant} trống)</span>
+            <span><b>${e.castle.sieged}</b> lâu đài có công thành — ở ${e.castle.sieged_servers}/${e.castle.servers} server</span>
+            <span><b>${e.castle.held}</b> giữ được</span>
+            <span><b>${e.castle.none}</b> không đánh</span>
+            <span><b>${e.castle.flip}</b> đổi chủ — <b>${e.castle.flip_from_vacant}</b> từ lâu đài trống, chỉ <b>${e.castle.flip_takeover}</b> đánh chiếm thật</span>
+            <span><b>${e.castle.flip_with_new_vip}</b> đổi chủ có VIP mới về (${e.castle.flip_new_vip_from_vacant} trong đó từ lâu đài trống)</span>
+            <span><b>${e.castle.movers_in_holder}</b> mover trong clan giữ lâu đài</span>
+            <span><b>${e.castle.castles_with_mover}</b> lâu đài có mover trong clan chủ</span>
+          </div>
+        </div>` : ''}
+        ${e.report_file
+          ? `<div class="event-actions"><a class="btn-open" href="${e.report_file}" target="_blank">Xem báo cáo chi tiết →</a></div>`
+          : `<div class="no-report">📄 Bản chi tiết chưa mirror lên Pages — đang ở <code>10_GameOps-Analytics/outputs/</code>. Muốn xem online thì cần TuanQG duyệt whitelist <code>HTML/WHITELIST.md</code>.</div>`}
+        ${e.insights && e.insights.length ? `
+        <ul style="margin-top:12px; padding-left:16px; font-size:12px; color:var(--muted); line-height:1.8;">
+          ${e.insights.map(i => `<li>${i}</li>`).join('')}
+        </ul>` : ''}
+        ${e.caveats && e.caveats.length ? `
+        <div class="caveat-box">
+          <div class="caveat-title">⚠️ Đọc số này cần biết</div>
+          <ul>${e.caveats.map(c => `<li>${c}</li>`).join('')}</ul>
+        </div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
 function renderCrossEvent() {
   const grid = document.getElementById('xevent-grid');
 
@@ -424,11 +647,16 @@ function renderCrossEvent() {
   `;
 
   // Update header counts
-  document.getElementById('total-events').textContent = EVENTS.length;
+  // ⚠️ "Đợt Transfer" đếm CẢ 2 mảng (số đợt là số đợt, không phụ thuộc đơn vị đo).
+  //    "Clan Di Chuyển" CHỈ cộng EVENTS[] — EVENTS_VIP đếm tài khoản, không cộng vào được.
+  document.getElementById('total-events').textContent = EVENTS.length + EVENTS_VIP.length;
   document.getElementById('total-clans-moved').textContent = totals.moved;
+  const xn = document.getElementById('xevent-scope');
+  if (xn) xn.textContent = EVENTS.length;
 }
 
 renderEvents();
+renderVipEvents();
 renderCrossEvent();
 </script>
 
