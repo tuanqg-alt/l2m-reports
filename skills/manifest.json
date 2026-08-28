@@ -44,11 +44,11 @@
     "area": "_framework",
     "area_label": "Framework — dùng chéo mọi area",
     "icon": "✍️",
-    "description": "Nhận một đoạn văn tiếng Việt do AI viết và gọt lại cho tự nhiên, cô đọng, giữ nguyên 100% nội dung. Có script chấm điểm 'mùi AI' 0-100 để đo trước/sau, không nói cảm tính. Kèm 10 luật viết + bảng 8 nhóm cụm từ lộ AI và bản thay thế. Pilot tiếng Việt, khung đã chừa chỗ cắm thêm ngôn ngữ khác.",
+    "description": "Nhận một đoạn văn tiếng Việt do AI viết và gọt lại cho tự nhiên, cô đọng, giữ nguyên 100% nội dung. Có script chấm điểm 'mùi AI' 0-100 để đo trước/sau, không nói cảm tính. Kèm 10 luật viết + bảng 8 nhóm cụm từ lộ AI và bản thay thế. Kèm 22 ca kiểm chứng để mỗi lần chỉnh pattern là biết ngay có làm hỏng chỗ khác không. Pilot tiếng Việt, khung đã chừa chỗ cắm thêm ngôn ngữ khác.",
     "description_en": "Takes Vietnamese text written by AI and rewrites it to read naturally and concisely while keeping 100% of the content. Ships with a 0-100 'AI-ness' scorer so before/after is measured, not guessed, plus 10 writing rules and a table of 8 AI-tell phrase groups with replacements. Vietnamese pilot; the structure is ready for more languages.",
-    "version": "1.0",
+    "version": "1.1",
     "updated": "2026-08-28",
     "zip": "skills/wording-vn.zip",
-    "size_kb": 19.5
+    "size_kb": 25.7
   }
 ]
