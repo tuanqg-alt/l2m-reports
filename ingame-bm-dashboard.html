@@ -1,0 +1,624 @@
+<!DOCTYPE html><html lang="vi"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>L2M Ingame BM — Diamond Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --brand-dark:#0F1419;--brand-accent:#EE5524;--brand-accent-hover:#D44A1F;--brand-accent-soft:#FFE8DD;
+ --neutral-900:#0F1419;--neutral-800:#1A1D24;--neutral-700:#2A2E37;--neutral-600:#4A4F5A;
+ --neutral-500:#6B7280;--neutral-400:#9CA3AF;--neutral-300:#D1D5DB;--neutral-200:#E5E7EB;
+ --neutral-100:#F3F4F6;--neutral-50:#F9FAFB;--diamond:#3FB6D4;
+ --color-success:#10B981;--color-warning:#F59E0B;--color-error:#EF4444;--color-info:#3B82F6;
+ --font-heading:'Sora',system-ui,sans-serif;--font-body:'Inter',system-ui,sans-serif;--font-mono:'JetBrains Mono',Consolas,monospace;
+}
+body{font-family:var(--font-body);color:var(--neutral-800);background:var(--neutral-100);line-height:1.6}
+.wrap{max-width:1320px;margin:0 auto;padding:0 22px 60px}
+.hero{background:var(--brand-dark);color:#fff;padding:34px 0 30px}
+.hero .wrap{padding-top:0;padding-bottom:0}
+.eyebrow{font-family:var(--font-mono);color:var(--brand-accent);text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:500}
+.ncv-brand-mark{font-family:var(--font-heading);font-weight:800;letter-spacing:.02em;font-size:15px}
+.ncv-brand-mark .v{color:var(--brand-accent)}
+.ncv-brand-mark .games{color:#fff;margin-left:4px;font-weight:600;letter-spacing:.16em;font-size:12px}
+h1{font-family:var(--font-heading);font-weight:800;font-size:30px;margin:10px 0 6px;letter-spacing:-.01em}
+.sub{color:var(--neutral-300);font-size:14px;max-width:820px}
+.banner{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:8px;padding:7px 13px;font-size:12.5px;color:#E5E7EB}
+.chip b{color:#fff}.chip .dia{color:var(--diamond);font-weight:700}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 22px;border-bottom:2px solid var(--neutral-200)}
+.tab{padding:9px 18px;border:none;background:none;font-family:var(--font-body);font-weight:600;font-size:13.5px;color:var(--neutral-500);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;border-radius:6px 6px 0 0}
+.tab:hover{color:var(--neutral-800);background:var(--neutral-50)}
+.tab.active{color:var(--brand-accent);border-bottom-color:var(--brand-accent)}
+.panel{display:none}.panel.active{display:block}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:#fff;border:1px solid var(--neutral-200);border-radius:12px;padding:16px 18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.kpi .lab{font-size:11.5px;color:var(--neutral-500);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.kpi .val{font-family:var(--font-heading);font-weight:800;font-size:25px;margin-top:5px;color:var(--neutral-900)}
+.kpi .val.dia{color:var(--diamond)}
+.kpi .note{font-size:11.5px;color:var(--neutral-500);margin-top:3px}
+.kpi .delta{font-size:13px;font-weight:700}
+.kpi .delta.up{color:var(--color-success)}.kpi .delta.down{color:var(--color-error)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+@media(max-width:980px){.grid2{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--neutral-200);border-radius:12px;padding:18px 20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card h3{font-family:var(--font-heading);font-size:15px;font-weight:700;margin-bottom:4px;color:var(--neutral-900)}
+.card .desc{font-size:12px;color:var(--neutral-500);margin-bottom:14px}
+.chartbox{position:relative;height:300px}
+.chartbox.tall{height:400px}
+.toggle{display:inline-flex;gap:0;border:1px solid var(--neutral-200);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.tg{padding:6px 14px;border:none;background:#fff;font-family:var(--font-body);font-weight:600;font-size:12.5px;color:var(--neutral-500);cursor:pointer}
+.tg+.tg{border-left:1px solid var(--neutral-200)}
+.tg:hover{background:var(--neutral-50)}
+.tg.active{background:var(--brand-dark);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:var(--brand-dark);color:#fff;text-align:left;padding:9px 11px;font-weight:600;font-size:12px}
+thead th.r{text-align:right}
+tbody td{padding:8px 11px;border-bottom:1px solid var(--neutral-100)}
+tbody td.r{text-align:right;font-family:var(--font-mono);font-size:12.5px}
+tbody tr:nth-child(even){background:var(--neutral-50)}
+tbody tr:hover{background:var(--brand-accent-soft)}
+.catdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.bar{height:7px;border-radius:4px;background:var(--neutral-200);overflow:hidden;margin-top:3px}
+.bar>i{display:block;height:100%;border-radius:4px}
+.modedef{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 14px;padding:11px 14px;background:var(--neutral-50);border:1px solid var(--neutral-200);border-radius:8px}
+.modedef span{font-size:11.8px;color:var(--neutral-600);line-height:1.45;flex:1 1 240px}
+.modedef b{color:var(--neutral-800)}
+.modedef .sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.note-box{background:var(--neutral-50);border-left:3px solid var(--diamond);border-radius:0 8px 8px 0;padding:11px 15px;font-size:12.5px;color:var(--neutral-700);margin-bottom:22px}
+.audit{background:#fff;border:1px solid var(--neutral-200);border-radius:12px;padding:16px 20px;margin-bottom:24px}
+.audit h3{font-family:var(--font-heading);font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.audit .ov-badge{font-size:11.5px;font-weight:700;padding:3px 11px;border-radius:20px}
+.audit .ov-badge.ok{background:#DCFCE7;color:#166534}.audit .ov-badge.bad{background:#FEE2E2;color:#991B1B}
+.audit table{font-size:12.5px}.audit thead th{font-size:11px}
+.abadge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:6px;font-family:var(--font-mono)}
+.abadge.PASS{background:#DCFCE7;color:#166534}.abadge.WARN{background:#FEF3C7;color:#92400E}.abadge.FAIL{background:#FEE2E2;color:#991B1B}
+.audit .det{color:var(--neutral-600);font-size:12px}
+footer{background:var(--brand-dark);color:var(--neutral-400);font-size:12px;padding:22px 0;margin-top:50px}
+footer .wrap{padding-bottom:0}footer b{color:#fff}footer code{color:#9CA3AF}
+</style></head><body>
+
+<div class="hero"><div class="wrap">
+ <div style="display:flex;justify-content:space-between;align-items:center">
+   <span class="eyebrow">L2M VN/SA · Ingame Business Model</span>
+   <span class="ncv-brand-mark">NC<span class="v">V</span><span class="games">GAMES</span></span>
+ </div>
+ <h1>Ingame BM — Diamond Spending Dashboard</h1>
+ <div class="sub">Performance của các gói tiêu Kim Cương (Diamond) trong game Lineage2M. Đơn vị mọi chỉ số doanh thu = <b style="color:#3FB6D4">Diamond tiêu ra</b> (không quy ra tiền thật).</div>
+ <div class="banner">
+   <span class="chip">📅 Data: <b>1/1 (Thu) → 9/6 (Sun) 2026</b></span>
+   <span class="chip">🔄 Tạo lúc: <b>2026-09-07 10:36</b></span>
+   <span class="chip">💎 Tổng Diamond: <span class="dia">84,418,040</span></span>
+   <span class="chip">📦 <b>9</b> tháng · <b>45</b> goods</span>
+   <span class="chip">🔍 Audit: <b style="color:#86EFAC">✅ PASS</b></span>
+ </div>
+</div></div>
+<div class="wrap">
+<div class="tabs"><button class="tab active" onclick="actTab(this,'p-ov')">Tổng quan</button><button class="tab" onclick="actTab(this,'p-m1')">Tháng 1</button><button class="tab" onclick="actTab(this,'p-m2')">Tháng 2</button><button class="tab" onclick="actTab(this,'p-m3')">Tháng 3</button><button class="tab" onclick="actTab(this,'p-m4')">Tháng 4</button><button class="tab" onclick="actTab(this,'p-m5')">Tháng 5</button><button class="tab" onclick="actTab(this,'p-m6')">Tháng 6</button><button class="tab" onclick="actTab(this,'p-m7')">Tháng 7</button><button class="tab" onclick="actTab(this,'p-m8')">Tháng 8</button><button class="tab" onclick="actTab(this,'p-m9')">Tháng 9</button></div>
+<div id="p-ov" class="panel active">
+ <div class="audit"><h3>🔍 Data Audit <span class="ov-badge ok">✅ ALL PASS — report OK</span></h3>
+        <table><thead><tr><th>#</th><th>Kiểm tra</th><th>KQ</th><th>Chi tiết</th></tr></thead>
+        <tbody><tr><td><b>A1</b></td><td>Reconciliation (agg = raw)</td><td><span class="abadge PASS">PASS</span></td><td class="det">Σ tháng = Σ category = Σ goods = raw = 84,418,040 💎</td></tr><tr><td><b>A2</b></td><td>Coverage (đủ ngày mỗi tháng)</td><td><span class="abadge PASS">PASS</span></td><td class="det">T1:31/31 · T2:28/28 · T3:31/31 · T4:30/30 · T5:31/31 · T6:30/30 · T7:31/31 · T8:31/31 · T9:6/30 (tháng cuối có thể là partial)</td></tr><tr><td><b>A3</b></td><td>Decomposition (daily=cat=goods)</td><td><span class="abadge PASS">PASS</span></td><td class="det">9 tháng: tổng theo ngày / category / goods khớp tuyệt đối</td></tr><tr><td><b>A4</b></td><td>Data quality (parse/giá trị)</td><td><span class="abadge WARN">WARN</span></td><td class="det">1195 row Country/Server≠Total</td></tr><tr><td><b>A5</b></td><td>Referential (goods↔category)</td><td><span class="abadge PASS">PASS</span></td><td class="det">45 goods · 0-diamond cat: none (chỉ Staris' Sanctum 0💎 — đúng kỳ vọng)</td></tr></tbody></table></div>
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Tổng Diamond tiêu</div><div class="val dia">84,418,040</div><div class="note">9 tháng</div></div>
+  <div class="kpi"><div class="lab">Tổng lượt mua</div><div class="val">62,354</div><div class="note">Number of Purchases</div></div>
+  <div class="kpi"><div class="lab">Tháng cao nhất</div><div class="val">Tháng 1</div><div class="note">13,585,120 💎</div></div>
+  <div class="kpi"><div class="lab">TB Diamond / tháng</div><div class="val dia">9,379,782</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Diamond tiêu theo tháng</h3><div class="desc">Tổng Diamond mỗi tháng</div><div class="chartbox"><canvas id="ov-mbar"></canvas></div></div>
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Toàn bộ data (9 tháng)</div><div class="chartbox"><canvas id="ov-donut"></canvas></div></div>
+ </div>
+ <div class="card"><h3>Bảng tổng hợp theo tháng</h3>
+  <table><thead><tr><th>Tháng</th><th class="r">Diamond</th><th class="r">MoM</th><th class="r">Lượt mua</th><th class="r">Số ngày</th><th>Top Category</th></tr></thead>
+  <tbody><tr><td><b>Tháng 1</b></td><td class="r">13,585,120</td><td class="r"></td>
+        <td class="r">11,539</td><td class="r">31</td>
+        <td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td></tr><tr><td><b>Tháng 2</b></td><td class="r">11,773,280</td><td class="r"><span class="delta down">▼13%</span></td>
+        <td class="r">9,959</td><td class="r">28</td>
+        <td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td></tr><tr><td><b>Tháng 3</b></td><td class="r">8,894,560</td><td class="r"><span class="delta down">▼24%</span></td>
+        <td class="r">7,741</td><td class="r">31</td>
+        <td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td></tr><tr><td><b>Tháng 4</b></td><td class="r">7,852,320</td><td class="r"><span class="delta down">▼12%</span></td>
+        <td class="r">6,517</td><td class="r">30</td>
+        <td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td></tr><tr><td><b>Tháng 5</b></td><td class="r">11,903,440</td><td class="r"><span class="delta up">▲52%</span></td>
+        <td class="r">4,642</td><td class="r">31</td>
+        <td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td></tr><tr><td><b>Tháng 6</b></td><td class="r">9,785,280</td><td class="r"><span class="delta down">▼18%</span></td>
+        <td class="r">7,647</td><td class="r">30</td>
+        <td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td></tr><tr><td><b>Tháng 7</b></td><td class="r">12,930,640</td><td class="r"><span class="delta up">▲32%</span></td>
+        <td class="r">9,394</td><td class="r">31</td>
+        <td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td></tr><tr><td><b>Tháng 8</b></td><td class="r">6,997,440</td><td class="r"><span class="delta down">▼46%</span></td>
+        <td class="r">4,323</td><td class="r">31</td>
+        <td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td></tr><tr><td><b>Tháng 9</b></td><td class="r">695,960</td><td class="r"><span class="delta down">▼90%</span></td>
+        <td class="r">592</td><td class="r">6</td>
+        <td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td></tr></tbody></table></div>
+</div>
+<div id="p-m1" class="panel">
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Diamond tiêu</div><div class="val dia">13,585,120</div><div class="note">31 ngày</div></div>
+  <div class="kpi"><div class="lab">Lượt mua</div><div class="val">11,539</div></div>
+  <div class="kpi"><div class="lab">Diamond / lượt mua</div><div class="val">1,177</div><div class="note">avg ticket size</div></div>
+  <div class="kpi"><div class="lab">Top Category</div><div class="val" style="font-size:18px"><span class="catdot" style="background:#B388EB"></span>Limited Summon</div><div class="note">11,161,000 💎 (82%)</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Tháng 1 · không gồm Staris' Sanctum (0💎)</div><div class="chartbox"><canvas id="m1-donut"></canvas></div></div>
+  <div class="card"><h3>Diamond theo Category</h3><div class="desc">Tháng 1</div><div class="chartbox"><canvas id="m1-hbar"></canvas></div></div>
+ </div>
+ <div class="card" style="margin-bottom:24px"><h3>Diamond tiêu theo ngày — phân bổ thành phần</h3>
+  <div class="toggle">
+    <button class="tg active" onclick="setStack(this,1,'goodsD')">Top 15 / mỗi ngày</button>
+    <button class="tg" onclick="setStack(this,1,'goodsM')">Top 10 / cả tháng</button>
+    <button class="tg" onclick="setStack(this,1,'cat')">Theo Category</button>
+  </div>
+  <div class="modedef">
+   <span><b>Top 15 / mỗi ngày:</b> 15 goods bán chạy nhất <b>của riêng từng ngày</b> → màu theo Category, hover xem tên goods. "Khác" = các goods ngoài top-15 ngày đó (thường nhỏ).</span>
+   <span><b>Top 10 / cả tháng:</b> 10 goods top theo tổng cả tháng (tập <b>cố định</b>), mỗi goods 1 màu riêng → tiện theo dõi 1 goods xuyên các ngày. "Khác" = phần ngoài top-10 tháng (có thể lớn vào ngày leader nghỉ bán).</span>
+   <span><b>Theo Category:</b> gộp về 9 nhóm category — phân rã <b>đầy đủ, không có "Khác"</b>.</span>
+  </div>
+  <div class="chartbox tall"><canvas id="m1-stack"></canvas></div></div>
+ <div class="grid2">
+  <div class="card"><h3>Bảng Category</h3>
+   <table><thead><tr><th>Category</th><th class="r">Diamond</th><th class="r">Tỷ trọng</th><th class="r">Lượt mua</th></tr></thead><tbody><tr><td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td>
+        <td class="r">11,161,000</td><td class="r">82.2%<div class="bar"><i style="width:82.2%;background:#B388EB"></i></div></td>
+        <td class="r">11,161</td></tr><tr><td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td>
+        <td class="r">2,424,120</td><td class="r">17.8%<div class="bar"><i style="width:17.8%;background:#5B8DD9"></i></div></td>
+        <td class="r">378</td></tr></tbody></table></div>
+  <div class="card"><h3>Top 20 Goods theo Diamond</h3>
+   <table><thead><tr><th class="r">#</th><th>Goods</th><th class="r">Diamond</th><th class="r">Lượt</th></tr></thead><tbody><tr><td class="r">1</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Agmoon Card (11 Times)</td>
+        <td class="r">4,412,000</td><td class="r">4,412</td></tr><tr><td class="r">2</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Titi Card (11 Times)</td>
+        <td class="r">2,402,000</td><td class="r">2,402</td></tr><tr><td class="r">3</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Sieghardt Ein Card (11 Times)</td>
+        <td class="r">1,698,000</td><td class="r">1,698</td></tr><tr><td class="r">4</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Venom Card (11 Times)</td>
+        <td class="r">1,325,000</td><td class="r">1,325</td></tr><tr><td class="r">5</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Holy Protection Chest x11</td>
+        <td class="r">974,400</td><td class="r">115</td></tr><tr><td class="r">6</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Influence Chest x11</td>
+        <td class="r">955,200</td><td class="r">122</td></tr><tr><td class="r">7</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Tauti Card (11 Times)</td>
+        <td class="r">913,000</td><td class="r">913</td></tr><tr><td class="r">8</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Gordon Card (11 Times)</td>
+        <td class="r">411,000</td><td class="r">411</td></tr><tr><td class="r">9</td><td><span class="catdot" style="background:#5B8DD9"></span>Eva's Seal Chest x11</td>
+        <td class="r">187,200</td><td class="r">61</td></tr><tr><td class="r">10</td><td><span class="catdot" style="background:#5B8DD9"></span>Fire Dragon's Earring Chest x11</td>
+        <td class="r">177,600</td><td class="r">24</td></tr><tr><td class="r">11</td><td><span class="catdot" style="background:#5B8DD9"></span>Earth Dragon's Earring Chest x11</td>
+        <td class="r">117,600</td><td class="r">20</td></tr><tr><td class="r">12</td><td><span class="catdot" style="background:#5B8DD9"></span>Relic of Blessings x10</td>
+        <td class="r">12,120</td><td class="r">36</td></tr></tbody></table></div>
+ </div>
+</div>
+<div id="p-m2" class="panel">
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Diamond tiêu</div><div class="val dia">11,773,280 <span class="delta down">▼13%</span></div><div class="note">28 ngày</div></div>
+  <div class="kpi"><div class="lab">Lượt mua</div><div class="val">9,959 <span class="delta down">▼14%</span></div></div>
+  <div class="kpi"><div class="lab">Diamond / lượt mua</div><div class="val">1,182</div><div class="note">avg ticket size</div></div>
+  <div class="kpi"><div class="lab">Top Category</div><div class="val" style="font-size:18px"><span class="catdot" style="background:#B388EB"></span>Limited Summon</div><div class="note">9,773,000 💎 (83%)</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Tháng 2 · không gồm Staris' Sanctum (0💎)</div><div class="chartbox"><canvas id="m2-donut"></canvas></div></div>
+  <div class="card"><h3>Diamond theo Category</h3><div class="desc">Tháng 2</div><div class="chartbox"><canvas id="m2-hbar"></canvas></div></div>
+ </div>
+ <div class="card" style="margin-bottom:24px"><h3>Diamond tiêu theo ngày — phân bổ thành phần</h3>
+  <div class="toggle">
+    <button class="tg active" onclick="setStack(this,2,'goodsD')">Top 15 / mỗi ngày</button>
+    <button class="tg" onclick="setStack(this,2,'goodsM')">Top 10 / cả tháng</button>
+    <button class="tg" onclick="setStack(this,2,'cat')">Theo Category</button>
+  </div>
+  <div class="modedef">
+   <span><b>Top 15 / mỗi ngày:</b> 15 goods bán chạy nhất <b>của riêng từng ngày</b> → màu theo Category, hover xem tên goods. "Khác" = các goods ngoài top-15 ngày đó (thường nhỏ).</span>
+   <span><b>Top 10 / cả tháng:</b> 10 goods top theo tổng cả tháng (tập <b>cố định</b>), mỗi goods 1 màu riêng → tiện theo dõi 1 goods xuyên các ngày. "Khác" = phần ngoài top-10 tháng (có thể lớn vào ngày leader nghỉ bán).</span>
+   <span><b>Theo Category:</b> gộp về 9 nhóm category — phân rã <b>đầy đủ, không có "Khác"</b>.</span>
+  </div>
+  <div class="chartbox tall"><canvas id="m2-stack"></canvas></div></div>
+ <div class="grid2">
+  <div class="card"><h3>Bảng Category</h3>
+   <table><thead><tr><th>Category</th><th class="r">Diamond</th><th class="r">Tỷ trọng</th><th class="r">Lượt mua</th></tr></thead><tbody><tr><td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td>
+        <td class="r">9,773,000</td><td class="r">83.0%<div class="bar"><i style="width:83.0%;background:#B388EB"></i></div></td>
+        <td class="r">9,773</td></tr><tr><td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td>
+        <td class="r">2,000,280</td><td class="r">17.0%<div class="bar"><i style="width:17.0%;background:#5B8DD9"></i></div></td>
+        <td class="r">186</td></tr></tbody></table></div>
+  <div class="card"><h3>Top 20 Goods theo Diamond</h3>
+   <table><thead><tr><th class="r">#</th><th>Goods</th><th class="r">Diamond</th><th class="r">Lượt</th></tr></thead><tbody><tr><td class="r">1</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Death Knight Card (11 Times)</td>
+        <td class="r">3,079,000</td><td class="r">3,079</td></tr><tr><td class="r">2</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Kakai Card (11 Times)</td>
+        <td class="r">2,414,000</td><td class="r">2,414</td></tr><tr><td class="r">3</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Sieghardt Ein Card (11 Times)</td>
+        <td class="r">1,662,000</td><td class="r">1,662</td></tr><tr><td class="r">4</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Faris Card (11 Times)</td>
+        <td class="r">1,430,000</td><td class="r">1,430</td></tr><tr><td class="r">5</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Holy Protection Chest x11</td>
+        <td class="r">1,004,400</td><td class="r">60</td></tr><tr><td class="r">6</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Influence Chest x11</td>
+        <td class="r">751,200</td><td class="r">55</td></tr><tr><td class="r">7</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Feline King Card (11 Times)</td>
+        <td class="r">731,000</td><td class="r">731</td></tr><tr><td class="r">8</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Gordon Card (11 Times)</td>
+        <td class="r">457,000</td><td class="r">457</td></tr><tr><td class="r">9</td><td><span class="catdot" style="background:#5B8DD9"></span>Eva's Seal Chest x11</td>
+        <td class="r">126,000</td><td class="r">43</td></tr><tr><td class="r">10</td><td><span class="catdot" style="background:#5B8DD9"></span>Earth Dragon's Earring Chest x11</td>
+        <td class="r">82,800</td><td class="r">16</td></tr><tr><td class="r">11</td><td><span class="catdot" style="background:#5B8DD9"></span>Fire Dragon's Earring Chest x11</td>
+        <td class="r">31,200</td><td class="r">5</td></tr><tr><td class="r">12</td><td><span class="catdot" style="background:#5B8DD9"></span>Relic of Blessings x10</td>
+        <td class="r">4,680</td><td class="r">7</td></tr></tbody></table></div>
+ </div>
+</div>
+<div id="p-m3" class="panel">
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Diamond tiêu</div><div class="val dia">8,894,560 <span class="delta down">▼24%</span></div><div class="note">31 ngày</div></div>
+  <div class="kpi"><div class="lab">Lượt mua</div><div class="val">7,741 <span class="delta down">▼22%</span></div></div>
+  <div class="kpi"><div class="lab">Diamond / lượt mua</div><div class="val">1,149</div><div class="note">avg ticket size</div></div>
+  <div class="kpi"><div class="lab">Top Category</div><div class="val" style="font-size:18px"><span class="catdot" style="background:#B388EB"></span>Limited Summon</div><div class="note">7,546,000 💎 (85%)</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Tháng 3 · không gồm Staris' Sanctum (0💎)</div><div class="chartbox"><canvas id="m3-donut"></canvas></div></div>
+  <div class="card"><h3>Diamond theo Category</h3><div class="desc">Tháng 3</div><div class="chartbox"><canvas id="m3-hbar"></canvas></div></div>
+ </div>
+ <div class="card" style="margin-bottom:24px"><h3>Diamond tiêu theo ngày — phân bổ thành phần</h3>
+  <div class="toggle">
+    <button class="tg active" onclick="setStack(this,3,'goodsD')">Top 15 / mỗi ngày</button>
+    <button class="tg" onclick="setStack(this,3,'goodsM')">Top 10 / cả tháng</button>
+    <button class="tg" onclick="setStack(this,3,'cat')">Theo Category</button>
+  </div>
+  <div class="modedef">
+   <span><b>Top 15 / mỗi ngày:</b> 15 goods bán chạy nhất <b>của riêng từng ngày</b> → màu theo Category, hover xem tên goods. "Khác" = các goods ngoài top-15 ngày đó (thường nhỏ).</span>
+   <span><b>Top 10 / cả tháng:</b> 10 goods top theo tổng cả tháng (tập <b>cố định</b>), mỗi goods 1 màu riêng → tiện theo dõi 1 goods xuyên các ngày. "Khác" = phần ngoài top-10 tháng (có thể lớn vào ngày leader nghỉ bán).</span>
+   <span><b>Theo Category:</b> gộp về 9 nhóm category — phân rã <b>đầy đủ, không có "Khác"</b>.</span>
+  </div>
+  <div class="chartbox tall"><canvas id="m3-stack"></canvas></div></div>
+ <div class="grid2">
+  <div class="card"><h3>Bảng Category</h3>
+   <table><thead><tr><th>Category</th><th class="r">Diamond</th><th class="r">Tỷ trọng</th><th class="r">Lượt mua</th></tr></thead><tbody><tr><td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td>
+        <td class="r">7,546,000</td><td class="r">84.8%<div class="bar"><i style="width:84.8%;background:#B388EB"></i></div></td>
+        <td class="r">7,546</td></tr><tr><td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td>
+        <td class="r">1,348,560</td><td class="r">15.2%<div class="bar"><i style="width:15.2%;background:#5B8DD9"></i></div></td>
+        <td class="r">195</td></tr></tbody></table></div>
+  <div class="card"><h3>Top 20 Goods theo Diamond</h3>
+   <table><thead><tr><th class="r">#</th><th>Goods</th><th class="r">Diamond</th><th class="r">Lượt</th></tr></thead><tbody><tr><td class="r">1</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Death Knight Card (11 Times)</td>
+        <td class="r">2,140,000</td><td class="r">2,140</td></tr><tr><td class="r">2</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Thor Class Card (11 Times)</td>
+        <td class="r">2,058,000</td><td class="r">2,058</td></tr><tr><td class="r">3</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Faris Card (11 Times)</td>
+        <td class="r">1,145,000</td><td class="r">1,145</td></tr><tr><td class="r">4</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Tarkai Class Card (11 Times)</td>
+        <td class="r">1,042,000</td><td class="r">1,042</td></tr><tr><td class="r">5</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Basila Card (11 Times)</td>
+        <td class="r">851,000</td><td class="r">851</td></tr><tr><td class="r">6</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Influence Chest x11</td>
+        <td class="r">608,400</td><td class="r">38</td></tr><tr><td class="r">7</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Holy Protection Chest x11</td>
+        <td class="r">327,600</td><td class="r">68</td></tr><tr><td class="r">8</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Grail Apostle Card (11 Times)</td>
+        <td class="r">310,000</td><td class="r">310</td></tr><tr><td class="r">9</td><td><span class="catdot" style="background:#5B8DD9"></span>Fire Dragon's Earring Chest x11</td>
+        <td class="r">255,600</td><td class="r">22</td></tr><tr><td class="r">10</td><td><span class="catdot" style="background:#5B8DD9"></span>Eva's Seal Chest x11</td>
+        <td class="r">72,000</td><td class="r">37</td></tr><tr><td class="r">11</td><td><span class="catdot" style="background:#5B8DD9"></span>Earth Dragon's Earring Chest x11</td>
+        <td class="r">55,200</td><td class="r">9</td></tr><tr><td class="r">12</td><td><span class="catdot" style="background:#5B8DD9"></span>Relic of Blessings x10</td>
+        <td class="r">29,760</td><td class="r">21</td></tr></tbody></table></div>
+ </div>
+</div>
+<div id="p-m4" class="panel">
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Diamond tiêu</div><div class="val dia">7,852,320 <span class="delta down">▼12%</span></div><div class="note">30 ngày</div></div>
+  <div class="kpi"><div class="lab">Lượt mua</div><div class="val">6,517 <span class="delta down">▼16%</span></div></div>
+  <div class="kpi"><div class="lab">Diamond / lượt mua</div><div class="val">1,205</div><div class="note">avg ticket size</div></div>
+  <div class="kpi"><div class="lab">Top Category</div><div class="val" style="font-size:18px"><span class="catdot" style="background:#B388EB"></span>Limited Summon</div><div class="note">6,339,000 💎 (81%)</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Tháng 4 · không gồm Staris' Sanctum (0💎)</div><div class="chartbox"><canvas id="m4-donut"></canvas></div></div>
+  <div class="card"><h3>Diamond theo Category</h3><div class="desc">Tháng 4</div><div class="chartbox"><canvas id="m4-hbar"></canvas></div></div>
+ </div>
+ <div class="card" style="margin-bottom:24px"><h3>Diamond tiêu theo ngày — phân bổ thành phần</h3>
+  <div class="toggle">
+    <button class="tg active" onclick="setStack(this,4,'goodsD')">Top 15 / mỗi ngày</button>
+    <button class="tg" onclick="setStack(this,4,'goodsM')">Top 10 / cả tháng</button>
+    <button class="tg" onclick="setStack(this,4,'cat')">Theo Category</button>
+  </div>
+  <div class="modedef">
+   <span><b>Top 15 / mỗi ngày:</b> 15 goods bán chạy nhất <b>của riêng từng ngày</b> → màu theo Category, hover xem tên goods. "Khác" = các goods ngoài top-15 ngày đó (thường nhỏ).</span>
+   <span><b>Top 10 / cả tháng:</b> 10 goods top theo tổng cả tháng (tập <b>cố định</b>), mỗi goods 1 màu riêng → tiện theo dõi 1 goods xuyên các ngày. "Khác" = phần ngoài top-10 tháng (có thể lớn vào ngày leader nghỉ bán).</span>
+   <span><b>Theo Category:</b> gộp về 9 nhóm category — phân rã <b>đầy đủ, không có "Khác"</b>.</span>
+  </div>
+  <div class="chartbox tall"><canvas id="m4-stack"></canvas></div></div>
+ <div class="grid2">
+  <div class="card"><h3>Bảng Category</h3>
+   <table><thead><tr><th>Category</th><th class="r">Diamond</th><th class="r">Tỷ trọng</th><th class="r">Lượt mua</th></tr></thead><tbody><tr><td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td>
+        <td class="r">6,339,000</td><td class="r">80.7%<div class="bar"><i style="width:80.7%;background:#B388EB"></i></div></td>
+        <td class="r">6,339</td></tr><tr><td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td>
+        <td class="r">1,513,320</td><td class="r">19.3%<div class="bar"><i style="width:19.3%;background:#5B8DD9"></i></div></td>
+        <td class="r">178</td></tr></tbody></table></div>
+  <div class="card"><h3>Top 20 Goods theo Diamond</h3>
+   <table><thead><tr><th class="r">#</th><th>Goods</th><th class="r">Diamond</th><th class="r">Lượt</th></tr></thead><tbody><tr><td class="r">1</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Hela Class Card (11 Times)</td>
+        <td class="r">3,337,000</td><td class="r">3,337</td></tr><tr><td class="r">2</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Eirena Class Card (11 Times)</td>
+        <td class="r">1,383,000</td><td class="r">1,383</td></tr><tr><td class="r">3</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Tarkai Class Card (11 Times)</td>
+        <td class="r">692,000</td><td class="r">692</td></tr><tr><td class="r">4</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Influence Chest x11</td>
+        <td class="r">650,400</td><td class="r">58</td></tr><tr><td class="r">5</td><td><span class="catdot" style="background:#5B8DD9"></span>Fire Dragon's Earring Chest x11</td>
+        <td class="r">354,000</td><td class="r">20</td></tr><tr><td class="r">6</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Zaken Agathion Card (11 Times)</td>
+        <td class="r">335,000</td><td class="r">335</td></tr><tr><td class="r">7</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Holy Protection Chest x11</td>
+        <td class="r">331,200</td><td class="r">54</td></tr><tr><td class="r">8</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Ice Queen Freya Agathion Card (11 Times)</td>
+        <td class="r">312,000</td><td class="r">312</td></tr><tr><td class="r">9</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Grail Apostle Card (11 Times)</td>
+        <td class="r">280,000</td><td class="r">280</td></tr><tr><td class="r">10</td><td><span class="catdot" style="background:#5B8DD9"></span>Earth Dragon's Earring Chest x11</td>
+        <td class="r">142,800</td><td class="r">15</td></tr><tr><td class="r">11</td><td><span class="catdot" style="background:#5B8DD9"></span>Eva's Seal Chest x11</td>
+        <td class="r">33,600</td><td class="r">20</td></tr><tr><td class="r">12</td><td><span class="catdot" style="background:#5B8DD9"></span>Relic of Blessings x10</td>
+        <td class="r">1,320</td><td class="r">11</td></tr></tbody></table></div>
+ </div>
+</div>
+<div id="p-m5" class="panel">
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Diamond tiêu</div><div class="val dia">11,903,440 <span class="delta up">▲52%</span></div><div class="note">31 ngày</div></div>
+  <div class="kpi"><div class="lab">Lượt mua</div><div class="val">4,642 <span class="delta down">▼29%</span></div></div>
+  <div class="kpi"><div class="lab">Diamond / lượt mua</div><div class="val">2,564</div><div class="note">avg ticket size</div></div>
+  <div class="kpi"><div class="lab">Top Category</div><div class="val" style="font-size:18px"><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</div><div class="note">8,308,440 💎 (70%)</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Tháng 5 · không gồm Staris' Sanctum (0💎)</div><div class="chartbox"><canvas id="m5-donut"></canvas></div></div>
+  <div class="card"><h3>Diamond theo Category</h3><div class="desc">Tháng 5</div><div class="chartbox"><canvas id="m5-hbar"></canvas></div></div>
+ </div>
+ <div class="card" style="margin-bottom:24px"><h3>Diamond tiêu theo ngày — phân bổ thành phần</h3>
+  <div class="toggle">
+    <button class="tg active" onclick="setStack(this,5,'goodsD')">Top 15 / mỗi ngày</button>
+    <button class="tg" onclick="setStack(this,5,'goodsM')">Top 10 / cả tháng</button>
+    <button class="tg" onclick="setStack(this,5,'cat')">Theo Category</button>
+  </div>
+  <div class="modedef">
+   <span><b>Top 15 / mỗi ngày:</b> 15 goods bán chạy nhất <b>của riêng từng ngày</b> → màu theo Category, hover xem tên goods. "Khác" = các goods ngoài top-15 ngày đó (thường nhỏ).</span>
+   <span><b>Top 10 / cả tháng:</b> 10 goods top theo tổng cả tháng (tập <b>cố định</b>), mỗi goods 1 màu riêng → tiện theo dõi 1 goods xuyên các ngày. "Khác" = phần ngoài top-10 tháng (có thể lớn vào ngày leader nghỉ bán).</span>
+   <span><b>Theo Category:</b> gộp về 9 nhóm category — phân rã <b>đầy đủ, không có "Khác"</b>.</span>
+  </div>
+  <div class="chartbox tall"><canvas id="m5-stack"></canvas></div></div>
+ <div class="grid2">
+  <div class="card"><h3>Bảng Category</h3>
+   <table><thead><tr><th>Category</th><th class="r">Diamond</th><th class="r">Tỷ trọng</th><th class="r">Lượt mua</th></tr></thead><tbody><tr><td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td>
+        <td class="r">8,308,440</td><td class="r">69.8%<div class="bar"><i style="width:69.8%;background:#5B8DD9"></i></div></td>
+        <td class="r">1,047</td></tr><tr><td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td>
+        <td class="r">3,595,000</td><td class="r">30.2%<div class="bar"><i style="width:30.2%;background:#B388EB"></i></div></td>
+        <td class="r">3,595</td></tr></tbody></table></div>
+  <div class="card"><h3>Top 20 Goods theo Diamond</h3>
+   <table><thead><tr><th class="r">#</th><th>Goods</th><th class="r">Diamond</th><th class="r">Lượt</th></tr></thead><tbody><tr><td class="r">1</td><td><span class="catdot" style="background:#5B8DD9"></span>Pa'agrio's Seal x11</td>
+        <td class="r">6,074,400</td><td class="r">861</td></tr><tr><td class="r">2</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Evan Class Card (11 Times)</td>
+        <td class="r">1,200,000</td><td class="r">1,200</td></tr><tr><td class="r">3</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Allegra Class Card (11 Times)</td>
+        <td class="r">1,051,000</td><td class="r">1,051</td></tr><tr><td class="r">4</td><td><span class="catdot" style="background:#5B8DD9"></span>Fire Dragon's Earring Chest x11</td>
+        <td class="r">788,400</td><td class="r">37</td></tr><tr><td class="r">5</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Hela Class Card (11 Times)</td>
+        <td class="r">696,000</td><td class="r">696</td></tr><tr><td class="r">6</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Holy Protection Chest x11</td>
+        <td class="r">694,800</td><td class="r">58</td></tr><tr><td class="r">7</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Influence Chest x11</td>
+        <td class="r">642,000</td><td class="r">42</td></tr><tr><td class="r">8</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Scarlet van Halisha Card (11 Times)</td>
+        <td class="r">304,000</td><td class="r">304</td></tr><tr><td class="r">9</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Medusa Agathion Card (11 Times)</td>
+        <td class="r">222,000</td><td class="r">222</td></tr><tr><td class="r">10</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Ice Queen Freya Agathion Card (11 Times)</td>
+        <td class="r">122,000</td><td class="r">122</td></tr><tr><td class="r">11</td><td><span class="catdot" style="background:#5B8DD9"></span>Eva's Seal Chest x11</td>
+        <td class="r">80,400</td><td class="r">35</td></tr><tr><td class="r">12</td><td><span class="catdot" style="background:#5B8DD9"></span>Earth Dragon's Earring Chest x11</td>
+        <td class="r">21,600</td><td class="r">6</td></tr><tr><td class="r">13</td><td><span class="catdot" style="background:#5B8DD9"></span>Relic of Blessings x10</td>
+        <td class="r">6,840</td><td class="r">8</td></tr></tbody></table></div>
+ </div>
+</div>
+<div id="p-m6" class="panel">
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Diamond tiêu</div><div class="val dia">9,785,280 <span class="delta down">▼18%</span></div><div class="note">30 ngày</div></div>
+  <div class="kpi"><div class="lab">Lượt mua</div><div class="val">7,647 <span class="delta up">▲65%</span></div></div>
+  <div class="kpi"><div class="lab">Diamond / lượt mua</div><div class="val">1,280</div><div class="note">avg ticket size</div></div>
+  <div class="kpi"><div class="lab">Top Category</div><div class="val" style="font-size:18px"><span class="catdot" style="background:#B388EB"></span>Limited Summon</div><div class="note">7,395,000 💎 (76%)</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Tháng 6 · không gồm Staris' Sanctum (0💎)</div><div class="chartbox"><canvas id="m6-donut"></canvas></div></div>
+  <div class="card"><h3>Diamond theo Category</h3><div class="desc">Tháng 6</div><div class="chartbox"><canvas id="m6-hbar"></canvas></div></div>
+ </div>
+ <div class="card" style="margin-bottom:24px"><h3>Diamond tiêu theo ngày — phân bổ thành phần</h3>
+  <div class="toggle">
+    <button class="tg active" onclick="setStack(this,6,'goodsD')">Top 15 / mỗi ngày</button>
+    <button class="tg" onclick="setStack(this,6,'goodsM')">Top 10 / cả tháng</button>
+    <button class="tg" onclick="setStack(this,6,'cat')">Theo Category</button>
+  </div>
+  <div class="modedef">
+   <span><b>Top 15 / mỗi ngày:</b> 15 goods bán chạy nhất <b>của riêng từng ngày</b> → màu theo Category, hover xem tên goods. "Khác" = các goods ngoài top-15 ngày đó (thường nhỏ).</span>
+   <span><b>Top 10 / cả tháng:</b> 10 goods top theo tổng cả tháng (tập <b>cố định</b>), mỗi goods 1 màu riêng → tiện theo dõi 1 goods xuyên các ngày. "Khác" = phần ngoài top-10 tháng (có thể lớn vào ngày leader nghỉ bán).</span>
+   <span><b>Theo Category:</b> gộp về 9 nhóm category — phân rã <b>đầy đủ, không có "Khác"</b>.</span>
+  </div>
+  <div class="chartbox tall"><canvas id="m6-stack"></canvas></div></div>
+ <div class="grid2">
+  <div class="card"><h3>Bảng Category</h3>
+   <table><thead><tr><th>Category</th><th class="r">Diamond</th><th class="r">Tỷ trọng</th><th class="r">Lượt mua</th></tr></thead><tbody><tr><td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td>
+        <td class="r">7,395,000</td><td class="r">75.6%<div class="bar"><i style="width:75.6%;background:#B388EB"></i></div></td>
+        <td class="r">7,395</td></tr><tr><td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td>
+        <td class="r">2,390,280</td><td class="r">24.4%<div class="bar"><i style="width:24.4%;background:#5B8DD9"></i></div></td>
+        <td class="r">252</td></tr></tbody></table></div>
+  <div class="card"><h3>Top 20 Goods theo Diamond</h3>
+   <table><thead><tr><th class="r">#</th><th>Goods</th><th class="r">Diamond</th><th class="r">Lượt</th></tr></thead><tbody><tr><td class="r">1</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Irene Class Card (11 Times)</td>
+        <td class="r">3,057,000</td><td class="r">3,057</td></tr><tr><td class="r">2</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Nadin Class Card (11 Times)</td>
+        <td class="r">3,005,000</td><td class="r">3,005</td></tr><tr><td class="r">3</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Holy Protection Chest x11</td>
+        <td class="r">1,262,400</td><td class="r">63</td></tr><tr><td class="r">4</td><td><span class="catdot" style="background:#5B8DD9"></span>Pa'agrio's Seal x11</td>
+        <td class="r">999,600</td><td class="r">112</td></tr><tr><td class="r">5</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Evan Class Card (11 Times)</td>
+        <td class="r">495,000</td><td class="r">495</td></tr><tr><td class="r">6</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Magnus Unicorn Card (11 Times)</td>
+        <td class="r">384,000</td><td class="r">384</td></tr><tr><td class="r">7</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Galaxia Card (11 Times)</td>
+        <td class="r">314,000</td><td class="r">314</td></tr><tr><td class="r">8</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Medusa Agathion Card (11 Times)</td>
+        <td class="r">140,000</td><td class="r">140</td></tr><tr><td class="r">9</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Influence Chest x11</td>
+        <td class="r">63,600</td><td class="r">25</td></tr><tr><td class="r">10</td><td><span class="catdot" style="background:#5B8DD9"></span>Eva's Seal Chest x11</td>
+        <td class="r">36,000</td><td class="r">21</td></tr><tr><td class="r">11</td><td><span class="catdot" style="background:#5B8DD9"></span>Relic of Blessings x10</td>
+        <td class="r">21,480</td><td class="r">26</td></tr><tr><td class="r">12</td><td><span class="catdot" style="background:#5B8DD9"></span>Fire Dragon's Earring Chest x11</td>
+        <td class="r">4,800</td><td class="r">3</td></tr><tr><td class="r">13</td><td><span class="catdot" style="background:#5B8DD9"></span>Earth Dragon's Earring Chest x11</td>
+        <td class="r">2,400</td><td class="r">2</td></tr></tbody></table></div>
+ </div>
+</div>
+<div id="p-m7" class="panel">
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Diamond tiêu</div><div class="val dia">12,930,640 <span class="delta up">▲32%</span></div><div class="note">31 ngày</div></div>
+  <div class="kpi"><div class="lab">Lượt mua</div><div class="val">9,394 <span class="delta up">▲23%</span></div></div>
+  <div class="kpi"><div class="lab">Diamond / lượt mua</div><div class="val">1,376</div><div class="note">avg ticket size</div></div>
+  <div class="kpi"><div class="lab">Top Category</div><div class="val" style="font-size:18px"><span class="catdot" style="background:#B388EB"></span>Limited Summon</div><div class="note">8,620,000 💎 (67%)</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Tháng 7 · không gồm Staris' Sanctum (0💎)</div><div class="chartbox"><canvas id="m7-donut"></canvas></div></div>
+  <div class="card"><h3>Diamond theo Category</h3><div class="desc">Tháng 7</div><div class="chartbox"><canvas id="m7-hbar"></canvas></div></div>
+ </div>
+ <div class="card" style="margin-bottom:24px"><h3>Diamond tiêu theo ngày — phân bổ thành phần</h3>
+  <div class="toggle">
+    <button class="tg active" onclick="setStack(this,7,'goodsD')">Top 15 / mỗi ngày</button>
+    <button class="tg" onclick="setStack(this,7,'goodsM')">Top 10 / cả tháng</button>
+    <button class="tg" onclick="setStack(this,7,'cat')">Theo Category</button>
+  </div>
+  <div class="modedef">
+   <span><b>Top 15 / mỗi ngày:</b> 15 goods bán chạy nhất <b>của riêng từng ngày</b> → màu theo Category, hover xem tên goods. "Khác" = các goods ngoài top-15 ngày đó (thường nhỏ).</span>
+   <span><b>Top 10 / cả tháng:</b> 10 goods top theo tổng cả tháng (tập <b>cố định</b>), mỗi goods 1 màu riêng → tiện theo dõi 1 goods xuyên các ngày. "Khác" = phần ngoài top-10 tháng (có thể lớn vào ngày leader nghỉ bán).</span>
+   <span><b>Theo Category:</b> gộp về 9 nhóm category — phân rã <b>đầy đủ, không có "Khác"</b>.</span>
+  </div>
+  <div class="chartbox tall"><canvas id="m7-stack"></canvas></div></div>
+ <div class="grid2">
+  <div class="card"><h3>Bảng Category</h3>
+   <table><thead><tr><th>Category</th><th class="r">Diamond</th><th class="r">Tỷ trọng</th><th class="r">Lượt mua</th></tr></thead><tbody><tr><td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td>
+        <td class="r">8,620,000</td><td class="r">66.7%<div class="bar"><i style="width:66.7%;background:#B388EB"></i></div></td>
+        <td class="r">8,620</td></tr><tr><td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td>
+        <td class="r">4,310,640</td><td class="r">33.3%<div class="bar"><i style="width:33.3%;background:#5B8DD9"></i></div></td>
+        <td class="r">774</td></tr></tbody></table></div>
+  <div class="card"><h3>Top 20 Goods theo Diamond</h3>
+   <table><thead><tr><th class="r">#</th><th>Goods</th><th class="r">Diamond</th><th class="r">Lượt</th></tr></thead><tbody><tr><td class="r">1</td><td><span class="catdot" style="background:#5B8DD9"></span>Einhasad's Shirt Selection Chest x11</td>
+        <td class="r">2,774,400</td><td class="r">338</td></tr><tr><td class="r">2</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Tobald Card (11 Times)</td>
+        <td class="r">2,353,000</td><td class="r">2,353</td></tr><tr><td class="r">3</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Timitris Card (11 Times)</td>
+        <td class="r">2,009,000</td><td class="r">2,009</td></tr><tr><td class="r">4</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Kastien Card (11 Times)</td>
+        <td class="r">1,781,000</td><td class="r">1,781</td></tr><tr><td class="r">5</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Matura Card (11 Times)</td>
+        <td class="r">1,452,000</td><td class="r">1,452</td></tr><tr><td class="r">6</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Holy Protection Chest x11</td>
+        <td class="r">842,400</td><td class="r">35</td></tr><tr><td class="r">7</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Grant Card (11 Times)</td>
+        <td class="r">793,000</td><td class="r">793</td></tr><tr><td class="r">8</td><td><span class="catdot" style="background:#5B8DD9"></span>Pa'agrio's Seal x11</td>
+        <td class="r">336,000</td><td class="r">77</td></tr><tr><td class="r">9</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Influence Chest x11</td>
+        <td class="r">220,800</td><td class="r">20</td></tr><tr><td class="r">10</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Enkura Card (11 Times)</td>
+        <td class="r">173,000</td><td class="r">173</td></tr><tr><td class="r">11</td><td><span class="catdot" style="background:#5B8DD9"></span>Einhasad's Shirt Selection Chest</td>
+        <td class="r">93,120</td><td class="r">277</td></tr><tr><td class="r">12</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Nadin Class Card (11 Times)</td>
+        <td class="r">59,000</td><td class="r">59</td></tr><tr><td class="r">13</td><td><span class="catdot" style="background:#5B8DD9"></span>Eva's Seal Chest x11</td>
+        <td class="r">19,200</td><td class="r">10</td></tr><tr><td class="r">14</td><td><span class="catdot" style="background:#5B8DD9"></span>Earth Dragon's Earring Chest x11</td>
+        <td class="r">15,600</td><td class="r">6</td></tr><tr><td class="r">15</td><td><span class="catdot" style="background:#5B8DD9"></span>Fire Dragon's Earring Chest x11</td>
+        <td class="r">7,200</td><td class="r">2</td></tr><tr><td class="r">16</td><td><span class="catdot" style="background:#5B8DD9"></span>Relic of Blessings x10</td>
+        <td class="r">1,920</td><td class="r">9</td></tr></tbody></table></div>
+ </div>
+</div>
+<div id="p-m8" class="panel">
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Diamond tiêu</div><div class="val dia">6,997,440 <span class="delta down">▼46%</span></div><div class="note">31 ngày</div></div>
+  <div class="kpi"><div class="lab">Lượt mua</div><div class="val">4,323 <span class="delta down">▼54%</span></div></div>
+  <div class="kpi"><div class="lab">Diamond / lượt mua</div><div class="val">1,619</div><div class="note">avg ticket size</div></div>
+  <div class="kpi"><div class="lab">Top Category</div><div class="val" style="font-size:18px"><span class="catdot" style="background:#B388EB"></span>Limited Summon</div><div class="note">3,876,000 💎 (55%)</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Tháng 8 · không gồm Staris' Sanctum (0💎)</div><div class="chartbox"><canvas id="m8-donut"></canvas></div></div>
+  <div class="card"><h3>Diamond theo Category</h3><div class="desc">Tháng 8</div><div class="chartbox"><canvas id="m8-hbar"></canvas></div></div>
+ </div>
+ <div class="card" style="margin-bottom:24px"><h3>Diamond tiêu theo ngày — phân bổ thành phần</h3>
+  <div class="toggle">
+    <button class="tg active" onclick="setStack(this,8,'goodsD')">Top 15 / mỗi ngày</button>
+    <button class="tg" onclick="setStack(this,8,'goodsM')">Top 10 / cả tháng</button>
+    <button class="tg" onclick="setStack(this,8,'cat')">Theo Category</button>
+  </div>
+  <div class="modedef">
+   <span><b>Top 15 / mỗi ngày:</b> 15 goods bán chạy nhất <b>của riêng từng ngày</b> → màu theo Category, hover xem tên goods. "Khác" = các goods ngoài top-15 ngày đó (thường nhỏ).</span>
+   <span><b>Top 10 / cả tháng:</b> 10 goods top theo tổng cả tháng (tập <b>cố định</b>), mỗi goods 1 màu riêng → tiện theo dõi 1 goods xuyên các ngày. "Khác" = phần ngoài top-10 tháng (có thể lớn vào ngày leader nghỉ bán).</span>
+   <span><b>Theo Category:</b> gộp về 9 nhóm category — phân rã <b>đầy đủ, không có "Khác"</b>.</span>
+  </div>
+  <div class="chartbox tall"><canvas id="m8-stack"></canvas></div></div>
+ <div class="grid2">
+  <div class="card"><h3>Bảng Category</h3>
+   <table><thead><tr><th>Category</th><th class="r">Diamond</th><th class="r">Tỷ trọng</th><th class="r">Lượt mua</th></tr></thead><tbody><tr><td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td>
+        <td class="r">3,876,000</td><td class="r">55.4%<div class="bar"><i style="width:55.4%;background:#B388EB"></i></div></td>
+        <td class="r">3,876</td></tr><tr><td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td>
+        <td class="r">3,121,440</td><td class="r">44.6%<div class="bar"><i style="width:44.6%;background:#5B8DD9"></i></div></td>
+        <td class="r">447</td></tr></tbody></table></div>
+  <div class="card"><h3>Top 20 Goods theo Diamond</h3>
+   <table><thead><tr><th class="r">#</th><th>Goods</th><th class="r">Diamond</th><th class="r">Lượt</th></tr></thead><tbody><tr><td class="r">1</td><td><span class="catdot" style="background:#5B8DD9"></span>Einhasad's Shirt Selection Chest x11</td>
+        <td class="r">2,788,800</td><td class="r">210</td></tr><tr><td class="r">2</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Lutris Card (11 Times)</td>
+        <td class="r">1,323,000</td><td class="r">1,323</td></tr><tr><td class="r">3</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Telinaus Card (11 Times)</td>
+        <td class="r">1,242,000</td><td class="r">1,242</td></tr><tr><td class="r">4</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Grant Card (11 Times)</td>
+        <td class="r">717,000</td><td class="r">717</td></tr><tr><td class="r">5</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Queen Ant Card (11 Times)</td>
+        <td class="r">230,000</td><td class="r">230</td></tr><tr><td class="r">6</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Enkura Card (11 Times)</td>
+        <td class="r">224,000</td><td class="r">224</td></tr><tr><td class="r">7</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Fox Shaman Card (11 Times)</td>
+        <td class="r">140,000</td><td class="r">140</td></tr><tr><td class="r">8</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Holy Protection Chest x11</td>
+        <td class="r">80,400</td><td class="r">15</td></tr><tr><td class="r">9</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Influence Chest x11</td>
+        <td class="r">68,400</td><td class="r">18</td></tr><tr><td class="r">10</td><td><span class="catdot" style="background:#5B8DD9"></span>Pa'agrio's Seal x11</td>
+        <td class="r">66,000</td><td class="r">21</td></tr><tr><td class="r">11</td><td><span class="catdot" style="background:#5B8DD9"></span>Einhasad's Shirt Selection Chest</td>
+        <td class="r">55,200</td><td class="r">158</td></tr><tr><td class="r">12</td><td><span class="catdot" style="background:#5B8DD9"></span>Fire Dragon's Earring Chest x11</td>
+        <td class="r">44,400</td><td class="r">5</td></tr><tr><td class="r">13</td><td><span class="catdot" style="background:#5B8DD9"></span>Relic of Blessings x10</td>
+        <td class="r">12,240</td><td class="r">17</td></tr><tr><td class="r">14</td><td><span class="catdot" style="background:#5B8DD9"></span>Eva's Seal Chest x11</td>
+        <td class="r">6,000</td><td class="r">3</td></tr></tbody></table></div>
+ </div>
+</div>
+<div id="p-m9" class="panel">
+ <div class="kpis">
+  <div class="kpi"><div class="lab">Diamond tiêu</div><div class="val dia">695,960 <span class="delta down">▼90%</span></div><div class="note">6 ngày</div></div>
+  <div class="kpi"><div class="lab">Lượt mua</div><div class="val">592 <span class="delta down">▼86%</span></div></div>
+  <div class="kpi"><div class="lab">Diamond / lượt mua</div><div class="val">1,176</div><div class="note">avg ticket size</div></div>
+  <div class="kpi"><div class="lab">Top Category</div><div class="val" style="font-size:18px"><span class="catdot" style="background:#B388EB"></span>Limited Summon</div><div class="note">569,000 💎 (82%)</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Tỷ trọng Diamond theo Category</h3><div class="desc">Tháng 9 · không gồm Staris' Sanctum (0💎)</div><div class="chartbox"><canvas id="m9-donut"></canvas></div></div>
+  <div class="card"><h3>Diamond theo Category</h3><div class="desc">Tháng 9</div><div class="chartbox"><canvas id="m9-hbar"></canvas></div></div>
+ </div>
+ <div class="card" style="margin-bottom:24px"><h3>Diamond tiêu theo ngày — phân bổ thành phần</h3>
+  <div class="toggle">
+    <button class="tg active" onclick="setStack(this,9,'goodsD')">Top 15 / mỗi ngày</button>
+    <button class="tg" onclick="setStack(this,9,'goodsM')">Top 10 / cả tháng</button>
+    <button class="tg" onclick="setStack(this,9,'cat')">Theo Category</button>
+  </div>
+  <div class="modedef">
+   <span><b>Top 15 / mỗi ngày:</b> 15 goods bán chạy nhất <b>của riêng từng ngày</b> → màu theo Category, hover xem tên goods. "Khác" = các goods ngoài top-15 ngày đó (thường nhỏ).</span>
+   <span><b>Top 10 / cả tháng:</b> 10 goods top theo tổng cả tháng (tập <b>cố định</b>), mỗi goods 1 màu riêng → tiện theo dõi 1 goods xuyên các ngày. "Khác" = phần ngoài top-10 tháng (có thể lớn vào ngày leader nghỉ bán).</span>
+   <span><b>Theo Category:</b> gộp về 9 nhóm category — phân rã <b>đầy đủ, không có "Khác"</b>.</span>
+  </div>
+  <div class="chartbox tall"><canvas id="m9-stack"></canvas></div></div>
+ <div class="grid2">
+  <div class="card"><h3>Bảng Category</h3>
+   <table><thead><tr><th>Category</th><th class="r">Diamond</th><th class="r">Tỷ trọng</th><th class="r">Lượt mua</th></tr></thead><tbody><tr><td><span class="catdot" style="background:#B388EB"></span>Limited Summon</td>
+        <td class="r">569,000</td><td class="r">81.8%<div class="bar"><i style="width:81.8%;background:#B388EB"></i></div></td>
+        <td class="r">569</td></tr><tr><td><span class="catdot" style="background:#5B8DD9"></span>Gear/Consumable</td>
+        <td class="r">126,960</td><td class="r">18.2%<div class="bar"><i style="width:18.2%;background:#5B8DD9"></i></div></td>
+        <td class="r">23</td></tr></tbody></table></div>
+  <div class="card"><h3>Top 20 Goods theo Diamond</h3>
+   <table><thead><tr><th class="r">#</th><th>Goods</th><th class="r">Diamond</th><th class="r">Lượt</th></tr></thead><tbody><tr><td class="r">1</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Lutris Card (11 Times)</td>
+        <td class="r">449,000</td><td class="r">449</td></tr><tr><td class="r">2</td><td><span class="catdot" style="background:#B388EB"></span>Fancy Chance Up Fox Shaman Card (11 Times)</td>
+        <td class="r">120,000</td><td class="r">120</td></tr><tr><td class="r">3</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Influence Chest x11</td>
+        <td class="r">93,600</td><td class="r">4</td></tr><tr><td class="r">4</td><td><span class="catdot" style="background:#5B8DD9"></span>Einhasad's Shirt Selection Chest x11</td>
+        <td class="r">14,400</td><td class="r">6</td></tr><tr><td class="r">5</td><td><span class="catdot" style="background:#5B8DD9"></span>Pa'agrio's Seal x11</td>
+        <td class="r">13,200</td><td class="r">2</td></tr><tr><td class="r">6</td><td><span class="catdot" style="background:#5B8DD9"></span>Einhasad's Shirt Selection Chest</td>
+        <td class="r">3,360</td><td class="r">9</td></tr><tr><td class="r">7</td><td><span class="catdot" style="background:#5B8DD9"></span>Bracelet of Holy Protection Chest x11</td>
+        <td class="r">2,400</td><td class="r">2</td></tr></tbody></table></div>
+ </div>
+</div></div>
+<footer><div class="wrap">
+ <b>NCV Games — L2M Ingame BM Dashboard v1.2</b> · Nguồn: <code>data.BM Shop Usage by Category.csv</code><br>
+ Đơn vị = Diamond tiêu ra (in-game shop). "Diamond / lượt mua" = avg ticket size. "Lượt mua" = Number of Purchases.
+ Staris' Sanctum hiển thị 0 Diamond (shop miễn phí / không tiêu diamond) — chỉ xuất hiện ở cột lượt mua.
+</div></footer>
+<script src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'></script><script>
+const DATA = {"months": {"1": {"cat_labels": ["Limited Summon", "Gear/Consumable"], "cat_vals": [11161000, 2424120], "cat_colors": ["#B388EB", "#5B8DD9"], "day_labels": ["1/1", "1/2", "1/3", "1/4", "1/5", "1/6", "1/7", "1/8", "1/9", "1/10", "1/11", "1/12", "1/13", "1/14", "1/15", "1/16", "1/17", "1/18", "1/19", "1/20", "1/21", "1/22", "1/23", "1/24", "1/25", "1/26", "1/27", "1/28", "1/29", "1/30", "1/31"], "stack_cat": [["Limited Summon", "#B388EB", [347000, 257000, 205000, 151000, 283000, 223000, 841000, 313000, 165000, 312000, 171000, 304000, 114000, 1803000, 501000, 329000, 301000, 242000, 111000, 154000, 687000, 199000, 281000, 76000, 191000, 187000, 232000, 1422000, 315000, 236000, 208000]], ["Gear/Consumable", "#5B8DD9", [93600, 15600, 32400, 39720, 219720, 130200, 1200, 79560, 54000, 64080, 121440, 41040, 54360, 403320, 8400, 104400, 50400, 36000, 18000, 24000, 26400, 45600, 2880, 73920, 13800, 6000, 391200, 102120, 103560, 55200, 12000]]], "stack_goods": [["Fancy Chance Up Agmoon Card (11 Times)", "#7C5CBF", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1551000, 440000, 269000, 210000, 200000, 100000, 122000, 487000, 169000, 260000, 56000, 131000, 133000, 222000, 62000, 0, 0, 0]], ["Fancy Chance Up Titi Card (11 Times)", "#EE5524", [234000, 152000, 111000, 71000, 182000, 151000, 570000, 207000, 117000, 201000, 121000, 214000, 40000, 31000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Sieghardt Ein Card (11 Times)", "#48A999", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1068000, 260000, 214000, 156000]], ["Fancy Chance Up Venom Card (11 Times)", "#5B8DD9", [113000, 105000, 94000, 80000, 101000, 72000, 271000, 106000, 48000, 111000, 50000, 90000, 74000, 10000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Holy Protection Chest x11", "#E8A838", [3600, 0, 13200, 0, 26400, 81600, 1200, 9600, 38400, 39600, 26400, 16800, 14400, 195600, 0, 13200, 0, 1200, 2400, 12000, 13200, 30000, 1200, 19200, 2400, 0, 267600, 4800, 96000, 43200, 1200]], ["Bracelet of Influence Chest x11", "#D65C8A", [25200, 12000, 0, 0, 189600, 2400, 0, 22800, 0, 18000, 9600, 22800, 27600, 205200, 7200, 86400, 7200, 30000, 15600, 7200, 13200, 8400, 1200, 51600, 7200, 4800, 122400, 34800, 3600, 9600, 9600]], ["Fancy Chance Up Tauti Card (11 Times)", "#3FB6D4", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 211000, 61000, 60000, 91000, 42000, 11000, 32000, 200000, 30000, 21000, 20000, 60000, 54000, 10000, 10000, 0, 0, 0]], ["Fancy Chance Up Gordon Card (11 Times)", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 282000, 55000, 22000, 52000]], ["Eva's Seal Chest x11", "#FFD700", [63600, 3600, 12000, 0, 3600, 33600, 0, 2400, 4800, 2400, 6000, 1200, 8400, 1200, 1200, 4800, 10800, 4800, 0, 4800, 0, 7200, 0, 1200, 1200, 1200, 1200, 1200, 2400, 2400, 0]], ["Fire Dragon's Earring Chest x11", "#10B981", [1200, 0, 0, 38400, 0, 1200, 0, 44400, 0, 1200, 24000, 0, 0, 0, 0, 0, 2400, 0, 0, 0, 0, 0, 0, 0, 2400, 0, 0, 61200, 0, 0, 1200]], ["Kh\u00e1c (ngo\u00e0i top-10 th\u00e1ng)", "#C9CED6", [0, 0, 7200, 1320, 120, 11400, 0, 360, 10800, 2880, 55440, 240, 3960, 1320, 0, 0, 30000, 0, 0, 0, 0, 0, 480, 1920, 600, 0, 0, 120, 1560, 0, 0]]], "stack_goods_daily": [["Fancy Chance Up Agmoon Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1551000, 440000, 269000, 210000, 200000, 100000, 122000, 487000, 169000, 260000, 56000, 131000, 133000, 222000, 62000, 0, 0, 0]], ["Fancy Chance Up Titi Card (11 Times) \u00b7 Limited Summon", "#B388EB", [234000, 152000, 111000, 71000, 182000, 151000, 570000, 207000, 117000, 201000, 121000, 214000, 40000, 31000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Sieghardt Ein Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1068000, 260000, 214000, 156000]], ["Fancy Chance Up Venom Card (11 Times) \u00b7 Limited Summon", "#B388EB", [113000, 105000, 94000, 80000, 101000, 72000, 271000, 106000, 48000, 111000, 50000, 90000, 74000, 10000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Holy Protection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [3600, 0, 13200, 0, 26400, 81600, 1200, 9600, 38400, 39600, 26400, 16800, 14400, 195600, 0, 13200, 0, 1200, 2400, 12000, 13200, 30000, 1200, 19200, 2400, 0, 267600, 4800, 96000, 43200, 1200]], ["Bracelet of Influence Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [25200, 12000, 0, 0, 189600, 2400, 0, 22800, 0, 18000, 9600, 22800, 27600, 205200, 7200, 86400, 7200, 30000, 15600, 7200, 13200, 8400, 1200, 51600, 7200, 4800, 122400, 34800, 3600, 9600, 9600]], ["Fancy Chance Up Tauti Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 211000, 61000, 60000, 91000, 42000, 11000, 32000, 200000, 30000, 21000, 20000, 60000, 54000, 10000, 10000, 0, 0, 0]], ["Fancy Chance Up Gordon Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 282000, 55000, 22000, 52000]], ["Eva's Seal Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [63600, 3600, 12000, 0, 3600, 33600, 0, 2400, 4800, 2400, 6000, 1200, 8400, 1200, 1200, 4800, 10800, 4800, 0, 4800, 0, 7200, 0, 1200, 1200, 1200, 1200, 1200, 2400, 2400, 0]], ["Fire Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [1200, 0, 0, 38400, 0, 1200, 0, 44400, 0, 1200, 24000, 0, 0, 0, 0, 0, 2400, 0, 0, 0, 0, 0, 0, 0, 2400, 0, 0, 61200, 0, 0, 1200]], ["Earth Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 7200, 1200, 0, 8400, 0, 0, 10800, 1200, 55200, 0, 3600, 0, 0, 0, 30000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Relic of Blessings x10 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 120, 120, 3000, 0, 360, 0, 1680, 240, 240, 360, 1320, 0, 0, 0, 0, 0, 0, 0, 0, 480, 1920, 600, 0, 0, 120, 1560, 0, 0]]]}, "2": {"cat_labels": ["Limited Summon", "Gear/Consumable"], "cat_vals": [9773000, 2000280], "cat_colors": ["#B388EB", "#5B8DD9"], "day_labels": ["2/1", "2/2", "2/3", "2/4", "2/5", "2/6", "2/7", "2/8", "2/9", "2/10", "2/11", "2/12", "2/13", "2/14", "2/15", "2/16", "2/17", "2/18", "2/19", "2/20", "2/21", "2/22", "2/23", "2/24", "2/25", "2/26", "2/27", "2/28"], "stack_cat": [["Limited Summon", "#B388EB", [141000, 163000, 128000, 634000, 196000, 221000, 173000, 130000, 115000, 134000, 1054000, 365000, 269000, 91000, 165000, 110000, 94000, 203000, 234000, 135000, 141000, 100000, 159000, 93000, 2869000, 705000, 551000, 400000]], ["Gear/Consumable", "#5B8DD9", [30000, 270000, 12000, 44400, 362520, 127200, 28920, 8760, 60000, 278520, 4800, 4800, 20400, 8400, 51600, 109320, 13200, 4800, 1200, 12000, 1200, 2520, 2520, 37200, 187200, 314400, 2400, 0]]], "stack_goods": [["Fancy Chance Up Death Knight Card (11 Times)", "#7C5CBF", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1964000, 479000, 392000, 244000]], ["Fancy Chance Up Kakai Card (11 Times)", "#EE5524", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 809000, 296000, 239000, 61000, 135000, 90000, 94000, 133000, 134000, 64000, 101000, 70000, 109000, 63000, 16000, 0, 0, 0]], ["Fancy Chance Up Sieghardt Ein Card (11 Times)", "#48A999", [129000, 143000, 118000, 464000, 114000, 184000, 120000, 109000, 104000, 113000, 64000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Faris Card (11 Times)", "#5B8DD9", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 889000, 226000, 159000, 156000]], ["Bracelet of Holy Protection Chest x11", "#E8A838", [2400, 121200, 4800, 3600, 360000, 3600, 25200, 2400, 60000, 7200, 1200, 2400, 1200, 3600, 25200, 66000, 4800, 2400, 1200, 2400, 0, 0, 0, 1200, 102000, 200400, 0, 0]], ["Bracelet of Influence Chest x11", "#D65C8A", [19200, 91200, 3600, 19200, 0, 120000, 1200, 1200, 0, 265200, 2400, 1200, 1200, 3600, 1200, 39600, 6000, 1200, 0, 1200, 0, 1200, 0, 34800, 84000, 52800, 0, 0]], ["Fancy Chance Up Feline King Card (11 Times)", "#3FB6D4", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 161000, 69000, 30000, 30000, 30000, 20000, 0, 70000, 100000, 71000, 40000, 30000, 50000, 30000, 0, 0, 0, 0]], ["Fancy Chance Up Gordon Card (11 Times)", "#B388EB", [12000, 20000, 10000, 170000, 82000, 37000, 53000, 21000, 11000, 21000, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Eva's Seal Chest x11", "#FFD700", [0, 6000, 3600, 3600, 2400, 2400, 1200, 4800, 0, 3600, 0, 1200, 15600, 1200, 1200, 1200, 2400, 1200, 0, 3600, 1200, 1200, 2400, 1200, 1200, 61200, 2400, 0]], ["Earth Dragon's Earring Chest x11", "#10B981", [7200, 50400, 0, 14400, 0, 1200, 0, 0, 0, 1200, 1200, 0, 2400, 0, 0, 0, 0, 0, 0, 4800, 0, 0, 0, 0, 0, 0, 0, 0]], ["Kh\u00e1c (ngo\u00e0i top-10 th\u00e1ng)", "#C9CED6", [1200, 1200, 0, 3600, 120, 0, 1320, 360, 0, 1320, 0, 0, 0, 0, 24000, 2520, 0, 0, 0, 0, 0, 120, 120, 0, 0, 0, 0, 0]]], "stack_goods_daily": [["Fancy Chance Up Death Knight Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1964000, 479000, 392000, 244000]], ["Fancy Chance Up Kakai Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 809000, 296000, 239000, 61000, 135000, 90000, 94000, 133000, 134000, 64000, 101000, 70000, 109000, 63000, 16000, 0, 0, 0]], ["Fancy Chance Up Sieghardt Ein Card (11 Times) \u00b7 Limited Summon", "#B388EB", [129000, 143000, 118000, 464000, 114000, 184000, 120000, 109000, 104000, 113000, 64000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Faris Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 889000, 226000, 159000, 156000]], ["Bracelet of Holy Protection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [2400, 121200, 4800, 3600, 360000, 3600, 25200, 2400, 60000, 7200, 1200, 2400, 1200, 3600, 25200, 66000, 4800, 2400, 1200, 2400, 0, 0, 0, 1200, 102000, 200400, 0, 0]], ["Bracelet of Influence Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [19200, 91200, 3600, 19200, 0, 120000, 1200, 1200, 0, 265200, 2400, 1200, 1200, 3600, 1200, 39600, 6000, 1200, 0, 1200, 0, 1200, 0, 34800, 84000, 52800, 0, 0]], ["Fancy Chance Up Feline King Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 161000, 69000, 30000, 30000, 30000, 20000, 0, 70000, 100000, 71000, 40000, 30000, 50000, 30000, 0, 0, 0, 0]], ["Fancy Chance Up Gordon Card (11 Times) \u00b7 Limited Summon", "#B388EB", [12000, 20000, 10000, 170000, 82000, 37000, 53000, 21000, 11000, 21000, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Eva's Seal Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 6000, 3600, 3600, 2400, 2400, 1200, 4800, 0, 3600, 0, 1200, 15600, 1200, 1200, 1200, 2400, 1200, 0, 3600, 1200, 1200, 2400, 1200, 1200, 61200, 2400, 0]], ["Earth Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [7200, 50400, 0, 14400, 0, 1200, 0, 0, 0, 1200, 1200, 0, 2400, 0, 0, 0, 0, 0, 0, 4800, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fire Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [1200, 1200, 0, 3600, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 24000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Relic of Blessings x10 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 0, 120, 0, 120, 360, 0, 1320, 0, 0, 0, 0, 0, 2520, 0, 0, 0, 0, 0, 120, 120, 0, 0, 0, 0, 0]]]}, "3": {"cat_labels": ["Limited Summon", "Gear/Consumable"], "cat_vals": [7546000, 1348560], "cat_colors": ["#B388EB", "#5B8DD9"], "day_labels": ["3/1", "3/2", "3/3", "3/4", "3/5", "3/6", "3/7", "3/8", "3/9", "3/10", "3/11", "3/12", "3/13", "3/14", "3/15", "3/16", "3/17", "3/18", "3/19", "3/20", "3/21", "3/22", "3/23", "3/24", "3/25", "3/26", "3/27", "3/28", "3/29", "3/30", "3/31"], "stack_cat": [["Limited Summon", "#B388EB", [286000, 324000, 192000, 611000, 344000, 341000, 285000, 248000, 250000, 323000, 1079000, 211000, 249000, 169000, 70000, 120000, 92000, 261000, 138000, 160000, 70000, 94000, 141000, 103000, 603000, 174000, 161000, 150000, 166000, 46000, 85000]], ["Gear/Consumable", "#5B8DD9", [9720, 28920, 34920, 12000, 1200, 360, 1200, 26520, 4800, 27240, 478800, 0, 7200, 13200, 10800, 39600, 32400, 88800, 13320, 26880, 1200, 9600, 93600, 28080, 42120, 33720, 169320, 7200, 67320, 120, 38400]]], "stack_goods": [["Fancy Chance Up Death Knight Card (11 Times)", "#7C5CBF", [199000, 195000, 105000, 381000, 254000, 211000, 204000, 137000, 192000, 221000, 41000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Thor Class Card (11 Times)", "#EE5524", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 727000, 147000, 174000, 129000, 30000, 110000, 72000, 171000, 98000, 100000, 69000, 64000, 71000, 73000, 23000, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Faris Card (11 Times)", "#48A999", [87000, 129000, 87000, 230000, 90000, 130000, 81000, 111000, 58000, 102000, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Tarkai Class Card (11 Times)", "#5B8DD9", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 400000, 154000, 151000, 110000, 126000, 36000, 65000]], ["Fancy Chance Up Basila Card (11 Times)", "#E8A838", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 271000, 64000, 75000, 40000, 40000, 10000, 20000, 90000, 40000, 60000, 1000, 30000, 70000, 30000, 10000, 0, 0, 0, 0, 0, 0]], ["Bracelet of Influence Chest x11", "#D65C8A", [0, 0, 8400, 6000, 0, 0, 0, 13200, 0, 14400, 470400, 0, 2400, 13200, 0, 36000, 0, 18000, 0, 12000, 0, 7200, 0, 0, 1200, 0, 2400, 2400, 0, 0, 1200]], ["Bracelet of Holy Protection Chest x11", "#3FB6D4", [4800, 0, 26400, 0, 1200, 0, 0, 6000, 4800, 9600, 1200, 0, 0, 0, 0, 0, 6000, 55200, 10800, 13200, 0, 1200, 93600, 27600, 13200, 32400, 7200, 1200, 0, 0, 12000]], ["Fancy Chance Up Grail Apostle Card (11 Times)", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 170000, 20000, 10000, 40000, 40000, 10000, 20000]], ["Fire Dragon's Earring Chest x11", "#FFD700", [0, 26400, 0, 1200, 0, 0, 0, 3600, 0, 1200, 0, 0, 0, 0, 0, 1200, 1200, 14400, 0, 0, 0, 0, 0, 0, 1200, 0, 156000, 0, 24000, 0, 25200]], ["Eva's Seal Chest x11", "#10B981", [4800, 2400, 0, 3600, 0, 0, 1200, 3600, 0, 1200, 7200, 0, 1200, 0, 6000, 1200, 0, 1200, 2400, 1200, 0, 1200, 0, 0, 25200, 1200, 1200, 3600, 2400, 0, 0]], ["Kh\u00e1c (ngo\u00e0i top-10 th\u00e1ng)", "#C9CED6", [120, 120, 120, 1200, 0, 360, 0, 120, 0, 840, 0, 0, 3600, 0, 4800, 1200, 25200, 0, 120, 480, 1200, 0, 0, 480, 1320, 120, 2520, 0, 40920, 120, 0]]], "stack_goods_daily": [["Fancy Chance Up Death Knight Card (11 Times) \u00b7 Limited Summon", "#B388EB", [199000, 195000, 105000, 381000, 254000, 211000, 204000, 137000, 192000, 221000, 41000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Thor Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 727000, 147000, 174000, 129000, 30000, 110000, 72000, 171000, 98000, 100000, 69000, 64000, 71000, 73000, 23000, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Faris Card (11 Times) \u00b7 Limited Summon", "#B388EB", [87000, 129000, 87000, 230000, 90000, 130000, 81000, 111000, 58000, 102000, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Tarkai Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 400000, 154000, 151000, 110000, 126000, 36000, 65000]], ["Fancy Chance Up Basila Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 271000, 64000, 75000, 40000, 40000, 10000, 20000, 90000, 40000, 60000, 1000, 30000, 70000, 30000, 10000, 0, 0, 0, 0, 0, 0]], ["Bracelet of Influence Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 8400, 6000, 0, 0, 0, 13200, 0, 14400, 470400, 0, 2400, 13200, 0, 36000, 0, 18000, 0, 12000, 0, 7200, 0, 0, 1200, 0, 2400, 2400, 0, 0, 1200]], ["Bracelet of Holy Protection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [4800, 0, 26400, 0, 1200, 0, 0, 6000, 4800, 9600, 1200, 0, 0, 0, 0, 0, 6000, 55200, 10800, 13200, 0, 1200, 93600, 27600, 13200, 32400, 7200, 1200, 0, 0, 12000]], ["Fancy Chance Up Grail Apostle Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 170000, 20000, 10000, 40000, 40000, 10000, 20000]], ["Fire Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 26400, 0, 1200, 0, 0, 0, 3600, 0, 1200, 0, 0, 0, 0, 0, 1200, 1200, 14400, 0, 0, 0, 0, 0, 0, 1200, 0, 156000, 0, 24000, 0, 25200]], ["Eva's Seal Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [4800, 2400, 0, 3600, 0, 0, 1200, 3600, 0, 1200, 7200, 0, 1200, 0, 6000, 1200, 0, 1200, 2400, 1200, 0, 1200, 0, 0, 25200, 1200, 1200, 3600, 2400, 0, 0]], ["Earth Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 0, 3600, 0, 4800, 1200, 1200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2400, 0, 40800, 0, 0]], ["Relic of Blessings x10 \u00b7 Gear/Consumable", "#5B8DD9", [120, 120, 120, 0, 0, 360, 0, 120, 0, 840, 0, 0, 0, 0, 0, 0, 24000, 0, 120, 480, 1200, 0, 0, 480, 1320, 120, 120, 0, 120, 120, 0]]]}, "4": {"cat_labels": ["Limited Summon", "Gear/Consumable"], "cat_vals": [6339000, 1513320], "cat_colors": ["#B388EB", "#5B8DD9"], "day_labels": ["4/1", "4/2", "4/3", "4/4", "4/5", "4/6", "4/7", "4/8", "4/9", "4/10", "4/11", "4/12", "4/13", "4/14", "4/15", "4/16", "4/17", "4/18", "4/19", "4/20", "4/21", "4/22", "4/23", "4/24", "4/25", "4/26", "4/27", "4/28", "4/29", "4/30"], "stack_cat": [["Limited Summon", "#B388EB", [428000, 168000, 50000, 83000, 47000, 95000, 71000, 566000, 151000, 153000, 110000, 48000, 52000, 75000, 191000, 98000, 22000, 56000, 35000, 20000, 130000, 1654000, 458000, 291000, 201000, 175000, 194000, 196000, 330000, 191000]], ["Gear/Consumable", "#5B8DD9", [18120, 7200, 158400, 46920, 31320, 210000, 38400, 1320, 156120, 6000, 2640, 0, 7200, 8400, 26400, 32400, 216000, 0, 4800, 253200, 1200, 3840, 120, 32400, 118800, 8520, 3600, 13200, 103200, 3600]]], "stack_goods": [["Fancy Chance Up Hela Class Card (11 Times)", "#7C5CBF", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1513000, 407000, 281000, 191000, 155000, 183000, 176000, 270000, 161000]], ["Fancy Chance Up Eirena Class Card (11 Times)", "#EE5524", [0, 0, 0, 0, 0, 0, 0, 485000, 121000, 123000, 90000, 38000, 42000, 52000, 161000, 58000, 11000, 36000, 25000, 20000, 80000, 41000, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Tarkai Class Card (11 Times)", "#48A999", [278000, 98000, 50000, 73000, 47000, 65000, 51000, 30000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Influence Chest x11", "#5B8DD9", [3600, 2400, 0, 36000, 1200, 3600, 12000, 0, 99600, 1200, 1200, 0, 1200, 4800, 12000, 3600, 144000, 0, 0, 204000, 1200, 0, 0, 12000, 0, 1200, 1200, 1200, 100800, 2400]], ["Fire Dragon's Earring Chest x11", "#E8A838", [13200, 0, 61200, 0, 1200, 112800, 0, 0, 50400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 0, 0, 109200, 1200, 0, 0, 1200, 0]], ["Fancy Chance Up Zaken Agathion Card (11 Times)", "#D65C8A", [0, 0, 0, 0, 0, 0, 0, 51000, 30000, 30000, 20000, 10000, 10000, 23000, 30000, 40000, 11000, 20000, 10000, 0, 50000, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Holy Protection Chest x11", "#3FB6D4", [0, 2400, 49200, 0, 27600, 40800, 25200, 0, 6000, 2400, 1200, 0, 3600, 0, 8400, 1200, 72000, 0, 0, 48000, 0, 1200, 0, 19200, 4800, 2400, 1200, 12000, 1200, 1200]], ["Fancy Chance Up Ice Queen Freya Agathion Card (11 Times)", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100000, 51000, 10000, 10000, 20000, 11000, 20000, 60000, 30000]], ["Fancy Chance Up Grail Apostle Card (11 Times)", "#FFD700", [150000, 70000, 0, 10000, 0, 30000, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Earth Dragon's Earring Chest x11", "#10B981", [0, 0, 48000, 2400, 0, 51600, 0, 0, 0, 0, 0, 0, 0, 2400, 4800, 26400, 0, 0, 3600, 0, 0, 1200, 0, 0, 0, 1200, 1200, 0, 0, 0]], ["Kh\u00e1c (ngo\u00e0i top-10 th\u00e1ng)", "#C9CED6", [1320, 2400, 0, 8520, 1320, 1200, 1200, 1320, 120, 0, 240, 0, 2400, 1200, 1200, 1200, 0, 0, 1200, 1200, 0, 240, 120, 1200, 4800, 2520, 0, 0, 0, 0]]], "stack_goods_daily": [["Fancy Chance Up Hela Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1513000, 407000, 281000, 191000, 155000, 183000, 176000, 270000, 161000]], ["Fancy Chance Up Eirena Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 485000, 121000, 123000, 90000, 38000, 42000, 52000, 161000, 58000, 11000, 36000, 25000, 20000, 80000, 41000, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Tarkai Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [278000, 98000, 50000, 73000, 47000, 65000, 51000, 30000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Influence Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [3600, 2400, 0, 36000, 1200, 3600, 12000, 0, 99600, 1200, 1200, 0, 1200, 4800, 12000, 3600, 144000, 0, 0, 204000, 1200, 0, 0, 12000, 0, 1200, 1200, 1200, 100800, 2400]], ["Fire Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [13200, 0, 61200, 0, 1200, 112800, 0, 0, 50400, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 0, 0, 109200, 1200, 0, 0, 1200, 0]], ["Fancy Chance Up Zaken Agathion Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 51000, 30000, 30000, 20000, 10000, 10000, 23000, 30000, 40000, 11000, 20000, 10000, 0, 50000, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Holy Protection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 2400, 49200, 0, 27600, 40800, 25200, 0, 6000, 2400, 1200, 0, 3600, 0, 8400, 1200, 72000, 0, 0, 48000, 0, 1200, 0, 19200, 4800, 2400, 1200, 12000, 1200, 1200]], ["Fancy Chance Up Ice Queen Freya Agathion Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100000, 51000, 10000, 10000, 20000, 11000, 20000, 60000, 30000]], ["Fancy Chance Up Grail Apostle Card (11 Times) \u00b7 Limited Summon", "#B388EB", [150000, 70000, 0, 10000, 0, 30000, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Earth Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 48000, 2400, 0, 51600, 0, 0, 0, 0, 0, 0, 0, 2400, 4800, 26400, 0, 0, 3600, 0, 0, 1200, 0, 0, 0, 1200, 1200, 0, 0, 0]], ["Eva's Seal Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [1200, 2400, 0, 8400, 1200, 1200, 1200, 1200, 0, 0, 0, 0, 2400, 1200, 1200, 1200, 0, 0, 1200, 1200, 0, 0, 0, 1200, 4800, 2400, 0, 0, 0, 0]], ["Relic of Blessings x10 \u00b7 Gear/Consumable", "#5B8DD9", [120, 0, 0, 120, 120, 0, 0, 120, 120, 0, 240, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 120, 0, 0, 120, 0, 0, 0, 0]]]}, "5": {"cat_labels": ["Gear/Consumable", "Limited Summon"], "cat_vals": [8308440, 3595000], "cat_colors": ["#5B8DD9", "#B388EB"], "day_labels": ["5/1", "5/2", "5/3", "5/4", "5/5", "5/6", "5/7", "5/8", "5/9", "5/10", "5/11", "5/12", "5/13", "5/14", "5/15", "5/16", "5/17", "5/18", "5/19", "5/20", "5/21", "5/22", "5/23", "5/24", "5/25", "5/26", "5/27", "5/28", "5/29", "5/30", "5/31"], "stack_cat": [["Gear/Consumable", "#5B8DD9", [1200, 20400, 15600, 2400, 368400, 336240, 7200, 199200, 3600, 240480, 87600, 88800, 80400, 3720, 288120, 13200, 4800, 25200, 1200, 2653200, 931200, 505320, 248400, 192000, 36000, 34800, 1662840, 14400, 31200, 26520, 184800]], ["Limited Summon", "#B388EB", [228000, 125000, 157000, 45000, 213000, 357000, 107000, 116000, 50000, 70000, 25000, 41000, 201000, 104000, 70000, 43000, 41000, 90000, 90000, 367000, 142000, 130000, 89000, 38000, 41000, 40000, 355000, 41000, 72000, 54000, 53000]]], "stack_goods": [["Pa'agrio's Seal x11", "#7C5CBF", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2644800, 782400, 382800, 238800, 158400, 27600, 7200, 1588800, 10800, 27600, 22800, 182400]], ["Fancy Chance Up Evan Class Card (11 Times)", "#EE5524", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 316000, 112000, 80000, 79000, 29000, 31000, 30000, 315000, 41000, 71000, 44000, 52000]], ["Fancy Chance Up Allegra Class Card (11 Times)", "#48A999", [0, 0, 0, 0, 0, 237000, 97000, 86000, 30000, 40000, 14000, 40000, 181000, 64000, 58000, 33000, 31000, 70000, 70000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fire Dragon's Earring Chest x11", "#5B8DD9", [0, 1200, 0, 0, 224400, 0, 6000, 198000, 0, 0, 1200, 87600, 0, 1200, 2400, 0, 2400, 0, 0, 1200, 142800, 120000, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Hela Class Card (11 Times)", "#E8A838", [198000, 113000, 137000, 45000, 163000, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Holy Protection Chest x11", "#D65C8A", [1200, 4800, 14400, 0, 63600, 99600, 0, 1200, 0, 4800, 85200, 0, 79200, 0, 226800, 1200, 0, 12000, 1200, 0, 0, 0, 0, 28800, 0, 1200, 68400, 0, 0, 0, 1200]], ["Bracelet of Influence Chest x11", "#3FB6D4", [0, 14400, 1200, 1200, 79200, 234000, 0, 0, 2400, 219600, 0, 0, 1200, 0, 58800, 12000, 0, 13200, 0, 1200, 0, 0, 0, 0, 2400, 0, 0, 1200, 0, 0, 0]], ["Fancy Chance Up Scarlet van Halisha Card (11 Times)", "#B388EB", [0, 0, 0, 0, 0, 70000, 10000, 30000, 20000, 30000, 11000, 1000, 20000, 40000, 12000, 10000, 10000, 20000, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Medusa Agathion Card (11 Times)", "#FFD700", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51000, 30000, 50000, 10000, 9000, 10000, 10000, 40000, 0, 1000, 10000, 1000]], ["Fancy Chance Up Ice Queen Freya Agathion Card (11 Times)", "#10B981", [30000, 12000, 20000, 0, 50000, 10000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Kh\u00e1c (ngo\u00e0i top-10 th\u00e1ng)", "#C9CED6", [0, 0, 0, 1200, 1200, 2640, 1200, 0, 1200, 16080, 1200, 1200, 0, 2520, 120, 0, 2400, 0, 0, 6000, 6000, 2520, 9600, 4800, 6000, 26400, 5640, 2400, 3600, 3720, 1200]]], "stack_goods_daily": [["Pa'agrio's Seal x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2644800, 782400, 382800, 238800, 158400, 27600, 7200, 1588800, 10800, 27600, 22800, 182400]], ["Fancy Chance Up Evan Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 316000, 112000, 80000, 79000, 29000, 31000, 30000, 315000, 41000, 71000, 44000, 52000]], ["Fancy Chance Up Allegra Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 237000, 97000, 86000, 30000, 40000, 14000, 40000, 181000, 64000, 58000, 33000, 31000, 70000, 70000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fire Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 1200, 0, 0, 224400, 0, 6000, 198000, 0, 0, 1200, 87600, 0, 1200, 2400, 0, 2400, 0, 0, 1200, 142800, 120000, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Hela Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [198000, 113000, 137000, 45000, 163000, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Holy Protection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [1200, 4800, 14400, 0, 63600, 99600, 0, 1200, 0, 4800, 85200, 0, 79200, 0, 226800, 1200, 0, 12000, 1200, 0, 0, 0, 0, 28800, 0, 1200, 68400, 0, 0, 0, 1200]], ["Bracelet of Influence Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 14400, 1200, 1200, 79200, 234000, 0, 0, 2400, 219600, 0, 0, 1200, 0, 58800, 12000, 0, 13200, 0, 1200, 0, 0, 0, 0, 2400, 0, 0, 1200, 0, 0, 0]], ["Fancy Chance Up Scarlet van Halisha Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 70000, 10000, 30000, 20000, 30000, 11000, 1000, 20000, 40000, 12000, 10000, 10000, 20000, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Medusa Agathion Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51000, 30000, 50000, 10000, 9000, 10000, 10000, 40000, 0, 1000, 10000, 1000]], ["Fancy Chance Up Ice Queen Freya Agathion Card (11 Times) \u00b7 Limited Summon", "#B388EB", [30000, 12000, 20000, 0, 50000, 10000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Eva's Seal Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 1200, 0, 1200, 1200, 0, 1200, 0, 1200, 1200, 0, 1200, 0, 0, 0, 0, 0, 6000, 6000, 1200, 9600, 4800, 6000, 26400, 1200, 2400, 3600, 3600, 1200]], ["Earth Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 0, 1200, 1200, 0, 0, 0, 15600, 0, 0, 0, 1200, 0, 0, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Relic of Blessings x10 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 0, 0, 240, 0, 0, 0, 480, 0, 0, 0, 120, 120, 0, 0, 0, 0, 0, 0, 1320, 0, 0, 0, 0, 4440, 0, 0, 120, 0]]]}, "6": {"cat_labels": ["Limited Summon", "Gear/Consumable"], "cat_vals": [7395000, 2390280], "cat_colors": ["#B388EB", "#5B8DD9"], "day_labels": ["6/1", "6/2", "6/3", "6/4", "6/5", "6/6", "6/7", "6/8", "6/9", "6/10", "6/11", "6/12", "6/13", "6/14", "6/15", "6/16", "6/17", "6/18", "6/19", "6/20", "6/21", "6/22", "6/23", "6/24", "6/25", "6/26", "6/27", "6/28", "6/29", "6/30"], "stack_cat": [["Limited Summon", "#B388EB", [119000, 35000, 461000, 1300000, 417000, 303000, 132000, 145000, 133000, 434000, 50000, 63000, 79000, 117000, 95000, 90000, 1220000, 220000, 287000, 178000, 125000, 91000, 151000, 482000, 199000, 87000, 58000, 60000, 130000, 134000]], ["Gear/Consumable", "#5B8DD9", [37200, 1183320, 66000, 25320, 17040, 6360, 32280, 44400, 61440, 202800, 13200, 27600, 2400, 1200, 0, 16800, 0, 3600, 8400, 15720, 2880, 20640, 4920, 533040, 2400, 4920, 3600, 3600, 1200, 48000]]], "stack_goods": [["Fancy Chance Up Irene Class Card (11 Times)", "#7C5CBF", [0, 0, 0, 1170000, 415000, 281000, 122000, 125000, 133000, 324000, 50000, 53000, 79000, 97000, 95000, 80000, 33000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Nadin Class Card (11 Times)", "#EE5524", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1087000, 208000, 265000, 178000, 125000, 81000, 151000, 332000, 179000, 87000, 58000, 50000, 100000, 104000]], ["Bracelet of Holy Protection Chest x11", "#48A999", [0, 1153200, 15600, 4800, 0, 3600, 28800, 0, 1200, 0, 1200, 24000, 0, 0, 0, 12000, 0, 0, 2400, 1200, 0, 14400, 0, 0, 0, 0, 0, 0, 0, 0]], ["Pa'agrio's Seal x11", "#5B8DD9", [37200, 16800, 18000, 6000, 10800, 1200, 0, 42000, 60000, 186000, 8400, 1200, 2400, 1200, 0, 3600, 0, 3600, 4800, 4800, 1200, 2400, 3600, 529200, 2400, 4800, 1200, 3600, 1200, 42000]], ["Fancy Chance Up Evan Class Card (11 Times)", "#E8A838", [79000, 35000, 361000, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Magnus Unicorn Card (11 Times)", "#D65C8A", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100000, 12000, 22000, 0, 0, 10000, 0, 150000, 20000, 0, 0, 10000, 30000, 30000]], ["Fancy Chance Up Galaxia Card (11 Times)", "#3FB6D4", [0, 0, 0, 110000, 2000, 22000, 10000, 20000, 0, 110000, 0, 10000, 0, 20000, 0, 10000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Medusa Agathion Card (11 Times)", "#B388EB", [40000, 0, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Influence Chest x11", "#FFD700", [0, 4800, 26400, 0, 6000, 0, 2400, 2400, 0, 10800, 1200, 1200, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0, 4800]], ["Eva's Seal Chest x11", "#10B981", [0, 2400, 4800, 13200, 0, 1200, 0, 0, 0, 6000, 0, 0, 0, 0, 0, 1200, 0, 0, 1200, 2400, 0, 0, 1200, 1200, 0, 0, 0, 0, 0, 1200]], ["Kh\u00e1c (ngo\u00e0i top-10 th\u00e1ng)", "#C9CED6", [0, 6120, 1200, 1320, 240, 360, 1080, 0, 240, 0, 2400, 1200, 0, 0, 0, 0, 0, 0, 0, 6120, 480, 2640, 120, 2640, 0, 120, 2400, 0, 0, 0]]], "stack_goods_daily": [["Fancy Chance Up Irene Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 1170000, 415000, 281000, 122000, 125000, 133000, 324000, 50000, 53000, 79000, 97000, 95000, 80000, 33000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Nadin Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1087000, 208000, 265000, 178000, 125000, 81000, 151000, 332000, 179000, 87000, 58000, 50000, 100000, 104000]], ["Bracelet of Holy Protection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 1153200, 15600, 4800, 0, 3600, 28800, 0, 1200, 0, 1200, 24000, 0, 0, 0, 12000, 0, 0, 2400, 1200, 0, 14400, 0, 0, 0, 0, 0, 0, 0, 0]], ["Pa'agrio's Seal x11 \u00b7 Gear/Consumable", "#5B8DD9", [37200, 16800, 18000, 6000, 10800, 1200, 0, 42000, 60000, 186000, 8400, 1200, 2400, 1200, 0, 3600, 0, 3600, 4800, 4800, 1200, 2400, 3600, 529200, 2400, 4800, 1200, 3600, 1200, 42000]], ["Fancy Chance Up Evan Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [79000, 35000, 361000, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Magnus Unicorn Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100000, 12000, 22000, 0, 0, 10000, 0, 150000, 20000, 0, 0, 10000, 30000, 30000]], ["Fancy Chance Up Galaxia Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 110000, 2000, 22000, 10000, 20000, 0, 110000, 0, 10000, 0, 20000, 0, 10000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Medusa Agathion Card (11 Times) \u00b7 Limited Summon", "#B388EB", [40000, 0, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Influence Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 4800, 26400, 0, 6000, 0, 2400, 2400, 0, 10800, 1200, 1200, 0, 0, 0, 0, 0, 0, 0, 1200, 1200, 1200, 0, 0, 0, 0, 0, 0, 0, 4800]], ["Eva's Seal Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 2400, 4800, 13200, 0, 1200, 0, 0, 0, 6000, 0, 0, 0, 0, 0, 1200, 0, 0, 1200, 2400, 0, 0, 1200, 1200, 0, 0, 0, 0, 0, 1200]], ["Relic of Blessings x10 \u00b7 Gear/Consumable", "#5B8DD9", [0, 6120, 0, 120, 240, 360, 1080, 0, 240, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 6120, 480, 2640, 120, 2640, 0, 120, 0, 0, 0, 0]], ["Fire Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2400, 0, 0, 0]], ["Earth Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]]}, "7": {"cat_labels": ["Limited Summon", "Gear/Consumable"], "cat_vals": [8620000, 4310640], "cat_colors": ["#B388EB", "#5B8DD9"], "day_labels": ["7/1", "7/2", "7/3", "7/4", "7/5", "7/6", "7/7", "7/8", "7/9", "7/10", "7/11", "7/12", "7/13", "7/14", "7/15", "7/16", "7/17", "7/18", "7/19", "7/20", "7/21", "7/22", "7/23", "7/24", "7/25", "7/26", "7/27", "7/28", "7/29", "7/30", "7/31"], "stack_cat": [["Limited Summon", "#B388EB", [1677000, 279000, 370000, 238000, 188000, 204000, 125000, 433000, 153000, 249000, 109000, 145000, 97000, 124000, 1232000, 247000, 233000, 97000, 89000, 139000, 121000, 334000, 110000, 96000, 148000, 140000, 99000, 158000, 698000, 179000, 109000]], ["Gear/Consumable", "#5B8DD9", [28920, 24000, 12000, 12000, 180120, 759600, 1200, 1320, 3600, 7200, 31200, 96000, 0, 3600, 1200, 9720, 23640, 1680, 2520, 102000, 22800, 13200, 8400, 28800, 3600, 33600, 15600, 2400, 2125200, 506160, 249360]]], "stack_goods": [["Einhasad's Shirt Selection Chest x11", "#7C5CBF", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2054400, 480000, 240000]], ["Fancy Chance Up Tobald Card (11 Times)", "#EE5524", [794000, 161000, 227000, 98000, 108000, 124000, 105000, 272000, 61000, 139000, 83000, 40000, 57000, 84000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Timitris Card (11 Times)", "#48A999", [824000, 118000, 143000, 140000, 80000, 80000, 20000, 161000, 92000, 110000, 26000, 105000, 40000, 40000, 30000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Kastien Card (11 Times)", "#5B8DD9", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 668000, 156000, 135000, 60000, 60000, 76000, 75000, 154000, 41000, 40000, 78000, 87000, 69000, 72000, 10000, 0, 0]], ["Fancy Chance Up Matura Card (11 Times)", "#E8A838", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 534000, 91000, 98000, 37000, 29000, 63000, 46000, 180000, 69000, 56000, 70000, 53000, 30000, 86000, 10000, 0, 0]], ["Bracelet of Holy Protection Chest x11", "#D65C8A", [0, 0, 0, 1200, 0, 757200, 0, 0, 2400, 0, 1200, 1200, 0, 0, 0, 1200, 3600, 0, 0, 51600, 3600, 13200, 1200, 1200, 0, 1200, 0, 0, 1200, 1200, 0]], ["Fancy Chance Up Grant Card (11 Times)", "#3FB6D4", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 545000, 139000, 109000]], ["Pa'agrio's Seal x11", "#B388EB", [26400, 16800, 9600, 8400, 0, 0, 1200, 1200, 1200, 7200, 28800, 94800, 0, 3600, 1200, 0, 19200, 0, 1200, 50400, 0, 0, 2400, 27600, 3600, 12000, 14400, 2400, 2400, 0, 0]], ["Bracelet of Influence Chest x11", "#FFD700", [2400, 0, 2400, 1200, 180000, 0, 0, 0, 0, 0, 1200, 0, 0, 0, 0, 8400, 0, 0, 0, 0, 18000, 0, 0, 0, 0, 0, 0, 0, 2400, 4800, 0]], ["Fancy Chance Up Enkura Card (11 Times)", "#10B981", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 133000, 40000, 0]], ["Kh\u00e1c (ngo\u00e0i top-10 th\u00e1ng)", "#C9CED6", [59120, 7200, 0, 1200, 120, 2400, 0, 120, 0, 0, 0, 0, 0, 0, 0, 120, 840, 1680, 1320, 0, 1200, 0, 4800, 0, 0, 20400, 1200, 0, 64800, 20160, 9360]]], "stack_goods_daily": [["Einhasad's Shirt Selection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2054400, 480000, 240000]], ["Fancy Chance Up Tobald Card (11 Times) \u00b7 Limited Summon", "#B388EB", [794000, 161000, 227000, 98000, 108000, 124000, 105000, 272000, 61000, 139000, 83000, 40000, 57000, 84000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Timitris Card (11 Times) \u00b7 Limited Summon", "#B388EB", [824000, 118000, 143000, 140000, 80000, 80000, 20000, 161000, 92000, 110000, 26000, 105000, 40000, 40000, 30000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Kastien Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 668000, 156000, 135000, 60000, 60000, 76000, 75000, 154000, 41000, 40000, 78000, 87000, 69000, 72000, 10000, 0, 0]], ["Fancy Chance Up Matura Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 534000, 91000, 98000, 37000, 29000, 63000, 46000, 180000, 69000, 56000, 70000, 53000, 30000, 86000, 10000, 0, 0]], ["Bracelet of Holy Protection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 1200, 0, 757200, 0, 0, 2400, 0, 1200, 1200, 0, 0, 0, 1200, 3600, 0, 0, 51600, 3600, 13200, 1200, 1200, 0, 1200, 0, 0, 1200, 1200, 0]], ["Fancy Chance Up Grant Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 545000, 139000, 109000]], ["Pa'agrio's Seal x11 \u00b7 Gear/Consumable", "#5B8DD9", [26400, 16800, 9600, 8400, 0, 0, 1200, 1200, 1200, 7200, 28800, 94800, 0, 3600, 1200, 0, 19200, 0, 1200, 50400, 0, 0, 2400, 27600, 3600, 12000, 14400, 2400, 2400, 0, 0]], ["Bracelet of Influence Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [2400, 0, 2400, 1200, 180000, 0, 0, 0, 0, 0, 1200, 0, 0, 0, 0, 8400, 0, 0, 0, 0, 18000, 0, 0, 0, 0, 0, 0, 0, 2400, 4800, 0]], ["Fancy Chance Up Enkura Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 133000, 40000, 0]], ["Einhasad's Shirt Selection Chest \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63600, 20160, 9360]], ["Fancy Chance Up Nadin Class Card (11 Times) \u00b7 Limited Summon", "#B388EB", [59000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Eva's Seal Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 7200, 0, 1200, 0, 2400, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 0, 0, 0, 4800, 0, 0, 1200, 0, 0, 1200, 0, 0]], ["Earth Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 0, 0, 1200, 0, 0, 0, 0, 12000, 1200, 0, 0, 0, 0]], ["Fire Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7200, 0, 0, 0, 0, 0]], ["Relic of Blessings x10 \u00b7 Gear/Consumable", "#5B8DD9", [120, 0, 0, 0, 120, 0, 0, 120, 0, 0, 0, 0, 0, 0, 0, 120, 840, 480, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]]}, "8": {"cat_labels": ["Limited Summon", "Gear/Consumable"], "cat_vals": [3876000, 3121440], "cat_colors": ["#B388EB", "#5B8DD9"], "day_labels": ["8/1", "8/2", "8/3", "8/4", "8/5", "8/6", "8/7", "8/8", "8/9", "8/10", "8/11", "8/12", "8/13", "8/14", "8/15", "8/16", "8/17", "8/18", "8/19", "8/20", "8/21", "8/22", "8/23", "8/24", "8/25", "8/26", "8/27", "8/28", "8/29", "8/30", "8/31"], "stack_cat": [["Limited Summon", "#B388EB", [72000, 80000, 80000, 43000, 337000, 76000, 94000, 28000, 16000, 60000, 55000, 524000, 114000, 70000, 40000, 90000, 121000, 20000, 221000, 10000, 78000, 62000, 10000, 50000, 60000, 991000, 174000, 110000, 60000, 58000, 72000]], ["Gear/Consumable", "#5B8DD9", [111600, 673680, 49680, 15360, 421920, 120480, 176640, 74880, 68760, 75600, 516360, 21240, 0, 0, 3000, 12120, 538560, 35640, 31320, 36720, 38160, 6720, 29040, 0, 1200, 0, 27120, 2640, 1680, 7320, 24000]]], "stack_goods": [["Einhasad's Shirt Selection Chest x11", "#7C5CBF", [91200, 650400, 33600, 12000, 340800, 112800, 168000, 69600, 57600, 72000, 501600, 19200, 0, 0, 0, 9600, 535200, 21600, 24000, 7200, 0, 2400, 28800, 0, 0, 0, 26400, 0, 0, 4800, 0]], ["Fancy Chance Up Lutris Card (11 Times)", "#EE5524", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 909000, 154000, 100000, 50000, 38000, 72000]], ["Fancy Chance Up Telinaus Card (11 Times)", "#48A999", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444000, 84000, 70000, 20000, 90000, 111000, 20000, 151000, 10000, 78000, 52000, 10000, 50000, 50000, 2000, 0, 0, 0, 0, 0]], ["Fancy Chance Up Grant Card (11 Times)", "#5B8DD9", [52000, 49000, 80000, 31000, 236000, 76000, 58000, 24000, 16000, 60000, 35000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Queen Ant Card (11 Times)", "#E8A838", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80000, 30000, 0, 20000, 0, 10000, 0, 70000, 0, 0, 10000, 0, 0, 10000, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Enkura Card (11 Times)", "#D65C8A", [20000, 31000, 0, 12000, 101000, 0, 36000, 4000, 0, 0, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Fox Shaman Card (11 Times)", "#3FB6D4", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80000, 20000, 10000, 10000, 20000, 0]], ["Bracelet of Holy Protection Chest x11", "#B388EB", [9600, 3600, 0, 0, 24000, 0, 0, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 37200, 3600, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Influence Chest x11", "#FFD700", [0, 4800, 0, 0, 0, 1200, 0, 3600, 2400, 2400, 9600, 0, 0, 0, 0, 0, 0, 13200, 2400, 27600, 0, 0, 0, 0, 1200, 0, 0, 0, 0, 0, 0]], ["Pa'agrio's Seal x11", "#10B981", [1200, 4800, 9600, 1200, 2400, 6000, 2400, 0, 7200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4800, 0, 0, 0, 0, 0, 0, 0, 0, 2400, 0, 0, 24000]], ["Kh\u00e1c (ngo\u00e0i top-10 th\u00e1ng)", "#C9CED6", [9600, 10080, 6480, 2160, 54720, 480, 6240, 1680, 1560, 0, 5160, 2040, 0, 0, 3000, 2520, 3360, 840, 120, 720, 960, 720, 240, 0, 0, 0, 720, 240, 1680, 2520, 0]]], "stack_goods_daily": [["Einhasad's Shirt Selection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [91200, 650400, 33600, 12000, 340800, 112800, 168000, 69600, 57600, 72000, 501600, 19200, 0, 0, 0, 9600, 535200, 21600, 24000, 7200, 0, 2400, 28800, 0, 0, 0, 26400, 0, 0, 4800, 0]], ["Fancy Chance Up Lutris Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 909000, 154000, 100000, 50000, 38000, 72000]], ["Fancy Chance Up Telinaus Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 444000, 84000, 70000, 20000, 90000, 111000, 20000, 151000, 10000, 78000, 52000, 10000, 50000, 50000, 2000, 0, 0, 0, 0, 0]], ["Fancy Chance Up Grant Card (11 Times) \u00b7 Limited Summon", "#B388EB", [52000, 49000, 80000, 31000, 236000, 76000, 58000, 24000, 16000, 60000, 35000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Queen Ant Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80000, 30000, 0, 20000, 0, 10000, 0, 70000, 0, 0, 10000, 0, 0, 10000, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Enkura Card (11 Times) \u00b7 Limited Summon", "#B388EB", [20000, 31000, 0, 12000, 101000, 0, 36000, 4000, 0, 0, 20000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Fancy Chance Up Fox Shaman Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80000, 20000, 10000, 10000, 20000, 0]], ["Bracelet of Holy Protection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [9600, 3600, 0, 0, 24000, 0, 0, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 37200, 3600, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Bracelet of Influence Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 4800, 0, 0, 0, 1200, 0, 3600, 2400, 2400, 9600, 0, 0, 0, 0, 0, 0, 13200, 2400, 27600, 0, 0, 0, 0, 1200, 0, 0, 0, 0, 0, 0]], ["Pa'agrio's Seal x11 \u00b7 Gear/Consumable", "#5B8DD9", [1200, 4800, 9600, 1200, 2400, 6000, 2400, 0, 7200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4800, 0, 0, 0, 0, 0, 0, 0, 0, 2400, 0, 0, 24000]], ["Einhasad's Shirt Selection Chest \u00b7 Gear/Consumable", "#5B8DD9", [8400, 9120, 6480, 2160, 7920, 480, 6240, 240, 1440, 0, 3360, 1920, 0, 0, 480, 0, 2160, 720, 0, 720, 960, 720, 240, 0, 0, 0, 720, 240, 480, 0, 0]], ["Fire Dragon's Earring Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [1200, 0, 0, 0, 42000, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], ["Relic of Blessings x10 \u00b7 Gear/Consumable", "#5B8DD9", [0, 960, 0, 0, 0, 0, 0, 240, 120, 0, 600, 120, 0, 0, 2520, 2520, 1200, 120, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 2520, 0]], ["Eva's Seal Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 0, 4800, 0, 0, 0, 0, 0, 1200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]]}, "9": {"cat_labels": ["Limited Summon", "Gear/Consumable"], "cat_vals": [569000, 126960], "cat_colors": ["#B388EB", "#5B8DD9"], "day_labels": ["9/1", "9/2", "9/3", "9/4", "9/5", "9/6"], "stack_cat": [["Limited Summon", "#B388EB", [89000, 290000, 50000, 100000, 30000, 10000]], ["Gear/Consumable", "#5B8DD9", [5280, 0, 11040, 98160, 12000, 480]]], "stack_goods": [["Fancy Chance Up Lutris Card (11 Times)", "#7C5CBF", [89000, 220000, 40000, 80000, 10000, 10000]], ["Fancy Chance Up Fox Shaman Card (11 Times)", "#EE5524", [0, 70000, 10000, 20000, 20000, 0]], ["Bracelet of Influence Chest x11", "#48A999", [0, 0, 0, 93600, 0, 0]], ["Einhasad's Shirt Selection Chest x11", "#5B8DD9", [0, 0, 0, 2400, 12000, 0]], ["Pa'agrio's Seal x11", "#E8A838", [4800, 0, 8400, 0, 0, 0]], ["Einhasad's Shirt Selection Chest", "#D65C8A", [480, 0, 240, 2160, 0, 480]], ["Bracelet of Holy Protection Chest x11", "#3FB6D4", [0, 0, 2400, 0, 0, 0]]], "stack_goods_daily": [["Fancy Chance Up Lutris Card (11 Times) \u00b7 Limited Summon", "#B388EB", [89000, 220000, 40000, 80000, 10000, 10000]], ["Fancy Chance Up Fox Shaman Card (11 Times) \u00b7 Limited Summon", "#B388EB", [0, 70000, 10000, 20000, 20000, 0]], ["Bracelet of Influence Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 93600, 0, 0]], ["Einhasad's Shirt Selection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 0, 2400, 12000, 0]], ["Pa'agrio's Seal x11 \u00b7 Gear/Consumable", "#5B8DD9", [4800, 0, 8400, 0, 0, 0]], ["Einhasad's Shirt Selection Chest \u00b7 Gear/Consumable", "#5B8DD9", [480, 0, 240, 2160, 0, 480]], ["Bracelet of Holy Protection Chest x11 \u00b7 Gear/Consumable", "#5B8DD9", [0, 0, 2400, 0, 0, 0]]]}}, "ov_labels": ["Th\u00e1ng 1", "Th\u00e1ng 2", "Th\u00e1ng 3", "Th\u00e1ng 4", "Th\u00e1ng 5", "Th\u00e1ng 6", "Th\u00e1ng 7", "Th\u00e1ng 8", "Th\u00e1ng 9"], "ov_vals": [13585120, 11773280, 8894560, 7852320, 11903440, 9785280, 12930640, 6997440, 695960], "ov_colors": ["#3FB6D4", "#3FB6D4", "#3FB6D4", "#3FB6D4", "#3FB6D4", "#3FB6D4", "#3FB6D4", "#3FB6D4", "#3FB6D4"], "ovcat_labels": ["Limited Summon", "Gear/Consumable"], "ovcat_vals": [58874000, 25544040], "ovcat_colors": ["#B388EB", "#5B8DD9"]};
+const DRAW = {};
+const CHARTS = {};
+function actTab(btn,id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active'); document.getElementById(id).classList.add('active');
+  if(!btn._drawn){ if(DRAW[id]) DRAW[id](); btn._drawn=true; }
+}
+const CMN={maintainAspectRatio:false};
+const fM=v=>v>=1e6?(v/1e6).toFixed(1)+'M':(v/1e3).toFixed(0)+'k';
+function donut(cid,labels,vals,colors){
+  const el=document.getElementById(cid); if(!el)return;
+  const tot=vals.reduce((a,b)=>a+b,0)||1;
+  new Chart(el,{type:'doughnut',data:{labels:labels,datasets:[{data:vals,backgroundColor:colors,borderWidth:1,borderColor:'#fff'}]},
+    options:{...CMN,cutout:'58%',plugins:{legend:{position:'right',labels:{font:{family:"Inter",size:11},boxWidth:11}},
+      tooltip:{callbacks:{label:c=>c.label+': '+c.raw.toLocaleString()+' 💎 ('+(c.raw*100/tot).toFixed(1)+'%)'}}}}});
+}
+function hbar(cid,labels,vals,colors){
+  const el=document.getElementById(cid); if(!el)return;
+  new Chart(el,{type:'bar',data:{labels:labels,datasets:[{data:vals,backgroundColor:colors,borderRadius:4}]},
+    options:{...CMN,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw.toLocaleString()+' 💎'}}},
+      scales:{x:{ticks:{font:{family:"JetBrains Mono",size:10},callback:fM}},y:{ticks:{font:{size:11}}}}}});
+}
+function mbar(cid,labels,vals,colors){
+  const el=document.getElementById(cid); if(!el)return;
+  new Chart(el,{type:'bar',data:{labels:labels,datasets:[{data:vals,backgroundColor:colors,borderRadius:5}]},
+    options:{...CMN,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw.toLocaleString()+' 💎'}}},
+      scales:{x:{ticks:{font:{size:11}}},y:{ticks:{font:{family:"JetBrains Mono",size:10},callback:fM}}}}});
+}
+// stacked daily composition: series = [[label,color,[perday...]],...]
+function stacked(cid,labels,series,showLegend){
+  const el=document.getElementById(cid); if(!el)return;
+  if(CHARTS[cid]){CHARTS[cid].destroy();}
+  const ds=series.map(s=>({label:s[0],data:s[2],backgroundColor:s[1],borderWidth:0,stack:'d'}));
+  CHARTS[cid]=new Chart(el,{type:'bar',data:{labels:labels,datasets:ds},
+    options:{...CMN,plugins:{
+        legend:{display:showLegend!==false,position:'bottom',labels:{font:{family:"Inter",size:10.5},boxWidth:11,padding:8}},
+        tooltip:{itemSort:(a,b)=>b.raw-a.raw,callbacks:{
+          label:c=>c.raw>0?(c.dataset.label+': '+c.raw.toLocaleString()+' 💎'):null,
+          footer:items=>{let t=items.reduce((s,i)=>s+i.raw,0);return 'Tổng ngày: '+t.toLocaleString()+' 💎';}}}},
+      scales:{x:{stacked:true,ticks:{font:{size:10},maxRotation:0,autoSkip:true,maxTicksLimit:15}},
+              y:{stacked:true,ticks:{font:{family:"JetBrains Mono",size:10},callback:fM}}}}});
+}
+function setStack(btn,m,mode){
+  btn.parentNode.querySelectorAll('.tg').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const d=DATA.months[m];
+  let series,leg=true;
+  if(mode==='cat'){series=d.stack_cat;}
+  else if(mode==='goodsM'){series=d.stack_goods;}
+  else {series=d.stack_goods_daily;leg=false;}
+  stacked('m'+m+'-stack', d.day_labels, series, leg);
+}
+
+DRAW['p-ov']=function(){mbar('ov-mbar',DATA.ov_labels,DATA.ov_vals,DATA.ov_colors);donut('ov-donut',DATA.ovcat_labels,DATA.ovcat_vals,DATA.ovcat_colors);};
+DRAW['p-m1']=function(){var d=DATA.months[1];donut('m1-donut',d.cat_labels,d.cat_vals,d.cat_colors);hbar('m1-hbar',d.cat_labels,d.cat_vals,d.cat_colors);stacked('m1-stack',d.day_labels,d.stack_goods_daily,false);};
+DRAW['p-m2']=function(){var d=DATA.months[2];donut('m2-donut',d.cat_labels,d.cat_vals,d.cat_colors);hbar('m2-hbar',d.cat_labels,d.cat_vals,d.cat_colors);stacked('m2-stack',d.day_labels,d.stack_goods_daily,false);};
+DRAW['p-m3']=function(){var d=DATA.months[3];donut('m3-donut',d.cat_labels,d.cat_vals,d.cat_colors);hbar('m3-hbar',d.cat_labels,d.cat_vals,d.cat_colors);stacked('m3-stack',d.day_labels,d.stack_goods_daily,false);};
+DRAW['p-m4']=function(){var d=DATA.months[4];donut('m4-donut',d.cat_labels,d.cat_vals,d.cat_colors);hbar('m4-hbar',d.cat_labels,d.cat_vals,d.cat_colors);stacked('m4-stack',d.day_labels,d.stack_goods_daily,false);};
+DRAW['p-m5']=function(){var d=DATA.months[5];donut('m5-donut',d.cat_labels,d.cat_vals,d.cat_colors);hbar('m5-hbar',d.cat_labels,d.cat_vals,d.cat_colors);stacked('m5-stack',d.day_labels,d.stack_goods_daily,false);};
+DRAW['p-m6']=function(){var d=DATA.months[6];donut('m6-donut',d.cat_labels,d.cat_vals,d.cat_colors);hbar('m6-hbar',d.cat_labels,d.cat_vals,d.cat_colors);stacked('m6-stack',d.day_labels,d.stack_goods_daily,false);};
+DRAW['p-m7']=function(){var d=DATA.months[7];donut('m7-donut',d.cat_labels,d.cat_vals,d.cat_colors);hbar('m7-hbar',d.cat_labels,d.cat_vals,d.cat_colors);stacked('m7-stack',d.day_labels,d.stack_goods_daily,false);};
+DRAW['p-m8']=function(){var d=DATA.months[8];donut('m8-donut',d.cat_labels,d.cat_vals,d.cat_colors);hbar('m8-hbar',d.cat_labels,d.cat_vals,d.cat_colors);stacked('m8-stack',d.day_labels,d.stack_goods_daily,false);};
+DRAW['p-m9']=function(){var d=DATA.months[9];donut('m9-donut',d.cat_labels,d.cat_vals,d.cat_colors);hbar('m9-hbar',d.cat_labels,d.cat_vals,d.cat_colors);stacked('m9-stack',d.day_labels,d.stack_goods_daily,false);};
+
+DRAW['p-ov']();document.querySelector('.tab')._drawn=true;</script></body></html>
