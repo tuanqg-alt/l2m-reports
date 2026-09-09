@@ -158,6 +158,7 @@ th,td{padding:8px 9px;font-size:12px}
 <select id="c_i" style="max-width:340px"></select>
 <select id="c_w"><option value="" data-en="All worlds">Mọi world</option><option>Aria</option><option>Bartz</option><option>Erica</option><option>Kain</option><option>Leona</option><option>Teon</option></select>
 <select id="c_k"><option value="" data-en="All sources">Mọi nguồn đăng</option><option value="c" data-en="Player listings">Người chơi đăng</option><option value="b" data-en="Clan listings">Bang hội đăng</option></select>
+<select id="c_pt" style="font-weight:600"><option value="" selected data-en="Both: listed + traded">Cả hai: giá treo + đã giao dịch</option><option value="l" data-en="Listed price only">Chỉ giá treo</option><option value="s" data-en="Traded price only">Chỉ giá đã giao dịch</option></select>
 <select id="c_r"><option value="all" selected data-en="Full period">Toàn kỳ</option><option value="7" data-en="Last 7 days">7 ngày cuối</option>
 <option value="30" data-en="Last 30 days">30 ngày cuối</option><option value="custom" data-en="Custom…">Tự chọn…</option></select>
 <input type="date" id="c_d1" min="2026-05-30" max="2026-09-09" value="2026-05-30">
@@ -165,8 +166,8 @@ th,td{padding:8px 9px;font-size:12px}
 <input type="date" id="c_d2" min="2026-05-30" max="2026-09-09" value="2026-09-09">
 <span class="dim" id="c_n" style="align-self:center"></span></div>
 <div class="chartbox"><svg id="pc" width="100%" height="330" style="min-width:680px"></svg>
-<div class="legend"><span><i style="background:#3b82f6"></i><span class="vi">Giá niêm yết (trung vị/ngày)</span><span class="en">Listed price (daily median)</span></span>
-<span><i style="background:#EE5524"></i><span class="vi">Giá giao dịch (trung vị/ngày)</span><span class="en">Sale price (daily median)</span></span></div></div></div>
+<div class="legend"><span id="lg_l"><i style="background:#3b82f6"></i><span class="vi">Giá treo (trung vị/ngày)</span><span class="en">Listed price (daily median)</span></span>
+<span id="lg_s"><i style="background:#EE5524"></i><span class="vi">Giá đã giao dịch (trung vị/ngày)</span><span class="en">Sale price (daily median)</span></span></div></div></div>
 
 <div class="pane" id="p3"><h2><span class="vi">Theo dõi 151 key watchlist</span><span class="en">Watchlist — 151 keys</span></h2>
 <p class="dim"><span class="vi">TuanQG chốt 28/08: giữ toàn bộ key, không tỉa. Cột <b>lần cuối xuất hiện</b> để món đã chết tự lộ ra. Hiện <b>73/151</b> key có giao dịch trong 90 ngày.</span><span class="en">Per TuanQG (Aug 28): keep every key, no pruning — the <b>last seen</b> column exposes dead items. Currently <b>73/151</b> keys traded in 90 days.</span></p>
@@ -241,7 +242,7 @@ lỗi khi nối sale_id, mà là hành vi thật: người ký gửi hàng cho b
 <div class="note"><h3><span class="vi">Người chơi đến từ đâu</span><span class="en">Where players come from</span></h3><p>VN 2.299 tin (32,8%) · TH 2.049 tin (29,3%) · ID 1.349 tin (19,3%) · SG 795 tin (11,4%) · PH 334 tin (4,8%) · MY 173 tin (2,5%)</p></div>
 </div>
 
-<div class="sub" style="margin-top:36px">Scope G · Area 10 GameOps Analytics · <span class="vi">dựng 09/09/2026 16:40</span><span class="en">built 09/09/2026 16:40</span></div>
+<div class="sub" style="margin-top:36px">Scope G · Area 10 GameOps Analytics · <span class="vi">dựng 09/09/2026 21:49</span><span class="en">built 09/09/2026 21:49</span></div>
 <div id="tt"></div>
 </div>
 <script>
@@ -362,14 +363,21 @@ function series(src,key,g,w,k,a,b){var by={};src.forEach(function(r){
  (by[r[0]]=by[r[0]]||[]).push(r[4]);});
  var out={};Object.keys(by).forEach(function(d){out[d]={v:median(by[d]),n:by[d].length}});return out;}
 function draw(){var key=$g('c_i').value,gr=$g('c_gr').value,w=$g('c_w').value,k=$g('c_k').value,
+ pt=$g('c_pt')?$g('c_pt').value:'',
  a=$g('c_d1').value||TU,b=$g('c_d2').value||DEN;
  var ic=key?IC[key]:null;$g('pc_ic').style.backgroundImage=ic?'url("'+ic+'")':'none';
  var svg=$g('pc');
+ // pt='' ca hai · 'l' chi gia treo (niem yet) · 's' chi gia da giao dich
+ var shL=(pt!=='s'),shS=(pt!=='l');
+ if($g('lg_l')){$g('lg_l').style.display=shL?'':'none';}
+ if($g('lg_s')){$g('lg_s').style.display=shS?'':'none';}
  if(!key&&!gr){$g('c_n').textContent=tr('chọn item hoặc nhóm','pick an item or group');svg.innerHTML='';return;}
- var A=series(LI,key,gr,w,k,a,b),B=series(TX,key,gr,w,k,a,b);
+ var A=shL?series(LI,key,gr,w,k,a,b):{},B=shS?series(TX,key,gr,w,k,a,b):{};
  var days=Object.keys(A).concat(Object.keys(B));days=days.filter(function(d,i){return days.indexOf(d)===i}).sort();
  var nl=0,nt=0;Object.keys(A).forEach(function(d){nl+=A[d].n});Object.keys(B).forEach(function(d){nt+=B[d].n});
- $g('c_n').textContent=fmtn(nl)+tr(' tin rao · ',' listings · ')+fmtn(nt)+tr(' giao dịch',' sales');
+ var lbl=[];if(shL){lbl.push(fmtn(nl)+tr(' tin rao',' listings'));}
+ if(shS){lbl.push(fmtn(nt)+tr(' giao dịch',' sales'));}
+ $g('c_n').textContent=lbl.join(' · ');
  var W=Math.max(svg.clientWidth,680),H=330,mL=74,mR=14,mT=14,mB=44;
  var vals=[];days.forEach(function(d){if(A[d])vals.push(A[d].v);if(B[d])vals.push(B[d].v)});
  if(!vals.length){svg.innerHTML='<text x="50%" y="50%" fill="#68737f" text-anchor="middle" font-size="13">'+tr('Chưa có dữ liệu cho lựa chọn này','No data for this selection')+'</text>';return;}
@@ -397,7 +405,7 @@ pcs.addEventListener('mouseleave',function(){tt.style.display='none';});
 $g('c_r').onchange=function(){setrange('c_r','c_d1','c_d2');draw();};
 ['c_d1','c_d2'].forEach(function(i){$g(i).onchange=function(){$g('c_r').value='custom';draw();};});
 $g('c_gr').onchange=function(){rebuildItems();draw();};
-['c_i','c_w','c_k'].forEach(function(i){$g(i).onchange=draw;});
+['c_i','c_w','c_k','c_pt'].forEach(function(i){$g(i).onchange=draw;});
 window.addEventListener('resize',draw);
 // ---- TOGGLE NGÔN NGỮ VI/EN ----
 function setLang(lg){LANGNOW=lg;document.documentElement.lang=lg;
