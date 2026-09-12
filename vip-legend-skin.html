@@ -1,0 +1,185 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legend Skin — VIP G & F</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0F1419;--card:#171d24;--line:#2a333d;--tx:#e8edf2;--mut:#93a1b0;--or:#EE5524;}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding:20px}
+header h1{font-size:22px;margin:0 0 4px;font-weight:800}header h1 b{color:var(--or)}
+.sub{color:var(--mut);font-size:13px;margin-bottom:6px}
+.lg{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-bottom:16px}.lg b{color:var(--tx)}
+.tabs{display:flex;gap:8px;margin:16px 0}
+.tabs button{flex:1;padding:12px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:10px;font-size:15px;font-weight:700;cursor:pointer}
+.tabs button.on{background:var(--or);color:#fff;border-color:var(--or)}
+.tabpane{display:none}.tabpane.on{display:block}
+.blk{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.blk h2{font-size:15px;margin:0 0 14px;font-weight:700}
+.kpis{display:flex;gap:12px;flex-wrap:wrap}
+.kpi{flex:1;min-width:90px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center}
+.kpi.hi{border-color:var(--or)}.kpi .kv{font-size:26px;font-weight:800}.kpi.hi .kv{color:var(--or)}
+.kpi .kl{font-size:12px;color:var(--mut);margin-top:4px}
+.bars{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.barrow{display:flex;align-items:center;gap:10px;font-size:13px}
+.barrow .bl{width:180px;color:var(--mut);flex-shrink:0}
+.barrow .bar{flex:1;height:14px;background:var(--bg);border-radius:7px;overflow:hidden}
+.barrow .bar i{display:block;height:100%;background:var(--or);border-radius:7px}
+.barrow .bn{width:90px;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px;min-width:680px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mut);font-weight:600;position:sticky;top:0;background:var(--card)}
+td.nm{font-weight:700}td.r{text-align:right;font-variant-numeric:tabular-nums;color:var(--or)}
+tbody tr:hover{background:#1d242c}
+.note{font-size:12px;color:var(--mut);margin-top:6px}
+@media(max-width:640px){.wrap{padding:12px}.barrow .bl{width:120px;font-size:11px}.barrow .bn{width:74px}.kpi .kv{font-size:22px}}
+</style></head><body><div class="wrap">
+<header><h1>Class Skin phẩm <b>LEGEND</b> — VIP G &amp; F</h1>
+<div class="sub">Nguồn: LogView log 1453 SkinEquip (grade 2 = Legend) · toàn 73 server · tới 2026-09-09 · bảng VIP 2026-09-10 · Cập nhật 11/09/2026</div>
+<div class="lg"><span>🗡️ <b>Hiệp Sĩ Của Chúa Tử Thần</b> (mã 100240 · phổ biến)</span><span>👑 <b>Nữ Vương Dục Vọng</b> (mã 100300 · hiếm hơn)</span></div></header>
+<div class="tabs"><button class="on" onclick="sw('tG',this)">VIP G · 95 chủ</button><button onclick="sw('tF',this)">VIP F · 12 chủ</button></div>
+
+<div class="tabpane" id="tG">
+  <div class="blk"><h2>&#9312; Tỷ lệ phủ nhóm VIP G</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="kv">95</div><div class="kl">Chủ Legend</div></div>
+      <div class="kpi"><div class="kv">333</div><div class="kl">Tổng VIP G</div></div>
+      <div class="kpi hi"><div class="kv">28.5%</div><div class="kl">Tỷ lệ phủ</div></div>
+    </div>
+    <div class="bars"><div class='barrow'><span class='bl'>Hiệp Sĩ Của Chúa Tử Thần</span><div class='bar'><i style='width:27.9%'></i></div><span class='bn'>93 · 27.9%</span></div><div class='barrow'><span class='bl'>Nữ Vương Dục Vọng</span><div class='bar'><i style='width:6.0%'></i></div><span class='bn'>20 · 6.0%</span></div><div class='barrow'><span class='bl'>Có cả 2</span><div class='bar'><i style='width:5.4%'></i></div><span class='bn'>18 · 5.4%</span></div></div>
+  </div>
+  <div class="blk"><h2>&#9313; Biểu đồ mở Legend theo tuần</h2><canvas id="ch_tG" height="120"></canvas></div>
+  <div class="blk"><h2>&#9314; Danh sách chủ sở hữu Legend (95)</h2>
+    <div class="tw"><table><thead><tr><th>#</th><th>Tên VIP</th><th>Server</th><th>Skin Legend</th><th>Ngày mở đầu</th><th>Tổng nạp</th><th>Clan</th></tr></thead>
+    <tbody><tr><td>1</td><td class='nm'>Cherv0nt</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>08/04/2026</td><td class='r'>6.9 tỷ</td><td>VoltZ</td></tr>
+<tr><td>2</td><td class='nm'>NanK</td><td>Leona 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>13/04/2026</td><td class='r'>3.0 tỷ</td><td>Legendary</td></tr>
+<tr><td>3</td><td class='nm'>MoonIord</td><td>Teon 03</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>15/04/2026</td><td class='r'>3.0 tỷ</td><td>Fortune</td></tr>
+<tr><td>4</td><td class='nm'>oAuGusTo</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>15/04/2026</td><td class='r'>7.1 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>5</td><td class='nm'>TAITANALI</td><td>Kain 03</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>15/04/2026</td><td class='r'>1.7 tỷ</td><td>LSB</td></tr>
+<tr><td>6</td><td class='nm'>xGodFatherx</td><td>Teon 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>17/04/2026</td><td class='r'>714 tr</td><td>Fortune</td></tr>
+<tr><td>7</td><td class='nm'>ZEanKaiii</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>22/04/2026</td><td class='r'>7.8 tỷ</td><td>VoltZ</td></tr>
+<tr><td>8</td><td class='nm'>HiGhWayStaRz</td><td>Bartz 10</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>22/04/2026</td><td class='r'>888 tr</td><td>HOMELESS</td></tr>
+<tr><td>9</td><td class='nm'>Muerta</td><td>Kain 08</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>22/04/2026</td><td class='r'>1.6 tỷ</td><td>SENTINEL</td></tr>
+<tr><td>10</td><td class='nm'>EdlinAS</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>29/04/2026</td><td class='r'>2.2 tỷ</td><td>LevelS</td></tr>
+<tr><td>11</td><td class='nm'>Aureus</td><td>Teon 01</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>30/04/2026</td><td class='r'>3.3 tỷ</td><td>Clonexxx</td></tr>
+<tr><td>12</td><td class='nm'>หมูกรอบฮาลาล</td><td>Bartz 09</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>01/05/2026</td><td class='r'>1.3 tỷ</td><td>REVENGER</td></tr>
+<tr><td>13</td><td class='nm'>Visionnaire</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>01/05/2026</td><td class='r'>13.1 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>14</td><td class='nm'>GX</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>07/05/2026</td><td class='r'>4.6 tỷ</td><td>LevelS</td></tr>
+<tr><td>15</td><td class='nm'>ZHYBR0</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>08/05/2026</td><td class='r'>8.0 tỷ</td><td>VoltZ</td></tr>
+<tr><td>16</td><td class='nm'>Umbrella</td><td>Teon 04</td><td>Nữ Vương Dục Vọng</td><td>09/05/2026</td><td class='r'>12.1 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>17</td><td class='nm'>HBT</td><td>Kain 01</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>11/05/2026</td><td class='r'>2.7 tỷ</td><td>NewWorld</td></tr>
+<tr><td>18</td><td class='nm'>MhomXXXXXO</td><td>Bartz 04</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>21/05/2026</td><td class='r'>11.1 tỷ</td><td>ELITE</td></tr>
+<tr><td>19</td><td class='nm'>ArminX</td><td>Teon 09</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>21/05/2026</td><td class='r'>806 tr</td><td>NEXUS</td></tr>
+<tr><td>20</td><td class='nm'>D3stroy3r</td><td>Teon 08</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>21/05/2026</td><td class='r'>2.9 tỷ</td><td>DragonNCS</td></tr>
+<tr><td>21</td><td class='nm'>MushVrooM</td><td>Leona 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>21/05/2026</td><td class='r'>872 tr</td><td>Legendary</td></tr>
+<tr><td>22</td><td class='nm'>Raaccoon</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>21/05/2026</td><td class='r'>1.2 tỷ</td><td>VoltZ</td></tr>
+<tr><td>23</td><td class='nm'>AlibaKaiKa</td><td>Leona 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>21/05/2026</td><td class='r'>1.1 tỷ</td><td>HellFire</td></tr>
+<tr><td>24</td><td class='nm'>ReDvI</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>22/05/2026</td><td class='r'>9.8 tỷ</td><td>VoltZ</td></tr>
+<tr><td>25</td><td class='nm'>MANDALORIAN</td><td>Bartz 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>22/05/2026</td><td class='r'>954 tr</td><td>Challange</td></tr>
+<tr><td>26</td><td class='nm'>MhomXXXXXD</td><td>Bartz 04</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>22/05/2026</td><td class='r'>2.8 tỷ</td><td>ELITE</td></tr>
+<tr><td>27</td><td class='nm'>MrAdachi</td><td>Teon 09</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>23/05/2026</td><td class='r'>1.9 tỷ</td><td>NEXUS</td></tr>
+<tr><td>28</td><td class='nm'>ABCD1234</td><td>Teon 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>26/05/2026</td><td class='r'>4.3 tỷ</td><td>Fortune</td></tr>
+<tr><td>29</td><td class='nm'>zZKlauseZz</td><td>Leona 02</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>26/05/2026</td><td class='r'>1.0 tỷ</td><td>ORBCHILL</td></tr>
+<tr><td>30</td><td class='nm'>Congolo</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>27/05/2026</td><td class='r'>3.3 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>31</td><td class='nm'>13th</td><td>Bartz 02</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>27/05/2026</td><td class='r'>5.6 tỷ</td><td>DAZE</td></tr>
+<tr><td>32</td><td class='nm'>MhomXXXXXG</td><td>Bartz 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>27/05/2026</td><td class='r'>4.3 tỷ</td><td>ELITE</td></tr>
+<tr><td>33</td><td class='nm'>NharHe</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>30/05/2026</td><td class='r'>2.7 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>34</td><td class='nm'>malibi</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>31/05/2026</td><td class='r'>6.1 tỷ</td><td>VoltZ</td></tr>
+<tr><td>35</td><td class='nm'>Gumacha</td><td>Bartz 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>03/06/2026</td><td class='r'>1.7 tỷ</td><td>CATPAWs</td></tr>
+<tr><td>36</td><td class='nm'>หมีสีอะไร</td><td>Teon 06</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>03/06/2026</td><td class='r'>2.1 tỷ</td><td>อนุบาลหมีใหญ่</td></tr>
+<tr><td>37</td><td class='nm'>Ginz</td><td>Erica 08</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>04/06/2026</td><td class='r'>3.1 tỷ</td><td>Udnggg</td></tr>
+<tr><td>38</td><td class='nm'>MagFire</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>06/06/2026</td><td class='r'>1.2 tỷ</td><td>VoltZ</td></tr>
+<tr><td>39</td><td class='nm'>Kayen</td><td>Leona 08</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>10/06/2026</td><td class='r'>521 tr</td><td>UnHoly</td></tr>
+<tr><td>40</td><td class='nm'>OneMoreNight</td><td>Bartz 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>10/06/2026</td><td class='r'>1.1 tỷ</td><td>CATPAWs</td></tr>
+<tr><td>41</td><td class='nm'>Lisbon</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>10/06/2026</td><td class='r'>1.3 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>42</td><td class='nm'>MhomXXXXXV</td><td>Bartz 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>10/06/2026</td><td class='r'>3.2 tỷ</td><td>ELITE</td></tr>
+<tr><td>43</td><td class='nm'>zBaByGz</td><td>Aria 10</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>13/06/2026</td><td class='r'>2.3 tỷ</td><td>Ocean</td></tr>
+<tr><td>44</td><td class='nm'>Alibabon</td><td>Leona 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>17/06/2026</td><td class='r'>984 tr</td><td>HellFire</td></tr>
+<tr><td>45</td><td class='nm'>MhomXXXXXS</td><td>Bartz 04</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>17/06/2026</td><td class='r'>13.1 tỷ</td><td>ELITE</td></tr>
+<tr><td>46</td><td class='nm'>ImAGiiNE</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>01/07/2026</td><td class='r'>1.3 tỷ</td><td>VoltZ</td></tr>
+<tr><td>47</td><td class='nm'>99YKW</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>01/07/2026</td><td class='r'>21.7 tỷ</td><td>VoltZ</td></tr>
+<tr><td>48</td><td class='nm'>ZenithoN</td><td>Teon 08</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>03/07/2026</td><td class='r'>944 tr</td><td>DragonNCS</td></tr>
+<tr><td>49</td><td class='nm'>T800</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>04/07/2026</td><td class='r'>5.7 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>50</td><td class='nm'>MindGo</td><td>Leona 09</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>08/07/2026</td><td class='r'>1.0 tỷ</td><td>MYTHOS</td></tr>
+<tr><td>51</td><td class='nm'>H22Ks</td><td>Aria 10</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>08/07/2026</td><td class='r'>931 tr</td><td>Ocean</td></tr>
+<tr><td>52</td><td class='nm'>CoCaa</td><td>Erica 08</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>09/07/2026</td><td class='r'>5.6 tỷ</td><td>Udnggg</td></tr>
+<tr><td>53</td><td class='nm'>GDCHICKEN</td><td>Bartz 10</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>12/07/2026</td><td class='r'>1.6 tỷ</td><td>HOMELESS</td></tr>
+<tr><td>54</td><td class='nm'>VeroniX</td><td>Teon 10</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>15/07/2026</td><td class='r'>3.3 tỷ</td><td>robloxman</td></tr>
+<tr><td>55</td><td class='nm'>GYMBRO</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>15/07/2026</td><td class='r'>4.0 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>56</td><td class='nm'>Zombiee</td><td>Teon 01</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>15/07/2026</td><td class='r'>1.8 tỷ</td><td>Clonexxx</td></tr>
+<tr><td>57</td><td class='nm'>KUROHIGE</td><td>Erica 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>15/07/2026</td><td class='r'>705 tr</td><td>Valhalla</td></tr>
+<tr><td>58</td><td class='nm'>Alibayol</td><td>Leona 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>15/07/2026</td><td class='r'>4.9 tỷ</td><td>HellFire</td></tr>
+<tr><td>59</td><td class='nm'>ZZB</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>15/07/2026</td><td class='r'>3.2 tỷ</td><td>VoltZ</td></tr>
+<tr><td>60</td><td class='nm'>หมีสีขาว</td><td>Teon 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>17/07/2026</td><td class='r'>1.6 tỷ</td><td>อนุบาลหมีใหญ่</td></tr>
+<tr><td>61</td><td class='nm'>MrzKnight</td><td>Leona 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>18/07/2026</td><td class='r'>1.6 tỷ</td><td>bufam</td></tr>
+<tr><td>62</td><td class='nm'>CORNN</td><td>Bartz 02</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>21/07/2026</td><td class='r'>2.3 tỷ</td><td>DAZE</td></tr>
+<tr><td>63</td><td class='nm'>BeK0Bo</td><td>Leona 02</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>22/07/2026</td><td class='r'>2.1 tỷ</td><td>ORBCHILL</td></tr>
+<tr><td>64</td><td class='nm'>Yanapong</td><td>Bartz 10</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>22/07/2026</td><td class='r'>3.1 tỷ</td><td>HOMELESS</td></tr>
+<tr><td>65</td><td class='nm'>FIFTYx2</td><td>Teon 10</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>23/07/2026</td><td class='r'>1.1 tỷ</td><td>robloxman</td></tr>
+<tr><td>66</td><td class='nm'>PMD</td><td>Bartz 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>26/07/2026</td><td class='r'>904 tr</td><td>Challange</td></tr>
+<tr><td>67</td><td class='nm'>SEAs</td><td>Teon 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>27/07/2026</td><td class='r'>937 tr</td><td>SushiGang</td></tr>
+<tr><td>68</td><td class='nm'>UNI</td><td>Erica 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>28/07/2026</td><td class='r'>676 tr</td><td>Valhalla</td></tr>
+<tr><td>69</td><td class='nm'>MrMango</td><td>Teon 01</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>30/07/2026</td><td class='r'>1.1 tỷ</td><td>Teon1</td></tr>
+<tr><td>70</td><td class='nm'>Darida</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>30/07/2026</td><td class='r'>1.3 tỷ</td><td>VoltZ</td></tr>
+<tr><td>71</td><td class='nm'>Gibss</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>02/08/2026</td><td class='r'>12.7 tỷ</td><td>VoltZ</td></tr>
+<tr><td>72</td><td class='nm'>RiasGremory</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>02/08/2026</td><td class='r'>1.5 tỷ</td><td>VoltZ</td></tr>
+<tr><td>73</td><td class='nm'>鲨鱼</td><td>Bartz 10</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>03/08/2026</td><td class='r'>1.3 tỷ</td><td>HOMELESS</td></tr>
+<tr><td>74</td><td class='nm'>Menacer</td><td>Leona 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>03/08/2026</td><td class='r'>631 tr</td><td>Legendary</td></tr>
+<tr><td>75</td><td class='nm'>AQUAXXX</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>05/08/2026</td><td class='r'>3.3 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>76</td><td class='nm'>Nohope</td><td>Leona 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>05/08/2026</td><td class='r'>6.4 tỷ</td><td>HellFire</td></tr>
+<tr><td>77</td><td class='nm'>Adalwyn</td><td>Leona 05</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>06/08/2026</td><td class='r'>1.4 tỷ</td><td>HellFire</td></tr>
+<tr><td>78</td><td class='nm'>OmniKnight</td><td>Bartz 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>08/08/2026</td><td class='r'>969 tr</td><td>DotaAllStars</td></tr>
+<tr><td>79</td><td class='nm'>Ivok</td><td>Leona 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>10/08/2026</td><td class='r'>4.4 tỷ</td><td>Legendary</td></tr>
+<tr><td>80</td><td class='nm'>H2F</td><td>Teon 04</td><td>Nữ Vương Dục Vọng</td><td>11/08/2026</td><td class='r'>858 tr</td><td>LOVEME</td></tr>
+<tr><td>81</td><td class='nm'>Nulnw</td><td>Teon 10</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>17/08/2026</td><td class='r'>1.8 tỷ</td><td>robloxman</td></tr>
+<tr><td>82</td><td class='nm'>KiiwPLaTy</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>19/08/2026</td><td class='r'>1.6 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>83</td><td class='nm'>MhomXXXXXK</td><td>Bartz 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>19/08/2026</td><td class='r'>1.4 tỷ</td><td>ELITE</td></tr>
+<tr><td>84</td><td class='nm'>TiBoiDad</td><td>Teon 09</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>24/08/2026</td><td class='r'>1.3 tỷ</td><td>NEXUS</td></tr>
+<tr><td>85</td><td class='nm'>Yone</td><td>Leona 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>26/08/2026</td><td class='r'>544 tr</td><td>HellFire</td></tr>
+<tr><td>86</td><td class='nm'>TaoLaThaiTu</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần + Nữ Vương Dục Vọng</td><td>27/08/2026</td><td class='r'>1.2 tỷ</td><td>VoltZ</td></tr>
+<tr><td>87</td><td class='nm'>Declann</td><td>Kain 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>27/08/2026</td><td class='r'>24.0 tỷ</td><td>LevelS</td></tr>
+<tr><td>88</td><td class='nm'>Zi0X</td><td>Teon 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>29/08/2026</td><td class='r'>1.2 tỷ</td><td>Fortune</td></tr>
+<tr><td>89</td><td class='nm'>LeoSake</td><td>Leona 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>02/09/2026</td><td class='r'>2.7 tỷ</td><td>Legendary</td></tr>
+<tr><td>90</td><td class='nm'>Maximov</td><td>Erica 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>02/09/2026</td><td class='r'>1.4 tỷ</td><td>BloodHunter</td></tr>
+<tr><td>91</td><td class='nm'>美唧唧</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>02/09/2026</td><td class='r'>3.4 tỷ</td><td>MYSTlC</td></tr>
+<tr><td>92</td><td class='nm'>Doha</td><td>Kain 07</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>04/09/2026</td><td class='r'>1.9 tỷ</td><td>Bubbles</td></tr>
+<tr><td>93</td><td class='nm'>NTAC</td><td>Kain 01</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>05/09/2026</td><td class='r'>2.9 tỷ</td><td>NewWorld</td></tr>
+<tr><td>94</td><td class='nm'>Alibayel</td><td>Leona 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>06/09/2026</td><td class='r'>1.1 tỷ</td><td>HellFire</td></tr>
+<tr><td>95</td><td class='nm'>Bray</td><td>Leona 10</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>09/09/2026</td><td class='r'>2.0 tỷ</td><td>ThanhBang</td></tr></tbody></table></div>
+  </div>
+</div>
+<div class="tabpane" id="tF">
+  <div class="blk"><h2>&#9312; Tỷ lệ phủ nhóm VIP F</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="kv">12</div><div class="kl">Chủ Legend</div></div>
+      <div class="kpi"><div class="kv">818</div><div class="kl">Tổng VIP F</div></div>
+      <div class="kpi hi"><div class="kv">1.5%</div><div class="kl">Tỷ lệ phủ</div></div>
+    </div>
+    <div class="bars"><div class='barrow'><span class='bl'>Hiệp Sĩ Của Chúa Tử Thần</span><div class='bar'><i style='width:1.3%'></i></div><span class='bn'>11 · 1.3%</span></div><div class='barrow'><span class='bl'>Nữ Vương Dục Vọng</span><div class='bar'><i style='width:0.1%'></i></div><span class='bn'>1 · 0.1%</span></div><div class='barrow'><span class='bl'>Có cả 2</span><div class='bar'><i style='width:0.0%'></i></div><span class='bn'>0 · 0.0%</span></div></div>
+  </div>
+  <div class="blk"><h2>&#9313; Biểu đồ mở Legend theo tuần</h2><canvas id="ch_tF" height="120"></canvas></div>
+  <div class="blk"><h2>&#9314; Danh sách chủ sở hữu Legend (12)</h2>
+    <div class="tw"><table><thead><tr><th>#</th><th>Tên VIP</th><th>Server</th><th>Skin Legend</th><th>Ngày mở đầu</th><th>Tổng nạp</th><th>Clan</th></tr></thead>
+    <tbody><tr><td>1</td><td class='nm'>Winnie</td><td>Bartz 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>11/05/2026</td><td class='r'>440 tr</td><td>DAZEs</td></tr>
+<tr><td>2</td><td class='nm'>THEGEST</td><td>Bartz 04</td><td>Nữ Vương Dục Vọng</td><td>23/05/2026</td><td class='r'>218 tr</td><td>VoltZ</td></tr>
+<tr><td>3</td><td class='nm'>VIExaminer</td><td>Leona 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>27/05/2026</td><td class='r'>314 tr</td><td>HellFire</td></tr>
+<tr><td>4</td><td class='nm'>SUNNYPAPA</td><td>Erica 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>10/06/2026</td><td class='r'>367 tr</td><td>Valhalla</td></tr>
+<tr><td>5</td><td class='nm'>Cruella</td><td>Erica 03</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>14/06/2026</td><td class='r'>459 tr</td><td>Valhalla</td></tr>
+<tr><td>6</td><td class='nm'>Alibara</td><td>Leona 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>27/06/2026</td><td class='r'>442 tr</td><td>HellFire</td></tr>
+<tr><td>7</td><td class='nm'>Raigeki</td><td>Teon 01</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>15/07/2026</td><td class='r'>447 tr</td><td>Clonexxx</td></tr>
+<tr><td>8</td><td class='nm'>EsCaNoR</td><td>Bartz 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>22/07/2026</td><td class='r'>189 tr</td><td>DotaAllStars</td></tr>
+<tr><td>9</td><td class='nm'>WinDRanger</td><td>Bartz 05</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>03/08/2026</td><td class='r'>499 tr</td><td>DotaAllStars</td></tr>
+<tr><td>10</td><td class='nm'>TAGHeuer</td><td>Bartz 02</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>26/08/2026</td><td class='r'>415 tr</td><td>DAZE</td></tr>
+<tr><td>11</td><td class='nm'>LANCELOT</td><td>Erica 06</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>07/09/2026</td><td class='r'>232 tr</td><td>BloodHunter</td></tr>
+<tr><td>12</td><td class='nm'>ILOVZU</td><td>Teon 04</td><td>Hiệp Sĩ Của Chúa Tử Thần</td><td>09/09/2026</td><td class='r'>369 tr</td><td>Luck</td></tr></tbody></table></div>
+  </div>
+</div>
+<div class="note">⚠️ Định danh ghép bằng Game Account ID (GUID) — chính xác kể cả khi tên nhân vật khác. Có 2 chủ Legend ở bậc thấp hơn (E/D) và 8 chủ ngoài top-5000 VIP, không nằm trong 2 tab này. Cặp tên↔mã gán theo độ phổ biến — đảo lại nếu ingame khác.</div>
+</div>
+<script>
+const LB=["06/04", "13/04", "20/04", "27/04", "04/05", "11/05", "18/05", "25/05", "01/06", "08/06", "15/06", "22/06", "29/06", "06/07", "13/07", "20/07", "27/07", "03/08", "10/08", "17/08", "24/08", "31/08", "07/09"],SG=[1, 5, 3, 4, 3, 1, 10, 7, 4, 5, 2, 0, 4, 4, 8, 5, 6, 6, 2, 3, 5, 6, 1],SF=[0, 0, 0, 0, 0, 1, 1, 1, 0, 2, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 2];
+function mkchart(id,data){new Chart(document.getElementById(id),{type:'bar',
+ data:{labels:LB,datasets:[{label:'Số chủ mở Legend',data:data,backgroundColor:'#EE5524',borderRadius:3}]},
+ options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#93a1b0',maxRotation:90,minRotation:45,font:{size:9}},grid:{display:false}},y:{ticks:{color:'#93a1b0',precision:0},grid:{color:'#2a333d'}}}}});}
+function sw(id,b){document.querySelectorAll('.tabpane').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on'));document.getElementById(id).classList.add('on');b.classList.add('on');}
+document.getElementById('tG').classList.add('on');mkchart('ch_tG',SG);mkchart('ch_tF',SF);
+</script></body></html>
